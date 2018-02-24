@@ -44,7 +44,7 @@ class Developer:
         
         
     @commands.command()
-    async def changename(self, ctx, name:str):
+    async def changename(self, ctx, name=None):
         """Changes my name. Please make it good!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
@@ -59,7 +59,21 @@ class Developer:
         """Executes code like the Command Line."""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        await ctx.send(subprocess.run(f"{code}",stdout=subprocess.PIPE).stdout.decode('utf-8'))
+        await ctx.send(subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8'))
+
+
+    @commands.command()
+    async def update(self, ctx):
+        """Updates the bot. Ez!"""
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+        lol = subprocess.run("git pull", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+        for cog in self.bot.cogs:
+            self.bot.unload_extension(cog)
+            self.bot.load_extension(cog)
+        await ctx.send(f"All cogs reloaded, and READY TO ROLL! :white_check_mark: \n\nLog:\n```{lol}```")
+
+
               
 
     @commands.command()
