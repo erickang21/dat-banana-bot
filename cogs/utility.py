@@ -82,6 +82,19 @@ class Utility:
         em.description = random.choice(choices)
         await ctx.send(embed=em)
 
+
+    @commands.command()
+    async def choose(self, ctx, *, args=None):
+        """Can't choose. Let this bot do it for you. Seperate choices with a comma."""
+        if args is None:
+            await ctx.send("Oops! Usage: *choose choice, anotha choice, 3rd choice, etc")
+        else:
+            args = args.split(",")
+            color = discord.Color(value=0x00ff00)
+            em = discord.Embed(color=color, title='What do I choose? 🤔')
+            em.description = random.choice(args)
+            await ctx.send(embed=em)
+            
         
     @commands.command(aliases=['tf'])
     async def textface(self, ctx, Type):
