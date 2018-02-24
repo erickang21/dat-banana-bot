@@ -189,4 +189,7 @@ async def _eval(ctx, *, body: str):
                        
                        
 
-bot.run("Mzg4NDc2MzM2Nzc3NDYxNzcw.DVEeCw.eAXnUyjQHwRQFUEubFoF1fRxrQ0")
+                       
+if not os.environ.get('TOKEN'):
+    print("no token found REEEE!")
+bot.run(os.environ.get('TOKEN').strip('"'))
