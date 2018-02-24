@@ -67,11 +67,14 @@ class Developer:
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        lol = subprocess.run("git pull", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
-        for cog in self.bot.cogs:
-            self.bot.unload_extension(cog)
-            self.bot.load_extension(cog)
-        await ctx.send(f"All cogs reloaded, and READY TO ROLL! :white_check_mark: \n\nLog:\n```{lol}```")
+        try:
+            lol = subprocess.run("git pull", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+            for cog in self.bot.cogs:
+                self.bot.unload_extension(f"cogs.{cog}")
+                self.bot.load_extension(f"cogs.{cog}")
+            await ctx.send(f"All cogs reloaded, and READY TO ROLL! :white_check_mark: \n\nLog:\n```{lol}```")
+        except Exception as e:
+            await ctx.send(f"An error occured. :x: \n\nDetails: \n{e}")
 
 
               
