@@ -8,7 +8,7 @@ import clashroyale
 from discord.ext import commands
 
 
-class Clash_Royale:
+class CR:
     def __init__(self, bot):
         self.bot = bot
         with open('data/apikeys.json') as f:
@@ -294,4 +294,4 @@ class Clash_Royale:
         
 
 def setup(bot): 
-    bot.add_cog(Clash_Royale(bot)) 
+    bot.add_cog(CR(bot)) 

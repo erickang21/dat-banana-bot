@@ -8,7 +8,7 @@ import ezjson
 from discord.ext import commands
 
 
-class Clash_of_Clans:
+class COC:
     def __init__(self, bot):
         self.bot = bot
         with open('data/apikeys.json') as f:
@@ -307,7 +307,7 @@ class Clash_of_Clans:
 
 
 def setup(bot): 
-    bot.add_cog(Clash_of_Clans(bot)) 
+    bot.add_cog(COC(bot)) 
 
 
 						
