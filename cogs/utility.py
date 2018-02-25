@@ -94,7 +94,7 @@ class Utility:
             em = discord.Embed(color=color, title='What do I choose? 🤔')
             em.description = random.choice(args)
             await ctx.send(embed=em)
-            
+
         
     @commands.command(aliases=['tf'])
     async def textface(self, ctx, Type):
@@ -142,7 +142,7 @@ class Utility:
             
             
     @commands.command()
-    async def userinfo(self, ctx, user: discord.Member):
+    async def userinfo(self, ctx, user: discord.Member = None):
         """Dig out that user info. Usage: *userinfo [tag user]"""
         if user is None:
             color = discord.Color(value=0xf2f760)
@@ -150,6 +150,11 @@ class Utility:
             em.add_field(name='Status', value=f'{ctx.message.author.status}')       
             em.add_field(name='Account Created', value=ctx.message.author.created_at.__format__('%A, %B %d, %Y'))
             em.add_field(name='ID', value=f'{ctx.message.author.id}')
+            if ctx.message.author.bot is True:
+                type = 'Bot'
+            else:
+                type = 'Human'
+            em.add_field(name='Profile Type', value=type)
             em.set_thumbnail(url=ctx.message.author.avatar_url)
             await ctx.send(embed=em)
         else:
@@ -158,6 +163,11 @@ class Utility:
             em.add_field(name='Status', value=f'{user.status}')       
             em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
             em.add_field(name='ID', value=f'{user.id}')
+            if user.bot is True:
+                type = 'Bot'
+            else:
+                type = 'Human'
+            em.add_field(name='Profile Type', value=type)
             em.set_thumbnail(url=user.avatar_url)
             await ctx.send(embed=em)    
         
