@@ -133,12 +133,25 @@ class Utility:
             
             
     @commands.command(aliases=['av'])
-    async def avatar(self, ctx, user: discord.Member):
+    async def avatar(self, ctx, user: discord.Member = None):
         """Returns a user's avatar url. Use *av [user], or just *av for your own."""
         if user is None:
-            await ctx.send(ctx.message.author.avatar_url)                   
+            av = ctx.message.author.avatar_url
+            if '.gif' in av:
+                av += "&f=.gif"
+            color = discord.Color(value=0x00ff00)
+            em = discord.Embed(color=color, title=ctx.message.author.name)
+            em.set_author(name='Profile Picture')
+            em.set_image(url=av)
+            await ctx.send(embed=em)                  
         else:
-            await ctx.send(user.avatar_url)
+            av = user.avatar_url
+            if '.gif' in av:
+                av += "&f=.gif"
+            em = discord.Embed(color=color, title=user.name)
+            em.set_author(name='Profile Picture')
+            em.set_image(url=av)
+            await ctx.send(embed=em)
             
             
     @commands.command()
