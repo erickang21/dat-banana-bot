@@ -148,6 +148,7 @@ class Utility:
             av = user.avatar_url
             if '.gif' in av:
                 av += "&f=.gif"
+            color = discord.Color(value=0x00ff00)
             em = discord.Embed(color=color, title=user.name)
             em.set_author(name='Profile Picture')
             em.set_image(url=av)
