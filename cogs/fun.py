@@ -5,6 +5,7 @@ import io
 import asyncio
 import aiohttp
 import random
+import json
 from discord.ext import commands
 
 
@@ -37,8 +38,19 @@ class fun:
     
     @commands.command()
     async def roast(self, ctx, user: discord.Member = None):
+        '''Roast someone! If you suck at roasting them yourself.'''
         roasts = ["I'd give you a nasty look but you've already got one.", "If you're going to be two-faced, at least make one of them pretty.", "The only way you'll ever get laid is if you crawl up a chicken's ass and wait.", "It looks like your face caught fire and someone tried to put it out with a hammer.", "I'd like to see things from your point of view, but I can't seem to get my head that far up your ass.", "Scientists say the universe is made up of neutrons, protons and electrons. They forgot to mention morons.", "Why is it acceptable for you to be an idiot but not for me to point it out?", "Just because you have one doesn't mean you need to act like one.", "Someday you'll go far... and I hope you stay there.", "Which sexual position produces the ugliest children? Ask your mother.", "No, those pants don't make you look fatter - how could they?", "Save your breath - you'll need it to blow up your date.", "If you really want to know about mistakes, you should ask your parents.", "Whatever kind of look you were going for, you missed.", "Hey, you have something on your chin... no, the 3rd one down.", "I don't know what makes you so stupid, but it really works.", "You are proof that evolution can go in reverse.", "Brains aren't everything. In your case they're nothing.", "I thought of you today. It reminded me to take the garbage out.", "You're so ugly when you look in the mirror, your reflection looks away.", "Quick - check your face! I just found your nose in my business.", "It's better to let someone think you're stupid than open your mouth and prove it.", "You're such a beautiful, intelligent, wonderful person. Oh I'm sorry, I thought we were having a lying competition.", "I'd slap you but I don't want to make your face look any better.", "You have the right to remain silent because whatever you say will probably be stupid anyway."]
         await ctx.send(f"Hey, {user.mention}! {random.choice(roasts)}")
+
+
+    @commands.command()
+    async def yomomma(self, ctx):
+        '''Sends a random yo momma joke. Outdated?'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get("http://api.yomomma.info/") as resp:
+                resp = await resp.json()
+                await ctx.send(resp['joke'])
+
 
 
 
