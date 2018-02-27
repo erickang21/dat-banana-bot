@@ -22,6 +22,7 @@ class Utility:
 
     @commands.command()
     async def urban(self, ctx, *, word=None):
+        '''Gets the definition of a word from Urban Dictionary.'''
         if word is None:
             await ctx.send("To use Urban Dictionary, please enter a word in this format: `*urban [word]`")
         else:
@@ -38,8 +39,32 @@ class Utility:
 
 
     @commands.command()
-    async def timer(self, ctx, timer):
+    async def playing(self, ctx, *, game=None):
+        '''Enter a game, and it will find users in the server that are playing it.'''
+        if game is None:
+            await ctx.send("Please enter a game to search! Usage: *playing [game]")
+        else:
+            msg = ""
+            members = ctx.guild.members
+            for x in members:
+                if x.game != None:
+                    if x.game.name == game:
+                        msg += f"{str(x)} \n"
+            if msg is None:
+                msg = 'No one in the server is currently playing this game!'
+            else:
+                color = discord.Color(value=0x00ff00)
+                em = discord.Embed(color=color, title=f"Users Playing: {game}")
+                em.description = msg
+                await ctx.send(embed=em) 
+
+
+
+    @commands.command()
+    async def timer(self, ctx, timer=None):
         """Counts down till it's over! Usage: *timer [time in secs]"""
+        if timer is None:
+            return await ctx.send("Please enter a time in seconds! Usage: *timer [time in secs]")
         try:
             float(timer)
         except ValueError:
@@ -51,7 +76,7 @@ class Utility:
         
         
     @commands.command()
-    async def ranint(self, ctx, a: int, b: int):
+    async def ranint(self, ctx, a: int = None, b: int = None):
         """Usage: *ranint [least number][greatest number]. RanDOM!"""
         if a is None:
             await ctx.send("Boi, are you random! Usage: *ranint [least #] [greatest #], to set the range of the randomized number. Please use integers.")
@@ -97,10 +122,10 @@ class Utility:
 
         
     @commands.command(aliases=['tf'])
-    async def textface(self, ctx, Type):
+    async def textface(self, ctx, Type=None):
         """Get those dank/cool faces here. Type *textface list for a list."""
         if Type is None:
-            await ctx.send('That is NOT one of the dank textfaces in here yet. Use: *textface [lenny/tableflip/shrug]')
+            await ctx.send('That is NOT one of the dank textfaces in here yet. Use: *textface list to get a list of textfaces you can use.')
         else:
             if Type.lower() == 'lenny':
               await ctx.send('( ͡° ͜ʖ ͡°)')
