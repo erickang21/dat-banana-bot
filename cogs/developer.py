@@ -67,15 +67,16 @@ class Developer:
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+        msg = await ctx.send("Bot updating... :arrows_counterclockwise:")
         try:
             lol = subprocess.run("git pull", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
             for cog in self.bot.cogs:
                 cog = cog.lower()
                 self.bot.unload_extension(f"cogs.{cog}")
                 self.bot.load_extension(f"cogs.{cog}")
-            await ctx.send(f"All cogs reloaded, and READY TO ROLL! :white_check_mark: \n\nLog:\n```{lol}```")
+            await msg.edit(content=f"All cogs reloaded, and READY TO ROLL! :white_check_mark: \n\nLog:\n```{lol}```")
         except Exception as e:
-            await ctx.send(f"An error occured. :x: \n\nDetails: \n{e}")
+            await msg.edit(content=f"An error occured. :x: \n\nDetails: \n{e}")
 
 
               
