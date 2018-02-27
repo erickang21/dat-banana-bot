@@ -52,11 +52,10 @@ class Utility:
                         msg += f"{str(x)} \n"
             if msg == "":
                 msg = 'No one in the server is currently playing this game!'
-            else:
-                color = discord.Color(value=0x00ff00)
-                em = discord.Embed(color=color, title=f"Users Playing: {game}")
-                em.description = msg
-                await ctx.send(embed=em) 
+            color = discord.Color(value=0x00ff00)
+            em = discord.Embed(color=color, title=f"Users Playing: {game}")
+            em.description = msg
+            await ctx.send(embed=em) 
 
 
 
