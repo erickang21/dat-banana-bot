@@ -79,6 +79,32 @@ class Developer:
             await msg.edit(content=f"An error occured. :x: \n\nDetails: \n{e}")
 
 
+    @commands.command()
+    async def loadcog(self, ctx, cog=None):
+        if cog is None:
+            await ctx.send("Please enter a cog to load it!")
+        else:
+            msg = await ctx.send(f"Loading cog `{cog}`... :arrows_counterclockwise:")
+            try:
+                self.bot.load_extension(f"cogs.{cog}")
+                await msg.edit(content="Loaded the cog! :white_check_mark:")
+            except Exception as e:
+                await msg.edit(content=f"An error occured. Details: \n{e}")
+
+
+    @commands.command()
+    async def unloadcog(self, ctx, cog=None):
+        if cog is None:
+            await ctx.send("Please enter a cog to unload it!")
+        else:
+            msg = await ctx.send(f"Unloading cog `{cog}`... :arrows_counterclockwise:")
+            try:
+                self.bot.unload_extension(f"cogs.{cog}")
+                await msg.edit(content="Unloaded the cog! :white_check_mark:")
+            except Exception as e:
+                await msg.edit(content=f"An error occured. Details: \n{e}")
+
+
               
 
     @commands.command()
