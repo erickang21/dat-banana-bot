@@ -60,7 +60,8 @@ class Help:
                 await msg.add_reaction("\U00002049") #Info
             except discord.Forbidden:
                 return await ctx.send("Uh-oh! I don't have the 'Add Reactions' permission, so I can't paginate...")
-            
+        except Exception as e:
+            await ctx.send(f"An error occured. More details: \n\n```{e}```")
 
 
 
