@@ -48,7 +48,7 @@ class fun:
         '''Sends a random yo momma joke. Outdated?'''
         async with aiohttp.ClientSession() as session:
             async with session.get("http://api.yomomma.info/") as resp:
-                resp = await resp.json()
+                resp = await resp.json(content_type=None)
                 await ctx.send(resp['joke'])
 
 
