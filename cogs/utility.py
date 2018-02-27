@@ -50,7 +50,7 @@ class Utility:
                 if x.game != None:
                     if x.game.name == game:
                         msg += f"{str(x)} \n"
-            if msg is None:
+            if msg == "":
                 msg = 'No one in the server is currently playing this game!'
             else:
                 color = discord.Color(value=0x00ff00)
