@@ -117,10 +117,7 @@ class Utility:
             lol = bot.get_emoji(410122907373535233)
             msg = await ctx.send(lol)
             args = args.split(",")
-            color = discord.Color(value=0x00ff00)
-            em = discord.Embed(color=color, title='What do I choose? 🤔')
-            em.description = random.choice(args)
-            await msg.edit(content=em)
+            await msg.edit(content=f"I choose:\n{random.choice(args)}")
 
         
     @commands.command(aliases=['tf'])
