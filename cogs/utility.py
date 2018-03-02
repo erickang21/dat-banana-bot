@@ -116,7 +116,7 @@ class Utility:
         else:
             try:
                 lol = bot.get_emoji(410122907373535233)
-            else:
+            except:
                 pass
             msg = await ctx.send(lol)
             args = args.split(",")
