@@ -114,7 +114,7 @@ class Utility:
         if args is None:
             await ctx.send("Oops! Usage: *choose choice, anotha choice, 3rd choice, etc")
         else:
-            lol = bot.get_emoji(410122907373535233)
+            lol = self.bot.get_emoji(410122907373535233)
             msg = await ctx.send(lol)
             args = args.split(",")
             await msg.edit(content=f"I choose:\n{random.choice(args)}")
