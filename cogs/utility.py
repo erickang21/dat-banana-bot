@@ -117,7 +117,8 @@ class Utility:
             lol = self.bot.get_emoji(410122907373535233)
             msg = await ctx.send(lol)
             args = args.split(",")
-            await msg.edit(content=f"I choose:\n{random.choice(args)}")
+            await asyncio.sleep(3)
+            await msg.edit(content=f"I choose:\n**{random.choice(args)}**")
 
         
     @commands.command(aliases=['tf'])
