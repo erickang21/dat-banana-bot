@@ -56,6 +56,7 @@ class Utility:
             em = discord.Embed(color=color, title=f"Users Playing: {game}")
             em.description = msg
             await ctx.send(embed=em) 
+            
 
 
 
@@ -113,11 +114,16 @@ class Utility:
         if args is None:
             await ctx.send("Oops! Usage: *choose choice, anotha choice, 3rd choice, etc")
         else:
+            try:
+                lol = bot.get_emoji(410122907373535233)
+            else:
+                pass
+            msg = await ctx.send(lol)
             args = args.split(",")
             color = discord.Color(value=0x00ff00)
             em = discord.Embed(color=color, title='What do I choose? 🤔')
             em.description = random.choice(args)
-            await ctx.send(embed=em)
+            await msg.edit(content=em)
 
         
     @commands.command(aliases=['tf'])
