@@ -114,10 +114,7 @@ class Utility:
         if args is None:
             await ctx.send("Oops! Usage: *choose choice, anotha choice, 3rd choice, etc")
         else:
-            try:
-                lol = bot.get_emoji(410122907373535233)
-            except:
-                pass
+            lol = bot.get_emoji(410122907373535233)
             msg = await ctx.send(lol)
             args = args.split(",")
             color = discord.Color(value=0x00ff00)
