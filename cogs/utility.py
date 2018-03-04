@@ -57,7 +57,7 @@ class Utility:
                         resp = await resp.json()
                         color = discord.Color(value=0x00ff00)
                         em = discord.Embed(color=color, title='Hastebin-ified!')
-                        em.description = f"Your Hastebin link: \n{resp['key']}"
+                        em.description = f"Your Hastebin link: \nhttps://hastebin.com/{resp['key']}"
                         em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
                         await ctx.send(embed=em)
             except Exception as e:
