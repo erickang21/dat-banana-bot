@@ -36,6 +36,8 @@ class Utility:
                 em.description = feedback
                 em.set_author(name=f"Sent by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
                 em.set_footer(text=f"Sent from {ctx.guild.name} in #{ctx.channel.name}", icon_url=ctx.guild.icon_url)
+                await lol.send(embed=em)
+                em.description = 'Thanks for sending feedback to make this bot better! :ok_hand:'
                 await ctx.send(embed=em)
             except Exception as e:
                 color = discord.Color(value=0xf44e42)
