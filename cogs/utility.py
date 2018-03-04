@@ -21,6 +21,32 @@ class Utility:
        
 
     @commands.command()
+    async def feedback(self, ctx, *, feedback=None):
+        """How do YOU want this bot to be? Give your word here."""
+        if feedback is None:
+            color = discord.Color(value=0xf44e42)
+            em = discord.Embed(color=color, title='Error :x:')
+            em.description = 'Please enter your feedback.'
+            await ctx.send(embed=em)
+        else:
+            try:
+                lol = bot.get_channel(413814935391567882)
+                color = discord.Color(value=0x00ff00)
+                em = discord.Embed(color=color, title='Feedback')
+                em.description = feedback
+                em.set_author(name=f"Sent by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+                em.set_footer(text=f"Sent from {ctx.guild.name} in #{ctx.channel.name}", icon_url=ctx.guild.icon_url)
+                await ctx.send(embed=em)
+            except Exception as e:
+                color = discord.Color(value=0xf44e42)
+                em = discord.Embed(color=color, title='Error :x:')
+                em.description = f"More details: \n\n{e}"
+                await ctx.send(embed=em)
+
+
+
+
+    @commands.command()
     async def urban(self, ctx, *, word=None):
         '''Gets the definition of a word from Urban Dictionary.'''
         if word is None:
