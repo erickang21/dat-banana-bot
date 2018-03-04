@@ -30,7 +30,7 @@ class Utility:
             await ctx.send(embed=em)
         else:
             try:
-                lol = bot.get_channel(413814935391567882)
+                lol = self.bot.get_channel(413814935391567882)
                 color = discord.Color(value=0x00ff00)
                 em = discord.Embed(color=color, title='Feedback')
                 em.description = feedback
