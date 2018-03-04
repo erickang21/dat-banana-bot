@@ -46,6 +46,27 @@ class Utility:
                 await ctx.send(embed=em)
 
 
+    @commands.command()
+    async def hastebin(self, ctx, *, text=None):
+        if text is None:
+            await ctx.send("Please enter the text you want to put into Hastebin: *hastebin [text]")
+        else:
+            try:
+                async with aiohttp.ClientSession() as session:
+                    async with session.post("https://hastebin.com/documents", data=text) as resp:
+                        resp = await resp.json()
+                        color = discord.Color(value=0x00ff00)
+                        em = discord.Embed(color=color, title='Hastebin-ified!')
+                        em.description = f"Your Hastebin link: \n{resp['key']}"
+                        em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+                        await ctx.send(embed=em)
+            except Exception as e:
+                color = discord.Color(value=0xf44e42)
+                em = discord.Embed(color=color, title='An error occured. :x:')
+                em.description = f"More details: \n\n{e}"
+                await ctx.send(embed=em)
+
+
 
 
     @commands.command()
