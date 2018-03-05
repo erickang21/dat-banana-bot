@@ -39,7 +39,8 @@ class fun:
             try:
                 client = idioticapi.Client(self.client, dev=True)
                 av = user.avatar_url.replace("webp","png")
-                await ctx.send(file=discord.File(await client.bat_slap(ctx.author.avatar_url, av), "batslap.png"))
+                avatar = ctx.author.avatar_url.replace("webp", "png")
+                await ctx.send(file=discord.File(await client.bat_slap(avatar, av), "batslap.png"))
             except Exception as e:
                 await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
