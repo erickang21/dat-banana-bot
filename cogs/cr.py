@@ -55,14 +55,14 @@ class CR:
                     crtag = lol[userid]
             except KeyError:
                 return await ctx.send("Uh-oh, no tag found! Use `*crsave [tag]` to save your tag to your Discord account. :x:")
-                try:
-                    profile = await self.client.get_player(crtag)
-                except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
-                    print(e)
-                    color = discord.Color(value=0xf44e42)
-                    em = discord.Embed(color=color, title='Royale API error.')
-                    em.description = f"{e.code}: {e.error}"
-                    return await ctx.send(embed=em)
+            try:
+                profile = await self.client.get_player(crtag)
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
+                print(e)
+                color = discord.Color(value=0xf44e42)
+                em = discord.Embed(color=color, title='Royale API error.')
+                em.description = f"{e.code}: {e.error}"
+                return await ctx.send(embed=em)
             color = discord.Color(value=0xf1f442)
             em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
             em.add_field(name='Trophies', value=f'{profile.trophies}')
