@@ -72,7 +72,7 @@ class mod:
         if user is None:
             await ctx.send("To boot the member, use the command like this: \n*kick [days of msgs to delete] [reason]")
         try:
-            await user.kick(user=user, reason=reason)
+            await user.kick(user, reason=reason)
             color = discord.Color(value=0x00ff00)
             em = discord.Embed(color=color, title='Kicked!')
             em.add_field(name='User', value=user.name)
@@ -96,7 +96,7 @@ class mod:
         if user is None:
             await ctx.send("To swing the ban hammer, use the command like this: \n*ban [days of msgs to delete] [reason]")
         try:
-            await user.ban(user=user, delete_message_days=msgdeletedays, reason=reason)
+            await user.ban(user, delete_message_days=msgdeletedays, reason=reason)
             color = discord.Color(value=0x00ff00)
             em = discord.Embed(color=color, title='Banned!')
             em.add_field(name='User', value=user.name)
