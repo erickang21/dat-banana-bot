@@ -37,9 +37,8 @@ class fun:
             await ctx.send("Gotta tag someone that you wanna slap!")
         else:
             try:
-                lol = self.bot.get_user(user.id)
                 client = idioticapi.Client(self.client, dev=True)
-                av = lol.avatar_url.replace("webp","png")
+                av = user.avatar_url.replace("webp","png")
                 await ctx.send(file=discord.File(await client.bat_slap(ctx.author.avatar_url, av), "batslap.png"))
             except Exception as e:
                 await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
