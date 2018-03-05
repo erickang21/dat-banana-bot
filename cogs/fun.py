@@ -31,7 +31,8 @@ class fun:
             user = ctx.author
         try:
             client = idioticapi.Client(self.client, dev=True)
-            await ctx.send(file=discord.File(await client.triggered(user.avatar_url), "triggered.gif"))
+            av = self.format_avatar(user.avatar_url)
+            await ctx.send(file=discord.File(await client.triggered(av), "triggered.gif"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
