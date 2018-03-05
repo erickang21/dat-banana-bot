@@ -24,7 +24,7 @@ class fun:
         return avatar_url.replace("webp","png")
 
     
-    @commands.command()
+    @commands.command(aliases=['triggered'])
     async def triggeredpic(self, ctx, user: discord.Member = None):
         """TRI GER RED!!!"""
         if user is None:
