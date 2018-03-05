@@ -17,6 +17,12 @@ class fun:
             lol = json.load(f)
             self.client = lol.get("idioticapi")
 
+
+    def format_avatar(self, avatar_url):
+        if avatar_url.endswith(".gif"):
+            return avatar_url + "?size=2048"
+        return avatar_url.replace("webp","png")
+
     
     @commands.command()
     async def triggeredpic(self, ctx, user: discord.Member = None):
@@ -38,8 +44,8 @@ class fun:
         else:
             try:
                 client = idioticapi.Client(self.client, dev=True)
-                av = user.avatar_url.replace("webp","png")
-                avatar = ctx.author.avatar_url.replace("webp", "png")
+                av = self.format_avatar(user.avatar_url)
+                avatar = self.format_avatar(ctx.author.avatar_url)
                 await ctx.send(file=discord.File(await client.bat_slap(avatar, av), "batslap.png"))
             except Exception as e:
                 await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
