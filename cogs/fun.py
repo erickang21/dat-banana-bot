@@ -6,12 +6,42 @@ import asyncio
 import aiohttp
 import random
 import json
+import idioticapi
 from discord.ext import commands
 
 
 class fun:
     def __init__(self, bot):
         self.bot = bot
+        with open('data/apikeys.json') as f:
+            lol = json.load(f)
+            self.client = lol.get("idioticapi")
+
+    
+    @commands.command()
+    async def triggeredpic(self, ctx, user: discord.Member = None):
+        """TRI GER RED!!!"""
+        if user is None:
+            user = ctx.author
+        try:
+            client = idioticapi.Client(self.client, dev=True)
+            await ctx.send(file=discord.File(await client.triggered(user.avatar_url), "triggered.gif"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+
+    @commands.command()
+    async def batslap(self, ctx, user: discord.Member = None): 
+        """User 1 will be slapping, user 2 will BE SLAPPED! Tehehe!"""
+        if user is None:
+            await ctx.send("Gotta tag someone that you wanna slap!")
+        else:
+            lol = bot.get_user(user.id)
+            client = idioticapi.Client(self.client, dev=True)
+            av = lol.avatar_url.replace("webp","png")
+            await ctx.send(file=discord.File(await client.bat_slap(ctx.author.avatar_url, av), "batslap.png"))
+
+
        
        
     @commands.command()
