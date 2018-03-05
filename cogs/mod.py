@@ -3,6 +3,7 @@ import sys
 import os
 import io
 import asyncio
+import ezjson
 from discord.ext import commands
 
 
@@ -66,29 +67,50 @@ class mod:
     
     @commands.command()
     @commands.has_permissions(kick_members = True)
-    async def kick(self, ctx, user: discord.Member):
+    async def kick(self, ctx, user: discord.Member = None, reason=None):
         """Kicks a member into the world outside your server."""
+        if user is None:
+            await ctx.send("To boot the member, use the command like this: \n*kick [days of msgs to delete] [reason]")
         try:
-            await user.kick()
-            await ctx.channel.send(f"Be gone {user.name}! Oh, and close the door on the way out :door:.")
+            await user.kick(user=user, reason=reason)
+            color = discord.Color(value=0x00ff00)
+            em = discord.Embed(color=color, title='Kicked!')
+            em.add_field(name='User', value=user.name)
+            em.add_field(name='Kicked By', value=ctx.author.name)
+            if reason is None:
+                reason = 'No reason given.'
+            else:
+                reason = reason
+            em.add_field(name='Reason', value=reason)
+            em.set_thumbnail(url=user.avatar_url)
+            await ctx.send(embed=em)
         except discord.Forbidden:
-            await ctx.send("Oops! I don't have enough permissions to kick this bad boi.")
-        except discord.ext.commands.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with kicking someone without permissions.")
+            await ctx.send("Oops! I don't have enough permissions to use the boot.")
         
         
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def ban(self, ctx, user: discord.Member):
+    async def ban(self, ctx, user: discord.Member = None, msgdeletedays: int = 0, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
+        if user is None:
+            await ctx.send("To swing the ban hammer, use the command like this: \n*ban [days of msgs to delete] [reason]")
         try:
-            await user.ban()
-            await ctx.channel.send(f"The ban hammer has fallen. And it has struck {user.name}.")
+            await user.ban(user=user, delete_message_days=msgdeletedays, reason=reason)
+            color = discord.Color(value=0x00ff00)
+            em = discord.Embed(color=color, title='Banned!')
+            em.add_field(name='User', value=user.name)
+            em.add_field(name='Banned By', value=ctx.author.name)
+            em.add_field(name='Days of Messages Deleted', value=f"{msgdeletedays} days")
+            if reason is None:
+                reason = 'No reason given.'
+            else:
+                reason = reason
+            em.add_field(name='Reason', value=reason)
+            em.set_thumbnail(url=user.avatar_url)
+            await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
-        except discord.ext.commands.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with banning someone without permissions.")
 
 
 
@@ -127,7 +149,7 @@ class mod:
         except discord.Forbidden:
             await ctx.send("Couldn't unmute the user. Uh-oh...")
         except discord.ext.commands.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")
+            await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
         
         
     @commands.command()
