@@ -141,6 +141,39 @@ class mod:
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
+    async def servermute(self, ctx, user: discord.Member = None):
+        '''Forces someone to shut up through the entire server. OUCH.'''
+        if user is None:
+            await ctx.send("Bruh. Tag a user to mute them...")
+        else:
+            msg = await ctx.send("Muting user...")
+            try:
+                for x in ctx.guild.channels:
+                    await x.set_permissions(user, send_messages=False)
+            except discord.Forbidden:
+                return await ctx.send("Uh-oh! Not enough permissions!")
+            await msg.edit(content="The user has been muted for this server. :zipper_mouth:")
+
+
+    @commands.command()
+    @commands.has_permissions(ban_members=True)
+    async def serverunmute(self, ctx, user: discord.Member = None):
+        '''Un-shuts someone up from the entire server. YEEE.'''
+        if user is None:
+            await ctx.send("Bruh. Tag a user to unmute them...")
+        else:
+            msg = await ctx.send("Unmuting user...")
+            try:
+                for x in ctx.guild.channels:
+                    await x.set_permissions(user, send_messages=True)
+            except discord.Forbidden:
+                return await ctx.send("Uh-oh! Not enough permissions!")
+            await msg.edit(content="The user has been unmuted for this server. :grin:")
+
+
+
+    @commands.command()
+    @commands.has_permissions(ban_members=True)
     async def unmute(self, ctx, user: discord.Member):
         '''Allows someone to un-shut up. Usage: *unmute [user]'''
         try:
