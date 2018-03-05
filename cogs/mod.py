@@ -67,7 +67,7 @@ class mod:
     
     @commands.command()
     @commands.has_permissions(kick_members = True)
-    async def kick(self, ctx, user: discord.Member = None, reason=None):
+    async def kick(self, ctx, user: discord.Member = None, *, reason=None):
         """Kicks a member into the world outside your server."""
         if user is None:
             await ctx.send("To boot the member, use the command like this: \n*kick [days of msgs to delete] [reason]")
@@ -91,7 +91,7 @@ class mod:
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def ban(self, ctx, user: discord.Member = None, msgdeletedays: int = 0, reason=None):
+    async def ban(self, ctx, user: discord.Member = None, msgdeletedays: int = 0, *, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
         if user is None:
             await ctx.send("To swing the ban hammer, use the command like this: \n*ban [days of msgs to delete] [reason]")
