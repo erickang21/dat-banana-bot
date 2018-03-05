@@ -36,7 +36,7 @@ class fun:
         if user is None:
             await ctx.send("Gotta tag someone that you wanna slap!")
         else:
-            lol = bot.get_user(user.id)
+            lol = self.bot.get_user(user.id)
             client = idioticapi.Client(self.client, dev=True)
             av = lol.avatar_url.replace("webp","png")
             await ctx.send(file=discord.File(await client.bat_slap(ctx.author.avatar_url, av), "batslap.png"))
