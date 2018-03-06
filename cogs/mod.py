@@ -59,7 +59,7 @@ class mod:
                 msg = await ctx.send("Purged successfully :white_check_mark:", delete_after=3)
         except discord.Forbidden:
             await ctx.send("Purge unsuccessful. The bot does not have Manage Msgs permission.")
-        except commands.MissingPermissions:
+        except commands.errors.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with purging without permissions.")
     
     
@@ -84,8 +84,8 @@ class mod:
             await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to use the boot.")
-        except commands.MissingPermissions:
-            await ctx.send("You need `Kick Members` Permission to use this!")
+        except commands.errors.MissingPermissions:
+            await ctx.send("Nice try. You need `Kick Members` Permission to use this!")
         
         
     
@@ -111,8 +111,8 @@ class mod:
             await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
-        except commands.MissingPermissions:
-            await ctx.send("You need `Ban Members` Permissions to use this!")
+        except commands.errors.MissingPermissions:
+            await ctx.send("Nice try. You need `Ban Members` Permissions to use this!")
 
 
 
@@ -137,7 +137,7 @@ class mod:
                 await ctx.channel.send(f"{user.mention} is now un-shutted up.")
         except discord.Forbidden:
             return await ctx.send("I could not mute the user. Make sure I have the manage channels permission.")
-        except commands.MissingPermissions:
+        except commands.errors.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")
 
 
@@ -183,7 +183,7 @@ class mod:
             await ctx.channel.send(f"{user.mention} is now un-shutted up.")
         except discord.Forbidden:
             await ctx.send("Couldn't unmute the user. Uh-oh...")
-        except discord.ext.commands.MissingPermissions:
+        except commands.errors.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
         
         
