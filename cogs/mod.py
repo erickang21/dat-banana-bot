@@ -20,7 +20,7 @@ class mod:
             await user.send(msg)
             await ctx.message.delete()            
             await ctx.send("SuccESS! Your DM has made it! :white_check_mark: ")
-        except discord.ext.commands.MissingPermissions:
+        except commands.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with DM'ing people without permissions.")
         except:
             await ctx.send("Error :x:. Make sure your message is shaped in this way: *dm [tag person] [msg]")
@@ -56,12 +56,10 @@ class mod:
                 except ValueError:
                     return await ctx.send("The number is invalid. Make sure it is valid! Usage: *purge [number of msgs]")
                 await ctx.channel.purge(limit=num+1)
-                msg = await ctx.send("Purged successfully :white_check_mark:")
-                await asyncio.sleep(3)
-                await msg.delete()
+                msg = await ctx.send("Purged successfully :white_check_mark:", delete_after=3)
         except discord.Forbidden:
             await ctx.send("Purge unsuccessful. The bot does not have Manage Msgs permission.")
-        except discord.ext.commands.MissingPermissions:
+        except commands.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with purging without permissions.")
     
     
@@ -70,7 +68,7 @@ class mod:
     async def kick(self, ctx, user: discord.Member = None, *, reason=None):
         """Kicks a member into the world outside your server."""
         if user is None:
-            await ctx.send("To boot the member, use the command like this: \n*kick [days of msgs to delete] [reason]")
+            await ctx.send("To boot the member, use the command like this: \n*kick [@user] [reason]")
         try:
             await user.kick(reason=reason)
             color = discord.Color(value=0x00ff00)
@@ -86,6 +84,8 @@ class mod:
             await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to use the boot.")
+        except commands.MissingPermissions:
+            await ctx.send("You need `Kick Members` Permission to use this!")
         
         
     
@@ -94,7 +94,7 @@ class mod:
     async def ban(self, ctx, user: discord.Member = None, msgdeletedays: int = 0, *, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
         if user is None:
-            await ctx.send("To swing the ban hammer, use the command like this: \n*ban [days of msgs to delete] [reason]")
+            await ctx.send("To swing the ban hammer, use the command like this: \n*ban [@user] [days of msgs to delete] [reason]")
         try:
             await user.ban(delete_message_days=msgdeletedays, reason=reason)
             color = discord.Color(value=0x00ff00)
@@ -111,6 +111,8 @@ class mod:
             await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
+        except commands.MissingPermissions:
+            await ctx.send("You need `Ban Members` Permissions to use this!")
 
 
 
@@ -135,7 +137,7 @@ class mod:
                 await ctx.channel.send(f"{user.mention} is now un-shutted up.")
         except discord.Forbidden:
             return await ctx.send("I could not mute the user. Make sure I have the manage channels permission.")
-        except discord.ext.commands.MissingPermissions:
+        except commands.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")
 
 

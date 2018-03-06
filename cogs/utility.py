@@ -8,7 +8,6 @@ import datetime
 import asyncio
 import random
 import aiohttp
-import pip
 import random
 import textwrap
 from .utils.paginator import Pages
@@ -63,7 +62,7 @@ class Utility:
             except Exception as e:
                 color = discord.Color(value=0xf44e42)
                 em = discord.Embed(color=color, title='An error occured. :x:')
-                em.description = f"More details: \n\n{e}"
+                em.description = f"More details: \n```{e}```"
                 await ctx.send(embed=em)
 
 
@@ -238,11 +237,11 @@ class Utility:
             em.add_field(name='Status', value=f'{ctx.message.author.status}')       
             em.add_field(name='Account Created', value=ctx.message.author.created_at.__format__('%A, %B %d, %Y'))
             em.add_field(name='ID', value=f'{ctx.message.author.id}')
-            if ctx.message.author.bot is True:
-                type = 'Bot'
+            if ctx.message.author.bot:
+                Type = 'Bot'
             else:
-                type = 'Human'
-            em.add_field(name='Profile Type', value=type)
+                Type = 'Human'
+            em.add_field(name='Profile Type', value=Type)
             em.set_thumbnail(url=ctx.message.author.avatar_url)
             await ctx.send(embed=em)
         else:
@@ -251,11 +250,11 @@ class Utility:
             em.add_field(name='Status', value=f'{user.status}')       
             em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
             em.add_field(name='ID', value=f'{user.id}')
-            if user.bot is True:
-                type = 'Bot'
+            if user.bot:
+                Type = 'Bot'
             else:
-                type = 'Human'
-            em.add_field(name='Profile Type', value=type)
+                Type = 'Human'
+            em.add_field(name='Profile Type', value=Type)
             em.set_thumbnail(url=user.avatar_url)
             await ctx.send(embed=em)    
         

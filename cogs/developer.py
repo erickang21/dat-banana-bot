@@ -2,7 +2,6 @@ import discord
 import sys
 import os
 import io
-import pip
 import asyncio
 import aiohttp
 import random
@@ -51,7 +50,7 @@ class Developer:
         if name is None:
             return await ctx.send("Hmm...my name cannot be blank!")
         else:
-            await self.bot.user.edit(username=f'name')
+            await self.bot.user.edit(username=f'{name}')
 
 
     @commands.command()

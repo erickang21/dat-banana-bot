@@ -8,7 +8,6 @@ import datetime
 import asyncio
 import random
 import aiohttp
-import pip
 import random
 import textwrap
 from contextlib import redirect_stdout
@@ -25,7 +24,7 @@ bot.load_extension("cogs.developer")
 bot.load_extension("cogs.cr")
 bot.load_extension("cogs.help")
 bot.load_extension("cogs.coc")
-#bot.load_extension("cogs.lol")
+# bot.load_extension("cogs.lol")
 
 
 
@@ -55,7 +54,7 @@ async def on_guild_join(guild):
     em.title = "dat banana bot has arrived in a new server!"
     em.description = f"Server: {guild}"
     await lol.send(embed=em)
-    await ctx.send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help!")
+    await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help!")
 
 
 @bot.event
@@ -112,7 +111,7 @@ async def bug(ctx, *, msg:str):
  
                 
 @bot.command()
-async def say(ctx, *, message:str):
+async def say(ctx, *, message: str):
     '''I say what you want me to say. Oh boi...'''
     await ctx.message.delete()
     await ctx.send(message)                   
