@@ -23,6 +23,19 @@ class fun:
             return avatar_url + "?size=2048"
         return avatar_url.replace("webp","png")
 
+
+    @commands.command(aliases=['joke', 'badjoke', 'shitjoke'])
+    async def horriblejoke(self, ctx):
+        """It's a REALLY REALLY bad joke. Trust me."""
+        async with aiohttp.ClientSession() as session:
+            async with session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as response:
+                r = await response.json()
+                color = discord.Color(value=0x00ff00)
+                em = discord.Embed(color=color, title=resp['setup'])
+                em.description = resp['punchline']
+                em.set_footer("Ha. Ha. Ha. Very funny, huh?")
+                await ctx.send(embed=em)
+
     
     @commands.command(aliases=['triggered'])
     async def triggeredpic(self, ctx, user: discord.Member = None):
