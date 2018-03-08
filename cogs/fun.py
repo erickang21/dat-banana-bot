@@ -31,8 +31,8 @@ class fun:
             async with session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as response:
                 r = await response.json()
                 color = discord.Color(value=0x00ff00)
-                em = discord.Embed(color=color, title=resp['setup'])
-                em.description = resp['punchline']
+                em = discord.Embed(color=color, title=r['setup'])
+                em.description = r['punchline']
                 em.set_footer("Ha. Ha. Ha. Very funny, huh?")
                 await ctx.send(embed=em)
 
