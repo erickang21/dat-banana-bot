@@ -33,7 +33,7 @@ class fun:
                 color = discord.Color(value=0x00ff00)
                 em = discord.Embed(color=color, title=r['setup'])
                 em.description = r['punchline']
-                em.set_footer("Ha. Ha. Ha. Very funny, huh?")
+                em.set_footer(text="Ha. Ha. Ha. Very funny, huh?")
                 await ctx.send(embed=em)
 
     
