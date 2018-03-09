@@ -15,6 +15,7 @@ from discord.ext import commands
 import json
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('*'),description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
 bot._last_result = None
+bot.session = aiohttp.ClientSession()
 bot.remove_command("help")
 bot.load_extension("cogs.math")
 bot.load_extension("cogs.mod")
