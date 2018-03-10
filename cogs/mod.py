@@ -150,10 +150,16 @@ class mod:
         else:
             msg = await ctx.send("Muting user...")
             try:
-                for x in ctx.guild.channels:
-                    await x.set_permissions(user, send_messages=False)
-            except discord.Forbidden:
-                return await ctx.send("Uh-oh! Not enough permissions!")
+                lol = discord.utils.get(ctx.guild.roles, name='Muted')
+                await user.add_roles(lol)
+            except:
+                try:
+                    role = await ctx.guild.create_role(name="Muted", permissions=discord.Permissions(permissions=68420672)) 
+                    # Given permissions: Change nickname, read messages, use external emojis, add reactions, 
+                    # voice: view channel, voice: connect. EVERYTHING ELSE IS DISABLED.
+                    await user.add_roles(role)
+                except discord.Forbidden:
+                    return await msg.edit(content="Don't have enough permissions. For flawless bot functions, give the Administrator permission to the bot.")
             await msg.edit(content="The user has been muted for this server. :zipper_mouth:")
 
 
@@ -166,8 +172,7 @@ class mod:
         else:
             msg = await ctx.send("Unmuting user...")
             try:
-                for x in ctx.guild.channels:
-                    await x.set_permissions(user, send_messages=True)
+                await user.remove_roles("Muted")
             except discord.Forbidden:
                 return await ctx.send("Uh-oh! Not enough permissions!")
             await msg.edit(content="The user has been unmuted for this server. :grin:")

@@ -33,7 +33,7 @@ class League_Of_Legends:
                 await ctx.send(embed=em)
 			except KeyError as e:
 				print(f"KeyError: {e}")
-				await ctx.send("Error finding your profile. Maybe check your name?")
+                await ctx.send("Error finding your profile. Maybe check your name?")
 
 					
 

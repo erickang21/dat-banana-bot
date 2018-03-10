@@ -3,12 +3,16 @@ import sys
 import os
 import io
 import asyncio
+import dbl
 from discord.ext import commands
 
 
 class Info:
     def __init__(self, bot):
         self.bot = bot
+        with open('data/apikeys.json') as f:
+            lol = json.load(f)
+            self.token = lol.get("dbotsapi")
 
 
     @commands.command()
@@ -28,6 +32,16 @@ class Info:
         em.add_field(name='Hosting Platform', value='Amazon Web Services')
         em.add_field(name='Coding Language', value='Python, discord.py')      
         await ctx.send(embed=em)
+
+
+    @commands.command()
+    async def dbotinfo(self, ctx):
+        """Gets stats for dat banana bot on Discord Bots."""
+        color = discord.Color(value=0x00ff00)
+        em = discord.Embed(color=color, title='Discord Bots')
+        dblpy = dbl.Client(self.bot, self.token)
+        em.add_field(name='Upvotes', value=await dblpy.get_upvote_count)
+
         
         
 
