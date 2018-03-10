@@ -20,20 +20,18 @@ class League_Of_Legends:
     @commands.command()
     async def lolprofile(self, ctx, *, name=None):
    		if name is None:
-   			await ctx.send("Oops! Enter your summoner name like this: `*lolprofile [summoner name]`")
-   		else:
-            try:
-                client = talon.Client(token=self.token)
-                summoner = await client.get_summoner(query=name)
-                em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Profile')
-                em.add_field(name='Summoner Level', value=summoner.summonerLevel)
-                em.add_field(name='ID', value=summoner.id)
-                em.set_author(name=name)
-                em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/{summoner.profileIconId}.png")
-                await ctx.send(embed=em)
-			except KeyError as e:
-				print(f"KeyError: {e}")
-                await ctx.send("Error finding your profile. Maybe check your name?")
+   			return await ctx.send("Oops! Enter your summoner name like this: `*lolprofile [summoner name]`")
+        try:
+            client = talon.Client(token=self.token)
+            summoner = await client.get_summoner(query=name)
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Profile')
+            em.add_field(name='Summoner Level', value=summoner.summonerLevel)
+            em.add_field(name='ID', value=summoner.id)
+            em.set_author(name=name)
+            em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/{summoner.profileIconId}.png")                await ctx.send(embed=em)
+		except KeyError as e:
+		    print(f"KeyError: {e}")
+            await ctx.send("Error finding your profile. Maybe check your name?")
 
 					
 
