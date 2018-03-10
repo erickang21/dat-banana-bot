@@ -62,7 +62,7 @@ class Math:
                 float(num1)
                 float(num2)
             except ValueError:
-                await ctx.send("One of your numbers ain't a number! Enter your formula like this: *calc [number] [+|-|x|/] [number] \nExample: *calc 3 + 4")
+                return await ctx.send("One of your numbers ain't a number! Enter your formula like this: *calc [number] [+|-|x|/] [number] \nExample: *calc 3 + 4")
             else:
                 num1 = float(num1)
                 num2 = float(num2)
@@ -71,27 +71,27 @@ class Math:
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}+{num2}')
                     em.add_field(name='Output:', value=f'{num1 + num2}')
-                    await ctx.send(embed=em)
+                    return await ctx.send(embed=em)
                 if sign == '-':
                     color = discord.Color(value=0x00ff00)
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}-{num2}')
                     em.add_field(name='Output:', value=f'{num1 - num2}')
-                    await ctx.send(embed=em)
+                    return await ctx.send(embed=em)
                 if sign == 'x':
                     color = discord.Color(value=0x00ff00)
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}x{num2}')
                     em.add_field(name='Output:', value=f'{num1 * num2}')
-                    await ctx.send(embed=em)
+                    return await ctx.send(embed=em)
                 if sign == '/':
                     color = discord.Color(value=0x00ff00)
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}+{num2}')
                     em.add_field(name='Output:', value=f'{num1 / num2}')
-                    await ctx.send(embed=em)
+                    return await ctx.send(embed=em)
                 else:
-                    await ctx.send("Please enter a valid sign: +, -, x, / \n Example: *calc 3 + 4")
+                    return await ctx.send("Please enter a valid sign: +, -, x, / \nExample: *calc 3 + 4")
 
 
 def setup(bot): 
