@@ -54,12 +54,14 @@ class Developer:
 
 
     @commands.command()
-    async def exec(self, ctx, code):
+    async def exec(self, ctx, *, code):
         """Executes code like the Command Line."""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Ran on the Command Prompt!')
+        if code == '':
+            code = 'The output is empty. (This is not a Command Prompt message.)'
         if len(lol) > 1850:
             em.description = f"Ran on the Command Line ```{code}``` Output: \nThe process details are too large to fit in a message."
             await ctx.send(embed=em)
