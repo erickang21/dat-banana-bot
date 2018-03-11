@@ -34,13 +34,6 @@ class Info:
         await ctx.send(embed=em)
 
 
-    @commands.command()
-    async def dbotinfo(self, ctx):
-        """Gets stats for dat banana bot on Discord Bots."""
-        color = discord.Color(value=0x00ff00)
-        em = discord.Embed(color=color, title='Discord Bots')
-        dblpy = dbl.Client(self.bot, self.token)
-        em.add_field(name='Upvotes', value=await dblpy.get_upvote_count)
 
         
         
