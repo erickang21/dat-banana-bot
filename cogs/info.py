@@ -10,9 +10,7 @@ from discord.ext import commands
 class Info:
     def __init__(self, bot):
         self.bot = bot
-        with open('data/apikeys.json') as f:
-            lol = json.load(f)
-            self.token = lol.get("dbotsapi")
+
 
 
     @commands.command()
