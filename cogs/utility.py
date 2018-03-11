@@ -66,6 +66,20 @@ class Utility:
                 await ctx.send(embed=em)
 
 
+    @commands.command()
+    async def shortenurl(self, ctx, *, url=None):
+        '''Shortens a URL through Tinyurl.'''
+        if url is None:
+            await ctx.send("Umm...Please enter a URL to shorten!")
+        else:
+            color = discord.Color(value=0x00ff00)
+            em = discord.Embed(color=color, title='TinyURL Link Shortener')
+            async with aiohttp.ClientSession() as session:
+                async with session.get(async with session.get(f'http://tinyurl.com/api-create.php?url={url}'') as resp:
+                    resp = await resp.text()
+                    em.description = f"Shortened Link: \n{resp}"
+                    em.add_field(name='Original Link', value=url)
+                    await ctx.send(embed=em)
 
 
     @commands.command()
