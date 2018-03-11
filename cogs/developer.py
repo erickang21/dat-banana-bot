@@ -59,15 +59,18 @@ class Developer:
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+        e = discord.Embed(color=discord.Color(value=0x00ff00), title='Running code... :arrows_counterclockwise:')
+        e.description = f'```{code}```'
+        msg = await ctx.send(embed=e)
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Ran on the Command Prompt!')
-        if code == '':
+        if lol == '':
             code = 'The output is empty. (This is not a Command Prompt message.)'
         if len(lol) > 1850:
             em.description = f"Ran on the Command Line ```{code}``` Output: \nThe process details are too large to fit in a message."
-            await ctx.send(embed=em)
+            await msg.edit(embed=em)
         else:
             em.description = f"Ran on the Command Line: ```{code}``` Output: \n\n```{lol}```"
-            await ctx.send(embed=em)
+            await msg.edit(embed=em)
 
     @commands.command()
     async def update(self, ctx):
