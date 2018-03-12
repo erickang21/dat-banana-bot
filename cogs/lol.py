@@ -189,7 +189,7 @@ class League_Of_Legends:
             await ctx.send("Error finding your profile. Maybe check your name?")
 
 
-    @commands.command()
+    @commands.command(aliases=['lolcm', 'lolmastery'])
     async def lolchampmasteries(self, ctx, *, name=None):
         '''Gets champion masteries for an LoL summoner.'''
         try:
