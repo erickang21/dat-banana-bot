@@ -269,7 +269,7 @@ class League_Of_Legends:
                      
 
     @commands.command()
-    async def champinfo(self, ctx, champion=None):
+    async def champinfo(self, ctx, *, champion=None):
         try:
             champion = champion.strip("'")
             lol = self.get_champion_by_id(champion)
