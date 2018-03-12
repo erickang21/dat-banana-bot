@@ -136,7 +136,7 @@ class lol:
                     em = discord.Embed(color=discord.Color(value=0x00ff00), title=resp['name'])
                     em.description = resp['lore']
                     em.add_field(name='Type', value=resp['tags'][0])
-                    em.add_field(name='Health', value=f"{int(resp['stats']['hp'])} (+{int(resp['stats']['hpperlevel'])} per level")
+                    em.add_field(name='Health', value=f"{int(resp['stats']['hp'])} (+{int(resp['stats']['hpperlevel'])} per level)")
                     em.add_field(name='Attack Damage', value=f"{int(resp['stats']['attackdamage'])} (+{int(resp['stats']['attackdamageperlevel'])} per level)")
                     em.add_field(name='Armor', value=f"{int(resp['stats']['armor'])} (+{int(resp['stats']['armorperlevel'])} per level)")
                     em.add_field(name='Health Regen', value=f"{int(resp['stats']['hpregen'])}/second (+{int(resp['stats']['hpregenperlevel'])} per level)")
