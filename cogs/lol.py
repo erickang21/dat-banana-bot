@@ -10,7 +10,7 @@ import random
 from discord.ext import commands
 
 
-class League_Of_Legends:
+class lol:
     def __init__(self, bot):
         self.bot = bot
         with open('data/apikeys.json') as f:
@@ -310,6 +310,6 @@ class League_Of_Legends:
 					
 
 def setup(bot): 
-    bot.add_cog(League_Of_Legends(bot))  
+    bot.add_cog(lol(bot))  
 
 
