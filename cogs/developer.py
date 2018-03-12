@@ -58,7 +58,7 @@ class Developer:
         """Executes code like the Command Line."""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        e = discord.Embed(color=discord.Color(value=0x00ff00), title='Running code... :arrows_counterclockwise:')
+        e = discord.Embed(color=discord.Color(value=0x00ff00), title='Running code...')
         e.description = f'```{code}```'
         msg = await ctx.send(embed=e)
         lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
