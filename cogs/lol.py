@@ -43,7 +43,7 @@ class League_Of_Legends:
             summoner = await client.get_champion_mastery(region=None, query=name)
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Champion Masteries')
             async with aiohttp.ClientSession() as session:
-                async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[0][championId]}?locale=en_US&champData=all&api_key={self.token}") as resp:
+                async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[0]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                     resp = await resp.json()
                     em.add_field(name='Champion', value=resp['name'])
                     em.add_field(name='Level', value=f"{summoner[0]['championLevel']} ({summoner[0]['championPointsSinceLastLevel']}/{summoner[0]['championPointsUntilNextLevel']})")
@@ -62,7 +62,7 @@ class League_Of_Legends:
                     summoner = await client.get_champion_mastery(region=None, query=name)
                     em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Champion Masteries')
                     async with aiohttp.ClientSession() as session:
-                        async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[1][championId]}?locale=en_US&champData=all&api_key={self.token}") as resp:
+                        async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[1]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                             resp = await resp.json()
                             em.add_field(name='Champion', value=resp['name'])
                             em.add_field(name='Level', value=f"{summoner[1]['championLevel']} ({summoner[1]['championPointsSinceLastLevel']}/{summoner[1]['championPointsUntilNextLevel']})")
@@ -81,7 +81,7 @@ class League_Of_Legends:
                             summoner = await client.get_champion_mastery(region=None, query=name)
                             em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Champion Masteries')
                             async with aiohttp.ClientSession() as session:
-                                async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[2][championId]}?locale=en_US&champData=all&api_key={self.token}") as resp:
+                                async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[2]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                                     resp = await resp.json()
                                     em.add_field(name='Champion', value=resp['name'])
                                     em.add_field(name='Level', value=f"{summoner[2]['championLevel']} ({summoner[2]['championPointsSinceLastLevel']}/{summoner[2]['championPointsUntilNextLevel']})")
