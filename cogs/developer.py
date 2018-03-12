@@ -115,7 +115,19 @@ class Developer:
                 await msg.edit(content=f"An error occured. Details: \n{e}")
 
 
-              
+    @commands.command()
+    async def reloadcog(self, ctx, cog=None):
+        if cog is None:
+            await ctx.send("Please enter a cog to reload it!")
+        else:
+            msg = await ctx.send(f"Reloading cog `{cog}`... :arrows_counterclockwise:")
+            try:
+                self.bot.unload_extension(f"cogs.{cog}")
+                self.bot.load_extension(f"cogs.{cog}")
+                await msg.edit(content="Reloaded the cog! :white_check_mark:")
+            except Exception as e:
+                await msg.edit(content=f"An error occured. Details: \n{e}")
+             
 
     @commands.command()
     async def blacklist(self, ctx, user: discord.Member):
