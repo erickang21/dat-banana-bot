@@ -164,21 +164,21 @@ class lol:
                             async with aiohttp.ClientSession() as session:
                                 async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/items/{resp['recommended'][0]['blocks'][0]['items'][1]['id']}locale=en_US&tags=all&itemData=all&api_key={self.token}") as re:
                                     re = await re.json()
-                                    em.add_field(name=r['type']['blocks'][0]['type'].replace('_', ' '), value=f"{r['name']}({r['gold']['total']} Gold) \nDescription: {r['plaintext']}\nFeatures: {r['sanitizedDescription']} \n\n{re['name']}({re['gold']['total']} Gold) \nDescription: {re['plaintext']}\nFeatures: {re['sanitizedDescription']}")
+                                    em.add_field(name=r['blocks'][0]['type'].replace('_', ' '), value=f"{r['name']}({r['gold']['total']} Gold) \nDescription: {r['plaintext']}\nFeatures: {r['sanitizedDescription']} \n\n{re['name']}({re['gold']['total']} Gold) \nDescription: {re['plaintext']}\nFeatures: {re['sanitizedDescription']}")
                                     async with aiohttp.ClientSession() as session:
                                         async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/items/{resp['recommended'][0]['blocks'][1]['items'][0]['id']}locale=en_US&tags=all&itemData=all&api_key={self.token}") as r:
                                             r = await r.json()
                                             async with aiohttp.ClientSession() as session:
                                                 async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/items/{resp['recommended'][0]['blocks'][1]['items'][1]['id']}locale=en_US&tags=all&itemData=all&api_key={self.token}") as re:
                                                     re = await re.json()
-                                                    em.add_field(name=r['type']['blocks'][0]['type'].replace('_', ' '), value=f"{r['name']}({r['gold']['total']} Gold) \nDescription: {r['plaintext']}\nFeatures: {r['sanitizedDescription']} \n\n{re['name']}({re['gold']['total']} Gold) \nDescription: {re['plaintext']}\nFeatures: {re['sanitizedDescription']}")
+                                                    em.add_field(name=r['blocks'][0]['type'].replace('_', ' '), value=f"{r['name']}({r['gold']['total']} Gold) \nDescription: {r['plaintext']}\nFeatures: {r['sanitizedDescription']} \n\n{re['name']}({re['gold']['total']} Gold) \nDescription: {re['plaintext']}\nFeatures: {re['sanitizedDescription']}")
                                                     async with aiohttp.ClientSession() as session:
                                                         async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/items/{resp['recommended'][0]['blocks'][2]['items'][0]['id']}locale=en_US&tags=all&itemData=all&api_key={self.token}") as r:
                                                             r = await r.json()
                                                             async with aiohttp.ClientSession() as session:
                                                                 async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/items/{resp['recommended'][0]['blocks'][2]['items'][1]['id']}locale=en_US&tags=all&itemData=all&api_key={self.token}") as re:
                                                                     re = await re.json()
-                                                                    em.add_field(name=r['type']['blocks'][0]['type'].replace('_', ' '), value=f"{r['name']}({r['gold']['total']} Gold) \nDescription: {r['plaintext']}\nFeatures: {r['sanitizedDescription']} \n\n{re['name']}({re['gold']['total']} Gold) \nDescription: {re['plaintext']}\nFeatures: {re['sanitizedDescription']}")
+                                                                    em.add_field(name=r['blocks'][0]['type'].replace('_', ' '), value=f"{r['name']}({r['gold']['total']} Gold) \nDescription: {r['plaintext']}\nFeatures: {r['sanitizedDescription']} \n\n{re['name']}({re['gold']['total']} Gold) \nDescription: {re['plaintext']}\nFeatures: {re['sanitizedDescription']}")
                                                                     await ctx.send(embed=em)
         except Exception as e:
             print(f"Error: {e}")
