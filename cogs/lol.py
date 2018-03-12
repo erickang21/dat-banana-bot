@@ -133,7 +133,7 @@ class lol:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{lol}?locale=en_US&champData=all&tags=all&api_key={self.token}") as resp:
                     resp = await resp.json()
-                    em = discord.Embed(color=discord.Color(value=0x00ff00), title=champion)
+                    em = discord.Embed(color=discord.Color(value=0x00ff00), title=resp['name'])
                     em.description = resp['lore']
                     em.add_field(name='Type', value=resp['tags'][0])
                     em.add_field(name='Health', value=f"{int(resp['stats']['hp'])} (+{int(resp['stats']['hpperlevel'])} per level")
