@@ -54,7 +54,11 @@ class League_Of_Legends:
                     em.add_field(name='Total Points', value=summoner[0]['championPoints'])
                     em.add_field(name='Is chest granted?', value=cheststatus)
                     em.add_field(name='Tokens Earned', value=summoner[0]['tokensEarned'])
-                    em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{resp['name'].replace(' ', '')}.png")
+                    if resp['name'] == 'Wukong':
+                        champname = 'MonkeyKing'
+                    else:
+                        champname = resp['name'].replace(' ', '')
+                    em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{champname}.png")
                     em.set_author(name=name)
                     await ctx.send(embed=em)
                     await ctx.trigger_typing()
@@ -73,7 +77,11 @@ class League_Of_Legends:
                             em.add_field(name='Total Points', value=summoner[1]['championPoints'])
                             em.add_field(name='Is chest granted?', value=cheststatus)
                             em.add_field(name='Tokens Earned', value=summoner[1]['tokensEarned'])
-                            em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{resp['name'].replace(' ', '')}.png")
+                            if resp['name'] == 'Wukong':
+                                champname = 'MonkeyKing'
+                            else:
+                                champname = resp['name'].replace(' ', '')
+                            em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{champname}.png")
                             em.set_author(name=name)
                             await ctx.send(embed=em)
                             await ctx.trigger_typing()
@@ -92,7 +100,11 @@ class League_Of_Legends:
                                     em.add_field(name='Total Points', value=summoner[2]['championPoints'])
                                     em.add_field(name='Is chest granted?', value=cheststatus)
                                     em.add_field(name='Tokens Earned', value=summoner[2]['tokensEarned'])
-                                    em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{resp['name'].replace(' ', 'p')}.png")
+                                    if resp['name'] == 'Wukong':
+                                        champname = 'MonkeyKing'
+                                    else:
+                                        champname = resp['name'].replace(' ', '')
+                                    em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{champname}.png")
                                     em.set_author(name=name)
                                     await ctx.send(embed=em)
         except KeyError as e:
