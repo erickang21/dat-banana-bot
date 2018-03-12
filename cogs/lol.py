@@ -182,7 +182,7 @@ class lol:
                                                                     await ctx.send(embed=em)
         except Exception as e:
             print(f"Error: {e}")
-            await ctx.send(f"An unknown error occurred. Details: {e}")
+            
 
 
             
