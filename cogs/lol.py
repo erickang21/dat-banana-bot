@@ -299,8 +299,9 @@ class League_Of_Legends:
                         champname = champname.strip("'")
                     em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{champname}.png")
                     await ctx.send(embed=em)
-        except KeyError:
-            await ctx.send("An unknown error occurred.")
+        except Exception as e:
+            print(f"Error: {e}")
+            await ctx.send("An unknown error occurred. Details: {e}")
 
 
             
