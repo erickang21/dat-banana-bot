@@ -142,7 +142,7 @@ class lol:
                     em.add_field(name='Health Regen', value=f"{int(resp['stats']['hpregen'])}/second (+{int(resp['stats']['hpregenperlevel'])} per level)")
                     skins = ''
                     for i in resp['skins']:
-                        skins += i['name'].replace('default', champion)
+                        skins += f"{i['name'].replace('default', champion)} \n"
                     em.add_field(name='Skins', value=skins)
                     em.add_field(name=f'A tip to use {champion}', value=resp['allytips'][random.randint(0, 2)])
                     em.add_field(name=f'A tip against {champion}', value=resp['enemytips'][random.randint(0, 2)])
