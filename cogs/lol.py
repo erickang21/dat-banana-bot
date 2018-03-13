@@ -182,14 +182,9 @@ class lol:
                                                                     await ctx.send(embed=em)
         except Exception as e:
             print(f"Error: {e}")
-            
+        
 
-
-            
-
-
-					
-
+        
 def setup(bot):  
     bot.add_cog(lol(bot))  
 

@@ -3,6 +3,7 @@ import sys
 import os
 import io
 import asyncio
+import json
 import ezjson
 from discord.ext import commands
 
@@ -192,8 +193,59 @@ class mod:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
         
         
-    
-        
+    @commands.group(invoke_without_command = True)
+    @commands.has_permissions(administrator = True)
+    async def banword(self, ctx, word=None):
+        '''Command group that allows you to add/delete banned words for your server.'''
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Banned Words')
+        em.description = ''
+        try:
+            f = open("data/guildconfig.json").read()
+            x = json.loads(f)
+            for i in x[str(ctx.guild.id)]["censoredWords"]:
+                em.description += f"{i[word]} \n"
+            await ctx.send(embed=em)
+        except:
+            em.description = "You have not added any ban words for this guild."
+            return await ctx.send(embed=em)
+
+
+
+
+    @banword.command()
+    async def add(self, ctx, *, word=None):
+        '''Adds a word to the ban list'''
+        if word is None:
+            await ctx.send("Please enter a word to add it to the censor.")
+        else:
+            f = open("data/guildconfig.json", "w")
+            x = json.loads(f)
+            x[ctx.guild.id] = {
+                "censoredWords":[word]
+            }
+            y = open("blah.json","w")
+            y.write(json.dumps(x, indent=4))
+            try:
+                await ctx.message.delete()
+            except discord.Forbidden:
+                pass
+            await ctx.send("Success. The word has been added to the censor. :white_check_mark:")
+
+
+    @banword.command()
+    async def remove(self, ctx, *, word=None):
+        '''Removes a word from the ban list.'''
+        if word is None:
+            await ctx.send("Please enter a word to remove it from the censor.")
+        else:
+            f = open("data/guildconfig.json", "w")
+            x = json.loads(f)
+            try:
+                wordlist = x[str(ctx.guild.id)]['censoredWords']
+                wordlist.remove(word)
+                await ctx.send("Done. Removed the word from the ban list.")
+            except KeyError:
+                await ctx.send("The word was not found in the ban list.")
         
 def setup(bot): 
     bot.add_cog(mod(bot))        
