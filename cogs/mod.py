@@ -218,7 +218,7 @@ class mod:
         if word is None:
             await ctx.send("Please enter a word to add it to the censor.")
         else:
-            f = open("data/guildconfig.json", "w")
+            f = open("data/guildconfig.json").read()
             x = json.loads(f)
             x[ctx.guild.id] = {
                 "censoredWords":[word]
@@ -238,7 +238,7 @@ class mod:
         if word is None:
             await ctx.send("Please enter a word to remove it from the censor.")
         else:
-            f = open("data/guildconfig.json", "w")
+            f = open("data/guildconfig.json").read()
             x = json.loads(f)
             try:
                 wordlist = x[str(ctx.guild.id)]['censoredWords']
