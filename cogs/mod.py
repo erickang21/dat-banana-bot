@@ -223,7 +223,7 @@ class mod:
             x[ctx.guild.id] = {
                 "censoredWords":[word]
             }
-            y = open("blah.json","w")
+            y = open("data/guildconfig.json","w")
             y.write(json.dumps(x, indent=4))
             try:
                 await ctx.message.delete()
@@ -241,7 +241,9 @@ class mod:
             f = open("data/guildconfig.json").read()
             x = json.loads(f)
             try:
-                wordlist = x[str(ctx.guild.id)]['censoredWords']
+                e = open("data/guildconfig.json", "w")
+                j = json.loads(e)
+                wordlist = j[str(ctx.guild.id)]['censoredWords']
                 wordlist.remove(word)
                 await ctx.send("Done. Removed the word from the ban list.")
             except KeyError:
