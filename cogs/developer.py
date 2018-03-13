@@ -11,6 +11,7 @@ import ezjson
 import inspect
 import traceback
 from contextlib import redirect_stdout
+from collections import Counter
 from discord.ext import commands
 
 
