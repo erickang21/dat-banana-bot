@@ -57,6 +57,13 @@ async def on_guild_join(guild):
     em.description = f"Server: {guild}"
     await lol.send(embed=em)
     await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help!")
+    while True:
+        await bot.change_presence(game=discord.Game(name=f"with {len(bot.guilds)} servers!"))
+        await asyncio.sleep(15)
+        await bot.change_presence(game=discord.Game(name="using *help!"))
+        await asyncio.sleep(15)
+        await bot.change_presence(game=discord.Game(name="in v6.0, BETA."))
+        await asyncio.sleep(15)
 
 
 @bot.event
@@ -66,6 +73,13 @@ async def on_guild_remove(guild):
     em.title = "dat banana bot has been removed from a server."
     em.description = f"Server: {guild}"
     await lol.send(embed=em)
+    while True:
+        await bot.change_presence(game=discord.Game(name=f"with {len(bot.guilds)} servers!"))
+        await asyncio.sleep(15)
+        await bot.change_presence(game=discord.Game(name="using *help!"))
+        await asyncio.sleep(15)
+        await bot.change_presence(game=discord.Game(name="in v6.0, BETA."))
+        await asyncio.sleep(15)
 
     
 @bot.event
