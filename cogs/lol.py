@@ -7,6 +7,7 @@ import aiohttp
 import ezjson
 import talon
 import random
+import urllib.parse
 from discord.ext import commands
 
 

@@ -186,7 +186,7 @@ class COC:
                     color = discord.Color(value=0xe5f442)
                     em = discord.Embed(color=color, title='Clan Info')
                     em.add_field(name='Location', value=clan.get('location', {}).get('name'))
-                    em.add_field(name='Clan Level', value=clan.get('clanLevel', 0))
+                    em.add_field(name='Clan Level', value=clan.get('clanLevel', 1))
                     em.add_field(name='Clan Points - Home Base', value=clan.get('clanPoints', 0))
                     em.add_field(name='Clan Points - Builder Base', value=clan.get('clanVersusPoints', 0))
                     clanmembers = clan.get('members', 0)
@@ -305,6 +305,26 @@ class COC:
                         em.description = "This error happened for one of the following reasons: \n\n1) The clan is not currently in war.\n2) The clan's war log is set to Private.\n3) The given clan tag is invalid."
                         await ctx.send(embed=em)
 
+
+    @commands.command(aliases=['coccs', 'cocclans'])
+    async def cocclansearch(self, ctx, *, clanname=None):
+        '''Search for COC clans by name.'''
+        try:
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Searching the COC Universe...')
+            em.description = 'Hang tight! :mag:'
+            msg = await ctx.send(embed=em)
+            clanname = urllib.parse.quote(clanname)
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Search Results for: {clanname}")
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'https://api.clashofclans.com/v1/clans?name={clanname}', headers=self.client) as resp:
+                    resp = await resp.json()
+                    em.description = f"**{resp['items'][0]['name']} ({resp['items'][0]['tag']})**\nStatus: {resp['items'][0]['type']}\nLocation: {resp['items'][0]['location']['name']}\nClan Level: {resp['items'][0]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][0]['clanPoints']}\n  ->Builder Base:{resp['items'][0]['clanVersusPoints']}\nRequired Trophies: {resp['items'][0]['requiredTrophies']}\nWar Frequency: {resp['items'][0]['warFrequency']}\nWar Win Streak: {resp['items'][0]['warWinStreak']}\n\n**{resp['items'][1]['name']} ({resp['items'][1]['tag']})**\nStatus: {resp['items'][1]['type']}\nLocation: {resp['items'][1]['location']['name']}\nClan Level: {resp['items'][1]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][1]['clanPoints']}\n  ->Builder Base:{resp['items'][1]['clanVersusPoints']}\nRequired Trophies: {resp['items'][1]['requiredTrophies']}\nWar Frequency: {resp['items'][1]['warFrequency']}\nWar Win Streak: {resp['items'][1]['warWinStreak']}\n\n**{resp['items'][2]['name']} ({resp['items'][2]['tag']})**\n\nStatus: {resp['items'][2]['type']}\nLocation: {resp['items'][2]['location']['name']}\nClan Level: {resp['items'][2]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][2]['clanPoints']}\n  ->Builder Base:{resp['items'][2]['clanVersusPoints']}\nRequired Trophies: {resp['items'][2]['requiredTrophies']}\nWar Frequency: {resp['items'][2]['warFrequency']}\nWar Win Streak: {resp['items'][2]['warWinStreak']}"
+                    em.set_footer(name='Showing the top 3 results.')
+                    await msg.edit(embed=em)
+        except KeyError:
+            em = discord.Embed(color=discord.Color(value=0xf44e42), title="This is awkward, ain't it?")
+            em.description = "Throughout the entire COC universe, there were no clans with your given name to be found..."
+            await msg.edit(embed=em)
 
 def setup(bot): 
     bot.add_cog(COC(bot)) 
