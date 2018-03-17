@@ -26,7 +26,7 @@ bot.load_extension("cogs.developer")
 bot.load_extension("cogs.cr")
 bot.load_extension("cogs.help")
 bot.load_extension("cogs.coc")
-# bot.load_extension("cogs.lol")
+bot.load_extension("cogs.lol")
 
 
 
