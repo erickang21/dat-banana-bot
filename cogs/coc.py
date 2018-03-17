@@ -314,12 +314,25 @@ class COC:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Searching the COC Universe...')
             em.description = 'Hang tight! :mag:'
             msg = await ctx.send(embed=em)
-            clanname = urllib.parse.quote(clanname)
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Search Results for: {clanname}")
+            clanname = urllib.parse.quote(clanname)
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://api.clashofclans.com/v1/clans?name={clanname}', headers=self.client) as resp:
                     resp = await resp.json()
-                    em.description = f"**{resp['items'][0]['name']} ({resp['items'][0]['tag']})**\nStatus: {resp['items'][0]['type']}\nLocation: {resp['items'][0]['location']['name']}\nClan Level: {resp['items'][0]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][0]['clanPoints']}\n  ->Builder Base:{resp['items'][0]['clanVersusPoints']}\nRequired Trophies: {resp['items'][0]['requiredTrophies']}\nWar Frequency: {resp['items'][0]['warFrequency']}\nWar Win Streak: {resp['items'][0]['warWinStreak']}\n\n**{resp['items'][1]['name']} ({resp['items'][1]['tag']})**\nStatus: {resp['items'][1]['type']}\nLocation: {resp['items'][1]['location']['name']}\nClan Level: {resp['items'][1]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][1]['clanPoints']}\n  ->Builder Base:{resp['items'][1]['clanVersusPoints']}\nRequired Trophies: {resp['items'][1]['requiredTrophies']}\nWar Frequency: {resp['items'][1]['warFrequency']}\nWar Win Streak: {resp['items'][1]['warWinStreak']}\n\n**{resp['items'][2]['name']} ({resp['items'][2]['tag']})**\n\nStatus: {resp['items'][2]['type']}\nLocation: {resp['items'][2]['location']['name']}\nClan Level: {resp['items'][2]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][2]['clanPoints']}\n  ->Builder Base:{resp['items'][2]['clanVersusPoints']}\nRequired Trophies: {resp['items'][2]['requiredTrophies']}\nWar Frequency: {resp['items'][2]['warFrequency']}\nWar Win Streak: {resp['items'][2]['warWinStreak']}"
+                    clantype = {
+                        "open": "Open",
+                        "inviteOnly": "Invite Only",
+                        "closed": "Closed"
+                    }
+                    wartype = {
+                        "always": "Always",
+                        "moreThanOncePerWeek": "More Than Once Per Week",
+                        "oncePerWeek": "Once Per Week",
+                        "lessThanOncePerWeek": "Less Than Once Per Week",
+                        "never": "Never",
+                        "unknown": "Unknown"
+                    }
+                    em.description = f"***Top 3 Results:***\n\n\n**{resp['items'][0]['name']} ({resp['items'][0]['tag']})**\nStatus: {clantype[resp['items'][0]['type']]}\nLocation: {resp['items'][0]['location']['name']}\nClan Level: {resp['items'][0]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][0]['clanPoints']}\n  ->Builder Base:{resp['items'][0]['clanVersusPoints']}\nRequired Trophies: {resp['items'][0]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][0]['warFrequency']]}\nWar Win Streak: {resp['items'][0]['warWinStreak']}\n\n**{resp['items'][1]['name']} ({resp['items'][1]['tag']})**\nStatus: {clantype[resp['items'][1]['type']]}\nLocation: {resp['items'][1]['location']['name']}\nClan Level: {resp['items'][1]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][1]['clanPoints']}\n  ->Builder Base:{resp['items'][1]['clanVersusPoints']}\nRequired Trophies: {resp['items'][1]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][1]['warFrequency']]}\nWar Win Streak: {resp['items'][1]['warWinStreak']}\n\n**{resp['items'][2]['name']} ({resp['items'][2]['tag']})**\n\nStatus: {clantype[resp['items'][2]['type']]}\nLocation: {resp['items'][2]['location']['name']}\nClan Level: {resp['items'][2]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][2]['clanPoints']}\n  ->Builder Base:{resp['items'][2]['clanVersusPoints']}\nRequired Trophies: {resp['items'][2]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][2]['warFrequency']]}\nWar Win Streak: {resp['items'][2]['warWinStreak']}\n\n\n***See Also:***\n\n{resp['items'][3]['name']} ({resp['items'][3]['tag']}) \n{resp['items'][4]['name']} ({resp['items'][4]['tag']})\n{resp['items'][5]['name']} ({resp['items'][5]['tag']})\n{resp['items'][6]['name']} ({resp['items'][6]['tag']})"
                     em.set_footer(text='Showing the top 3 results.')
                     await msg.edit(embed=em)
         except KeyError:
