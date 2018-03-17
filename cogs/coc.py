@@ -5,6 +5,7 @@ import io
 import json
 import aiohttp
 import ezjson
+import urllib.parse
 from discord.ext import commands
 
 
