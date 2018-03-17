@@ -193,104 +193,104 @@ class mod:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
         
         
-    @commands.group(invoke_without_command = True)
-    @commands.has_permissions(administrator = True)
-    async def banword(self, ctx, word=None):
-        '''Command group that allows you to add/delete banned words for your server.'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Banned Words')
-        em.description = ''
-        try:
-            f = open("data/guildconfig.json").read()
-            x = json.loads(f)
-            for i in x[str(ctx.guild.id)]["censoredWords"]:
-                em.description += f"{i[word]} \n"
-            await ctx.send(embed=em)
-        except:
-            em.description = "You have not added any ban words for this guild."
-            return await ctx.send(embed=em)
+    # @commands.group(invoke_without_command = True)
+    # @commands.has_permissions(administrator = True)
+    # async def banword(self, ctx, word=None):
+    #     '''Command group that allows you to add/delete banned words for your server.'''
+    #     em = discord.Embed(color=discord.Color(value=0x00ff00), title='Banned Words')
+    #     em.description = ''
+    #     try:
+    #         f = open("data/guildconfig.json").read()
+    #         x = json.loads(f)
+    #         for i in x[str(ctx.guild.id)]["censoredWords"]:
+    #             em.description += f"{i[word]} \n"
+    #         await ctx.send(embed=em)
+    #     except:
+    #         em.description = "You have not added any ban words for this guild."
+    #         return await ctx.send(embed=em)
 
 
 
 
-    @banword.command()
-    async def add(self, ctx, *, word=None):
-        '''Adds a word to the ban list'''
-        if word is None:
-            await ctx.send("Please enter a word to add it to the censor.")
-        else:
-            f = open("data/guildconfig.json").read()
-            x = json.loads(f)
-            x[ctx.guild.id] = {
-                "censoredWords":[word]
-            }
-            y = open("data/guildconfig.json","w")
-            y.write(json.dumps(x, indent=4))
-            try:
-                await ctx.message.delete()
-            except discord.Forbidden:
-                pass
-            await ctx.send("Success. The word has been added to the censor. :white_check_mark:")
+    # @banword.command()
+    # async def add(self, ctx, *, word=None):
+    #     '''Adds a word to the ban list'''
+    #     if word is None:
+    #         await ctx.send("Please enter a word to add it to the censor.")
+    #     else:
+    #         f = open("data/guildconfig.json").read()
+    #         x = json.loads(f)
+    #         x[ctx.guild.id] = {
+    #             "censoredWords":[word]
+    #         }
+    #         y = open("data/guildconfig.json","w")
+    #         y.write(json.dumps(x, indent=4))
+    #         try:
+    #             await ctx.message.delete()
+    #         except discord.Forbidden:
+    #             pass
+    #         await ctx.send("Success. The word has been added to the censor. :white_check_mark:")
 
 
-    @banword.command()
-    async def remove(self, ctx, *, word=None):
-        '''Removes a word from the ban list.'''
-        if word is None:
-            await ctx.send("Please enter a word to remove it from the censor.")
-        else:
-            f = open("data/guildconfig.json").read()
-            x = json.loads(f)
-            try:
-                e = open("data/guildconfig.json", "w")
-                j = json.loads(e)
-                wordlist = j[str(ctx.guild.id)]['censoredWords']
-                wordlist.remove(word)
-                await ctx.send("Done. Removed the word from the ban list.")
-            except KeyError:
-                await ctx.send("The word was not found in the ban list.")
+    # @banword.command()
+    # async def remove(self, ctx, *, word=None):
+    #     '''Removes a word from the ban list.'''
+    #     if word is None:
+    #         await ctx.send("Please enter a word to remove it from the censor.")
+    #     else:
+    #         f = open("data/guildconfig.json").read()
+    #         x = json.loads(f)
+    #         try:
+    #             e = open("data/guildconfig.json", "w")
+    #             j = json.loads(e)
+    #             wordlist = j[str(ctx.guild.id)]['censoredWords']
+    #             wordlist.remove(word)
+    #             await ctx.send("Done. Removed the word from the ban list.")
+    #         except KeyError:
+    #             await ctx.send("The word was not found in the ban list.")
         
 
-    @commands.group()
-    async def welcomemsg(self, ctx):
-        '''Enables/disables welcome messages for this guild.'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Welcome Messages')
-        try:
-            f = open(f"data/welcome/{ctx.guild.id}.json").read()
-            x = json.loads(f)
-            em.description = f"Your current welcome message is set to: \n{x['message']['msg']}"
-        except:
-            em.description = "No welcome message found for the guild. \n\n**How to Use:**\n`*welcome on`: Turns on welcome messages.\n`*welcome off`: Turns off welcome messages."
-            return await ctx.send(embed=em)
+    # @commands.group()
+    # async def welcomemsg(self, ctx):
+    #     '''Enables/disables welcome messages for this guild.'''
+    #     em = discord.Embed(color=discord.Color(value=0x00ff00), title='Welcome Messages')
+    #     try:
+    #         f = open(f"data/welcome/{ctx.guild.id}.json").read()
+    #         x = json.loads(f)
+    #         em.description = f"Your current welcome message is set to: \n{x['message']['msg']}"
+    #     except:
+    #         em.description = "No welcome message found for the guild. \n\n**How to Use:**\n`*welcome on`: Turns on welcome messages.\n`*welcome off`: Turns off welcome messages."
+    #         return await ctx.send(embed=em)
         
 
-    @welcomemsg.command()
-    async def on(self, ctx):
-        await ctx.send("Enabling welcome messages. Ready for takeoff!", delete_after=3)
-        await asyncio.sleep(3)
-        await ctx.send("Which channel would you like the messages to be sent in? Mention the channel.")
-        try:
-            x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)        
-            if not x.content.startswith("<#") and not x.content.endswith(">"):
-                return await ctx.send("Invalid channel provided. Please mention a valid channel.")
-        except asyncio.TimeoutError:
-            return await ctx.send("The request timed out. Please try again.")
-        await ctx.send(f"The channel {x.content} has been set.")
-        await ctx.send("Please enter the message you want to display. \n\n```Variables: \n{name}: The name of the member.\n{mention}: Tag the memebr.\n{membercount}: The number of members in the guild. \n{guild}: The guild's name.```")
-        try:
-            f = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=90.0)
-        except asyncio.TimeoutError:
-            return await ctx.send("The request timed out. Please try again.")
-        await ctx.send("Your message has been set.")
-        await asyncio.sleep(1)
-        msg = await ctx.send("Please wait while we load your data...")
-        a = open(f"data/welcome/{ctx.guild.id}.json", "w")
-        data = {
-            "msg": f.content,
-            "channel": x.content.strip("<").strip("#").strip(">")
-        }
-        b = json.load(a)
-        b.write(json.dumps(ctx.guild.id, data, indent=4)
-        await ctx.send("Successfully set welcome messages! :yum:")
+    # @welcomemsg.command()
+    # async def on(self, ctx):
+    #     await ctx.send("Enabling welcome messages. Ready for takeoff!", delete_after=3)
+    #     await asyncio.sleep(3)
+    #     await ctx.send("Which channel would you like the messages to be sent in? Mention the channel.")
+    #     try:
+    #         x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)        
+    #         if not x.content.startswith("<#") and not x.content.endswith(">"):
+    #             return await ctx.send("Invalid channel provided. Please mention a valid channel.")
+    #     except asyncio.TimeoutError:
+    #         return await ctx.send("The request timed out. Please try again.")
+    #     await ctx.send(f"The channel {x.content} has been set.")
+    #     await ctx.send("Please enter the message you want to display. \n\n```Variables: \n{name}: The name of the member.\n{mention}: Tag the memebr.\n{membercount}: The number of members in the guild. \n{guild}: The guild's name.```")
+    #     try:
+    #         f = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=90.0)
+    #     except asyncio.TimeoutError:
+    #         return await ctx.send("The request timed out. Please try again.")
+    #     await ctx.send("Your message has been set.")
+    #     await asyncio.sleep(1)
+    #     msg = await ctx.send("Please wait while we load your data...")
+    #     a = open(f"data/welcome/{ctx.guild.id}.json", "w")
+    #     data = {
+    #         "msg": f.content,
+    #         "channel": x.content.strip("<").strip("#").strip(">")
+    #     }
+    #     b = json.load(a)
+    #     b.write(json.dumps(ctx.guild.id, data, indent=4)
+    #     await ctx.send("Successfully set welcome messages! :yum:   ")
 
 
         
