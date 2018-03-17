@@ -56,7 +56,7 @@ class lol:
                 async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[0]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                     resp = await resp.json()
                     em.add_field(name='Champion', value=resp['name'])
-                    em.add_field(name='Level', value=f"{summoner[0]['championLevel']} ({summoner[0]['championPointsSinceLastLevel']}/{summoner[0]['championPointsUntilNextLevel']})")
+                    em.add_field(name='Level', value=f"{summoner[0]['championLevel']} ({summoner[0]['championPointsSinceLastLevel']}/{int(summoner[0]['championPointsUntilNextLevel'])+int(summoner[0]['championPointsSinceLastLevel'])})")
                     if summoner[0]['chestGranted']:
                         cheststatus = 'Yes'
                     else:
@@ -79,7 +79,7 @@ class lol:
                         async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[1]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                             resp = await resp.json()
                             em.add_field(name='Champion', value=resp['name'])
-                            em.add_field(name='Level', value=f"{summoner[1]['championLevel']} ({summoner[1]['championPointsSinceLastLevel']}/{summoner[1]['championPointsUntilNextLevel']})")
+                            em.add_field(name='Level', value=f"{summoner[1]['championLevel']} ({summoner[1]['championPointsSinceLastLevel']}/{int(summoner[1]['championPointsUntilNextLevel'])+int(summoner[1]['championPointsSinceLastLevel'])})")
                             if summoner[1]['chestGranted']:
                                 cheststatus = 'Yes'
                             else:
@@ -102,7 +102,7 @@ class lol:
                                 async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[2]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                                     resp = await resp.json()
                                     em.add_field(name='Champion', value=resp['name'])
-                                    em.add_field(name='Level', value=f"{summoner[2]['championLevel']} ({summoner[2]['championPointsSinceLastLevel']}/{summoner[2]['championPointsUntilNextLevel']})")
+                                    em.add_field(name='Level', value=f"{summoner[2]['championLevel']} ({summoner[2]['championPointsSinceLastLevel']}/{int(summoner[2]['championPointsUntilNextLevel'])+int(summoner[2]['championPointsSinceLastLevel'])})")
                                     if summoner[2]['chestGranted']:
                                         cheststatus = 'Yes'
                                     else:
@@ -147,7 +147,7 @@ class lol:
                     em.add_field(name='Skins', value=skins)
                     em.add_field(name=f'A tip to use {champion}', value=resp['allytips'][random.randint(0, 2)])
                     em.add_field(name=f'A tip against {champion}', value=resp['enemytips'][random.randint(0, 2)])
-                    em.set_author(name=resp['title'])
+                    em.set_author(name=resp['title'].replace('the', 'The'))
                     if resp['name'] == 'Wukong':
                         champname = 'MonkeyKing'
                     else:
