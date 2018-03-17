@@ -3,7 +3,6 @@ import sys
 import os
 import io
 import asyncio
-import dbl
 from discord.ext import commands
 
 
@@ -13,7 +12,7 @@ class Info:
 
 
 
-    @commands.command()
+    @commands.command(aliases=['info', 'botinfo'])
     async def stats(self, ctx):
         """Statsies for this bot. Be a nerd!"""       
         color = discord.Color(value=0x00ff00)
@@ -23,10 +22,10 @@ class Info:
         em.add_field(name='Creator', value='dat banana boi#1982')
         em.add_field(name='Devs', value='Free TNT#5796')
         em.add_field(name='Number of Servers', value=f'{len(self.bot.guilds)} servers') 
-        em.add_field(name='Version', value='5.0.2 BETA')
+        em.add_field(name='Version', value='6.0.3')
         em.add_field(name='Start Date', value='12/08/2017')
         em.add_field(name='Bot Region', value='North America')
-        em.add_field(name='Code Platform', value='Sublime Text')
+        em.add_field(name='Code Platform', value='VS Code/GitHub')
         em.add_field(name='Hosting Platform', value='Amazon Web Services')
         em.add_field(name='Coding Language', value='Python, discord.py')      
         await ctx.send(embed=em)
