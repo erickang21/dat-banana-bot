@@ -89,24 +89,22 @@ class CR:
             em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
             em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
             await ctx.send(embed=em)
-            try:
-                clan = await profile.get_clan()
-                color = discord.Color(value=0xf1f442)
-                em = discord.Embed(color=color, title='Clan')
-                em.description = f'{clan.name} (#{clan.tag})'
-                clanroles = {
-                    "member": "Member",
-                    "elder": "Elder",
-                    "coLeader": "Co-Leader",
-                    "leader": "Leader"
-                }
-                em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}')                                                                                                                                                                      
-                em.add_field(name='Clan Score', value=f'{clan.score}')
-                em.add_field(name='Members', value=f'{len(clan.members)}/50')
-                em.set_thumbnail(url=clan.badge.image)
-                await ctx.send(embed=em)
-            except AttributeError:
-                pass
+            clan = await profile.get_clan()
+            color = discord.Color(value=0xf1f442)
+            em = discord.Embed(color=color, title='Clan')
+            em.description = f'{clan.name} (#{clan.tag})'
+            clanroles = {
+                "member": "Member",
+                "elder": "Elder",
+                "coLeader": "Co-Leader",
+                "leader": "Leader"
+            }
+            em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}')                                                                                                                                                                      
+            em.add_field(name='Clan Score', value=f'{clan.score}')
+            em.add_field(name='Members', value=f'{len(clan.members)}/50')
+            em.set_thumbnail(url=clan.badge.image)
+            await ctx.send(embed=em)
+
 
 
 
