@@ -293,8 +293,6 @@ class mod:
     #     await ctx.send("Successfully set welcome messages! :yum:   ")
 
 
-        
-
 
 
 def setup(bot): 

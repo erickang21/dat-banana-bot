@@ -55,55 +55,54 @@ class CR:
                     crtag = lol[userid]
             except KeyError:
                 return await ctx.send("Uh-oh, no tag found! Use `*crsave [tag]` to save your tag to your Discord account. :x:")
+        try:
+            profile = await self.client.get_player(crtag)
+        except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
+            print(e)
+            color = discord.Color(value=0xf44e42)
+            em = discord.Embed(color=color, title='Royale API error.')
+            em.description = f"{e.code}: {e.error}"
+            return await ctx.send(embed=em)
+        color = discord.Color(value=0xf1f442)
+        em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
+        em.add_field(name='Trophies', value=f'{profile.trophies}')
+        em.add_field(name='Personal Best', value=f'{profile.stats.maxTrophies}')
+        em.add_field(name='XP Level', value=f'{profile.stats.level}')
+        em.add_field(name='Arena', value=f'{profile.arena.name}')
+        em.add_field(name='Total Games', value=profile.games.total)
+        em.add_field(name='Wins', value=f'{profile.games.wins} ({profile.games.winsPercent * 100}% of all games)')
+        em.add_field(name='Three Crown Wins', value=profile.stats.threeCrownWins)
+        em.add_field(name='Losses', value=f'{profile.games.losses} ({profile.games.lossesPercent * 100}% of all games)')
+        em.add_field(name='Draws', value=f'{profile.games.draws} ({profile.games.drawsPercent * 100}% of all games)')
+        em.add_field(name='Win Rate', value=f'{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}%')
+        em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name}')
+        if not profile.rank:
+            globalrank = 'Unranked'
         else:
-            try:
-                profile = await self.client.get_player(crtag)
-            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
-                print(e)
-                color = discord.Color(value=0xf44e42)
-                em = discord.Embed(color=color, title='Royale API error.')
-                em.description = f"{e.code}: {e.error}"
-                return await ctx.send(embed=em)
-            color = discord.Color(value=0xf1f442)
-            em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
-            em.add_field(name='Trophies', value=f'{profile.trophies}')
-            em.add_field(name='Personal Best', value=f'{profile.stats.maxTrophies}')
-            em.add_field(name='XP Level', value=f'{profile.stats.level}')
-            em.add_field(name='Arena', value=f'{profile.arena.name}')
-            em.add_field(name='Total Games', value=profile.games.total)
-            em.add_field(name='Wins', value=f'{profile.games.wins} ({profile.games.winsPercent * 100}% of all games)')
-            em.add_field(name='Three Crown Wins', value=profile.stats.threeCrownWins)
-            em.add_field(name='Losses', value=f'{profile.games.losses} ({profile.games.lossesPercent * 100}% of all games)')
-            em.add_field(name='Draws', value=f'{profile.games.draws} ({profile.games.drawsPercent * 100}% of all games)')
-            em.add_field(name='Win Rate', value=f'{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}%')
-            em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name}')
-            if not profile.rank:
-                globalrank = 'Unranked'
-            else:
-                globalrank = profile.rank
-            em.add_field(name='Global Rank', value=globalrank)    
-            em.add_field(name='Challenge Max Wins', value=f'{profile.stats.challengeMaxWins}')
-            em.add_field(name='Challenge Cards Won', value=f'{profile.stats.challengeCardsWon}')
-            em.add_field(name='Tourney Cards Won', value=f'{profile.stats.tournamentCardsWon}')                                                                                                                                                
-            em.set_author(name=f'dat banana bot Stats')
-            em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
-            em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
-            await ctx.send(embed=em)
-            clan = await profile.get_clan()
-            color = discord.Color(value=0xf1f442)
-            em = discord.Embed(color=color, title='Clan')
-            em.description = f'{clan.name} (#{clan.tag})'
-            clanroles = {
-                "member": "Member",
-                "elder": "Elder",
-                "coLeader": "Co-Leader",
-                "leader": "Leader"
-            }
-            em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}')                                                                                                                                                                      
-            em.add_field(name='Clan Score', value=f'{clan.score}')
-            em.add_field(name='Members', value=f'{len(clan.members)}/50')
-            em.set_thumbnail(url=clan.badge.image)
-            await ctx.send(embed=em)
+            globalrank = profile.rank
+        em.add_field(name='Global Rank', value=globalrank)    
+        em.add_field(name='Challenge Max Wins', value=f'{profile.stats.challengeMaxWins}')
+        em.add_field(name='Challenge Cards Won', value=f'{profile.stats.challengeCardsWon}')
+        em.add_field(name='Tourney Cards Won', value=f'{profile.stats.tournamentCardsWon}')                                                                                                                                                
+        em.set_author(name=f'dat banana bot Stats')
+        em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
+        em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+        await ctx.send(embed=em)
+        clan = await profile.get_clan()
+        color = discord.Color(value=0xf1f442)
+        em = discord.Embed(color=color, title='Clan')
+        em.description = f'{clan.name} (#{clan.tag})'
+        clanroles = {
+            "member": "Member",
+            "elder": "Elder",
+            "coLeader": "Co-Leader",
+            "leader": "Leader"
+        }
+        em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}')                                                                                                                                                                      
+        em.add_field(name='Clan Score', value=f'{clan.score}')
+        em.add_field(name='Members', value=f'{len(clan.members)}/50')
+        em.set_thumbnail(url=clan.badge.image)
+        await ctx.send(embed=em)
 
 
 
