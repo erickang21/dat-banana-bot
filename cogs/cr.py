@@ -56,7 +56,6 @@ class CR:
             except KeyError:
                 return await ctx.send("Uh-oh, no tag found! Use `*crsave [tag]` to save your tag to your Discord account. :x:")
         else:
-            crtag = crtag
             try:
                 profile = await self.client.get_player(crtag)
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
