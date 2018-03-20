@@ -200,10 +200,10 @@ class mod:
             try:
                 f = open("data/welcomemsg.json").read()
                 x = json.loads(f)
-                if x[ctx.guild.id] is False:
+                if x[str(ctx.guild.id)] is False:
                     em.description = 'Welcome messages are disabled for this server.'
                 else:
-                    em.description = f'Welcome messages are turned on for this server, set in <#{x[ctx.guild.id]}>.'
+                    em.description = f'Welcome messages are turned on for this server, set in <#{x[str(ctx.guild.id)]}>.'
             except KeyError:
                 em.description = 'Welcome messages are disabled for this server.'
             await ctx.send(embed=em)
