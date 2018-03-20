@@ -79,16 +79,16 @@ async def on_guild_remove(guild):
 
     
 @bot.event
-async def when_mentioned():
-    await ctx.send("BAH! Couldn't find enough people to ping, could you? Anyway, I'm dat banana bot, made by dat banana boi#1982. Type *help to see what I can do for you today.")   
-            
-        
-def dev_check(id):
-    with open('data/devs.json') as f:
-        devs = json.load(f)
-    if id in devs:
-        return True
-    return False
+async def on_member_join(member):
+    f = open("data/welcomemsg/json").read()
+    x = json.loads(f)
+    channel = x[str(member.guild.id)]
+    if channel is False:
+        pass
+    else:
+        lol = bot.get_channel(channel)
+        await lol.send(f"Hello {member.mention}! Welcome to **{member.guild.name}**, have a great time!")
+
             
             
 @bot.command(name='presence')
