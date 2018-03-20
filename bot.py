@@ -80,7 +80,7 @@ async def on_guild_remove(guild):
     
 @bot.event
 async def on_member_join(member):
-    f = open("data/welcomemsg/json").read()
+    f = open("data/welcomemsg.json").read()
     x = json.loads(f)
     channel = x[str(member.guild.id)]
     if channel is False:
