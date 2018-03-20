@@ -191,7 +191,42 @@ class mod:
             await ctx.send("Couldn't unmute the user. Uh-oh...")
         except commands.errors.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
-        
+    
+
+    @commands.command(aliases=['welcome'])
+    async def welcomemsg(self, ctx, action=None):
+        if action is None:
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Welcome Messages')
+            try:
+                f = open("data/welcomemsg.json").read()
+                x = json.loads(f)
+                if x[ctx.guild.id] is False:
+                    em.description = 'Welcome messages are disabled for this server.'
+                else:
+                    em.description = f'Welcome messages are turned on for this server, set in <#{x[ctx.guild.id]}>.'
+            except KeyError:
+                em.description = 'Welcome messages are disabled for this server.'
+            await ctx.send(embed=em)
+        else:
+            if action.lower() == 'on':
+                await ctx.send("Please mention the channel to set welcome messages in.")
+                try:
+                    x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+                except asyncio.TimeoutError:
+                    return await ctx.send("Request timed out. Please try again.")
+                if not x.content.startswith("<#") and not x.content.endswith(">"):
+                    return await ctx.send("Please properly mention the channel.")
+                channel = x.content.strip("<#").strip(">")
+                try:
+                    channel = int(channel)
+                except ValueError:
+                    return await ctx.send("Did you properly mention a channel? Probably not.")
+                ezjson.dump("data/welcomemsg.json", ctx.guild.id, channel)
+                await ctx.send("Successfully turned on welcome messages for this guild.")
+            elif action.lower() == 'off':
+                ezjson.dump("data/welcomemsg.json", ctx.guild.id, False)
+                await ctx.send("Successfully turned off welcome messages for this guild.")
+
         
     # @commands.group(invoke_without_command = True)
     # @commands.has_permissions(administrator = True)
