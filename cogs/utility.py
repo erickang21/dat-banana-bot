@@ -296,5 +296,146 @@ class Utility:
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
               
+
+    @commands.command()
+    async def roleinfo(self, ctx, *, rolename=None):
+        try:
+            role = discord.utils.get(ctx.guild.roles, name=rolename)
+        except:
+            return await ctx.send("Role not found. Please make sure the role name is correct. (Case Sensitive!)")
+        em = discord.Embed(color=role.color, title=f'Role Info: {rolename}')
+        p = ""
+        if role.permissions.administrator:
+            p += "    Administrator :white_check_mark: \n"
+        else:
+            p += ":x: Administrator \n"
+        if role.permissions.create_instant_invite:
+            p += "    Create Instant Invite :white_check_mark: \n"
+        else:
+            p += ":x: Create Instant Invite"
+        if role.permissions.kick_members:
+            p += "    Kick Members :white_check_mark: \n"
+        else:
+            p += ":x: Kick Members \n"
+        if role.permissions.ban_members:
+            p += "    Ban Members :white_check_mark: \n"
+        else:
+            p += ":x: Ban Members \n"
+        if role.permissions.manage_channels:
+            p += "    Manage Channels :white_check_mark: \n"
+        else:
+            p += ":x: Manage Channels \n"
+        if role.permissions.manage_guild:
+            p += "    Manage Server :white_check_mark: \n"
+        else:
+            p += ":x: Manage Server \n"
+        if role.permissions.add_reactions:
+            p += "    Add Reactions :white_check_mark: \n"
+        else:
+            p += ":x: Add Reactions \n"
+        if role.permissions.view_audit_log:
+            p += "    View Audit Log :white_check_mark: \n"
+        else:
+            p += ":x: View Audit Log \n"
+        if role.permissions.read_messages:
+            p += "    Read Messages :white_check_mark: \n"
+        else:
+            p += ":x: Read Messages \n"
+        if role.permissions.send_messages:
+            p += "    Send Messages :white_check_mark: \n"
+        else:
+            p += ":x: Send Messages \n"
+        if role.permissions.send_tts_messages:
+            p += "    Send TTS Messages :white_check_mark: \n"
+        else:
+            p += ":x: Send TTS Messages \n"
+        if role.permissions.manage_messages:
+            p += "    Manage Messages :white_check_mark: \n"
+        else:
+            p += ":x: Manage Messages \n"
+        if role.permissions.embed_links:
+            p += "    Embed Links :white_check_mark: \n"
+        else:
+            p += ":x: Embed Links \n"
+        if role.permissions.attach_files:
+            p += "    Attach Files :white_check_mark: \n"
+        else:
+            p += ":x: Attach Files \n" 
+        if role.permissions.read_message_history:
+            p += "    Read Message History :white_check_mark: \n"
+        else:
+            p += ":x: Read Message History \n"
+        if role.permissions.mention_everyone:
+            p += "    Mention @everyone :white_check_mark: \n"
+        else:
+            p += ":x: Mention @everyone \n"
+        if role.permissions.external_emojis:
+            p += "    Use External Emojis :white_check_mark: \n"
+        else:
+            p += ":x: Use External Emojis \n"
+        if role.permissions.change_nickname:
+            p += "    Change Nicknames :white_check_mark: \n"
+        else:
+            p += ":x: Change Nicknames \n"
+        if role.permissions.manage_nicknames:
+            p += "    Manage Nicknames :white_check_mark: \n"
+        else:
+            p += ":x: Manage Nicknames \n"
+        if role.permissions.manage_roles:
+            p += "    Manage Roles :white_check_mark: \n"
+        else:
+            p += ":x: Manage Roles \n"
+        if role.permissions.manage_webhooks:
+            p += "    Manage Webhooks :white_check_mark: \n"
+        else:
+            p += ":x: Manage Webhooks \n"
+        if role.permissions.manage_emojis:
+            p += "    Manage Emojis :white_check_mark: \n"
+        else:
+            p += ":x: Manage Emojis \n"
+        v = "" 
+        if role.permissions.connect:
+            v += "    Connect :white_check_mark: \n"
+        else:
+            v += ":x: Connect \n"
+        if role.permissions.speak:
+            v += "    Speak :white_check_mark: \n"
+        else:
+            v += ":x: Speak \n"
+        if role.permissions.mute_members:
+            v += "    Mute Members :white_check_mark: \n"
+        else:
+            v += ":x: Mute Members \n"
+        if role.permissions.deafen_members:
+            v += "    Deafen Members :white_check_mark: \n"
+        else:
+            v += ":x: Deafen Members \n"
+        if role.permissions.move_members:
+            v += "    Move Members :white_check_mark: \n"
+        else:
+            v += ":x: Move Members \n"
+        if role.permissions.use_voice_activation:
+            v += "    Use Voice Activation :white_check_mark: \n"
+        else:
+            v += ":x: Use Voice Activation \n"
+        em.description = f"**General Permissions** \n\n{p} \n\n\n**Voice Permissions** \n\n{v}"
+        em.add_field(name='ID', value=role.id)
+        em.add_field(name='Position from Bottom', value=role.position)
+        if role.mentionable:
+            a = 'Mentionable'
+        else:
+            a = 'Not Mentionable'
+        em.add_field(name='Mentionable', value=a)
+        em.add_field(name='Time Created', value=str(role.created_at.strftime("%A, %b %m, %Y at %I:%M %p")))
+        member = ""
+        for x in role.members:
+            member += f"{x} \n"
+        em.add_field(name='Members in the Role', value=x)
+        await ctx.send(embed=em)
+
+
+
+
+
 def setup(bot): 
     bot.add_cog(Utility(bot))               
