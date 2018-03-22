@@ -89,6 +89,18 @@ async def on_member_join(member):
         lol = bot.get_channel(channel)
         await lol.send(f"Hello {member.mention}! Welcome to **{member.guild.name}**, have a great time!")
 
+
+@bot.event
+async def on_command_error(ctx, error):
+    em = discord.Embed(color=discord.Color(value=0xf44e42), title='An error occurred.')
+    if isinstance(error, commands.NotOwner):
+        em.description = 'Not my daddy! This command is for the owner only.'
+    if isinstance(error, commands.MissingPermissions):
+        em.description = 'You are missing permissions required to run this command.'
+    if isinstance(error, commands.CommandNotFound):
+        return
+    return await ctx.send(embed=em)
+
             
             
 @bot.command(name='presence')
