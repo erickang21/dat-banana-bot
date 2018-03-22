@@ -306,118 +306,118 @@ class Utility:
         em = discord.Embed(color=role.color, title=f'Role Info: {rolename}')
         p = ""
         if role.permissions.administrator:
-            p += "      Administrator :white_check_mark: \n"
+            p += "Administrator :white_check_mark: \n"
         else:
-            p += ":x: Administrator \n"
+            p += "Administrator :x: \n"
         if role.permissions.create_instant_invite:
-            p += "      Create Instant Invite :white_check_mark: \n"
+            p += "Create Instant Invite :white_check_mark: \n"
         else:
-            p += ":x: Create Instant Invite \n"
+            p += "Create Instant Invite :x:\n"
         if role.permissions.kick_members:
-            p += "      Kick Members :white_check_mark: \n"
+            p += "Kick Members :white_check_mark: \n"
         else:
-            p += ":x: Kick Members \n"
+            p += "Kick Members :x:\n"
         if role.permissions.ban_members:
-            p += "      Ban Members :white_check_mark: \n"
+            p += "Ban Members :white_check_mark: \n"
         else:
-            p += ":x: Ban Members \n"
+            p += "Ban Members :x:\n"
         if role.permissions.manage_channels:
-            p += "      Manage Channels :white_check_mark: \n"
+            p += "Manage Channels :white_check_mark: \n"
         else:
-            p += ":x: Manage Channels \n"
+            p += "Manage Channels :x:\n"
         if role.permissions.manage_guild:
-            p += "      Manage Server :white_check_mark: \n"
+            p += "Manage Server :white_check_mark: \n"
         else:
-            p += ":x: Manage Server \n"
+            p += "Manage Server :x:\n"
         if role.permissions.add_reactions:
-            p += "      Add Reactions :white_check_mark: \n"
+            p += "Add Reactions :white_check_mark: \n"
         else:
-            p += ":x: Add Reactions \n"
+            p += "Add Reactions :x:\n"
         if role.permissions.view_audit_log:
-            p += "      View Audit Log :white_check_mark: \n"
+            p += "View Audit Log :white_check_mark: \n"
         else:
-            p += ":x: View Audit Log \n"
+            p += "View Audit Log :x:\n"
         if role.permissions.read_messages:
-            p += "      Read Messages :white_check_mark: \n"
+            p += "Read Messages :white_check_mark: \n"
         else:
-            p += ":x: Read Messages \n"
+            p += "Read Messages :x:\n"
         if role.permissions.send_messages:
-            p += "      Send Messages :white_check_mark: \n"
+            p += "Send Messages :white_check_mark: \n"
         else:
-            p += ":x: Send Messages \n"
+            p += "Send Messages :x:\n"
         if role.permissions.send_tts_messages:
-            p += "      Send TTS Messages :white_check_mark: \n"
+            p += "Send TTS Messages :white_check_mark: \n"
         else:
-            p += ":x: Send TTS Messages \n"
+            p += "Send TTS Messages :x:\n"
         if role.permissions.manage_messages:
-            p += "      Manage Messages :white_check_mark: \n"
+            p += "Manage Messages :white_check_mark: \n"
         else:
-            p += ":x: Manage Messages \n"
+            p += "Manage Messages :x:\n"
         if role.permissions.embed_links:
-            p += "      Embed Links :white_check_mark: \n"
+            p += "Embed Links :white_check_mark: \n"
         else:
-            p += ":x: Embed Links \n"
+            p += "Embed Links :x:\n"
         if role.permissions.attach_files:
-            p += "      Attach Files :white_check_mark: \n"
+            p += "Attach Files :white_check_mark: \n"
         else:
-            p += ":x: Attach Files \n" 
+            p += "Attach Files \n" 
         if role.permissions.read_message_history:
-            p += "      Read Message History :white_check_mark: \n"
+            p += "Read Message History :white_check_mark: \n"
         else:
-            p += ":x: Read Message History \n"
+            p += "Read Message History :x:\n"
         if role.permissions.mention_everyone:
-            p += "      Mention @everyone :white_check_mark: \n"
+            p += "Mention @everyone :white_check_mark: \n"
         else:
-            p += ":x: Mention @everyone \n"
+            p += "Mention @everyone :x:\n"
         if role.permissions.external_emojis:
-            p += "      Use External Emojis :white_check_mark: \n"
+            p += "Use External Emojis :white_check_mark: \n"
         else:
-            p += ":x: Use External Emojis \n"
+            p += "Use External Emojis :x:\n"
         if role.permissions.change_nickname:
-            p += "      Change Nicknames :white_check_mark: \n"
+            p += "Change Nicknames :white_check_mark: \n"
         else:
-            p += ":x: Change Nicknames \n"
+            p += "Change Nicknames :x:\n"
         if role.permissions.manage_nicknames:
-            p += "      Manage Nicknames :white_check_mark: \n"
+            p += "Manage Nicknames :white_check_mark: \n"
         else:
-            p += ":x: Manage Nicknames \n"
+            p += "Manage Nicknames :x:\n"
         if role.permissions.manage_roles:
-            p += "      Manage Roles :white_check_mark: \n"
+            p += "Manage Roles :white_check_mark: \n"
         else:
-            p += ":x: Manage Roles \n"
+            p += "Manage Roles :x:\n"
         if role.permissions.manage_webhooks:
-            p += "      Manage Webhooks :white_check_mark: \n"
+            p += "Manage Webhooks :white_check_mark: \n"
         else:
-            p += ":x: Manage Webhooks \n"
+            p += "Manage Webhooks :x:\n"
         if role.permissions.manage_emojis:
-            p += "      Manage Emojis :white_check_mark: \n"
+            p += "Manage Emojis :white_check_mark: \n"
         else:
-            p += ":x: Manage Emojis \n"
+            p += "Manage Emojis :x:\n"
         v = "" 
         if role.permissions.connect:
-            v += "      Connect :white_check_mark: \n"
+            v += "Connect :white_check_mark: \n"
         else:
-            v += ":x: Connect \n"
+            v += "Connect :x:\n"
         if role.permissions.speak:
-            v += "      Speak :white_check_mark: \n"
+            v += "Speak :white_check_mark: \n"
         else:
-            v += ":x: Speak \n"
+            v += "Speak :x:\n"
         if role.permissions.mute_members:
-            v += "      Mute Members :white_check_mark: \n"
+            v += "Mute Members :white_check_mark: \n"
         else:
-            v += ":x: Mute Members \n"
+            v += "Mute Members :x:\n"
         if role.permissions.deafen_members:
-            v += "      Deafen Members :white_check_mark: \n"
+            v += "Deafen Members :white_check_mark: \n"
         else:
-            v += ":x: Deafen Members \n"
+            v += "Deafen Members :x:\n"
         if role.permissions.move_members:
-            v += "      Move Members :white_check_mark: \n"
+            v += "Move Members :white_check_mark: \n"
         else:
-            v += ":x: Move Members \n"
+            v += "Move Members :x:\n"
         if role.permissions.use_voice_activation:
-            v += "      Use Voice Activation :white_check_mark: \n"
+            v += "Use Voice Activation :white_check_mark: \n"
         else:
-            v += ":x: Use Voice Activation \n"
+            v += "Use Voice Activation :x:\n"
         em.description = f"**General Permissions** \n\n{p} \n\n\n**Voice Permissions** \n\n{v}"
         em.add_field(name='ID', value=role.id)
         em.add_field(name='Position from Bottom', value=role.position)
@@ -429,8 +429,8 @@ class Utility:
         em.add_field(name='Time Created', value=str(role.created_at.strftime("%A, %b %m, %Y at %I:%M %p")))
         member = ""
         for x in role.members:
-            member += f"{x} \n"
-        em.add_field(name='Members in the Role', value=x)
+            member += f"{x.name} \n"
+        em.add_field(name='Members in the Role', value=member)
         await ctx.send(embed=em)
 
 
