@@ -312,7 +312,7 @@ class Utility:
         if role.permissions.create_instant_invite:
             p += "      Create Instant Invite :white_check_mark: \n"
         else:
-            p += ":x: Create Instant Invite"
+            p += ":x: Create Instant Invite \n"
         if role.permissions.kick_members:
             p += "      Kick Members :white_check_mark: \n"
         else:
