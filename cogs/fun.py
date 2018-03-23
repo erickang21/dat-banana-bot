@@ -32,16 +32,22 @@ class fun:
         numbers = numbers.replace(' ', '')
         numbers = numbers.split(',')
         lucky = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
+        for i in numbers:
+            try:
+                int(i)
+            except ValueError:
+                return await ctx.send("Please enter only numbers for the lottery!")
+                break
         lol = ""
         for x in lucky:
-            lol += f"{x}, "
+            lol += f"`{x}` "
         if numbers == lucky:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='You are the lucky winner!')
             em.description = 'Awesome job! You are part of the 0.8% population that won the lottery! :tada:'
             await ctx.send(embed=em)
         else:
             em = discord.Embed(color=discord.Color(value=0xf44e42))
-            em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n```{lol}```"
+            em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}"
             await ctx.send(embed=em)
 
 
