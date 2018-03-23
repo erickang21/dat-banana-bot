@@ -259,16 +259,12 @@ class COC:
                     clan = await respclan.json()
                     color = discord.Color(value=0xe5f442)
                     em = discord.Embed(color=color, title='War Info')
+                    em.description = f"{clan['clan']['stars']} :star: **vs** {clan['opponent']['stars']} \n\n{clan['clan']['attacks']} attacks :crossed_swords: **vs** {clan['clan']['attacks']} attacks :crossed_swords:"
                     try:
                         teamsize = clan['teamSize']
                         em.add_field(name='War Size', value=f'{teamsize} vs {teamsize}')
-                        em.add_field(name='Ally Clan Attacks Used', value=clan['clan']['attacks'])
                         em.add_field(name='Ally Clan Level', value=clan['clan']['clanLevel'])
-                        em.add_field(name='Ally Stars Earned', value=clan['clan']['stars'])
-                        em.add_field(name='Enemy Clan Attacks Used', value=clan['opponent']['attacks'])
                         em.add_field(name='Enemy Clan Level', value=clan['opponent']['clanLevel'])
-                        em.add_field(name='Enemy Stars Earned', value=clan['opponent']['stars'])
-                        em.add_field(name='Enemy Clan Attacks Used', value=clan['opponent']['attacks'])
                         em.set_author(name=f"{clan['clan']['name']}({clan['clan']['tag']}) vs {clan['opponent']['name']} ({clan['opponent']['tag']})")
                         em.set_thumbnail(url=clan['clan']['badgeUrls']['medium'])
                         await ctx.send(embed=em)
@@ -286,16 +282,12 @@ class COC:
                     clan = await respclan.json()
                     color = discord.Color(value=0xe5f442)
                     em = discord.Embed(color=color, title='War Info')
+                    em.description = f"{clan['clan']['stars']} :star: **vs** {clan['opponent']['stars']} \n\n{clan['clan']['attacks']} attacks :crossed_swords: **vs** {clan['clan']['attacks']} attacks :crossed_swords:"
                     try:
                         teamsize = clan['teamSize']
                         em.add_field(name='War Size', value=f'{teamsize} vs {teamsize}')
-                        em.add_field(name='Ally Clan Attacks Used', value=clan['clan']['attacks'])
                         em.add_field(name='Ally Clan Level', value=clan['clan']['clanLevel'])
-                        em.add_field(name='Ally Stars Earned', value=clan['clan']['stars'])
-                        em.add_field(name='Enemy Clan Attacks Used', value=clan['opponent']['attacks'])
                         em.add_field(name='Enemy Clan Level', value=clan['opponent']['clanLevel'])
-                        em.add_field(name='Enemy Stars Earned', value=clan['opponent']['stars'])
-                        em.add_field(name='Enemy Clan Attacks Used', value=clan['opponent']['attacks'])
                         em.set_author(name=f"{clan['clan']['name']}({clan['clan']['tag']}) vs {clan['opponent']['name']} ({clan['opponent']['tag']})")
                         em.set_thumbnail(url=clan['clan']['badgeUrls']['medium'])
                         await ctx.send(embed=em)
@@ -332,7 +324,7 @@ class COC:
                         "never": "Never",
                         "unknown": "Unknown"
                     }
-                    em.description = f"***Top 3 Results:***\n\n\n**{resp['items'][0]['name']} ({resp['items'][0]['tag']})**\nStatus: {clantype[resp['items'][0]['type']]}\nLocation: {resp['items'][0]['location']['name']}\nClan Level: {resp['items'][0]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][0]['clanPoints']}\n  ->Builder Base:{resp['items'][0]['clanVersusPoints']}\nRequired Trophies: {resp['items'][0]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][0]['warFrequency']]}\nWar Win Streak: {resp['items'][0]['warWinStreak']}\n\n**{resp['items'][1]['name']} ({resp['items'][1]['tag']})**\nStatus: {clantype[resp['items'][1]['type']]}\nLocation: {resp['items'][1]['location']['name']}\nClan Level: {resp['items'][1]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][1]['clanPoints']}\n  ->Builder Base:{resp['items'][1]['clanVersusPoints']}\nRequired Trophies: {resp['items'][1]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][1]['warFrequency']]}\nWar Win Streak: {resp['items'][1]['warWinStreak']}\n\n**{resp['items'][2]['name']} ({resp['items'][2]['tag']})**\n\nStatus: {clantype[resp['items'][2]['type']]}\nLocation: {resp['items'][2]['location']['name']}\nClan Level: {resp['items'][2]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][2]['clanPoints']}\n  ->Builder Base:{resp['items'][2]['clanVersusPoints']}\nRequired Trophies: {resp['items'][2]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][2]['warFrequency']]}\nWar Win Streak: {resp['items'][2]['warWinStreak']}\n\n\n***See Also:***\n\n{resp['items'][3]['name']} ({resp['items'][3]['tag']}) \n{resp['items'][4]['name']} ({resp['items'][4]['tag']})\n{resp['items'][5]['name']} ({resp['items'][5]['tag']})\n{resp['items'][6]['name']} ({resp['items'][6]['tag']})"
+                    em.description = f"***Top 3 Results:***\n\n\n**{resp['items'][0]['name']} ({resp['items'][0]['tag']})**\nMembers: {resp['items'][0]['members']}/50\nStatus: {clantype[resp['items'][0]['type']]}\nLocation: {resp['items'][0]['location']['name']}\nClan Level: {resp['items'][0]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][0]['clanPoints']}\n  ->Builder Base:{resp['items'][0]['clanVersusPoints']}\nRequired Trophies: {resp['items'][0]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][0]['warFrequency']]}\nWar Win Streak: {resp['items'][0]['warWinStreak']}\n\n**{resp['items'][1]['name']} ({resp['items'][1]['tag']})**\nMembers: {resp['items'][1]['members']}/50\nStatus: {clantype[resp['items'][1]['type']]}\nLocation: {resp['items'][1]['location']['name']}\nClan Level: {resp['items'][1]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][1]['clanPoints']}\n  ->Builder Base:{resp['items'][1]['clanVersusPoints']}\nRequired Trophies: {resp['items'][1]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][1]['warFrequency']]}\nWar Win Streak: {resp['items'][1]['warWinStreak']}\n\n**{resp['items'][2]['name']} ({resp['items'][2]['tag']})**\nMembers: {resp['items'][2]['members']}/50\nStatus: {clantype[resp['items'][2]['type']]}\nLocation: {resp['items'][2]['location']['name']}\nClan Level: {resp['items'][2]['clanLevel']}\nClan Points:\n  ->Home Base: {resp['items'][2]['clanPoints']}\n  ->Builder Base:{resp['items'][2]['clanVersusPoints']}\nRequired Trophies: {resp['items'][2]['requiredTrophies']}\nWar Frequency: {wartype[resp['items'][2]['warFrequency']]}\nWar Win Streak: {resp['items'][2]['warWinStreak']}\n\n\n***See Also:***\n\n{resp['items'][3]['name']} ({resp['items'][3]['tag']}) \n{resp['items'][4]['name']} ({resp['items'][4]['tag']})\n{resp['items'][5]['name']} ({resp['items'][5]['tag']})\n{resp['items'][6]['name']} ({resp['items'][6]['tag']})"
                     em.set_footer(text='Showing the top 3 results.')
                     await msg.edit(embed=em)
         except KeyError:
