@@ -259,7 +259,7 @@ class COC:
                     clan = await respclan.json()
                     color = discord.Color(value=0xe5f442)
                     em = discord.Embed(color=color, title='War Info')
-                    em.description = f"{clan['clan']['stars']} :star: **vs** {clan['opponent']['stars']} \n\n{clan['clan']['attacks']} attacks :crossed_swords: **vs** {clan['clan']['attacks']} attacks :crossed_swords:"
+                    em.description = f"{clan['clan']['stars']} :star: **vs** {clan['opponent']['stars']} :star:\n\n{clan['clan']['attacks']} attacks :crossed_swords: **vs** {clan['clan']['attacks']} attacks :crossed_swords:"
                     try:
                         teamsize = clan['teamSize']
                         em.add_field(name='War Size', value=f'{teamsize} vs {teamsize}')
@@ -282,7 +282,7 @@ class COC:
                     clan = await respclan.json()
                     color = discord.Color(value=0xe5f442)
                     em = discord.Embed(color=color, title='War Info')
-                    em.description = f"{clan['clan']['stars']} :star: **vs** {clan['opponent']['stars']} \n\n{clan['clan']['attacks']} attacks :crossed_swords: **vs** {clan['clan']['attacks']} attacks :crossed_swords:"
+                    em.description = f"{clan['clan']['stars']} :star: **vs** {clan['opponent']['stars']} :star:\n\n{clan['clan']['attacks']} attacks :crossed_swords: **vs** {clan['clan']['attacks']} attacks :crossed_swords:"
                     try:
                         teamsize = clan['teamSize']
                         em.add_field(name='War Size', value=f'{teamsize} vs {teamsize}')
