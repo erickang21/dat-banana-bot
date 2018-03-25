@@ -95,11 +95,16 @@ async def on_command_error(ctx, error):
     em = discord.Embed(color=discord.Color(value=0xf44e42), title='An error occurred.')
     if isinstance(error, commands.NotOwner):
         em.description = 'Not my daddy! This command is for the owner only.'
-    if isinstance(error, commands.MissingPermissions):
+        return await ctx.send(embed=em)
+    elif isinstance(error, commands.MissingPermissions):
         em.description = 'You are missing permissions required to run this command.'
-    if isinstance(error, commands.CommandNotFound):
-        return
-    return await ctx.send(embed=em)
+        return await ctx.send(embed=em)
+    elif isinstance(error, commands.CommandOnCooldown):
+        em.description = f'The command is on cooldown! You can use it again in:\n{error.retry_after/60:.0f} minutes.'
+    elif isinstance(error, commands.CommandNotFound):
+        pass
+    else:
+        print(error)
 
             
             
