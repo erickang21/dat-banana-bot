@@ -18,7 +18,7 @@ class Music:
             await ctx.send(f"Successfully connected to Voice Channel **{ctx.author.voice.channel.name}**. :white_check_mark:")
         else:
             await ctx.voice_client.move_to(ctx.author.voice.channel)
-            await ctx.send(f"Successfully connected to Voice Channel **{ctx.author.voice.channel.name}**. :white_check_mark:")
+            await ctx.send(f"Successfully connected to Voice Channel: **{ctx.author.voice.channel.name}**. :white_check_mark:")
 
 
     @commands.command()
@@ -27,7 +27,7 @@ class Music:
         if ctx.voice_client is None:
             await ctx.send("Looks like I'm not connected to a voice channel yet! Can't disconnect...:thinking:")
         else:
-            await ctx.author.voice.channel.disconnect()
+            await ctx.voice_client.disconnect()
             await ctx.send(f"Successfully connected to Voice Channel **{ctx.author.voice.channel.name}**. :white_check_mark:")
 
 
