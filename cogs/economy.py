@@ -61,7 +61,7 @@ class Economy:
             str(ctx.author.id): int(x[str(ctx.guild.id)][str(ctx.author.id)]) + num
         }
         ezjson.dump("data/economy.json", ctx.guild.id, lol)
-        return await ctx.send(f"Hooray! Successfully added **{num} :banana: into your account.")
+        return await ctx.send(f"Hooray! Successfully added **{num}** :banana: into your account.")
 
         
 
