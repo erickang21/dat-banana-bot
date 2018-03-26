@@ -53,14 +53,16 @@ class Economy:
         num = random.randint(100, 200)
         f = open("data/economy.json").read()
         x = json.loads(f)
-        if x[str(ctx.guild.id)][str(ctx.author.id)]:
-            lol = {
-                str(ctx.author.id): int(x[str(ctx.guild.id)][str(ctx.author.id)]) + num
-            }
-            ezjson.dump("data/economy.json", ctx.guild.id, lol)
-            return await ctx.send(f"Hooray! Successfully added **{num} :banana: into your account.")
-        else:
+        try:
+            x[str(ctx.guild.id)][str(ctx.author.id)]
+        except KeyError:
             return await ctx.send("Oof. You don't have an account yet! Time to create one with `*openaccount`.")
+        lol = {
+            str(ctx.author.id): int(x[str(ctx.guild.id)][str(ctx.author.id)]) + num
+        }
+        ezjson.dump("data/economy.json", ctx.guild.id, lol)
+        return await ctx.send(f"Hooray! Successfully added **{num} :banana: into your account.")
+
         
 
     @commands.command()
@@ -68,7 +70,9 @@ class Economy:
         '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
         f = open("data/economy.json").read()
         x = json.loads(f)
-        if not x[str(ctx.guild.id)][str(ctx.author.id)]:
+        try:
+            x[str(ctx.guild.id)][str(ctx.author.id)]
+        except KeyError:
             return await ctx.send("Oof. You don't have an account yet! Time to create one with `*openaccount`.")
         if int(x[str(ctx.guild.id)][str(ctx.author.id)]) < 100:
             return await ctx.send("Entering the lottery requires 100 :banana:. You don't have enough! Keep on earning 'em")
