@@ -28,7 +28,7 @@ class Music:
             await ctx.send("Looks like I'm not connected to a voice channel yet! Can't disconnect...:thinking:")
         else:
             await ctx.voice_client.disconnect()
-            await ctx.send(f"Successfully connected to Voice Channel **{ctx.author.voice.channel.name}**. :white_check_mark:")
+            await ctx.send(f"Successfully disconnected from the voice channel. :white_check_mark:")
 
 
 def setup(bot):
