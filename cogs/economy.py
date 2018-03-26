@@ -20,10 +20,11 @@ class Economy:
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Open Account')
         f = open("data/economy.json").read()
         x = json.loads(f)
-        if x[str(ctx.guild.id)][str(ctx.author.id)]:
+        try:
+            x[str(ctx.guild.id)][str(ctx.author.id)]
             em.description = "Looks like you already opened an account on dat banana bot!"
             return await ctx.send(embed=em)
-        else:
+        except KeyError:
             lol = {
                 str(ctx.author.id): 0
             }
