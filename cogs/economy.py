@@ -9,28 +9,49 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 
 
+class Error(Exception):
+    pass
+
+
 class Economy:
     def __init__(self, bot):
         self.bot = bot
 
-
-    @commands.command()
-    async def openaccount(self, ctx):
-        '''Open an account. Of bananas.'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Open Account')
-        f = open("data/economy.json").read()
-        x = json.loads(f)
+    def add_points(self, id, points):
+        f = json.loads(open("data/economy.json").read())
         try:
-            x[str(ctx.guild.id)][str(ctx.author.id)]
-            em.description = "Looks like you already opened an account on dat banana bot!"
-            return await ctx.send(embed=em)
-        except KeyError:
-            lol = {
-                str(ctx.author.id): 0
-            }
-            ezjson.dump("data/economy.json", ctx.guild.id, lol)
-            em.description = "Opened your account. Have fun with bananas!"
-            return await ctx.send(embed=em)
+            points = int(points)
+        except ValueError:
+            raise Error("Points must be a number or atleast possible to be converted to a number")
+        f[str(id)] += int(points)
+        x = open("data/economy.json", "w")
+        x.write(json.dumps(f, indent=4))
+        x.close()
+
+    def is_registered(self, id):
+        f = json.loads(open("data/economy.json").read())
+        try:
+            if f.get(str(id), None) >= 0:
+                return True
+        except TypeError:  # best i could think of, maybe
+            return False
+
+
+    @commands.command(aliases=['register', 'bank', 'openbank'])
+    async def openaccount(self, ctx):
+        '''Opens a bank account for the economy!'''
+        f = json.loads(open("data/economy.json").read())
+        if self.is_registered(ctx.author.id):
+            return await ctx.send(f"You already have a bank account, current balance: {f[str(ctx.author.id)]}")
+        f[ctx.author.id] = 0
+        try:
+            x = open("data/economy.json", "w")
+            x.write(json.dumps(f, indent=4))
+            x.close() 
+            await ctx.send("Opened a bank account, have fun!")
+        except Exception as e:
+            await ctx.send(f"Oh no something went wrong: ```{e}```Please report to the developers")
+            print(e)
 
         
     @commands.command()
@@ -105,6 +126,20 @@ class Economy:
             em = discord.Embed(color=discord.Color(value=0xf44e42))
             em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
             return await ctx.send(embed=em)
+
+    @commands.command(aliases=['give'])
+    @commands.has_permissions(manage_guild=True)
+    async def reward(self, ctx, user: discord.Member, points: int):
+        '''Reward a good person'''
+        if not self.is_registered(user.id):
+            return await ctx.send("Sorry, the user doesn't have a bank account, tell them to `*openaccount` and try again")
+        else:
+            try:
+                self.add_points(user.id, points)
+                await ctx.send(f"Added {points} to {user.name}!")
+            except Exception as e:
+                await ctx.send(f"Oops something went wrong. ```{e}```Please report to the developers")
+                print(e)
 
 
 def setup(bot):
