@@ -46,6 +46,15 @@ def dev_check(id):
         return False  
 
 
+def modlog_check(guildid):
+    f = open("data/welcomemsg.json").read()
+    x = json.loads(f)
+    if x[str(guildid)] is False:
+        return False
+    else:
+        return True
+
+
 @bot.event
 async def on_ready():
     print('Bot is online, and ready to ROLL!')
@@ -56,6 +65,21 @@ async def on_ready():
         await asyncio.sleep(15)
         await bot.change_presence(game=discord.Game(name="in v6.0, BETA."))
         await asyncio.sleep(15)
+
+
+@bot.event
+async def on_message_edit(before, after):
+    if modlog_check(before.guild.id):
+        f = open("data/modlog.json").read()
+        x = json.loads(f)
+        lol = bot.get_channel(x[str(before.guild.id)])
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
+        em.add_field(name='Channel', value=f"<#{before.channel.id}>")
+        em.add_field(name='Content Before', value=before.content)
+        em.add_field(name='Content After', value=after.content)
+        await lol.send(embed=em)
+    else:
+        pass
 
 
 
@@ -88,6 +112,46 @@ async def on_member_join(member):
     else:
         lol = bot.get_channel(channel)
         await lol.send(f"Hello {member.mention}! Welcome to **{member.guild.name}**, have a great time!")
+    if modlog_check(member.guild.id):
+        f = open("data/modlog.json").read()
+        x = json.loads(f)
+        lol = bot.get_channel(x[str(member.guild.id)])
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Joined')
+        em.add_field(name="Name", value=str(member))
+        em.add_field(name='Joined At', value=str(member.joined_at.strftime("%b %m, %Y, %A, %I:%M %p")))
+        em.add_field(name="ID", value=member.id)
+        em.set_thumbnail(url=member.avatar_url)
+        await lol.send(embed=em)
+    else:
+        pass
+
+
+@bot.event
+async def on_member_remove(member):
+    if modlog_check(member.guild.id):
+        f = open("data/modlog.json").read()
+        x = json.loads(f)
+        lol = bot.get_channel(x[str(member.guild.id)])
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Left')
+        em.add_field(name="Name", value=str(member))
+        em.add_field(name="ID", value=member.id)
+        em.set_thumbnail(url=member.avatar_url)
+        await lol.send(embed=em)
+    else:
+        pass
+
+
+@bot.event
+async def on_message_delete(message):
+    if modlog_check(message.guild.id):
+        f = open("data/modlog.json").read()
+        x = json.loads(f)
+        lol = bot.get_channel(x[str(message.guild.id)])
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
+        em.add_field(name='Content', value=message.content)
+        await lol.send(embed=em)
+    else:
+        pass
 
 
 @bot.event
