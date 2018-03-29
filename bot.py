@@ -77,6 +77,7 @@ async def on_message_edit(before, after):
         em.add_field(name='Channel', value=f"<#{before.channel.id}>")
         em.add_field(name='Content Before', value=before.content)
         em.add_field(name='Content After', value=after.content)
+        em.add_field(name='Sent By', value=str(message.author)
         await lol.send(embed=em)
     else:
         pass
@@ -149,6 +150,7 @@ async def on_message_delete(message):
         lol = bot.get_channel(x[str(message.guild.id)])
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
         em.add_field(name='Content', value=message.content)
+        em.add_field(name='Sent By', value=str(message.author))
         await lol.send(embed=em)
     else:
         pass
