@@ -227,6 +227,34 @@ class mod:
                 ezjson.dump("data/welcomemsg.json", ctx.guild.id, False)
                 await ctx.send("Successfully turned off welcome messages for this guild.")
 
+
+    @commands.command()
+    async def modlog(self, ctx, action=None):
+        if action is None:
+            return await ctx.send("Please enter an action, either `on` or `off`.")
+        if action.lower() == 'on':
+            await ctx.send("Please mention the channel for mod logs to be sent in.")
+            try:
+                x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("Request timed out. Please try again.")
+            if not x.content.startswith("<#") and not x.content.endswith(">"):
+                return await ctx.send("Please properly mention the channel.")
+            channel = x.content.strip("<#").strip(">")
+            try:
+                channel = int(channel)
+            except ValueError:
+                return await ctx.send("Did you properly mention a channel? Probably not.")
+            ezjson.dump("data/modlog.json", ctx.guild.id, channel)
+            return await ctx.send(f"Successfully turned on Mod Logs in <#{channel}>. Enjoy! :white_check_mark:")
+        if action.lower() == 'off':
+            ezjson.dump("data/modlog.json", ctx.guild.id, False)
+            return await ctx.send("Turned off Mod Logs. Whew...")
+        else:
+            return await ctx.send("That ain't an action. Please enter either `on` or `off`.")
+
+
+
         
     # @commands.group(invoke_without_command = True)
     # @commands.has_permissions(administrator = True)
