@@ -77,7 +77,7 @@ async def on_message_edit(before, after):
         em.add_field(name='Channel', value=f"<#{before.channel.id}>")
         em.add_field(name='Content Before', value=before.content)
         em.add_field(name='Content After', value=after.content)
-        em.add_field(name='Sent By', value=str(message.author)
+        em.add_field(name='Sent By', value=str(message.author))
         await lol.send(embed=em)
     else:
         pass
