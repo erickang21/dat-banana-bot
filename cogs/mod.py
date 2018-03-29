@@ -231,7 +231,15 @@ class mod:
     @commands.command()
     async def modlog(self, ctx, action=None):
         if action is None:
-            return await ctx.send("Please enter an action, either `on` or `off`.")
+            f = open("data/welcomemsg.json").read()
+            x = json.loads(f)
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title="Mod Log Status")
+            try:
+                x[str(ctx.guild.id)]
+                em.description = f'Mod logs are enabled in this server, in <#{x[str(ctx.guild.id)]}>.'
+            except KeyError:
+                em.description = 'Mod logs are turned off for this server.'
+            return await ctx.send(embed=em)
         if action.lower() == 'on':
             await ctx.send("Please mention the channel for mod logs to be sent in.")
             try:
