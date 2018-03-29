@@ -47,12 +47,13 @@ def dev_check(id):
 
 
 def modlog_check(guildid):
-    f = open("data/welcomemsg.json").read()
+    f = open("data/modlog.json").read()
     x = json.loads(f)
-    if x[str(guildid)] is False:
-        return False
-    else:
+    try:
+        x[str(guildid)]
         return True
+    except KeyError:
+        return False
 
 
 @bot.event
