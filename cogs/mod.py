@@ -229,6 +229,7 @@ class mod:
 
 
     @commands.command()
+    @commands.has_permissions(manage_server = True)
     async def modlog(self, ctx, action=None):
         if action is None:
             f = open("data/modlog.json").read()
