@@ -151,6 +151,7 @@ async def on_message_delete(message):
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
         em.add_field(name='Content', value=message.content)
         em.add_field(name='Sent By', value=str(message.author))
+        em.add_field(name='Channel', value=f"<#{message.channel.id}>")
         await lol.send(embed=em)
     else:
         pass
