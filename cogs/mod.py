@@ -231,7 +231,7 @@ class mod:
     @commands.command()
     async def modlog(self, ctx, action=None):
         if action is None:
-            f = open("data/welcomemsg.json").read()
+            f = open("data/modlog.json").read()
             x = json.loads(f)
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Mod Log Status")
             try:
