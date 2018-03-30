@@ -47,8 +47,8 @@ def dev_check(id):
 
 
 def modlog_check(guildid):
-    f = open("data/modlog.json").read()
-    x = json.loads(f)
+    with open('data/modlog.json') as f:
+        x = json.loads(f.read())
     try:
         x[str(guildid)]
         return True
@@ -71,8 +71,8 @@ async def on_ready():
 @bot.event
 async def on_message_edit(before, after):
     if modlog_check(before.guild.id):
-        f = open("data/modlog.json").read()
-        x = json.loads(f)
+        with open("data/modlog.json") as f:
+            x = json.loads(f.read())
         lol = bot.get_channel(x[str(before.guild.id)])
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
         em.add_field(name='Channel', value=f"<#{before.channel.id}>")
@@ -106,8 +106,8 @@ async def on_guild_remove(guild):
     
 @bot.event
 async def on_member_join(member):
-    f = open("data/welcomemsg.json").read()
-    x = json.loads(f)
+    with open("data/welcomemsg.json") as f:
+        x = json.loads(f.read())
     channel = x[str(member.guild.id)]
     if channel is False:
         pass
@@ -115,8 +115,8 @@ async def on_member_join(member):
         lol = bot.get_channel(channel)
         await lol.send(f"Hello {member.mention}! Welcome to **{member.guild.name}**, have a great time!")
     if modlog_check(member.guild.id):
-        f = open("data/modlog.json").read()
-        x = json.loads(f)
+        with open("data/modlog.json") as f:
+            x = json.loads(f.read())
         lol = bot.get_channel(x[str(member.guild.id)])
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Joined')
         em.add_field(name="Name", value=str(member))
@@ -131,8 +131,8 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     if modlog_check(member.guild.id):
-        f = open("data/modlog.json").read()
-        x = json.loads(f)
+        with open("data/modlog.json") as f:
+            x = json.loads(f.read())
         lol = bot.get_channel(x[str(member.guild.id)])
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Left')
         em.add_field(name="Name", value=str(member))
@@ -146,8 +146,8 @@ async def on_member_remove(member):
 @bot.event
 async def on_message_delete(message):
     if modlog_check(message.guild.id):
-        f = open("data/modlog.json").read()
-        x = json.loads(f)
+        with open("data/modlog.json") as f:
+            x = json.loads(f.read())
         lol = bot.get_channel(x[str(message.guild.id)])
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
         em.add_field(name='Content', value=message.content)
@@ -320,8 +320,8 @@ async def _eval(ctx, *, body):
                        
 
                        
-f = open("data/apikeys.json").read()
-x = json.loads(f)
+with open("data/apikeys.json") as f:
+    x = json.loads(f.read())
 try:
     bot.run(x['bottoken'])
 except Exception as e:
