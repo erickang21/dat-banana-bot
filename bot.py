@@ -208,7 +208,7 @@ async def bug(ctx, *, msg:str):
  
                 
 @bot.command()
-async def say(ctx, *, message: str):
+async def say(ctx, *, message: commands.clean_content()):
     '''I say what you want me to say. Oh boi...'''
     await ctx.message.delete()
     await ctx.send(message)                   
