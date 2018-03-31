@@ -2,10 +2,27 @@ import discord
 from discord.ext import commands
 import datetime
 import sys
+import youtube_dl
 import asyncio
 import os
 import aiohttp
 import json
+
+
+if not discord.opus.is_loaded():
+    discord.opus.load_opus('libopus.so')
+
+
+YOUTUBE_DL_OPTIONS = {
+    'format': 'bestaudio',
+    'noplaylist': True,
+    'nocheckcertificate': True,
+    'ignoreerrors': False,
+    'logtostderr': False,
+    'quiet': True,
+    'no_warnings': True,
+}
+
 
 
 class Music:
