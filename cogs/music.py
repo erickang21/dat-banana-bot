@@ -8,6 +8,9 @@ import aiohttp
 import json
 
 
+if not discord.opus.is_loaded():
+    discord.opus.load_opus('libopus.so')
+
 class Music:
     def __init__(self, bot):
        self.bot = bot
