@@ -83,7 +83,11 @@ async def on_message_edit(before, after):
     else:
         pass
 
-
+@bot.event
+async def on_message(msg):
+    """Ignores the message of bots."""
+    if not msg.author.bot:
+        await bot.process_commands(msg)
 
 @bot.event
 async def on_guild_join(guild):
