@@ -1,36 +1,11 @@
 import discord
-import unicodedata
 from discord.ext import commands
-import time
-from motor.motor_asyncio import AsyncIOMotorClient
-import motor.motor_asyncio
 import datetime
 import sys
-import psutil
-import asyncpg
-from pymongo import MongoClient
-import requests
-import ftfy
-import traceback
-from discord.ext.commands import errors
-import openweathermapy.core as weather
-import platform
-import copy
 import asyncio
 import os
-import urllib.parse
-from urllib.request import urlopen
 import aiohttp
 import json
-import random
-import io
-import textwrap
-import subprocess
-import inspect
-from urllib.parse import urlencode
-from contextlib import redirect_stdout
-from utils.config import *
-from pyfiglet import figlet_format as ascii_format
 
 
 class Music:
