@@ -111,25 +111,25 @@ class Music:
                     else:
                         await msg.remove_reaction("\U000023f9", ctx.author)
                         continue
-                if str(x[0]) == ":pause_button:":
+                if str(x[0]) == "⏸":
                     if x[1] == str(ctx.author):
                         ctx.voice_client.pause()
                         await msg.remove_reaction("\U000023f8", ctx.author)
                     else:
                         await msg.remove_reaction("\U000023f8", ctx.author)
-                if str(x[0]) == ":arrow_forward:":
+                if str(x[0]) == "▶":
                     if x[1] == str(ctx.author):
                         ctx.voice_client.resume()
                         await msg.remove_reaction("\U000025b6", ctx.author)
                     else:
                         await msg.remove_reaction("\U000025b6", ctx.author)
-                if str(x[0]) == ":repeat:":
+                if str(x[0]) == "🔁":
                     if x[1] == str(ctx.author):
                         ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
                         await msg.remove_reaction("\U0001f501", ctx.author)
                     else:
                         await msg.remove_reaction("\U0001f501", ctx.author)
-                if str([0]) == ":question:":
+                if str([0]) == "❓":
                     embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
                     embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
                     embed.set_footer(text='This will revert back in 15 seconds.')
