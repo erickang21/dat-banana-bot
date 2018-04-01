@@ -85,15 +85,18 @@ class Music:
     async def play(self, ctx, *, url):
         """Search for a YouTube video to play, by name."""
         if ctx.voice_client is None:
-            return await ctx.author.voice.channel.connect()
+            await ctx.author.voice.channel.connect()
         if ctx.author.voice is None:
-            return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
+            return await ctx.send("Looks like you aren't connected to a voice channel yet, and neither am I! Where do I join?")
         try:
             player = await YTDLSource.from_url(url, loop=self.bot.loop)
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
             await ctx.send('Now playing: **{}**'.format(player.title))
         except:
             await ctx.send("Please enter a valid YouTube URL to play.")
+
+
+    
 
 
 def setup(bot):
