@@ -59,6 +59,7 @@ class Music:
        self.bot = bot
 
 
+
     @commands.command()
     async def connect(self, ctx):
         '''Connects the bot to your current voice channel.'''
@@ -87,16 +88,74 @@ class Music:
         if ctx.voice_client is None:
             await ctx.author.voice.channel.connect()
         if ctx.author.voice is None:
-            return await ctx.send("Looks like you aren't connected to a voice channel yet, and neither am I! Where do I join?")
+            return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
         try:
             player = await YTDLSource.from_url(url, loop=self.bot.loop)
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-            await ctx.send('Now playing: **{}**'.format(player.title))
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
+            em.description = player.title
+            em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            em.add_field(name='Volume', value=player.volume)
+            msg = await ctx.send(embed=em)
+            await msg.add_reaction("\U000023f8") # Pause
+            await msg.add_reaction("\U000025b6") # Play
+            await msg.add_reaction("\U000023f9") # Stop
+            await msg.add_reaction("\U0001f501") # Repeat
+            await msg.add_reaction("\U00002753") # Help
+            while True:
+                x = await self.bot.wait_for('reaction_add')
+                if str(x[0]) == ":stop_button:":
+                    if x[1] == str(ctx.author):
+                        await msg.delete()
+                        break
+                    else:
+                        await msg.remove_reaction("\U000023f9", ctx.author)
+                        continue
+                if str(x[0]) == ":pause_button:":
+                    if x[1] == str(ctx.author):
+                        ctx.voice_client.pause()
+                        await msg.remove_reaction("\U000023f8", ctx.author)
+                    else:
+                        await msg.remove_reaction("\U000023f8", ctx.author)
+                if str(x[0]) == ":arrow_forward:":
+                    if x[1] == str(ctx.author):
+                        ctx.voice_client.resume()
+                        await msg.remove_reaction("\U000025b6", ctx.author)
+                    else:
+                        await msg.remove_reaction("\U000025b6", ctx.author)
+                if str(x[0]) == ":repeat:":
+                    if x[1] == str(ctx.author):
+                        ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+                        await msg.remove_reaction("\U0001f501", ctx.author)
+                    else:
+                        await msg.remove_reaction("\U0001f501", ctx.author)
+                if str([0]) == ":question:":
+                    embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
+                    embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
+                    embed.set_footer(text='This will revert back in 15 seconds.')
+                    await msg.edit(embed=embed)
+                    await asyncio.sleep(15)
+                    await msg.edit(embed=em)    
         except:
             await ctx.send("Please enter a valid YouTube URL to play.")
 
 
-    
+    @commands.command()
+    async def pause(self, ctx):
+        """Pauses whatever is playing."""
+        if ctx.voice_client is None:
+            return await ctx.send("How do I pause without me connected to a voice channel?")
+        ctx.voice_client.pause()
+        await ctx.send("**I am now paused.** :pause_button: ")
+
+
+    @commands.command()
+    async def resume(self, ctx):
+        """Resumes whatever isn't playing."""
+        if ctx.voice_client is None:
+            return await ctx.send("How do I pause without me connected to a voice channel?")
+        ctx.voice_client.resume()
+        await ctx.send("**Carrying on!** :pause_button: ")
 
 
 def setup(bot):
