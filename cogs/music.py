@@ -2,15 +2,12 @@ import discord
 from discord.ext import commands
 import datetime
 import sys
-import youtube_dl
 import asyncio
 import os
 import aiohttp
 import json
+import youtube_dl
 
-
-if not discord.opus.is_loaded():
-    discord.opus.load_opus('libopus.so')
 
 
 YOUTUBE_DL_OPTIONS = {
@@ -21,7 +18,39 @@ YOUTUBE_DL_OPTIONS = {
     'logtostderr': False,
     'quiet': True,
     'no_warnings': True,
+    'default_search': 'auto'
 }
+
+
+ffmpeg_options = {
+    'before_options': '-nostdin',
+    'options': '-vn'
+}
+
+
+ytdl = youtube_dl.YoutubeDL(YOUTUBE_DL_OPTIONS)
+
+
+class YTDLSource(discord.PCMVolumeTransformer):
+    def __init__(self, source, *, data, volume=0.5):
+        super().__init__(source, volume)
+
+        self.data = data
+
+        self.title = data.get('title')
+        self.url = data.get('url')
+
+    @classmethod
+    async def from_url(cls, url, *, loop=None, stream=False):
+        loop = loop or asyncio.get_event_loop()
+        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
+
+        if 'entries' in data:
+            data = data['entries'][0]
+
+        filename = data['url'] if stream else ytdl.prepare_filename(data)
+        return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
+
 
 
 
@@ -52,6 +81,21 @@ class Music:
             await ctx.voice_client.disconnect()
             await ctx.send(f"Successfully disconnected from the voice channel. :white_check_mark:")
 
+    @commands.command()
+    async def play(self, ctx, *, url):
+        """Search for a YouTube video to play, by name."""
+        if ctx.voice_client is None:
+            return await ctx.author.voice.channel.connect()
+        if ctx.author.voice is None:
+            return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
+        try:
+            player = await YTDLSource.from_url(url, loop=self.bot.loop)
+            ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+            await ctx.send('Now playing: **{}**'.format(player.title))
+        except:
+            await ctx.send("Please enter a valid YouTube URL to play.")
+
 
 def setup(bot):
     bot.add_cog(Music(bot))
+
