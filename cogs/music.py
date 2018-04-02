@@ -127,6 +127,7 @@ class Music:
                     ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
                     await msg.remove_reaction("\U0001f501", ctx.author)
                 elif reaction.emoji == "❓":
+                    await msg.remove_reaction("\U00002753", ctx.author)
                     embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
                     embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
                     embed.set_footer(text='This will revert back in 15 seconds.')
