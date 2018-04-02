@@ -22,7 +22,7 @@ class Info:
         em.add_field(name='Creator', value='dat banana boi#1982')
         em.add_field(name='Devs', value='Free TNT#5796')
         em.add_field(name='Number of Servers', value=f'{len(self.bot.guilds)} servers') 
-        em.add_field(name='Version', value='6.0.3')
+        em.add_field(name='Version', value='6.0.5')
         em.add_field(name='Start Date', value='12/08/2017')
         em.add_field(name='Bot Region', value='North America')
         em.add_field(name='Code Platform', value='VS Code/GitHub')
