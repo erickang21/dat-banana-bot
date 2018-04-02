@@ -60,11 +60,11 @@ def modlog_check(guildid):
 async def on_ready():
     print('Bot is online, and ready to ROLL!')
     while True:
-        await bot.change_presence(game=discord.Game(name=f"with {len(bot.guilds)} servers!"))
+        await bot.change_presence(activity=discord.Game(name=f"with {len(bot.guilds)} servers!"))
         await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="using *help!"))
+        await bot.change_presence(activity=discord.Game(name="using *help!"))
         await asyncio.sleep(15)
-        await bot.change_presence(game=discord.Game(name="in v6.0, BETA."))
+        await bot.change_presence(activity=discord.Game(name="in v6.0, BETA."))
         await asyncio.sleep(15)
 
 
@@ -184,13 +184,13 @@ async def _set(ctx, Type=None,*,thing=None):
         await ctx.send('Do it right, plz! Usage: *presence [game/stream] [msg]')
     else:
       if Type.lower() == 'stream':
-        await bot.change_presence(game=discord.game(name=thing,type=1,url='https://www.twitch.tv/a'),status='online')
+        await bot.change_presence(activity=discord.Game(name=thing,type=1,url='https://www.twitch.tv/a'),status='online')
         await ctx.send(f'Aye aye, I am now streaming {thing}!')
       elif Type.lower() == 'game':
-        await bot.change_presence(game=discord.game(name=thing))
+        await bot.change_presence(activity=discord.Game(name=thing))
         await ctx.send(f'Aye aye, I am now playing {thing}!')
       elif Type.lower() == 'clear':
-        await bot.change_presence(game=None)
+        await bot.change_presence(activity=None)
         await ctx.send('Aye aye, I am not playing anything, anymore!')
       else:
         await ctx.send('Want me to do something? YOU do it right first. Usage: *presence [game/stream] [msg]')
