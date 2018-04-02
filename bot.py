@@ -65,7 +65,7 @@ async def on_ready():
         await asyncio.sleep(15)
         await bot.change_presence(activity=discord.Game(name="using *help!"))
         await asyncio.sleep(15)
-        await bot.change_presence(activity=discord.Game(name="in v6.0, BETA."))
+        await bot.change_presence(activity=discord.Game(name="v6.0.5"))
         await asyncio.sleep(15)
 
 
