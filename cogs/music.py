@@ -89,20 +89,29 @@ class Music:
             await ctx.author.voice.channel.connect()
         if ctx.author.voice is None:
             return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
-        try:
-            await ctx.trigger_typing()
+        await ctx.trigger_typing()
+        try:            
             player = await YTDLSource.from_url(url, loop=self.bot.loop)
+        except DownloadError:
+            return await ctx.send("Couldn't find any video with that name. Try something else.")
+        try:
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
-            em.description = player.title
-            em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-            em.add_field(name='Volume', value=player.volume)
-            msg = await ctx.send(embed=em)
+        except discord.Forbidden:
+            return await ctx.send("I don't have permissions to play in this channel.")
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
+        em.description = player.title
+        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.add_field(name='Volume', value=player.volume)
+        msg = await ctx.send(embed=em)
+        try:
             await msg.add_reaction("\U000023f8") # Pause
             await msg.add_reaction("\U000025b6") # Play
             await msg.add_reaction("\U000023f9") # Stop
             await msg.add_reaction("\U0001f501") # Repeat
             await msg.add_reaction("\U00002753") # Help
+        except discord.Forbidden:
+            return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
+        try:    
             while True:
                 reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
                 if reaction.emoji == ":stop_button:":
@@ -124,8 +133,10 @@ class Music:
                     await msg.edit(embed=embed)
                     await asyncio.sleep(15)
                     await msg.edit(embed=em)    
-        except:
-            await ctx.send("Please enter a valid YouTube URL to play.")
+        except discord.Forbidden:
+            return await ctx.send("I can't remove your reactions! Ouch.")
+        except Exception as e:
+            return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
 
 
     @commands.command()
