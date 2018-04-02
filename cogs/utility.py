@@ -35,8 +35,6 @@ class Utility:
             em.description = f"**Top Result:**\n{result[0]}\n\n**Other Results:**\n{result[1]}\n{result[2]}\n{result[3]}\n{result[4]}\n{result[5]}"
         em.set_author(name=f"Searched by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
         lol = []
-        lol.append(f"** Top Result: **\n{result[0]}\n\n**Other Results:**\n")
-        count = 0
         for x in result:
             lol.append(f"{x}\n")
         page = Pages(ctx, entries=lol, per_page=5)
