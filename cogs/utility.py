@@ -10,6 +10,7 @@ import random
 import aiohttp
 import random
 import textwrap
+from pygoogling.googling import GoogleSearch
 from .utils.paginator import Pages
 from discord.ext import commands
 
@@ -17,6 +18,24 @@ from discord.ext import commands
 class Utility:
     def __init__(self, bot):
        self.bot = bot
+
+
+    @commands.command(aliases=['g', 'gg'])
+    async def google(self, ctx, *, query: str = None):
+        if query is None:
+            return await ctx.send("Please enter a search query.")
+        search = GoogleSearch(query)
+        search.start_search()
+        result = search.search_result
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f'Google Search Results for: {query}')
+        if result == []:
+            em.description = "No results for this search term was found. :x:"
+        else:
+            em.description = f"**Top Result:**\n{result[0]}\n\n**Other Results:**\n{result[1]}\n{result[2]}\n{result[3]}\n{result[4]}\n{result[5]}"
+        em.set_author(name=f"Searched by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
+
+    
        
 
     @commands.command()
