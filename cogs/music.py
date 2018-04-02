@@ -103,7 +103,7 @@ class Music:
             await msg.add_reaction("\U0001f501") # Repeat
             await msg.add_reaction("\U00002753") # Help
             while True:
-                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: u == ctx.authorr)
+                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
                 if reaction == ":stop_button:":
                     await msg.delete()
                     break
