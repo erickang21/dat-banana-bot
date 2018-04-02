@@ -30,10 +30,17 @@ class Utility:
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f'Google Search Results for: {query}')
         if result == []:
             em.description = "No results for this search term was found. :x:"
+            return await ctx.send(embed=em)
         else:
             em.description = f"**Top Result:**\n{result[0]}\n\n**Other Results:**\n{result[1]}\n{result[2]}\n{result[3]}\n{result[4]}\n{result[5]}"
         em.set_author(name=f"Searched by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=em)
+        lol = []
+        lol.append(f"** Top Result: **\n{result[0]}\n\n**Other Results:**\n")
+        count = 0
+        for x in result:
+            lol.append(f"{x}\n")
+        page = Pages(ctx, entries=lol, per_page=5)
+        await page.paginate()
 
     
        
