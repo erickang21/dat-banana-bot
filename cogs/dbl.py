@@ -10,6 +10,9 @@ class dbl:
     def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession()
+        with open("data/apikeys.json") as f:
+            x = json.loads(f.read())
+        self.token = x['dblapi']
 
     def __unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -19,7 +22,7 @@ class dbl:
             'server_count': len(self.bot.guilds)
         })
         head = {
-            'authorization': os.environ.get('DBLTOKEN'), #idk what to do with aws
+            'authorization': self.token,
             'content-type' : 'application/json'
         }
 
