@@ -103,33 +103,20 @@ class Music:
             await msg.add_reaction("\U0001f501") # Repeat
             await msg.add_reaction("\U00002753") # Help
             while True:
-                x = await self.bot.wait_for('reaction_add')
-                if str(x[0]) == ":stop_button:":
-                    if x[1] == str(ctx.author):
-                        await msg.delete()
-                        break
-                    else:
-                        await msg.remove_reaction("\U000023f9", ctx.author)
-                        continue
-                if str(x[0]) == "⏸":
-                    if x[1] == str(ctx.author):
-                        ctx.voice_client.pause()
-                        await msg.remove_reaction("\U000023f8", ctx.author)
-                    else:
-                        await msg.remove_reaction("\U000023f8", ctx.author)
-                if str(x[0]) == "▶":
-                    if x[1] == str(ctx.author):
-                        ctx.voice_client.resume()
-                        await msg.remove_reaction("\U000025b6", ctx.author)
-                    else:
-                        await msg.remove_reaction("\U000025b6", ctx.author)
-                if str(x[0]) == "🔁":
-                    if x[1] == str(ctx.author):
-                        ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-                        await msg.remove_reaction("\U0001f501", ctx.author)
-                    else:
-                        await msg.remove_reaction("\U0001f501", ctx.author)
-                if str([0]) == "❓":
+                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: u == ctx.authorr)
+                if reaction == ":stop_button:":
+                    await msg.delete()
+                    break
+                elif reaction == "⏸":
+                    ctx.voice_client.pause()
+                    await msg.remove_reaction("\U000023f8", ctx.author)
+                elif reaction == "▶":
+                    ctx.voice_client.resume()
+                    await msg.remove_reaction("\U000025b6", ctx.author)
+                elif reaction == "🔁":
+                    ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+                    await msg.remove_reaction("\U0001f501", ctx.author)
+                elif reaction == "❓":
                     embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
                     embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
                     embed.set_footer(text='This will revert back in 15 seconds.')
