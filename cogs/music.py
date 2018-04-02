@@ -92,7 +92,7 @@ class Music:
         await ctx.trigger_typing()
         try:            
             player = await YTDLSource.from_url(url, loop=self.bot.loop)
-        except DownloadError:
+        except youtube_dl.DownloadError:
             return await ctx.send("Couldn't find any video with that name. Try something else.")
         try:
             ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
