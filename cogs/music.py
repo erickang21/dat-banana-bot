@@ -40,6 +40,9 @@ class YTDLSource(discord.PCMVolumeTransformer):
         self.title = data.get('title')
         self.url = data.get('url')
 
+    def get_duration(self):
+        return self.data.get('duration')
+
     @classmethod
     async def from_url(cls, url, *, loop=None, stream=False):
         loop = loop or asyncio.get_event_loop()
@@ -57,6 +60,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 class Music:
     def __init__(self, bot):
        self.bot = bot
+       self.queue = []
 
 
 
@@ -85,60 +89,81 @@ class Music:
     @commands.command()
     async def play(self, ctx, *, url):
         """Search for a YouTube video to play, by name."""
-        if ctx.voice_client is None:
-            await ctx.author.voice.channel.connect()
         if ctx.author.voice is None:
             return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
+        if ctx.voice_client is None:
+            await ctx.author.voice.channel.connect()
         await ctx.trigger_typing()
-        try:            
-            player = await YTDLSource.from_url(url, loop=self.bot.loop)
-        except youtube_dl.DownloadError:
-            return await ctx.send("Couldn't find any video with that name. Try something else.")
-        try:
-            ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-        except discord.Forbidden:
-            return await ctx.send("I don't have permissions to play in this channel.")
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
-        em.description = player.title
-        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-        em.add_field(name='Volume', value=player.volume)
-        msg = await ctx.send(embed=em)
-        try:
-            await msg.add_reaction("\U000023f8") # Pause
-            await msg.add_reaction("\U000025b6") # Play
-            await msg.add_reaction("\U000023f9") # Stop
-            await msg.add_reaction("\U0001f501") # Repeat
-            await msg.add_reaction("\U00002753") # Help
-        except discord.Forbidden:
-            return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
-        try:    
-            while True:
-                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
-                if reaction.emoji == ":stop_button:":
-                    await msg.delete()
-                    break
-                elif reaction.emoji == "⏸":
-                    ctx.voice_client.pause()
-                    await msg.remove_reaction("\U000023f8", ctx.author)
-                elif reaction.emoji == "▶":
-                    ctx.voice_client.resume()
-                    await msg.remove_reaction("\U000025b6", ctx.author)
-                elif reaction.emoji == "🔁":
-                    ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
-                    await msg.remove_reaction("\U0001f501", ctx.author)
-                elif reaction.emoji == "❓":
-                    await msg.remove_reaction("\U00002753", ctx.author)
-                    embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
-                    embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
-                    embed.set_footer(text='This will revert back in 15 seconds.')
-                    await msg.edit(embed=embed)
-                    await asyncio.sleep(15)
-                    await msg.edit(embed=em)    
-        except discord.Forbidden:
-            return await ctx.send("I can't remove your reactions! Ouch.")
-        except Exception as e:
-            return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
+        if not ctx.voice_client.is_playing():
+            try:            
+                player = await YTDLSource.from_url(url, loop=self.bot.loop)
+            except youtube_dl.DownloadError:
+                return await ctx.send("Couldn't find any video with that name. Try something else.")        
+            try:
+                ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+            except discord.Forbidden:
+                return await ctx.send("I don't have permissions to play in this channel.")
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
+            em.description = player.title
+            em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+            em.add_field(name='Length', value=f"{int(player.get_duration())/60}:{int(player.get_duration) - int(int(player.get_duration())/60)*60}")
+            em.add_field(name='Volume', value=player.volume)
+            em.add_field(name='Position in Queue', value='0')
+            msg = await ctx.send(embed=em)
+            try:
+                await msg.add_reaction("\U000023f8") # Pause
+                await msg.add_reaction("\U000025b6") # Play
+                await msg.add_reaction("\U000023f9") # Stop
+                await msg.add_reaction("\U0001f501") # Repeat
+                await msg.add_reaction("\U00002753") # Help
+            except discord.Forbidden:
+                return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
+            try:    
+                while True:
+                    reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
+                    if reaction.emoji == ":stop_button:":
+                        await msg.delete()
+                        break
+                    elif reaction.emoji == "⏸":
+                        ctx.voice_client.pause()
+                        await msg.remove_reaction("\U000023f8", ctx.author)
+                    elif reaction.emoji == "▶":
+                        ctx.voice_client.resume()
+                        await msg.remove_reaction("\U000025b6", ctx.author)
+                    elif reaction.emoji == "🔁":
+                        ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+                        await msg.remove_reaction("\U0001f501", ctx.author)
+                    elif reaction.emoji == "❓":
+                        await msg.remove_reaction("\U00002753", ctx.author)
+                        embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
+                        embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
+                        embed.set_footer(text='This will revert back in 15 seconds.')
+                        await msg.edit(embed=embed)
+                        await asyncio.sleep(15)
+                        await msg.edit(embed=em)    
+            except discord.Forbidden:
+                return await ctx.send("I can't remove your reactions! Ouch.")
+            except Exception as e:
+                return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
 
+        else:
+            try:
+                to_play = await YTDLSource.from_url(url, loop=self.bot.loop)
+            except youtube_dl.DownloadError:
+                return await ctx.send("Couldn't find any video with that name. Try something else.")
+            self.queue.append(to_play)       
+            try:
+                ctx.voice_client.play(self.queue[0], after=lambda e: print('Player error: %s' % e) if e else None)
+            except discord.Forbidden:
+                return await ctx.send("I don't have permissions to play in this channel.")
+            await asyncio.sleep(to_play.get_duration())
+            self.queue.remove(self.queue[0])
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Added to queue!')
+            em.description = f"Song: {to_play.title}"
+            em.add_field(name='Position in Queue', value=len(self.queue) - 1)
+            em.add_field(name='Length', value=f"{int(to_play.get_duration())/60}:{int(to_play.get_duration) - int(int(to_play.get_duration())/60)*60}")
+            em.set_author(name=f"Played by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=em)
 
     @commands.command()
     async def pause(self, ctx):
