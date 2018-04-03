@@ -106,7 +106,7 @@ class Music:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
             em.description = player.title
             em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-            em.add_field(name='Length', value=f"{int(player.get_duration())/60}:{int(player.get_duration) - int(int(player.get_duration())/60)*60}")
+            em.add_field(name='Length', value=f"{int(player.get_duration())/60}:{int(player.get_duration()) - int(int(player.get_duration())/60)*60}")
             em.add_field(name='Volume', value=player.volume)
             em.add_field(name='Position in Queue', value='0')
             msg = await ctx.send(embed=em)
