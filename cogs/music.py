@@ -62,6 +62,10 @@ class Music:
        self.bot = bot
        self.queue = []
 
+        
+    async def next_song(self, ctx, player):
+        next = await YTDLSource.from_url(self.queue[0], loop=self.bot.loop)
+        ctx.voice_client.play(next)
 
 
     @commands.command()
@@ -100,13 +104,13 @@ class Music:
             except youtube_dl.DownloadError:
                 return await ctx.send("Couldn't find any video with that name. Try something else.")        
             try:
-                ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+                ctx.voice_client.play(player, after=self.next_song if self.next_song else None)
             except discord.Forbidden:
                 return await ctx.send("I don't have permissions to play in this channel.")
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
             em.description = player.title
             em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-            em.add_field(name='Length', value=f"{int(player.get_duration())/60}:{int(player.get_duration()) - int(int(player.get_duration())/60)*60}")
+            em.add_field(name='Length', value=f"{int(int(player.get_duration())/60)}:{int(player.get_duration()) - int(int(player.get_duration())/60)*60}")
             em.add_field(name='Volume', value=player.volume)
             em.add_field(name='Position in Queue', value='0')
             msg = await ctx.send(embed=em)
@@ -145,23 +149,16 @@ class Music:
                 return await ctx.send("I can't remove your reactions! Ouch.")
             except Exception as e:
                 return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
-
         else:
             try:
                 to_play = await YTDLSource.from_url(url, loop=self.bot.loop)
             except youtube_dl.DownloadError:
                 return await ctx.send("Couldn't find any video with that name. Try something else.")
             self.queue.append(to_play)       
-            try:
-                ctx.voice_client.play(self.queue[0], after=lambda e: print('Player error: %s' % e) if e else None)
-            except discord.Forbidden:
-                return await ctx.send("I don't have permissions to play in this channel.")
-            await asyncio.sleep(to_play.get_duration())
-            self.queue.remove(self.queue[0])
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Added to queue!')
             em.description = f"Song: {to_play.title}"
             em.add_field(name='Position in Queue', value=len(self.queue) - 1)
-            em.add_field(name='Length', value=f"{int(to_play.get_duration())/60}:{int(to_play.get_duration()) - int(int(to_play.get_duration())/60)*60}")
+            em.add_field(name='Length', value=f"{int(int(to_play.get_duration()))/60}:{int(to_play.get_duration()) - int(int(to_play.get_duration())/60)*60}")
             em.set_author(name=f"Played by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
             await ctx.send(embed=em)
 
