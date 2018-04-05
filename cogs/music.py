@@ -158,7 +158,7 @@ class Music:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Added to queue!')
             em.description = f"Song: {to_play.title}"
             em.add_field(name='Position in Queue', value=len(self.queue) - 1)
-            em.add_field(name='Length', value=f"{int(int(to_play.get_duration()))/60}:{int(to_play.get_duration()) - int(int(to_play.get_duration())/60)*60}")
+            em.add_field(name='Length', value=f"{int(int(to_play.get_duration())/60)}:{int(to_play.get_duration()) - int(int(to_play.get_duration())/60)*60}")
             em.set_author(name=f"Played by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
             await ctx.send(embed=em)
 
