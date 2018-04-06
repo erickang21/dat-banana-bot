@@ -18,7 +18,7 @@ import json
 
 def getprefix(bot, message):
     with open("data/prefix.json") as f:
-        x = json.loads(f)
+        x = json.loads(f.read())
     pre = x.get(str(message.guild.id), "*")
     return pre 
 
