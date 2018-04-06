@@ -33,7 +33,7 @@ class fun:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://api.giphy.com/v1/gifs/trending?api_key={self.giphy_key}') as resp:
                     resp = await resp.json()
-                    em.set_image(url=resp['data'][random.randint(0, len(resp['data']) - 1)]['url'])
+                    em.set_image(url=f"https://media.giphy.com/media/{resp['data'][random.randint(0, len(resp['data']) - 1)]['id']}/giphy.gif")
                     em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
                     em.set_footer(text='Powered by Giphy API')
                     await ctx.send(embed=em)
