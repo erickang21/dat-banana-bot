@@ -23,7 +23,7 @@ def getprefix(bot, message):
     return pre 
 
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or(getprefix),description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
+bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
 bot._last_result = None
 bot.remove_command("help")
 bot.load_extension("cogs.math")

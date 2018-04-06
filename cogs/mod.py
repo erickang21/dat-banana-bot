@@ -269,17 +269,14 @@ class mod:
         em = discord.Embed(color=discord.Color(value=0x00ff00), title="Bot Prefix")
         if prefix is None:
             em.description = f"The bot's prefix for server **{ctx.guild.name}** is set to `{ctx.prefix}`."
-            em.set_footer(text="The bot commands can always be accessed by [tag bot] [command].\nUse *prefix clear to remove it.")
             return await ctx.send(embed=em)
         if prefix.lower() == 'clear':
             ezjson.dump("data/prefix.json", ctx.guild.id, "*")
             em.description = f"The bot's prefix is now set to the default: `*`."
-            em.set_footer(text="The bot commands can always be accessed by [tag bot] [command].\nUse *prefix clear to remove it.")
             return await ctx.send(embed=em)
         else:
             ezjson.dump("data/prefix.json", ctx.guild.id, prefix)
             em.description = f"The bot's prefix for this server is set to: `{prefix}`."
-            em.set_footer(text="The bot commands can always be accessed by [tag bot] [command].\nUse *prefix clear to remove it.")
             return await ctx.send(embed=em)
         
             
