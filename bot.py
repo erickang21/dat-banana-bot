@@ -14,7 +14,16 @@ import inspect
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('*'),description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
+
+
+def getprefix(bot, message):
+    with open("data/prefix.json") as f:
+        x = json.loads(f)
+    pre = x.get(str(message.guild.id), "*")
+    return pre 
+
+
+bot = commands.Bot(command_prefix=commands.when_mentioned_or(getprefix),description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
 bot._last_result = None
 bot.remove_command("help")
 bot.load_extension("cogs.math")
@@ -319,8 +328,10 @@ async def _eval(ctx, *, body):
         await ctx.message.add_reaction('\u2705')
                        
                        
-
-                       
+if __name__ != "__main__": 
+    print("Bot did not start with the main file (bot.py).")
+if bot.user.id != 388476336777461770:
+    print("The bot files are not being hosted on the bot user: dat banana bot#0170. Please do not host other instances of the bot.")
 with open("data/apikeys.json") as f:
     x = json.loads(f.read())
 try:
