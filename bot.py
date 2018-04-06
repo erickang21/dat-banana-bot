@@ -328,10 +328,10 @@ async def _eval(ctx, *, body):
         await ctx.message.add_reaction('\u2705')
                        
                        
-if __name__ != "__main__": 
-    print("Bot did not start with the main file (bot.py).")
-if bot.user.id != 388476336777461770:
-    print("The bot files are not being hosted on the bot user: dat banana bot#0170. Please do not host other instances of the bot.")
+#if __name__ != "__main__": 
+#    print("Bot did not start with the main file (bot.py).")
+#if bot.user.id != 388476336777461770:
+#    print("The bot files are not being hosted on the bot user: dat banana bot#0170. Please do not host other instances of the bot.")
 with open("data/apikeys.json") as f:
     x = json.loads(f.read())
 try:
