@@ -16,6 +16,7 @@ class fun:
         with open('data/apikeys.json') as f:
             lol = json.load(f)
             self.client = lol.get("idioticapi")
+        self.giphy_key = lol.get("giphyapi")
 
 
     def format_avatar(self, avatar_url):
@@ -24,7 +25,22 @@ class fun:
         return avatar_url.replace("webp","png")
 
 
-
+    @commands.command()
+    async def gif(self, ctx):
+        """Sends a random GIF, that's memey as hell."""
+        try:
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title="Random GIF")
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'https://api.giphy.com/v1/gifs/trending?api_key={self.giphy_key}') as resp:
+                    resp = await resp.json()
+                    em.set_image(url=resp['data'][random.randint(0, len(resp['data'] - 1))]['url'])
+                    em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+                    em.set_footer(text='Powered by Giphy API')
+                    await ctx.send(embed=em)
+        except Exception as e:
+            em = discord.Embed(color=discord.Color(value=0xe5f442), title="An error occurred.")
+            em.description = f"More details: \n\n```{e}```"
+            await ctx.send(embed=em)
 
 
 
