@@ -131,7 +131,7 @@ class Utility:
             await ctx.send("Please enter a game to search! Usage: *playing [game]")
         else:
             msg = ""
-            members = [x for x in ctx.guild.members if x.activity.name == game]
+            members = [x for x in ctx.guild.members if str(x.activity) == game]
             for x in members:
                 msg += f"{str(x)} \n"
             if msg == "":
