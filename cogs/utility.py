@@ -131,11 +131,9 @@ class Utility:
             await ctx.send("Please enter a game to search! Usage: *playing [game]")
         else:
             msg = ""
-            members = ctx.guild.members
+            members = [x for x in ctx.guild.members if x.activity != None]
             for x in members:
-                if x.game != None:
-                    if x.game.name == game:
-                        msg += f"{str(x)} \n"
+                msg += f"{str(x)} \n"
             if msg == "":
                 msg = 'No one in the server is currently playing this game!'
             color = discord.Color(value=0x00ff00)
