@@ -99,8 +99,10 @@ async def on_message_edit(before, after):
 async def on_guild_join(guild):
     lol = bot.get_channel(392443319684300801)
     em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = "dat banana bot has arrived in a new server!"
-    em.description = f"Server: {guild}"
+    em.title = "dat banana bot has joined a new server!"
+    em.description = f"**{guild.name}**"
+    em.set_footer(text=f"ID: {guild.id}")
+    em.set_thumbnail(url=guild.avatar_url)
     await lol.send(embed=em)
     await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help!")
 
@@ -110,7 +112,10 @@ async def on_guild_remove(guild):
     lol = bot.get_channel(392443319684300801)
     em = discord.Embed(color=discord.Color(value=0xf44242))
     em.title = "dat banana bot has been removed from a server."
-    em.description = f"Server: {guild}"
+    em.description = f"**{guild.name}**"
+    em.set_footer(text=f"ID: {guild.id}")
+    em.set_thumbnail(url=guild.avatar_url)
+    await lol.send(embed=em)
     await lol.send(embed=em)
 
     
