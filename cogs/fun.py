@@ -45,7 +45,7 @@ class fun:
 
 
     @commands.command(aliases=['joke', 'badjoke', 'shitjoke'])
-    async def horriblejoke(self, ctx):
+    async def horrijoke(self, ctx):
         """It's a REALLY REALLY bad joke. Trust me."""
         async with aiohttp.ClientSession() as session:
             async with session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as response:
@@ -105,7 +105,7 @@ class fun:
         await asyncio.sleep(3)
         await msg.edit(content="Retrieving Login Info... [▓▓▓▓▓▓ ]")
         await asyncio.sleep(4)
-        await msg.edit(content=f"An error has occurred hacking {user}'s account. Please try again later. ❌")   
+        await msg.edit(content=f"{user.mention}'s password is ▓▓▓▓▓▓▓▓▓▓▓▓▓▓ ")   
    
     
     @commands.command()
