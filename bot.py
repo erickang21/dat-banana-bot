@@ -102,7 +102,7 @@ async def on_guild_join(guild):
     em.title = "dat banana bot has joined a new server!"
     em.description = f"**{guild.name}**"
     em.set_footer(text=f"ID: {guild.id}")
-    em.set_thumbnail(url=guild.avatar_url)
+    em.set_thumbnail(url=guild.icon_url)
     await lol.send(embed=em)
     await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help!")
 
@@ -114,7 +114,7 @@ async def on_guild_remove(guild):
     em.title = "dat banana bot has been removed from a server."
     em.description = f"**{guild.name}**"
     em.set_footer(text=f"ID: {guild.id}")
-    em.set_thumbnail(url=guild.avatar_url)
+    em.set_thumbnail(url=guild.icon_url)
     await lol.send(embed=em)
     await lol.send(embed=em)
 
