@@ -27,6 +27,7 @@ class IdioticAPI:
         if user is None:
             user = ctx.author
         try:
+            await ctx.trigger_typing()
             client = idioticapi.Client(self.client, dev=True)
             av = self.format_avatar(user.avatar_url)
             await ctx.send(f"Grrrr...**{user.name}** is triggered.", file=discord.File(await client.triggered(av), "triggered.gif"))
@@ -39,6 +40,7 @@ class IdioticAPI:
         if user is None:
             await ctx.send("Gotta tag someone that you wanna slap!")
         else:
+            await ctx.trigger_typing()
             try:
                 client = idioticapi.Client(self.client, dev=True)
                 av = self.format_avatar(user.avatar_url)
@@ -51,10 +53,11 @@ class IdioticAPI:
     @commands.command()
     async def missing(self, ctx, user: discord.Member = None):
         """Uh-oh...someone went missing!"""
+        await ctx.trigger_typing()
         user = ctx.author if user is None else user
         try:
             client = idioticapi.Client(self.client, dev=True)
-            await ctx.send(f"**{user.name}** is wanted!", file=discord.File(await client.missing(user.avatar_url, user.name), "missing.png"))
+            await ctx.send(f"**{user.name}** went missing!", file=discord.File(await client.missing(user.avatar_url, user.name), "missing.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
@@ -62,10 +65,11 @@ class IdioticAPI:
     @commands.command()
     async def wanted(self, ctx, user: discord.Member = None):
         """Someone is WANTED!"""
+        await ctx.trigger_typing()
         user = ctx.author if user is None else user
         try:
             client = idioticapi.Client(self.client, dev=True)
-            await ctx.send(f"**{user.name}** went missing!", file=discord.File(await client.wanted(user.avatar_url), "wanted.png"))
+            await ctx.send(f"**{user.name}** is wanted!", file=discord.File(await client.wanted(user.avatar_url), "wanted.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
