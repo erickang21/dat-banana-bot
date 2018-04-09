@@ -116,7 +116,6 @@ async def on_guild_remove(guild):
     em.set_footer(text=f"ID: {guild.id}")
     em.set_thumbnail(url=guild.icon_url)
     await lol.send(embed=em)
-    await lol.send(embed=em)
 
     
 @bot.event
