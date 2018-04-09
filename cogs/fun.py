@@ -19,7 +19,14 @@ class fun:
         self.giphy_key = lol.get("giphyapi")
 
 
-    
+    @commands.command()
+    async def searchemoji(self, ctx, *, emoji):
+        """Searches an emoji from the bot's servers."""
+        e = discord.utils.get(bot.emojis, name=emoji)
+        if e is None:
+            return await ctx.send("No emoji found from the list of my servers.\nThe bot cannot search YOUR servers, only the servers that it is currently in.")
+        await ctx.send(e)
+
 
 
     @commands.command()
