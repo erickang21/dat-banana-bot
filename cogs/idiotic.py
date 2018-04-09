@@ -77,7 +77,7 @@ class IdioticAPI:
     @commands.command()
     async def achievement(self, ctx, *, text=None):
         """Give yourself an achievement. You need one."""
-        text = text if text is not None else "Not putting text when using this command."
+        text = text if text else "Not putting text when using this command."
         try:
             client = idioticapi.Client(self.client, dev=True)
             await ctx.send(f"**{ctx.author.name}** got an achievement!", file=discord.File(await client.achievement(ctx.author.avatar_url, text), "achievement.png"))
