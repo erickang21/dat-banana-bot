@@ -19,10 +19,7 @@ class fun:
         self.giphy_key = lol.get("giphyapi")
 
 
-    def format_avatar(self, avatar_url):
-        if avatar_url.endswith(".gif"):
-            return avatar_url + "?size=2048"
-        return avatar_url.replace("webp","png")
+    
 
 
     @commands.command()
@@ -55,34 +52,6 @@ class fun:
                 em.description = r['punchline']
                 em.set_footer(text="Ha. Ha. Ha. Very funny, huh?")
                 await ctx.send(embed=em)
-
-    
-    @commands.command(aliases=['triggered'])
-    async def triggeredpic(self, ctx, user: discord.Member = None):
-        """TRI GER RED!!!"""
-        if user is None:
-            user = ctx.author
-        try:
-            client = idioticapi.Client(self.client, dev=True)
-            av = self.format_avatar(user.avatar_url)
-            await ctx.send(file=discord.File(await client.triggered(av), "triggered.gif"))
-        except Exception as e:
-            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
-
-
-    @commands.command()
-    async def batslap(self, ctx, user: discord.Member = None): 
-        """User 1 will be slapping, user 2 will BE SLAPPED! Tehehe!"""
-        if user is None:
-            await ctx.send("Gotta tag someone that you wanna slap!")
-        else:
-            try:
-                client = idioticapi.Client(self.client, dev=True)
-                av = self.format_avatar(user.avatar_url)
-                avatar = self.format_avatar(ctx.author.avatar_url)
-                await ctx.send(file=discord.File(await client.batslap(avatar, av), "batslap.png"))
-            except Exception as e:
-                await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
        
        
