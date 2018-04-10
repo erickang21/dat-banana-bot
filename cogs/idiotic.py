@@ -8,7 +8,7 @@ from discord.ext import commands
 
 
 
-class IdioticAPI:
+class Idiotic:
     def __init__(self, bot):
         self.bot = bot
         with open('data/apikeys.json') as f:
@@ -85,4 +85,4 @@ class IdioticAPI:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
 def setup(bot):
-    bot.add_cog(IdioticAPI(bot))
+    bot.add_cog(Idiotic(bot))
