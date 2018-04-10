@@ -28,7 +28,11 @@ class Utility:
         async with aiohttp.ClientSession() as session:
             async with session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
                 resp = await resp.read()
-                await ctx.send(file=discord.File(resp, f"{e.name}.png"))
+                if e.animated:
+                    extension = '.gif'
+                else:
+                    extension = '.png'
+                await ctx.send(file=discord.File(resp, f"{e.name}{extension}"))
 
     @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd'])
     @commands.has_permissions(manage_emojis = True)
