@@ -36,7 +36,16 @@ class Utility:
         """Adds an emoji by the emoji's name."""
         e = discord.utils.get(self.bot.emojis, name=emoji)
         if e is None:
-            return await ctx.send("No emoji found from the list of my servers.\nThe bot cannot search YOUR servers, only the servers that it is currently in.")
+            await ctx.send("No emoji found from the list of my servers.\nYou can reply with an emoji ID, and the bot will add it for you. Otherwise, reply 'cancel' to end the search.")
+            try:
+                x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=45.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("The request timed out. Please try again.")
+            if x.content.lower() == 'cancel':
+                return await ctx.send("The process has ended.")
+            if self.bot.get_emoji(int(x.content)) is None:
+                return await ctx.send("Sorry, no emoji with that ID is found. ¯\_(ツ)_/¯")
+            e = self.bot.get_emoji(int(x.content)) 
         count = 0
         animate = 0
         for x in ctx.guild.emojis:
