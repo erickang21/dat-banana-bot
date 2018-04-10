@@ -19,6 +19,43 @@ class Utility:
     def __init__(self, bot):
        self.bot = bot
 
+    @commands.command()
+    async def searchemoji(self, ctx, *, emoji):
+        """Searches an emoji from the bot's servers."""
+        e = discord.utils.get(self.bot.emojis, name=emoji)
+        if e is None:
+            return await ctx.send("No emoji found from the list of my servers.\nThe bot cannot search YOUR servers, only the servers that it is currently in.")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
+                resp = await resp.read()
+                await ctx.send(discord.File(resp, f"{e.name}"))
+
+    @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd'])
+    @commands.has_permissions(manage_emojis = True)
+    async def addemoji(self, ctx, *, emoji):
+        """Adds an emoji by the emoji's name."""
+        e = discord.utils.get(self.bot.emojis, name=emoji)
+        if e is None:
+            return await ctx.send("No emoji found from the list of my servers.\nThe bot cannot search YOUR servers, only the servers that it is currently in.")
+        count = 0
+        animate = 0
+        for x in ctx.guild.emojis:
+            if not e.animated:
+                if not x.animated:
+                    count += 1
+                else:
+                    animate += 1
+        if count >= 50 or animate >= 50:
+            return await ctx.send(f"This server has reached the limit for custom emojis! {self.bot.get_emoji(430853757350445077)}")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
+                img = await resp.read()
+                try:
+                    await ctx.guild.create_custom_emoji(name=e.name, image=img)
+                    await ctx.send(f"The emoji has been created in the guild! :{e.name}:")
+                except discord.Forbidden:
+                    return await ctx.send("The bot does not have Manage Emojis permission.")
+
 
     @commands.command(aliases=['g', 'gg'])
     async def google(self, ctx, *, query: str = None):
