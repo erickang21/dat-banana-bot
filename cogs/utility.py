@@ -22,6 +22,7 @@ class Utility:
     @commands.command()
     async def searchemoji(self, ctx, *, emoji):
         """Searches an emoji from the bot's servers."""
+        await ctx.message.delete()
         e = discord.utils.get(self.bot.emojis, name=emoji)
         if e is None:
             return await ctx.send("No emoji found from the list of my servers.\nThe bot cannot search YOUR servers, only the servers that it is currently in.")
@@ -63,9 +64,13 @@ class Utility:
         async with aiohttp.ClientSession() as session:
             async with session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
                 img = await resp.read()
+                if e.animated:
+                    extension = '.gif'
+                else:
+                    extension = '.png'
                 try:
                     await ctx.guild.create_custom_emoji(name=e.name, image=img)
-                    await ctx.send(f"The emoji has been created in the guild! :{e.name}:")
+                    await ctx.send(f"The emoji has been created in the server! Name: {e.name}", file=discord.File(resp, f"{e.name}{extension}"))
                 except discord.Forbidden:
                     return await ctx.send("The bot does not have Manage Emojis permission.")
 
