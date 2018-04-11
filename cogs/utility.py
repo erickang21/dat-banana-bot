@@ -64,13 +64,11 @@ class Utility:
         async with aiohttp.ClientSession() as session:
             async with session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
                 img = await resp.read()
-                if e.animated:
-                    extension = '.gif'
-                else:
-                    extension = '.png'
                 try:
+                    em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"The emoji has been created in the server! Name: {e.name}")
                     await ctx.guild.create_custom_emoji(name=e.name, image=img)
-                    await ctx.send(f"The emoji has been created in the server! Name: {e.name}", file=discord.File(resp, f"{e.name}{extension}"))
+                    em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
+                    await ctx.send(embed=em)
                 except discord.Forbidden:
                     return await ctx.send("The bot does not have Manage Emojis permission.")
 
