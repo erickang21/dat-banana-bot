@@ -84,13 +84,16 @@ async def on_message_edit(before, after):
     if modlog_check(before.guild.id):
         with open("data/modlog.json") as f:
             x = json.loads(f.read())
-        lol = bot.get_channel(x[str(before.guild.id)])
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
-        em.add_field(name='Channel', value=f"<#{before.channel.id}>")
-        em.add_field(name='Content Before', value=before.content)
-        em.add_field(name='Content After', value=after.content)
-        em.add_field(name='Sent By', value=str(before.author))
-        await lol.send(embed=em)
+        try:
+            lol = bot.get_channel(x[str(before.guild.id)])
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
+            em.add_field(name='Channel', value=f"<#{before.channel.id}>")
+            em.add_field(name='Content Before', value=before.content)
+            em.add_field(name='Content After', value=after.content)
+            em.add_field(name='Sent By', value=str(before.author))
+            await lol.send(embed=em)
+        except KeyError:
+            pass
     else:
         pass
 
@@ -123,7 +126,10 @@ async def on_guild_remove(guild):
 async def on_member_join(member):
     with open("data/welcomemsg.json") as f:
         x = json.loads(f.read())
-    channel = x[str(member.guild.id)]
+    try:
+        channel = x[str(member.guild.id)]
+    except KeyError:
+        return
     if channel is False:
         pass
     else:
@@ -163,12 +169,15 @@ async def on_message_delete(message):
     if modlog_check(message.guild.id):
         with open("data/modlog.json") as f:
             x = json.loads(f.read())
-        lol = bot.get_channel(x[str(message.guild.id)])
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
-        em.add_field(name='Content', value=message.content)
-        em.add_field(name='Sent By', value=str(message.author))
-        em.add_field(name='Channel', value=f"<#{message.channel.id}>")
-        await lol.send(embed=em)
+        try:
+            lol = bot.get_channel(x[str(message.guild.id)])
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
+            em.add_field(name='Content', value=message.content)
+            em.add_field(name='Sent By', value=str(message.author))
+            em.add_field(name='Channel', value=f"<#{message.channel.id}>")
+            await lol.send(embed=em)
+        except KeyError:
+            pass
     else:
         pass
 
