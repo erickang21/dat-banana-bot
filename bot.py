@@ -75,7 +75,7 @@ async def on_ready():
         await asyncio.sleep(15)
         await bot.change_presence(activity=discord.Game(name="using *help!"))
         await asyncio.sleep(15)
-        await bot.change_presence(activity=discord.Game(name="v6.0.5"))
+        await bot.change_presence(activity=discord.Game(name="v6.0.6"))
         await asyncio.sleep(15)
 
 
@@ -180,6 +180,8 @@ async def on_message_delete(message):
             pass
     else:
         pass
+
+
 
 
 @bot.event

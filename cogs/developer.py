@@ -149,11 +149,13 @@ class Developer:
 
     @commands.command()
     async def blacklist(self, ctx, user: discord.Member):
-        if not self.owner_check(ctx.author.id):
-            await ctx.send("DON'T BE SHADY... :eyes:\nThis command is owner only. :x:")
-        else:
-            ezjson.dump("data/blacklist.json", ctx.author.id, True)
-            await ctx.send("Success. :white_check_mark: The user is now put on the blacklist. :smiling_imp: ")
+        ezjson.dump("data/blacklist.json", ctx.author.id, True)
+        await ctx.send("Success. :white_check_mark: The user is now put on the blacklist. :smiling_imp: ")
+
+    @commands.command()
+    async def unblacklist(self, ctx, user: discord.Member):
+        ezjson.dump("data/blacklist.json", ctx.author.id, False)
+        await ctx.send("Success. :white_check_mark: The user is ")
 
 
     @commands.command(pass_context=True, hidden=True)
