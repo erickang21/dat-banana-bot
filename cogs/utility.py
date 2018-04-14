@@ -10,6 +10,7 @@ import random
 import aiohttp
 import random
 import textwrap
+import urllib.parse
 from pygoogling.googling import GoogleSearch
 from .utils.paginator import Pages
 from discord.ext import commands
