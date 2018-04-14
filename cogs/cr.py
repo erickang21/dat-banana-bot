@@ -285,10 +285,14 @@ class CR:
         em.set_author(name=profile.name, icon_url=ctx.author.avatar_url)
         desc = ""
         for x in chests.upcoming:
-            desc += f"{x} {self.emoji(x)} \n"
-        desc += "**Chests Until:**\n"
-        desc += f"{self.emoji('super magical')} {chests.superMagical}\n{self.emoji('magical')} {chests.magical}\n{self.emoji('legendary')} {chests.legendary}\n{self.emoji('epic')} {chests.epic}\n{self.emoji('giant')} {chests.giant}"
+            desc += f"{self.emoji(x)} "
+        desc += "\n\n**Upcoming Chests**"
         em.description = desc
+        em.add_field(name=self.emoji('super magical'), value=chests.superMagical)
+        em.add_field(name=self.emoji('magical'), value=chests.magical)
+        em.add_field(name=self.emoji('legendary'), value=chests.legendary)
+        em.add_field(name=self.emoji('epic'), value=chests.epic)
+        em.add_field(name=self.emoji('giant'), value=chests.giant)
         em.set_footer(text="Royale API")
         await ctx.send(embed=em)
 
