@@ -28,7 +28,7 @@ class CR:
         with open('data/emojis.json') as f:
             lol = json.load(f)
         e = lol[name]
-        emo = self.bot.get_emoji(e)
+        emo = self.bot.get_emoji(int(e))
         return emo if emo is not None else None
 
 
