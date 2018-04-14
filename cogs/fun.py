@@ -11,7 +11,7 @@ from discord.ext import commands
 
 
 class fun:
-    def __init__(self, bot):
+    def __init__(self, bot, session):
         self.bot = bot
         self.session = session
         with open('data/apikeys.json') as f:
