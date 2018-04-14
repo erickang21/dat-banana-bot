@@ -261,6 +261,37 @@ class CR:
         await ctx.send(embed=em)
 
 
+    @commands.command()
+    async def crchests(self, ctx, crtag=None):
+        """Get your upcoming chests!"""
+        if crtag is None:
+            try:
+                with open('data/crtags.json') as f:
+                    lol = json.load(f)
+                userid = str(ctx.author.id)
+                crtag = lol[userid]
+            except KeyError:
+                return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
+        try:
+            profile = await self.client.get_player(crtag)
+            chests = await self.client.get_player_chests(crtag)
+        except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
+            print(e)
+            color = discord.Color(value=0xf44e42)
+            em = discord.Embed(color=color, title='Royale API error.')
+            em.description = f"{e.code}: {e.error}"
+            return await ctx.send(embed=em)
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Player Chests')
+        em.set_author(name=profile.name, icon_url=ctx.author.avatar_url)
+        desc = ""
+        for x in chests.upcoming:
+            desc += f"{x} {self.emoji(x)} \n"
+        desc += "**Chests Until:**\n"
+        desc += f"{self.emoji('super magical')} {chests.superMagical}\n{self.emoji('magical')} {chests.magical}\n{self.emoji('legendary')} {chests.legendary}\n{self.emoji('epic')} {chests.epic}\n{self.emoji('giant')} {chests.giant}"
+        em.description = desc
+        em.set_footer(text="Royale API")
+        await ctx.send(embed=em)
+
 
         
 
