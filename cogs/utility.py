@@ -27,9 +27,9 @@ class Utility:
         async with aiohttp.ClientSession() as session:
             async with session.get(f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}") as resp:
                 message = await resp.text()
-                if len('​`​`​`' + message + '​`​`​`') > 2000:
+                if len(f"```{message}```") > 2000:
                     return await ctx.send('Your ASCII is too long!')
-                await ctx.send('​`​`​`' + message + '​`​`​`')
+                await ctx.send(f"```{message}```")
 
 
     @commands.command()
