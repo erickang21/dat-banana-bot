@@ -288,11 +288,11 @@ class CR:
             desc += f"{self.emoji(x)} "
         desc += "\n\n**Upcoming Chests**"
         em.description = desc
-        em.add_field(name=self.emoji('super magical'), value=chests.superMagical)
-        em.add_field(name=self.emoji('magical'), value=chests.magical)
-        em.add_field(name=self.emoji('legendary'), value=chests.legendary)
-        em.add_field(name=self.emoji('epic'), value=chests.epic)
-        em.add_field(name=self.emoji('giant'), value=chests.giant)
+        em.add_field(name=self.emoji('super magical'), value=chests.superMagical, inline=False)
+        em.add_field(name=self.emoji('magical'), value=chests.magical, inline=False)
+        em.add_field(name=self.emoji('legendary'), value=chests.legendary, inline=False)
+        em.add_field(name=self.emoji('epic'), value=chests.epic, inline=False)
+        em.add_field(name=self.emoji('giant'), value=chests.giant, inline=False)
         em.set_footer(text="Royale API")
         await ctx.send(embed=em)
 
