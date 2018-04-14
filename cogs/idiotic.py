@@ -14,7 +14,7 @@ class Idiotic:
         with open('data/apikeys.json') as f:
             lol = json.load(f)
         self.token = lol.get("idioticapi")
-        self.client = idioticapi.Client(self.client, dev=True)
+        self.client = idioticapi.Client(self.token, dev=True)
 
     def format_avatar(self, avatar_url):
         if avatar_url.endswith(".gif"):
