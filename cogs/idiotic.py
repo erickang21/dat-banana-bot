@@ -30,7 +30,7 @@ class Idiotic:
         try:
             await ctx.trigger_typing()
             av = self.format_avatar(user.avatar_url)
-            await ctx.send(f"Grrrr...**{user.name}** is triggered.", file=discord.File(await client.triggered(av), "triggered.gif"))
+            await ctx.send(f"Grrrr...**{user.name}** is triggered.", file=discord.File(await self.client.triggered(av), "triggered.gif"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
@@ -45,7 +45,7 @@ class Idiotic:
 
                 av = self.format_avatar(user.avatar_url)
                 avatar = self.format_avatar(ctx.author.avatar_url)
-                await ctx.send(f"Ouch! **{ctx.author.name}** slapped **{user.name}!**", file=discord.File(await client.batslap(avatar, av), "batslap.png"))
+                await ctx.send(f"Ouch! **{ctx.author.name}** slapped **{user.name}!**", file=discord.File(await self.client.batslap(avatar, av), "batslap.png"))
             except Exception as e:
                 await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
