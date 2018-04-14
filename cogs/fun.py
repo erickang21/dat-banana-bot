@@ -11,7 +11,7 @@ from discord.ext import commands
 
 
 class fun:
-    def __init__(self, bot, session):
+    def __init__(self, bot):
         self.bot = bot
         self.session = session
         with open('data/apikeys.json') as f:
@@ -302,4 +302,4 @@ class fun:
 
 
 def setup(bot):
-    bot.add_cog(fun(bot, session))
+    bot.add_cog(fun(bot))
