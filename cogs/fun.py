@@ -13,6 +13,7 @@ from discord.ext import commands
 class fun:
     def __init__(self, bot):
         self.bot = bot
+        self.session = session
         with open('data/apikeys.json') as f:
             lol = json.load(f)
             self.client = lol.get("idioticapi")
@@ -28,13 +29,12 @@ class fun:
         """Sends a random GIF, that's memey as hell."""
         try:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Random GIF")
-            async with aiohttp.ClientSession() as session:
-                async with session.get(f'https://api.giphy.com/v1/gifs/trending?api_key={self.giphy_key}') as resp:
-                    resp = await resp.json()
-                    em.set_image(url=f"https://media.giphy.com/media/{resp['data'][random.randint(0, len(resp['data']) - 1)]['id']}/giphy.gif")
-                    em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
-                    em.set_footer(text='Powered by Giphy API')
-                    await ctx.send(embed=em)
+            async with self.session.get(f'https://api.giphy.com/v1/gifs/trending?api_key={self.giphy_key}') as resp:
+                resp = await resp.json()
+                em.set_image(url=f"https://media.giphy.com/media/{resp['data'][random.randint(0, len(resp['data']) - 1)]['id']}/giphy.gif")
+                em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+                em.set_footer(text='Powered by Giphy API')
+                await ctx.send(embed=em)
         except Exception as e:
             em = discord.Embed(color=discord.Color(value=0xf44242), title="An error occurred.")
             em.description = f"More details: \n\n```{e}```"
