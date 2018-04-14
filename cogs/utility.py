@@ -19,6 +19,18 @@ class Utility:
     def __init__(self, bot):
        self.bot = bot
 
+
+    @commands.command()
+    async def ascii(self, ctx, *, text):
+        """Send fancy ASCII text!"""
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}") as resp:
+                message = await resp.text()
+                if len('​`​`​`' + message + '​`​`​`') > 2000:
+                    return await ctx.send('Your ASCII is too long!')
+                await ctx.send('​`​`​`' + message + '​`​`​`')
+
+
     @commands.command()
     async def searchemoji(self, ctx, *, emoji):
         """Searches an emoji from the bot's servers."""
