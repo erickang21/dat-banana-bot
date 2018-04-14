@@ -26,7 +26,7 @@ class CR:
 
     def emoji(self, name):
         with open('data/emojis.json') as f:
-            lol = json.load(f.read())
+            lol = json.load(f)
         e = lol[name]
         emo = self.bot.get_emoji(e)
         return emo if emo is not None else None
@@ -231,50 +231,35 @@ class CR:
             try:
                 with open('data/crtags.json') as f:
                     lol = json.load(f)
-                    userid = str(ctx.author.id)
-                    crtag = lol[userid]
+                userid = str(ctx.author.id)
+                crtag = lol[userid]
             except KeyError:
                 return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
-            else:
-                try:
-                    profile = await self.client.get_player(crtag)
-                except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
-                    print(e)
-                    color = discord.Color(value=0xf44e42)
-                    em = discord.Embed(color=color, title='Royale API error.')
-                    em.description = f"{e.code}: {e.error}"
-                    return await ctx.send(embed=em)
-                deck = ''
-                avgelixir = 0
-                for card in profile.current_deck:
-                    cardname = card.name 
-                    getemoji = self.emoji(cardname) 
-                    e = getemoji if getemoji is not None else self.emoji('soon')
-                    deck += f"{getemoji} {cardname} - Level {card.level} \n"
-                    avgelixir += card.elixir
-                avgelixir = f'{(avgelixir / 8):.1f}' 
-                color = discord.Color(value=0x00ff00)
-                em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
-                em.description = deck
-                em.add_field(name='Average Elixir Cost', value=avgelixir)
-                em.set_author(name='Battle Deck')
-                em.set_footer(text='cr-api.com')
-                await ctx.send(embed=em)
-        else:
+        try:
             profile = await self.client.get_player(crtag)
-            deck = ''
-            avgelixir = 0
-            for card in profile.current_deck:
-                deck += f"{card.name}{self.get_emoji(card.name)}{card.level} \n"
-                avgelixir += card.elixir
-            avgelixir = f'{(avgelixir / 8):.1f}' 
-            color = discord.Color(value=0x00ff00)
-            em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
-            em.description = deck
-            em.add_field(name='Average Elixir Cost', value=avgelixir)
-            em.set_author(name='Battle Deck')
-            em.set_footer(text='cr-api.com')
-            await ctx.send(embed=em)
+        except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
+            print(e)
+            color = discord.Color(value=0xf44e42)
+            em = discord.Embed(color=color, title='Royale API error.')
+            em.description = f"{e.code}: {e.error}"
+            return await ctx.send(embed=em)
+        deck = ''
+        avgelixir = 0
+        for card in profile.current_deck:
+            cardname = card.name 
+            getemoji = self.emoji(cardname) 
+            e = getemoji if getemoji is not None else self.emoji('soon')
+            deck += f"{getemoji} {cardname} - Level {card.level} \n"
+            avgelixir += card.elixir
+        avgelixir = f'{(avgelixir / 8):.1f}' 
+        color = discord.Color(value=0x00ff00)
+        em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
+        em.description = deck
+        em.add_field(name='Average Elixir Cost', value=avgelixir)
+        em.set_author(name='Battle Deck')
+        em.set_footer(text='cr-api.com')
+        await ctx.send(embed=em)
+
 
 
         
