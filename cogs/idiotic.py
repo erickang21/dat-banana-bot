@@ -90,7 +90,7 @@ class Idiotic:
         user = user if user is not None else ctx.author
         try:
             client = idioticapi.Client(self.client, dev=True)
-            await ctx.send(f"**{ctx.author.name}** had to facepalm.", file=discord.File(await client.facepalm(ctx.author.avatar_url), "facepalm.png"))
+            await ctx.send(f"**{user.name}** had to facepalm.", file=discord.File(await client.facepalm(user.avatar_url), "facepalm.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
@@ -99,7 +99,7 @@ class Idiotic:
         user = user if user is not None else ctx.author
         try:
             client = idioticapi.Client(self.client, dev=True)
-            await ctx.send(f"**{ctx.author.name}** is beautiful!", file=discord.File(await client.beautiful(ctx.author.avatar_url), "beautiful.png"))
+            await ctx.send(f"**{user.name}** is beautiful!", file=discord.File(await client.beautiful(user.avatar_url), "beautiful.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
@@ -108,7 +108,7 @@ class Idiotic:
         user = user if user is not None else ctx.author
         try:
             client = idioticapi.Client(self.client, dev=True)
-            await ctx.send(f"**{ctx.author.name}** got stepped on.", file=discord.File(await client.stepped(ctx.author.avatar_url), "stepped.png"))
+            await ctx.send(f"**{user.name}** got stepped on.", file=discord.File(await client.stepped(user.avatar_url), "stepped.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
@@ -117,7 +117,7 @@ class Idiotic:
         user = user if user is not None else ctx.author
         try:
             client = idioticapi.Client(self.client, dev=True)
-            await ctx.send(f"**{ctx.author.name}** is SCARY!", file=discord.File(await client.heavyfear(ctx.author.avatar_url), "fear.png"))
+            await ctx.send(f"**{user.name}** is SCARY!", file=discord.File(await client.heavyfear(user.avatar_url), "fear.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
