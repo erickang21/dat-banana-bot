@@ -24,11 +24,12 @@ class CR:
             return True      
 
 
-    def get_emoji(self, emoji):
+    def emoji(self, name):
         with open('data/emojis.json') as f:
-            lol = json.load(f)
-            e = lol[emoji]
-            return self.bot.get_emoji(e)
+            lol = json.load(f.read())
+        e = lol[name]
+        emo = self.bot.get_emoji(e)
+        return emo if emo is not None else None
 
 
     
@@ -247,10 +248,9 @@ class CR:
                 avgelixir = 0
                 for card in profile.current_deck:
                     cardname = card.name 
-                    getemoji = self.get_emoji(cardname)
-                    if getemoji is None:
-                        getemoji = self.bot.get_emoji("soon")
-                    deck += f"{cardname} {getemoji} - Level {card.level} \n"
+                    getemoji = self.emoji(cardname) 
+                    e = getemoji if getemoji is not None else self.emoji('soon')
+                    deck += f"{getemoji} {cardname} - Level {card.level} \n"
                     avgelixir += card.elixir
                 avgelixir = f'{(avgelixir / 8):.1f}' 
                 color = discord.Color(value=0x00ff00)
