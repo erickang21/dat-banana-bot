@@ -9,7 +9,7 @@ uri = 'https://discordbots.org/api'
 class dbl:
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession()
+        self.session = self.bot.session
         with open("data/apikeys.json") as f:
             x = json.loads(f.read())
         self.token = x['dblapi']

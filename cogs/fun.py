@@ -45,14 +45,13 @@ class fun:
     @commands.command(aliases=['joke', 'badjoke', 'shitjoke'])
     async def horriblejoke(self, ctx):
         """It's a REALLY REALLY bad joke. Trust me."""
-        async with aiohttp.ClientSession() as session:
-            async with session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as response:
-                r = await response.json()
-                color = discord.Color(value=0x00ff00)
-                em = discord.Embed(color=color, title=r['setup'])
-                em.description = r['punchline']
-                em.set_footer(text="Ha. Ha. Ha. Very funny, huh?")
-                await ctx.send(embed=em)
+        async with self.session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as response:
+            r = await response.json()
+        color = discord.Color(value=0x00ff00)
+        em = discord.Embed(color=color, title=r['setup'])
+        em.description = r['punchline']
+        em.set_footer(text="Ha. Ha. Ha. Very funny, huh?")
+        await ctx.send(embed=em)
 
        
        
@@ -89,10 +88,9 @@ class fun:
     @commands.command()
     async def yomomma(self, ctx):
         '''Sends a random yo momma joke. Outdated?'''
-        async with aiohttp.ClientSession() as session:
-            async with session.get("http://api.yomomma.info/") as resp:
-                resp = await resp.json(content_type=None)
-                await ctx.send(resp['joke'])
+        async with self.session.get("http://api.yomomma.info/") as resp:
+            resp = await resp.json(content_type=None)
+        await ctx.send(resp['joke'])
 
 
 
