@@ -70,6 +70,7 @@ def modlog_check(guildid):
 
 @bot.event
 async def on_ready():
+    bot.session = aiohttp.ClientSession()
     print('Bot is online, and ready to ROLL!')
     while True:
         await bot.change_presence(activity=discord.Game(name=f"with {len(bot.guilds)} servers!"))
