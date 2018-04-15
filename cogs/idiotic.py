@@ -114,6 +114,119 @@ class Idiotic:
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
+    @commands.command()
+    async def blame(self, ctx, *, text=None):
+        try:
+            await ctx.send(file=discord.File(await self.client.blame(str(text)), "blame.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def thumbsup(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** gives a thumbs-up.", file=discord.File(await self.client.vault(user.avatar_url), "thumbsup.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def challenger(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is a challenger!", file=discord.File(await self.client.challenger(user.avatar_url), "challenger.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def superpunch(self, ctx, user: discord.Member = None):
+        if user is None:
+            return await ctx.send("Tag someone for them to be PUNCHED!")
+        try:
+            await ctx.send(f"OUCH. **{ctx.author.name}** punched **{user.name}**!", file=discord.File(await self.client.superpunch(ctx.author.avatar_url, user.avatar_url), "superpunch.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def card(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is on a Steam card!", file=discord.File(await self.client.steam(user.avatar_url, user.name), "steam.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def painting(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is on a painting!", file=discord.File(await self.client.bobross(user.avatar_url), "painting.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+    
+    @commands.command()
+    async def waifuinsult(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** got insulted.", file=discord.File(await self.client.waifuinsult(user.avatar_url), "waifuinsult.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def scary(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** scared off a poor kid.", file=discord.File(await self.client.wreckit(user.avatar_url, ctx.author.name), "scary.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def approved(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is now approved.", file=discord.File(await self.client.approved(user.avatar_url), "approved.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def rejected(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** got rejected.", file=discord.File(await self.client.rejected(user.avatar_url), "rejected.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def gay(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is GAY.", file=discord.File(await self.client.rainbow(user.avatar_url), "gay.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def greyscale(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is in greyscale.", file=discord.File(await self.client.greyscale(user.avatar_url), "greyscale.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def invert(self, ctx, user: discord.Member = None):
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** has inverted color!", file=discord.File(await self.client.invert(user.avatar_url), "invert.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def crush(self, ctx, user: discord.Member = None):
+        if user is None:
+            return await ctx.send("I'm sorry, can you *tag the person you have a crush on?*")
+        try:
+            await ctx.send(f"**{ctx.author.name}** has a crush on **{user.name}**!", file=discord.File(await self.client.crush(ctx.author.avatar_url, user.avatar_url), "crush.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
 
 def setup(bot):
     bot.add_cog(Idiotic(bot))
