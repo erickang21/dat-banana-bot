@@ -34,9 +34,10 @@ class Utility:
             em = discord.Embed(color=discord.Color(value=0xf44e42), title='An error occurred.')
             em.description = 'No results found.'
             return await ctx.send(embed=em)
-        if len(res) > 1900:
+        if len(res) > 2048:
             em.description = f"Result too long to fit in a message. View the result: https://wikipedia.org/wiki/{query.replace(' ', '_')}"
-        em.description = res
+        else:
+            em.description = res
         em.set_footer(text=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
