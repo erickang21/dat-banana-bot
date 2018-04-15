@@ -12,6 +12,7 @@ import inspect
 import traceback
 from contextlib import redirect_stdout
 from collections import Counter
+from inspect import getsource
 from discord.ext import commands
 
 
@@ -109,6 +110,8 @@ class Developer:
 
     @commands.command()
     async def loadcog(self, ctx, cog=None):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         if cog is None:
             await ctx.send("Please enter a cog to load it!")
         else:
@@ -122,6 +125,8 @@ class Developer:
 
     @commands.command()
     async def unloadcog(self, ctx, cog=None):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         if cog is None:
             await ctx.send("Please enter a cog to unload it!")
         else:
@@ -135,6 +140,8 @@ class Developer:
 
     @commands.command()
     async def reloadcog(self, ctx, cog=None):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         if cog is None:
             await ctx.send("Please enter a cog to reload it!")
         else:
@@ -145,17 +152,17 @@ class Developer:
                 await msg.edit(content="Reloaded the cog! :white_check_mark:")
             except Exception as e:
                 await msg.edit(content=f"An error occured. Details: \n{e}")
-             
+
 
     @commands.command()
-    async def blacklist(self, ctx, user: discord.Member):
-        ezjson.dump("data/blacklist.json", ctx.author.id, True)
-        await ctx.send("Success. :white_check_mark: The user is now put on the blacklist. :smiling_imp: ")
+    async def source(self, ctx, command=None):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+        cmd = self.bot.get_command(command)
+        if cmd is None:
+            return await ctx.send("Could not find that command.")
+        await ctx.send(f"```py\n{getsource(cmd.callback)}```")
 
-    @commands.command()
-    async def unblacklist(self, ctx, user: discord.Member):
-        ezjson.dump("data/blacklist.json", ctx.author.id, False)
-        await ctx.send("Success. :white_check_mark: The user is ")
 
 
     @commands.command(pass_context=True, hidden=True)
