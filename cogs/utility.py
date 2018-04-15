@@ -10,6 +10,7 @@ import random
 import aiohttp
 import random
 import textwrap
+import wikipedia
 import urllib.parse
 from pygoogling.googling import GoogleSearch
 from discord.ext import commands
@@ -22,14 +23,32 @@ class Utility:
        self.session = self.bot.session
 
 
+    @commands.command(name='wikipedia', aliases=['wiki'])
+    async def _wikipedia(self, ctx, *, query=None):
+        if query is None:
+            return await ctx.send("Please include what you want to search.")
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Wikipedia Results for: {query}")
+        try:
+            res = wikipedia.summary(str(query))
+        except wikipedia.exceptions.PageError:
+            em = discord.Embed(color=discord.Color(value=0xf44e42), title='An error occurred.')
+            em.description = 'No results found.'
+            return await ctx.send(embed=em)
+        if len(res) > 1900:
+            em.description = f"Result too long to fit in a message. View the result: https://wikipedia.org/wiki/{query.replace(' ', '_')}"
+        em.description = res
+        em.set_footer(text=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
+
+
     @commands.command()
     async def ascii(self, ctx, *, text):
         """Send fancy ASCII text!"""
         async with self.session.get(f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}") as resp:
             message = await resp.text()
-        if len(f"```{message}```") > 2000:
-            return await ctx.send('Your ASCII is too long!')
-        await ctx.send(f"```{message}```")
+            if len(f"```{message}```") > 2000:
+                return await ctx.send('Your ASCII is too long!')
+            await ctx.send(f"```{message}```")
 
 
     @commands.command()
