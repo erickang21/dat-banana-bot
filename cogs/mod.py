@@ -92,21 +92,17 @@ class mod:
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def ban(self, ctx, user: discord.Member = None, msgdeletedays: int = 0, *, reason=None):
+    async def ban(self, ctx, user: discord.Member = None, *, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
         if user is None:
             await ctx.send("To swing the ban hammer, use the command like this: \n*ban [@user] [days of msgs to delete] [reason]")
         try:
-            await user.ban(delete_message_days=msgdeletedays, reason=reason)
+            await user.ban(reason=reason)
             color = discord.Color(value=0x00ff00)
             em = discord.Embed(color=color, title='Banned!')
             em.add_field(name='User', value=user.name)
             em.add_field(name='Banned By', value=ctx.author.name)
-            em.add_field(name='Days of Messages Deleted', value=f"{msgdeletedays} days")
-            if reason is None:
-                reason = 'No reason given.'
-            else:
-                reason = reason
+            reason = reason if reason is not None else 'No reason given.'
             em.add_field(name='Reason', value=reason)
             em.set_thumbnail(url=user.avatar_url)
             await ctx.send(embed=em)
@@ -280,7 +276,27 @@ class mod:
             return await ctx.send(embed=em)
         
             
-
+    @commands.command()
+    @commands.has_permissions(ban_members = True)
+    async def hackban(self, ctx, id = None, reason=None):
+        if id is None:
+            return await ctx.send("Please enter the ID of a person to ban them.")
+        try:
+            id = int(id)
+        except ValueError:
+            return await ctx.send("Did you enter a valid user ID?")
+        lol = discord.Object(id)
+        try:
+            await ctx.guild.ban(lol, reason=reason)
+        except discord.Forbidden:
+            await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
+        color = discord.Color(value=0x00ff00)
+        em = discord.Embed(color=color, title='Banned!')
+        em.add_field(name='Banned By', value=ctx.author.name)
+        reason = reason if reason is not None else 'No reason given.'
+        em.add_field(name='Reason', value=reason)
+        await ctx.send(embed=em)
+        
 
 
         
