@@ -41,11 +41,11 @@ class Utility:
             return await ctx.send("No emoji found from the list of my servers.\nThe bot cannot search YOUR servers, only the servers that it is currently in.")
         async with self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
             resp = await resp.read()
-        if e.animated:
-            extension = '.gif'
-        else:
-            extension = '.png'
-        await ctx.send(file=discord.File(resp, f"{e.name}{extension}"))
+            if e.animated:
+                extension = '.gif'
+            else:
+                extension = '.png'
+            await ctx.send(file=discord.File(resp, f"{e.name}{extension}"))
 
     @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd'])
     @commands.has_permissions(manage_emojis = True)
@@ -75,13 +75,13 @@ class Utility:
             return await ctx.send(f"This server has reached the limit for custom emojis! {self.bot.get_emoji(430853757350445077)}")
         async with self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
             img = await resp.read()
-        try:
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"The emoji has been created in the server! Name: {e.name}")
-            await ctx.guild.create_custom_emoji(name=e.name, image=img)
-            em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
-            await ctx.send(embed=em)
-        except discord.Forbidden:
-            return await ctx.send("The bot does not have Manage Emojis permission.")
+            try:
+                em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"The emoji has been created in the server! Name: {e.name}")
+                await ctx.guild.create_custom_emoji(name=e.name, image=img)
+                em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
+                await ctx.send(embed=em)
+            except discord.Forbidden:
+                return await ctx.send("The bot does not have Manage Emojis permission.")
 
 
     @commands.command(aliases=['g', 'gg'])
@@ -163,9 +163,9 @@ class Utility:
             em = discord.Embed(color=color, title='TinyURL Link Shortener')
             async with self.session.get(f'http://tinyurl.com/api-create.php?url={url}') as resp:
                 resp = await resp.text()
-            em.description = f"Shortened Link: \n{resp}"
-            em.add_field(name='Original Link', value=url)
-            await ctx.send(embed=em)
+                em.description = f"Shortened Link: \n{resp}"
+                em.add_field(name='Original Link', value=url)
+                await ctx.send(embed=em)
 
 
     @commands.command()
@@ -176,13 +176,13 @@ class Utility:
         else:
             async with self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}') as resp:
                 r = await resp.json()
-            color = discord.Color(value=0x00ff00)
-            em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
-            lol = []
-            for x in r['list']:
-                lol.append(f"{x['definition']} \n\n*{x['example']}* \n\n**Votes**\n:thumbsup: {x['thumbs_up']}  :thumbsdown: {x['thumbs_down']} \n\nDefinition written by {x['author']}")
-            ud = Pages(ctx, entries=lol, per_page=1)
-            await ud.paginate()
+                color = discord.Color(value=0x00ff00)
+                em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
+                lol = []
+                for x in r['list']:
+                    lol.append(f"{x['definition']} \n\n*{x['example']}* \n\n**Votes**\n:thumbsup: {x['thumbs_up']}  :thumbsdown: {x['thumbs_down']} \n\nDefinition written by {x['author']}")
+                ud = Pages(ctx, entries=lol, per_page=1)
+                await ud.paginate()
 
 
     @commands.command()
