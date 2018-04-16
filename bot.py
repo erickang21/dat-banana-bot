@@ -14,6 +14,10 @@ import inspect
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
+from motor.motor_asyncio import AsyncIOMotorClient
+
+
+
 
 
 def getprefix(bot, message):
@@ -26,6 +30,9 @@ def getprefix(bot, message):
 bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
 bot._last_result = None
 bot.session = aiohttp.ClientSession()
+with open("data/apikeys.json") as f:
+    x = json.load(f)
+bot.db = AsyncIOMotorClient(x['mongodb'])
 bot.remove_command("help")
 bot.load_extension("cogs.math")
 bot.load_extension("cogs.mod")
@@ -129,14 +136,14 @@ async def on_member_join(member):
     with open("data/welcomemsg.json") as f:
         x = json.loads(f.read())
     try:
-        channel = x[str(member.guild.id)]
+        channel = int(x['channel'])
     except KeyError:
         return
     if channel is False:
         pass
     else:
         lol = bot.get_channel(channel)
-        await lol.send(f"Hello {member.mention}! Welcome to **{member.guild.name}**, have a great time!")
+        await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if modlog_check(member.guild.id):
         with open("data/modlog.json") as f:
             x = json.loads(f.read())

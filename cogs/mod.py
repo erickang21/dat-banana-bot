@@ -194,12 +194,11 @@ class mod:
         if action is None:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Welcome Messages')
             try:
-                f = open("data/welcomemsg.json").read()
-                x = json.loads(f)
-                if x[str(ctx.guild.id)] is False:
+                x = await self.bot.db.datbananabot.modlog.find_one({"id": str(ctx.guild.id)})
+                if x['channel'] is False:
                     em.description = 'Welcome messages are disabled for this server.'
                 else:
-                    em.description = f'Welcome messages are turned on for this server, set in <#{x[str(ctx.guild.id)]}>.'
+                    em.description = f"Welcome messages are turned on for this server, set in <#{x['channel']}>.\n\nMessage: {x['message']}"
             except KeyError:
                 em.description = 'Welcome messages are disabled for this server.'
             await ctx.send(embed=em)
@@ -217,10 +216,15 @@ class mod:
                     channel = int(channel)
                 except ValueError:
                     return await ctx.send("Did you properly mention a channel? Probably not.")
-                ezjson.dump("data/welcomemsg.json", ctx.guild.id, channel)
+                await ctx.send("Please enter the message to send when someone joins.\n\n```Variables: \n{name}: The user's name.\n{mention}: Mention the user.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```")
+                try:
+                    x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+                except asyncio.TimeoutError:
+                    return await ctx.send("Request timed out. Please try again.")
+                await self.bot.db.datbananabot.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
                 await ctx.send("Successfully turned on welcome messages for this guild.")
             elif action.lower() == 'off':
-                ezjson.dump("data/welcomemsg.json", ctx.guild.id, False)
+                await self.bot.db.datbananabot.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off welcome messages for this guild.")
 
 
