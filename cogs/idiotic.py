@@ -75,6 +75,7 @@ class Idiotic:
     @commands.command()
     async def achievement(self, ctx, *, text=None):
         """Give yourself an achievement. You need one."""
+        await ctx.trigger_typing()
         text = text if text else "Not putting text when using this command."
         try:
             await ctx.send(f"**{ctx.author.name}** got an achievement!", file=discord.File(await self.client.achievement(ctx.author.avatar_url, text), "achievement.png"))
@@ -84,6 +85,7 @@ class Idiotic:
 
     @commands.command()
     async def facepalm(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** had to facepalm.", file=discord.File(await self.client.facepalm(user.avatar_url), "facepalm.png"))
@@ -92,6 +94,7 @@ class Idiotic:
 
     @commands.command()
     async def beautiful(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is beautiful!", file=discord.File(await self.client.beautiful(user.avatar_url), "beautiful.png"))
@@ -100,6 +103,7 @@ class Idiotic:
 
     @commands.command()
     async def stepped(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** got stepped on.", file=discord.File(await self.client.stepped(user.avatar_url), "stepped.png"))
@@ -108,6 +112,7 @@ class Idiotic:
 
     @commands.command()
     async def fear(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is SCARY!", file=discord.File(await self.client.heavyfear(user.avatar_url), "fear.png"))
@@ -116,6 +121,7 @@ class Idiotic:
 
     @commands.command()
     async def blame(self, ctx, *, text=None):
+        await ctx.trigger_typing()
         try:
             await ctx.send(file=discord.File(await self.client.blame(str(text)), "blame.png"))
         except Exception as e:
@@ -123,6 +129,7 @@ class Idiotic:
 
     @commands.command()
     async def thumbsup(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** gives a thumbs-up.", file=discord.File(await self.client.vault(user.avatar_url), "thumbsup.png"))
@@ -131,6 +138,7 @@ class Idiotic:
 
     @commands.command()
     async def challenger(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is a challenger!", file=discord.File(await self.client.challenger(user.avatar_url), "challenger.png"))
@@ -139,6 +147,7 @@ class Idiotic:
 
     @commands.command()
     async def superpunch(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         if user is None:
             return await ctx.send("Tag someone for them to be PUNCHED!")
         try:
@@ -148,6 +157,7 @@ class Idiotic:
 
     @commands.command()
     async def card(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is on a Steam card!", file=discord.File(await self.client.steam(user.avatar_url, user.name), "steam.png"))
@@ -156,6 +166,7 @@ class Idiotic:
 
     @commands.command()
     async def painting(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is on a painting!", file=discord.File(await self.client.bobross(user.avatar_url), "painting.png"))
@@ -164,6 +175,7 @@ class Idiotic:
     
     @commands.command()
     async def waifuinsult(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** got insulted.", file=discord.File(await self.client.waifuinsult(user.avatar_url), "waifuinsult.png"))
@@ -172,6 +184,7 @@ class Idiotic:
 
     @commands.command()
     async def scary(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** scared off a poor kid.", file=discord.File(await self.client.wreckit(user.avatar_url, ctx.author.name), "scary.png"))
@@ -180,6 +193,7 @@ class Idiotic:
 
     @commands.command()
     async def approved(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is now approved.", file=discord.File(await self.client.approved(user.avatar_url), "approved.png"))
@@ -188,6 +202,7 @@ class Idiotic:
 
     @commands.command()
     async def rejected(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** got rejected.", file=discord.File(await self.client.rejected(user.avatar_url), "rejected.png"))
@@ -196,6 +211,7 @@ class Idiotic:
 
     @commands.command()
     async def gay(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is GAY.", file=discord.File(await self.client.rainbow(user.avatar_url), "gay.png"))
@@ -204,6 +220,7 @@ class Idiotic:
 
     @commands.command()
     async def greyscale(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** is in greyscale.", file=discord.File(await self.client.greyscale(user.avatar_url), "greyscale.png"))
@@ -212,6 +229,7 @@ class Idiotic:
 
     @commands.command()
     async def invert(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
             await ctx.send(f"**{user.name}** has inverted color!", file=discord.File(await self.client.invert(user.avatar_url), "invert.png"))
@@ -220,6 +238,7 @@ class Idiotic:
 
     @commands.command()
     async def crush(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
         if user is None:
             return await ctx.send("I'm sorry, can you *tag the person you have a crush on?*")
         try:
