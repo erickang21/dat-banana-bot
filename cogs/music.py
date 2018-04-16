@@ -67,7 +67,7 @@ class Music:
             await ctx.voice_client.disconnect()
         else:
             next = await YTDLSource.from_url(self.queue[0], loop=self.bot.loop)
-            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx)).result())
+            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx), loop=self.bot.loop).result())
             return await ctx.send("Next song playing.")
 
     @commands.command()
@@ -106,7 +106,7 @@ class Music:
             except youtube_dl.DownloadError:
                 return await ctx.send("Couldn't find any video with that name. Try something else.")        
             try:
-                ctx.voice_client.play(player, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx)).result())
+                ctx.voice_client.play(player, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx), loop=self.bot.loop).result())
             except discord.Forbidden:
                 return await ctx.send("I don't have permissions to play in this channel.")
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
