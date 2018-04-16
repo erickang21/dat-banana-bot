@@ -133,8 +133,7 @@ async def on_guild_remove(guild):
     
 @bot.event
 async def on_member_join(member):
-    with open("data/welcomemsg.json") as f:
-        x = json.loads(f.read())
+    x = await bot.db.datbananabot.welcome.find_one({"id": str(member.guild.id)})
     try:
         channel = int(x['channel'])
     except KeyError:
@@ -160,6 +159,16 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
+    x = await bot.db.datbananabot.leave.find_one({"id": str(member.guild.id)})
+    try:
+        channel = int(x['channel'])
+    except KeyError:
+        return
+    if channel is False:
+        pass
+    else:
+        lol = bot.get_channel(channel)
+        await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if modlog_check(member.guild.id):
         with open("data/modlog.json") as f:
             x = json.loads(f.read())
