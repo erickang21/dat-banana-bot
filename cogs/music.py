@@ -27,7 +27,7 @@ ffmpeg_options = {
     'options': '-vn'
 }
 
-
+youtube_dl.utils.bug_reports_message = lambda: ''
 ytdl = youtube_dl.YoutubeDL(YOUTUBE_DL_OPTIONS)
 
 
