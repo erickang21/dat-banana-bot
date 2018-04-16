@@ -63,9 +63,8 @@ class Music:
 
     async def next_song(self, ctx): #Player is not needed smh
         self.queue.pop(0) #Remove the first element
-        if len(self.queue) === 0: #Check if the queue length is 0 if it is disconnect else play the next song
+        if len(self.queue) == 0: #Check if the queue length is 0 if it is disconnect else play the next song
             await ctx.voice_client.disconnect()
-            return await ctx.send("Oof, The music queue has ended.")
         else:
             next = await YTDLSource.from_url(self.queue[0], loop=self.bot.loop)
             ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx)).result())
