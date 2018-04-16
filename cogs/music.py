@@ -61,14 +61,13 @@ class Music:
        self.bot = bot
        self.queue = []
 
-    async def next_song(self, ctx): #Player is not needed smh
+    async def next_song(self, ctx, loop): #Player is not needed smh
         self.queue.pop(0) #Remove the first element
         if len(self.queue) == 0: #Check if the queue length is 0 if it is disconnect else play the next song
             await ctx.voice_client.disconnect()
         else:
-            next = await YTDLSource.from_url(self.queue[0], loop=self.bot.loop)
-            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx), loop=self.bot.loop).result())
-            return await ctx.send("Next song playing.")
+            next = await YTDLSource.from_url(self.queue[0], loop=loop)
+            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop)).result()
 
     @commands.command()
     async def connect(self, ctx):
@@ -106,7 +105,7 @@ class Music:
             except youtube_dl.DownloadError:
                 return await ctx.send("Couldn't find any video with that name. Try something else.")        
             try:
-                ctx.voice_client.play(player, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx), loop=self.bot.loop).result())
+                ctx.voice_client.play(player, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, self.bot.loop)).result())
             except discord.Forbidden:
                 return await ctx.send("I don't have permissions to play in this channel.")
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
