@@ -78,14 +78,33 @@ def modlog_check(guildid):
 @bot.event
 async def on_ready():
     bot.session = aiohttp.ClientSession()
+    presence = [
+        "*help | May the 🍌 rule all.",
+        "*help | acccccCCCCCCCCCCCK!",
+        "*help | LoL is gucci.",
+        "*help | Who took my 🍌?",
+        "*help | Always 🤔ing",
+        "*help | hmmm. hmmmMM?",
+        "*help | succ. coc. ack.",
+        "*help | LoL > Fortnite",
+        "*help | Python > JS",
+        "*help | Hmm. Hmm?",
+        "*help | I am not a w33b b0t.",
+        "*help | https://discord.gg/3Nxb7yZ (where I belong)",
+        "*help | REEEEEEEEEE",
+        "*help | No one deserves ma token.",
+        "*help | League of Legends FTW",
+        f"*help | in {len(bot.guilds)} servers!",
+        "*help | and the dicc goes skrrrrrra",
+        "*help | I tell her MANS NOT HOT",
+        "*help | da wae = ded meme",
+        "*help | I belong in ALL YO SERVERS BOI"
+    ]
     print('Bot is online, and ready to ROLL!')
     while True:
-        await bot.change_presence(activity=discord.Game(name=f"with {len(bot.guilds)} servers!"))
+        await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
         await asyncio.sleep(15)
-        await bot.change_presence(activity=discord.Game(name="using *help!"))
-        await asyncio.sleep(15)
-        await bot.change_presence(activity=discord.Game(name="v6.0.6"))
-        await asyncio.sleep(15)
+        
 
 
 @bot.event
