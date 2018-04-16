@@ -67,8 +67,7 @@ class Music:
             await ctx.voice_client.disconnect()
         else:
             next = await YTDLSource.from_url(self.queue[0], loop=loop)
-            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop)).result())
-            return await ctx.send("Next song playing.")
+            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop)).result()
 
     @commands.command()
     async def connect(self, ctx):
