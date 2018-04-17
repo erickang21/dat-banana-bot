@@ -59,7 +59,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 class Music:
     def __init__(self, bot):
        self.bot = bot
-       self.queue = []
+       self.queue = list()
 
     async def next_song(self, ctx, loop): #Player is not needed smh
         self.queue.pop(0) #Remove the first element
@@ -67,7 +67,7 @@ class Music:
             await ctx.voice_client.disconnect()
         else:
             next = await YTDLSource.from_url(self.queue[0], loop=loop)
-            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop)).result()
+            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop)).result())
 
     @commands.command()
     async def connect(self, ctx):
