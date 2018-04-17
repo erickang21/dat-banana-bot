@@ -22,18 +22,19 @@ class Economy:
             x = json.loads(f)
         self.dbl = x['dblapi']
 
-    async def add_points(self, guild, user, points):
-        x = await self.db.datbananabot.economy.find_one({"id": guild.id}, {"user": user.id})
+    async def add_points(self, user, points):
+        x = await self.db.datbananabot.economy.find_one({"user": user.id})
         try:
             points = int(points)
         except ValueError:
             raise Error("Points must be a number or atleast possible to be converted to a number")
-        await self.bot.db.datbananabot.economy.update_one({"id": guild.id}, {"$set": {"user": user.id, "points": x['user']['points'] + points}}, upsert=True)
+        total = int(x['points']) + points
+        await self.db.datbananabot.economy.update_one({"user": user.id}, {"$set": {"points": total}}, upsert=True)
         
 
-    async def is_registered(self, guild, user):
-        x = await self.db.datbananabot.economy.find_one({"id": guild.id}, {"user": user.id})
-        if x['user']['points']:
+    async def is_registered(self, user):
+        x = await self.db.datbananabot.economy.find_one({"user": user.id})
+        if x['points']:
             return True
         else:
             return False
@@ -42,9 +43,9 @@ class Economy:
     @commands.command(aliases=['register', 'openbank'])
     async def openaccount(self, ctx):
         '''Opens a bank account for the economy!'''
-        if self.is_registered(ctx.guild, ctx.author):
+        if self.is_registered(ctx.author):
             return await ctx.send(f"You already have a bank account!")
-        await self.bot.db.datbananabot.economy.update_one({"id": ctx.guild.id}, {"$set": {"user": ctx.author.id, "points": 0}}, upsert=True)
+        await self.bot.db.datbananabot.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
         await ctx.send("Your bank account is now open! GLHF!")
 
 
@@ -53,9 +54,9 @@ class Economy:
     async def balance(self, ctx):
         '''Check how much bananas ya got!'''
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Current Balance')
-        x = await self.db.datbananabot.economy.find_one({"id": ctx.guild.id}, {"user": ctx.author.id})
+        x = await self.db.datbananabot.economy.find_one({"user": ctx.author.id})
         try:
-            em.description = f"You currently have **{x['user']['points']}** :banana:. WOOP!"
+            em.description = f"You currently have **{x['points']}** :banana:. WOOP!"
         except KeyError:
             em.description = "You don't have an account on dat banana bot yet! Open one using `*openaccount`."
         await ctx.send(embed=em)
@@ -78,11 +79,11 @@ class Economy:
                     return await ctx.send("Thank you! The link (for your convenience) is: https://discordbots.org/bot/388476336777461770/vote")
                 elif reaction.emoji == '❌':
                     number = random.randint(100, 300)
-                    await self.add_points(ctx.guild, ctx.author, number)
+                    await self.add_points(ctx.author, number)
                     return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
             else:
                 number = random.randint(600, 800)
-                await self.add_points(ctx.guild, ctx.author, number)
+                await self.add_points(ctx.author, number)
                 return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
         
 
