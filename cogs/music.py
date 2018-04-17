@@ -62,7 +62,7 @@ class Music:
        self.queue = list()
 
     async def next_song(self, ctx, loop): #Player is not needed smh
-        self.queue.pop(0) #Remove the first element
+        self.queue.popleft()  # Remove the first element
         if len(self.queue) == 0: #Check if the queue length is 0 if it is disconnect else play the next song
             await ctx.voice_client.disconnect()
         else:
