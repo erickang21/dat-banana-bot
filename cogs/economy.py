@@ -19,7 +19,7 @@ class Economy:
         self.session = self.bot.session
         self.db = self.bot.db
         with open('data/apikeys.json') as f:
-            x = json.loads(f)
+            x = json.loads(f.read())
         self.dbl = x['dblapi']
 
     async def add_points(self, user, points):
@@ -45,7 +45,7 @@ class Economy:
         '''Opens a bank account for the economy!'''
         if self.is_registered(ctx.author):
             return await ctx.send(f"You already have a bank account!")
-        await self.bot.db.datbananabot.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
+        await self.db.datbananabot.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
         await ctx.send("Your bank account is now open! GLHF!")
 
 
