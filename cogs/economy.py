@@ -79,11 +79,17 @@ class Economy:
                     return await ctx.send("Thank you! The link (for your convenience) is: https://discordbots.org/bot/388476336777461770/vote")
                 elif reaction.emoji == '❌':
                     number = random.randint(100, 300)
-                    await self.add_points(ctx.author, number)
+                    try:
+                        await self.add_points(ctx.author, number)
+                    except Exception as e:
+                        return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
                     return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
             else:
                 number = random.randint(600, 800)
-                await self.add_points(ctx.author, number)
+                try:
+                    await self.add_points(ctx.author, number)
+                except Exception as e:
+                    return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
                 return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
         
 
