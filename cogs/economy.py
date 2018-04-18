@@ -34,7 +34,7 @@ class Economy:
 
     async def is_registered(self, user):
         x = await self.db.datbananabot.economy.find_one({"user": user.id})
-        if x['points']:
+        if x:
             return True
         else:
             return False
