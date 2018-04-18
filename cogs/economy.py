@@ -39,7 +39,8 @@ class Economy:
     @commands.command(aliases=['register', 'openbank'])
     async def openaccount(self, ctx):
         '''Opens a bank account for the economy!'''
-        if await self.is_registered(ctx.author):
+        registered = await self.is_registered(ctx.author)
+        if registered is True:
             return await ctx.send(f"You already have a bank account!")
         await self.db.datbananabot.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
         await ctx.send("Your bank account is now open! GLHF!")
