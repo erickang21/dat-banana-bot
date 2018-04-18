@@ -30,10 +30,10 @@ class Economy:
 
     async def is_registered(self, user):
         x = await self.db.datbananabot.economy.find_one({"user": user.id})
-        if x:
-            return True
-        else:
+        if x is None:
             return False
+        else:
+            return True
 
 
     @commands.command(aliases=['register', 'openbank'])
