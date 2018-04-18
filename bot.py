@@ -30,6 +30,7 @@ def getprefix(bot, message):
 bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
 bot._last_result = None
 bot.session = aiohttp.ClientSession()
+
 with open("data/apikeys.json") as f:
     x = json.load(f)
 bot.db = AsyncIOMotorClient(x['mongodb'])
@@ -104,6 +105,14 @@ async def on_ready():
     while True:
         await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
         await asyncio.sleep(15)
+
+
+@bot.event
+async def on_message(message):
+    if bot.session.closed:
+        bot.session = aiohttp.ClientSession()
+    if not message.author.bot:
+        await bot.process_commands(message.lower())
         
 
 
