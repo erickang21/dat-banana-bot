@@ -111,8 +111,7 @@ async def on_ready():
 async def on_message(message):
     if bot.session.closed:
         bot.session = aiohttp.ClientSession()
-    if not message.author.bot:
-        await bot.process_commands(message.lower())
+    await bot.process_commands(message.lower())
         
 
 
