@@ -66,31 +66,31 @@ class Economy:
     @commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
-        async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
-            resp = await resp.json()
-            if resp['voted'] == 0:
-                em = discord.Embed(color=discord.Color(value=0x00ff00), title='Did you vote for dat banana bot today?')
-                em.description = "You can get an extra **500** points from daily credit by simply upvoting dat banana bot. Click [here](https://discordbots.org/bot/388476336777461770/vote) to vote now.\n\nReact with :white_check_mark: to go upvote, or :x: to receive the reduced daily credit."
-                msg = await ctx.send(embed=em)
-                await msg.add_reaction("\U00002705")
-                await msg.add_reaction("\U0000274c")
-                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
-                if reaction.emoji == '✅':
-                    return await ctx.send("Thank you! The link (for your convenience) is: https://discordbots.org/bot/388476336777461770/vote")
-                elif reaction.emoji == '❌':
-                    number = random.randint(100, 300)
-                    try:
-                        await self.add_points(ctx.author, number)
-                    except Exception as e:
-                        return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
-                    return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
-            else:
-                number = random.randint(600, 800)
-                try:
-                    await self.add_points(ctx.author, number)
-                except Exception as e:
-                    return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
-                return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
+        # async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
+        #     resp = await resp.json()
+        #     if resp['voted'] == 0:
+        #         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Did you vote for dat banana bot today?')
+        #         em.description = "You can get an extra **500** points from daily credit by simply upvoting dat banana bot. Click [here](https://discordbots.org/bot/388476336777461770/vote) to vote now.\n\nReact with :white_check_mark: to go upvote, or :x: to receive the reduced daily credit."
+        #         msg = await ctx.send(embed=em)
+        #         await msg.add_reaction("\U00002705")
+        #         await msg.add_reaction("\U0000274c")
+        #         reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
+        #         if reaction.emoji == '✅':
+        #             return await ctx.send("Thank you! The link (for your convenience) is: https://discordbots.org/bot/388476336777461770/vote")
+        #         elif reaction.emoji == '❌':
+        #             number = random.randint(100, 300)
+        #             try:
+        #                 await self.add_points(ctx.author, number)
+        #             except Exception as e:
+        #                 return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
+        #             return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
+        #     else:
+        number = random.randint(600, 800)
+        try:
+            await self.add_points(ctx.author, number)
+        except Exception as e:
+            return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
+        return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
         
 
         
