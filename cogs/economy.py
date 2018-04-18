@@ -24,10 +24,6 @@ class Economy:
 
     async def add_points(self, user, points):
         x = await self.db.datbananabot.economy.find_one({"user": user.id})
-        try:
-            points = int(points)
-        except ValueError:
-            raise Error("Points must be a number or atleast possible to be converted to a number")
         total = int(x['points']) + points
         await self.db.datbananabot.economy.update_one({"user": user.id}, {"$set": {"points": total}}, upsert=True)
         
@@ -63,7 +59,7 @@ class Economy:
 
 
     @commands.command()
-    @commands.cooldown(1, 86400.0, BucketType.user)
+#    @commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
         # async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
