@@ -45,7 +45,7 @@ class fun:
     @commands.command(aliases=['joke', 'badjoke', 'shitjoke'])
     async def horriblejoke(self, ctx):
         """It's a REALLY REALLY bad joke. Trust me."""
-        resp =  self.session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke')
+        resp = await self.session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke')
         r = await resp.json()
         color = discord.Color(value=0x00ff00)
         em = discord.Embed(color=color, title=r['setup'])
@@ -88,7 +88,7 @@ class fun:
     @commands.command()
     async def yomomma(self, ctx):
         '''Sends a random yo momma joke. Outdated?'''
-        resp = self.session.get("http://api.yomomma.info/") 
+        resp = await self.session.get("http://api.yomomma.info/") 
         resp = await resp.json(content_type=None)
         await ctx.send(resp['joke'])
 
