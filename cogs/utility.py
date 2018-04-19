@@ -45,11 +45,11 @@ class Utility:
     @commands.command()
     async def ascii(self, ctx, *, text):
         """Send fancy ASCII text!"""
-        async with self.session.get(f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}") as resp:
-            message = await resp.text()
-            if len(f"```{message}```") > 2000:
-                return await ctx.send('Your ASCII is too long!')
-            await ctx.send(f"```{message}```")
+        resp = await self.session.get(f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}") 
+        message = await resp.text()
+        if len(f"```{message}```") > 2000:
+            return await ctx.send('Your ASCII is too long!')
+        await ctx.send(f"```{message}```")
 
 
     @commands.command()
@@ -59,13 +59,13 @@ class Utility:
         e = discord.utils.get(self.bot.emojis, name=emoji)
         if e is None:
             return await ctx.send("No emoji found from the list of my servers.\nThe bot cannot search YOUR servers, only the servers that it is currently in.")
-        async with self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
-            resp = await resp.read()
-            if e.animated:
-                extension = '.gif'
-            else:
-                extension = '.png'
-            await ctx.send(file=discord.File(resp, f"{e.name}{extension}"))
+        resp = await self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}") 
+        resp = await resp.read()
+        if e.animated:
+            extension = '.gif'
+        else:
+            extension = '.png'
+        await ctx.send(file=discord.File(resp, f"{e.name}{extension}"))
 
     @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd'])
     @commands.has_permissions(manage_emojis = True)
@@ -93,15 +93,15 @@ class Utility:
                     animate += 1
         if count >= 50 or animate >= 50:
             return await ctx.send(f"This server has reached the limit for custom emojis! {self.bot.get_emoji(430853757350445077)}")
-        async with self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}") as resp:
-            img = await resp.read()
-            try:
-                em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"The emoji has been created in the server! Name: {e.name}")
-                await ctx.guild.create_custom_emoji(name=e.name, image=img)
-                em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
-                await ctx.send(embed=em)
-            except discord.Forbidden:
-                return await ctx.send("The bot does not have Manage Emojis permission.")
+        resp = await self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}")
+        img = await resp.read()
+        try:
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"The emoji has been created in the server! Name: {e.name}")
+            await ctx.guild.create_custom_emoji(name=e.name, image=img)
+            em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
+            await ctx.send(embed=em)
+        except discord.Forbidden:
+            return await ctx.send("The bot does not have Manage Emojis permission.")
 
 
     @commands.command(aliases=['g', 'gg'])
@@ -159,13 +159,13 @@ class Utility:
             await ctx.send("Please enter the text you want to put into Hastebin: *hastebin [text]")
         else:
             try:
-                async with self.session.post("https://hastebin.com/documents", data=text) as resp:
-                    resp = await resp.json()
-                    color = discord.Color(value=0x00ff00)
-                    em = discord.Embed(color=color, title='Hastebin-ified!')
-                    em.description = f"Your Hastebin link: \nhttps://hastebin.com/{resp['key']}"
-                    em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
-                    await ctx.send(embed=em)
+                resp = await self.session.post("https://hastebin.com/documents", data=text)
+                resp = await resp.json()
+                color = discord.Color(value=0x00ff00)
+                em = discord.Embed(color=color, title='Hastebin-ified!')
+                em.description = f"Your Hastebin link: \nhttps://hastebin.com/{resp['key']}"
+                em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+                await ctx.send(embed=em)
             except Exception as e:
                 color = discord.Color(value=0xf44e42)
                 em = discord.Embed(color=color, title='An error occured. :x:')
@@ -181,11 +181,11 @@ class Utility:
         else:
             color = discord.Color(value=0x00ff00)
             em = discord.Embed(color=color, title='TinyURL Link Shortener')
-            async with self.session.get(f'http://tinyurl.com/api-create.php?url={url}') as resp:
-                resp = await resp.text()
-                em.description = f"Shortened Link: \n{resp}"
-                em.add_field(name='Original Link', value=url)
-                await ctx.send(embed=em)
+            resp = await self.session.get(f'http://tinyurl.com/api-create.php?url={url}')
+            resp = await resp.text()
+            em.description = f"Shortened Link: \n{resp}"
+            em.add_field(name='Original Link', value=url)
+            await ctx.send(embed=em)
 
 
     @commands.command()
@@ -194,15 +194,15 @@ class Utility:
         if word is None:
             await ctx.send("To use Urban Dictionary, please enter a word in this format: `*urban [word]`")
         else:
-            async with self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}') as resp:
-                r = await resp.json()
-                color = discord.Color(value=0x00ff00)
-                em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
-                lol = []
-                for x in r['list']:
-                    lol.append(f"{x['definition']} \n\n*{x['example']}* \n\n**Votes**\n:thumbsup: {x['thumbs_up']}  :thumbsdown: {x['thumbs_down']} \n\nDefinition written by {x['author']}")
-                ud = Pages(ctx, entries=lol, per_page=1)
-                await ud.paginate()
+            resp = await self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}')
+            r = await resp.json()
+            color = discord.Color(value=0x00ff00)
+            em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
+            lol = []
+            for x in r['list']:
+                lol.append(f"{x['definition']} \n\n*{x['example']}* \n\n**Votes**\n:thumbsup: {x['thumbs_up']}  :thumbsdown: {x['thumbs_down']} \n\nDefinition written by {x['author']}")
+            ud = Pages(ctx, entries=lol, per_page=1)
+            await ud.paginate()
 
 
     @commands.command()
