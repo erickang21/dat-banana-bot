@@ -47,7 +47,7 @@ class Economy:
 
 
         
-    @commands.command()
+    @commands.command(aliases=['bal'])
     async def balance(self, ctx):
         '''Check how much bananas ya got!'''
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Current Balance')
