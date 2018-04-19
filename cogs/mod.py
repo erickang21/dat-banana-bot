@@ -95,11 +95,12 @@ class mod:
     async def ban(self, ctx, user: discord.Member = None, *, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
         if user is None:
-            await ctx.send("To swing the ban hammer, use the command like this: \n*ban [@user] [days of msgs to delete] [reason]")
+            await ctx.send(f"{self.bot.get_emoji(436342184330002442)} To swing the ban hammer, use the command like this: \n*ban [@user] [reason]")
         try:
             await user.ban(reason=reason)
             color = discord.Color(value=0x00ff00)
             em = discord.Embed(color=color, title='Banned!')
+            em.description = f'The ban hammer has fell down. {self.bot.get_emoji(436342184330002442)}'
             em.add_field(name='User', value=user.name)
             em.add_field(name='Banned By', value=ctx.author.name)
             reason = reason if reason is not None else 'No reason given.'
