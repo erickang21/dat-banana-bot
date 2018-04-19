@@ -29,12 +29,12 @@ class fun:
         """Sends a random GIF, that's memey as hell."""
         try:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Random GIF")
-            async with self.session.get(f'https://api.giphy.com/v1/gifs/trending?api_key={self.giphy_key}') as resp:
-                resp = await resp.json()
-                em.set_image(url=f"https://media.giphy.com/media/{resp['data'][random.randint(0, len(resp['data']) - 1)]['id']}/giphy.gif")
-                em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
-                em.set_footer(text='Powered by Giphy API')
-                await ctx.send(embed=em)
+            resp = await self.session.get(f'https://api.giphy.com/v1/gifs/trending?api_key={self.giphy_key}') 
+            resp = await resp.json()
+            em.set_image(url=f"https://media.giphy.com/media/{resp['data'][random.randint(0, len(resp['data']) - 1)]['id']}/giphy.gif")
+            em.set_author(name=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+            em.set_footer(text='Powered by Giphy API')
+            await ctx.send(embed=em)
         except Exception as e:
             em = discord.Embed(color=discord.Color(value=0xf44242), title="An error occurred.")
             em.description = f"More details: \n\n```{e}```"
@@ -45,8 +45,8 @@ class fun:
     @commands.command(aliases=['joke', 'badjoke', 'shitjoke'])
     async def horriblejoke(self, ctx):
         """It's a REALLY REALLY bad joke. Trust me."""
-        async with self.session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as response:
-            r = await response.json()
+        resp =  self.session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke')
+        r = await resp.json()
         color = discord.Color(value=0x00ff00)
         em = discord.Embed(color=color, title=r['setup'])
         em.description = r['punchline']
@@ -88,8 +88,8 @@ class fun:
     @commands.command()
     async def yomomma(self, ctx):
         '''Sends a random yo momma joke. Outdated?'''
-        async with self.session.get("http://api.yomomma.info/") as resp:
-            resp = await resp.json(content_type=None)
+        resp = self.session.get("http://api.yomomma.info/") 
+        resp = await resp.json(content_type=None)
         await ctx.send(resp['joke'])
 
 
