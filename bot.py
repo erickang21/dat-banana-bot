@@ -78,6 +78,7 @@ def modlog_check(guildid):
 
 @bot.event
 async def on_ready():
+    bot.starttime = time.time()
     bot.session = aiohttp.ClientSession()
     presence = [
         "*help | May the 🍌 rule all.",
@@ -242,7 +243,7 @@ async def on_command_error(ctx, error):
         em.description = 'You are missing permissions required to run this command.'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandOnCooldown):
-        em.description = f'The command is on cooldown! You can use it again in:\n{error.retry_after/60:.0f} minutes.'
+        em.description = f'The command is on cooldown! You can use it again in:\n{int(error.retry_after/60)} minutes.'
     elif isinstance(error, commands.CommandNotFound):
         pass
     else:

@@ -60,7 +60,7 @@ class Economy:
 
 
     @commands.command()
-#    @commands.cooldown(1, 86400.0, BucketType.user)
+    @commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
         # async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
@@ -82,7 +82,7 @@ class Economy:
         #                 return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
         #             return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
         #     else:
-        number = random.randint(600, 800)
+        number = random.randint(300, 500)
         try:
             await self.add_points(ctx.author, number)
         except Exception as e:
@@ -92,45 +92,37 @@ class Economy:
 
         
 
-    # @commands.command()
-    # async def lottery(self, ctx, numbers: str = None):
-    #     '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
-    #     x = await self.db.datbananabot.economy.find_one({"id": ctx.guild.id}, {"user": ctx.author.id})
-    #     try:
-    #         x['user']['points']
-    #     except KeyError:
-    #         return await ctx.send("Oof. You don't have an account yet! Time to create one with `*openaccount`.")
-    #     if int(x['user']['points']) < 100:
-    #         return await ctx.send("Entering the lottery requires 100 :banana:. You don't have enough! Keep on earning 'em")
-    #     if numbers is None:
-    #         return await ctx.send("Please enter 3 numbers seperated by commas to guess the lottery! \nExample: *lottery 1,2,3")
-    #     numbers = numbers.replace(' ', '')
-    #     numbers = numbers.split(',')
-    #     lucky = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
-    #     for i in numbers:
-    #         try:
-    #             int(i)
-    #         except ValueError:
-    #             return await ctx.send("Please enter only numbers for the lottery!")
-    #     lol = ""
-    #     for x in lucky:
-    #         lol += f"`{x}` "
-    #     if numbers == lucky:
-    #         lol = {
-    #             str(ctx.author.id): x[str(ctx.guild.id)][str(ctx.author.id)] + 10000000
-    #         }
-    #         ezjson.dump("data/economy.json", ctx.guild.id, lol)
-    #         em = discord.Embed(color=discord.Color(value=0x00ff00), title='You are the lucky winner!')
-    #         em.description = 'Awesome job! You are part of the 0.8% population that won the lottery! :tada:\n\nYou won 10,000,000 :banana:!'
-    #         return await ctx.send(embed=em)
-    #     else:
-    #         lol = {
-    #             str(ctx.author.id): x[str(ctx.guild.id)][str(ctx.author.id)] - 100
-    #         }
-    #         ezjson.dump("data/economy.json", ctx.guild.id, lol)
-    #         em = discord.Embed(color=discord.Color(value=0xf44e42))
-    #         em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
-    #         return await ctx.send(embed=em)
+    @commands.command()
+    async def lottery(self, ctx, numbers: str = None):
+        '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
+        x = await self.db.datbananabot.economy.find_one({"user": ctx.author.id})
+        if x is None:
+            return await ctx.send("Oof. You don't have an account yet! Time to create one with `*openaccount`.")
+        if int(x['points']) < 100:
+            return await ctx.send("Entering the lottery requires 100 :banana:. You don't have enough! Keep on earning 'em")
+        if numbers is None:
+            return await ctx.send("Please enter 3 numbers seperated by commas to guess the lottery! \nExample: *lottery 1,2,3")
+        numbers = numbers.replace(' ', '')
+        numbers = numbers.split(',')
+        lucky = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
+        for i in numbers:
+            try:
+                int(i)
+            except ValueError:
+                return await ctx.send("Please enter only numbers for the lottery!")
+        lol = ""
+        for x in lucky:
+            lol += f"`{x}` "
+        if numbers == lucky:
+            await self.add_points(ctx.author, 10000000)
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='You are the lucky winner!')
+            em.description = 'Awesome job! You are part of the 0.8% population that won the lottery! :tada:\n\nYou won 10,000,000 :banana:!'
+            return await ctx.send(embed=em)
+        else:
+            await self.add_points(ctx.author, -100)
+            em = discord.Embed(color=discord.Color(value=0xf44e42))
+            em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
+            return await ctx.send(embed=em)
 
     # @commands.command(aliases=['give'])
     # @commands.has_permissions(manage_guild=True)
