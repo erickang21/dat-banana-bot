@@ -30,7 +30,7 @@ def getprefix(bot, message):
 bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
 bot._last_result = None
 bot.session = aiohttp.ClientSession()
-
+bot.starttime = time.time()
 with open("data/apikeys.json") as f:
     x = json.load(f)
 bot.db = AsyncIOMotorClient(x['mongodb'])
@@ -78,7 +78,6 @@ def modlog_check(guildid):
 
 @bot.event
 async def on_ready():
-    bot.starttime = time.time()
     bot.session = aiohttp.ClientSession()
     presence = [
         "*help | May the 🍌 rule all.",
