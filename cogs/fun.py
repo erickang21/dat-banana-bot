@@ -26,12 +26,16 @@ class fun:
         """Turns your text into emojis!"""
         if text is None:
             return await ctx.send("Please enter text to emojify it!")
+        try:
+            await ctx.message.delete()
+        except discord.Forbidden:
+            pass
         to_send = ""
         for char in text:
             if char == " ":
                 to_send += " "
-            elif char in 'QWERTYUIOPASDFGHJKLZXCVBNM':
-                to_send += f":regional_indicator_{char}: "
+            elif char.lower() in 'qwertyuiopasdfghjklzxcvbnm':
+                to_send += f":regional_indicator_{char.lower()}: "
             elif char in '1234567890':
                 numbers = {
                     "1": "one",
@@ -45,9 +49,11 @@ class fun:
                     "9": "nine",
                     "0": "zero"
                 }
-                to_send += f":{numbers[char]}:"
+                to_send += f":{numbers[char]}: "
             else:
                 return await ctx.send("Characters must be either a letter or number. Anything else is unsupported.")
+        if len(to_send) > 2000:
+            return await ctx.send("Emoji is too large to fit in a message!")
         await ctx.send(to_send)
         
 
