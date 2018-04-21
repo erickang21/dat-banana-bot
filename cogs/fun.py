@@ -21,7 +21,35 @@ class fun:
 
 
     
-
+    @commands.command()
+    async def emojify(self, ctx, text: str = None):
+        """Turns your text into emojis!"""
+        if text is None:
+            return await ctx.send("Please enter text to emojify it!")
+        to_send = ""
+        for char in text:
+            if char == " ":
+                to_send += " "
+            elif char in 'QWERTYUIOPASDFGHJKLZXCVBNM':
+                to_send += f":regional_indicator_{char}: "
+            elif char in '1234567890':
+                numbers = {
+                    "1": "one",
+                    "2": "two",
+                    "3": "three",
+                    "4": "four",
+                    "5": "five",
+                    "6": "six",
+                    "7": "seven",
+                    "8": "eight",
+                    "9": "nine",
+                    "0": "zero"
+                }
+                to_send += f":{numbers['char']}:"
+            else:
+                return await ctx.send("Characters must be either a letter or number. Anything else is unsupported.")
+        await ctx.send(to_send)
+        
 
 
     @commands.command()

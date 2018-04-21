@@ -395,7 +395,7 @@ class Utility:
         em.add_field(name='__Text/Voice Channels__', value=str(channels))
         em.add_field(name='__Server Region__', value='%s' % str(guild.region))
         em.add_field(name='__ Total Roles__', value='%s' % str(role_length))
-        em.add_field(name='__Roles__', value='%s' % str(roles))
+        #em.add_field(name='__Roles__', value='%s' % str(roles))
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
               
@@ -530,10 +530,10 @@ class Utility:
             a = 'Not Mentionable'
         em.add_field(name='Mentionable', value=a)
         em.add_field(name='Time Created', value=str(role.created_at.strftime("%A, %b %m, %Y at %I:%M %p")))
-        member = ""
-        for x in role.members:
-            member += f"{x.name} \n"
-        em.add_field(name='Members in the Role', value=member)
+        # member = ""
+        # for x in role.members:
+        #     member += f"{x.name} \n"
+        # em.add_field(name='Members in the Role', value=member)
         await ctx.send(embed=em)
 
 
