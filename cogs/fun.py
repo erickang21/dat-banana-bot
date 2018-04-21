@@ -22,7 +22,7 @@ class fun:
 
     
     @commands.command()
-    async def emojify(self, ctx, text: str = None):
+    async def emojify(self, ctx, *, text: str = None):
         """Turns your text into emojis!"""
         if text is None:
             return await ctx.send("Please enter text to emojify it!")
@@ -45,7 +45,7 @@ class fun:
                     "9": "nine",
                     "0": "zero"
                 }
-                to_send += f":{numbers['char']}:"
+                to_send += f":{numbers[char]}:"
             else:
                 return await ctx.send("Characters must be either a letter or number. Anything else is unsupported.")
         await ctx.send(to_send)
