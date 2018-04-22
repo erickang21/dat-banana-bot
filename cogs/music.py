@@ -127,10 +127,7 @@ class Music:
             try:    
                 while True:
                     reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
-                    if reaction.emoji == ":stop_button:":
-                        await msg.delete()
-                        break
-                    elif reaction.emoji == "⏸":
+                    if reaction.emoji == "⏸":
                         ctx.voice_client.pause()
                         await msg.remove_reaction("\U000023f8", ctx.author)
                     elif reaction.emoji == "▶":
@@ -138,7 +135,7 @@ class Music:
                         await msg.remove_reaction("\U000025b6", ctx.author)
                     elif reaction.emoji == "⏹":
                         ctx.voice_client.stop()
-                        await msg.remove_reaction("\U000023f9", ctx.author)
+                        await msg.delete()
                     elif reaction.emoji == "🔁":
                         ctx.voice_client.stop()
                         ctx.voice_client.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
