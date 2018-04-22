@@ -172,7 +172,7 @@ class COC:
                     coctag = lol[userid]
             except KeyError:
                 return await ctx.send("Oops, looks like you don't have a saved tag yet! Use `*cocsave [tag]` to save your tag to your Discord profile.")
-            resp = self.session.get(f'https://api.clashofclans.com/v1/players/%23{coctag}', headers=self.client)
+            resp = await self.session.get(f'https://api.clashofclans.com/v1/players/%23{coctag}', headers=self.client)
             resp = await resp.json()
             try:
                 clantag = resp['clan']['tag']
