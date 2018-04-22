@@ -14,7 +14,7 @@ import wikipedia
 import urllib.parse
 from pygoogling.googling import GoogleSearch
 from discord.ext import commands
-from utils.paginator import Pages
+from .utils.paginator import Pages
 
 
 class Utility:
