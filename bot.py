@@ -252,8 +252,16 @@ async def on_command_error(ctx, error):
         return await ctx.send(embed=em)
     elif isinstance(error, commands.MissingPermissions):
         missing = ""
+        perms = {
+            "ban_members": "Ban Members",
+            "kick_members": "Kick Members",
+            "manage_messages": "Manage Messages",
+            "manage_emojis": "Manage Emojis",
+            "administrator": "Administrator",
+            "manage_guild": "Manage Server"
+        }
         for x in error.missing_perms:
-            missing += f"{x} \n"
+            missing += f"{perms[x]} \n"
         em.description = f'You are missing the following permissions required to run this command:\n\n{missing}'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandOnCooldown):
