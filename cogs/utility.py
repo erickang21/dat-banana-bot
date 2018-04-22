@@ -14,7 +14,7 @@ import wikipedia
 import urllib.parse
 from pygoogling.googling import GoogleSearch
 from discord.ext import commands
-from .utils.paginator import Pages
+from utils.paginator import Pages
 
 
 class Utility:
@@ -392,6 +392,8 @@ class Utility:
         em.add_field(name='__Owner__', value=str(guild.owner))
         em.add_field(name='__Owner ID__', value=guild.owner_id) 
         em.add_field(name='__Member Count__', value=str(guild.member_count))
+        em.add_field(name='__Humans__', value=len([x for x in ctx.guild.members if not x.bot]))
+        em.add_field(name='__Bots__', value=len([x for x in ctx.guild.members if x.bot]))
         em.add_field(name='__Text/Voice Channels__', value=str(channels))
         em.add_field(name='__Server Region__', value='%s' % str(guild.region))
         em.add_field(name='__ Total Roles__', value='%s' % str(role_length))
