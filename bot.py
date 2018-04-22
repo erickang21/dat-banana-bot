@@ -120,6 +120,8 @@ async def on_message(message):
 
 @bot.event
 async def on_message_edit(before, after):
+    if before is None or after is None:
+        return
     if modlog_check(before.guild.id):
         with open("data/modlog.json") as f:
             x = json.loads(f.read())
@@ -164,9 +166,9 @@ async def on_guild_remove(guild):
 @bot.event
 async def on_member_join(member):
     x = await bot.db.datbananabot.welcome.find_one({"id": str(member.guild.id)})
+    if not x:
+        return
     try:
-        if x['channel'] is None:
-            return
         channel = int(x['channel'])
     except KeyError:
         return
@@ -194,9 +196,9 @@ async def on_member_join(member):
 @bot.event
 async def on_member_remove(member):
     x = await bot.db.datbananabot.leave.find_one({"id": str(member.guild.id)})
+    if not x:
+        return
     try:
-        if x['channel'] is None:
-            return
         channel = int(x['channel'])
     except KeyError:
         return
@@ -222,6 +224,8 @@ async def on_member_remove(member):
 
 @bot.event
 async def on_message_delete(message):
+    if message is None:
+        return
     if modlog_check(message.guild.id):
         with open("data/modlog.json") as f:
             x = json.loads(f.read())
