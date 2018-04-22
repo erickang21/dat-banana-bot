@@ -172,6 +172,8 @@ async def on_member_join(member):
         pass
     else:
         lol = bot.get_channel(channel)
+        if lol is None:
+            return
         await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if modlog_check(member.guild.id):
         with open("data/modlog.json") as f:
@@ -198,6 +200,8 @@ async def on_member_remove(member):
         pass
     else:
         lol = bot.get_channel(channel)
+        if lol is None:
+            return
         await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if modlog_check(member.guild.id):
         with open("data/modlog.json") as f:
@@ -239,7 +243,10 @@ async def on_command_error(ctx, error):
         em.description = 'Not my daddy! This command is for the owner only.'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.MissingPermissions):
-        em.description = 'You are missing permissions required to run this command.'
+        missing = ""
+        for x in error.missing_perms:
+            missing += f"{x} \n"
+        em.description = f'You are missing the following permissions required to run this command:\n\n{missing}'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandOnCooldown):
         em.description = f'The command is on cooldown! You can use it again in:\n{int(error.retry_after/60)} minutes.'
@@ -268,17 +275,7 @@ async def _set(ctx, Type=None,*,thing=None):
         await ctx.send('Aye aye, I am not playing anything, anymore!')
       else:
         await ctx.send('Want me to do something? YOU do it right first. Usage: *presence [game/stream] [msg]')
-
-                
-@bot.command()
-async def bug(ctx, *, msg:str):
-    """Got a PROB? Tell us about it...  """
-    lol = bot.get_channel(373917178547929088)
-    color = discord.Color(value=0x00ff00)
-    em=discord.Embed(color=color, title="Bug reported!")
-    em.description = f"Bug: {msg}"
-    em.set_footer(text=f"Bug sent by {ctx.message.author.name}")                         
-    await ctx.send("Thanks for reporting that bug! :bug: We will get back to you ASAP.")                     
+                    
  
                 
 @bot.command()
@@ -292,10 +289,14 @@ async def say(ctx, *, message: commands.clean_content()):
 async def ping(ctx):
     """Premium ping pong giving you a websocket latency."""
     color = discord.Color(value=0x00ff00)
+    e = discord.Embed(color=color, title='Pinging')
+    e.description = 'Please wait... :ping_pong:'
+    msg = await ctx.send(embed=e)
     em = discord.Embed(color=color, title='PoIIIng! Your supersonic latency is:')
     em.description = f"{bot.latency * 1000:.4f} ms"
+    em.set_thumbnail(url="https://media.giphy.com/media/4IAzyrhy9rkis/giphy.gif")
     em.set_footer(text="Psst...A heartbeat is 27 ms!")
-    await ctx.send(embed=em)
+    await msg.edit(embed=em)
   
         
 @bot.command()
