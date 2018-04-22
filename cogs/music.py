@@ -7,7 +7,7 @@ import os
 import aiohttp
 import json
 import youtube_dl
-
+from discord.ext.commands.cooldowns import BucketType
 
 
 YOUTUBE_DL_OPTIONS = {
@@ -92,6 +92,7 @@ class Music:
             await ctx.send(f"Successfully disconnected from the voice channel. :white_check_mark:")
 
     @commands.command()
+    @commands.cooldown(2, 15.0, BucketType.user)
     async def play(self, ctx, *, url):
         """Search for a YouTube video to play, by name."""
         if ctx.author.voice is None:

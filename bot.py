@@ -165,6 +165,8 @@ async def on_guild_remove(guild):
 async def on_member_join(member):
     x = await bot.db.datbananabot.welcome.find_one({"id": str(member.guild.id)})
     try:
+        if x['channel'] is None:
+            return
         channel = int(x['channel'])
     except KeyError:
         return
@@ -193,6 +195,8 @@ async def on_member_join(member):
 async def on_member_remove(member):
     x = await bot.db.datbananabot.leave.find_one({"id": str(member.guild.id)})
     try:
+        if x['channel'] is None:
+            return
         channel = int(x['channel'])
     except KeyError:
         return
