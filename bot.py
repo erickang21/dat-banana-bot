@@ -14,6 +14,7 @@ import inspect
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
+import ezjson
 from motor.motor_asyncio import AsyncIOMotorClient
 
 
@@ -144,19 +145,30 @@ async def on_reaction_add(reaction, user):
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
         if reaction.message.author == user:
             return
-        with open('data/starboard.json') as f:
+        with open('data/starmsgs.json') as f:
             x = json.loads(f.read())
         try:
-            channel = int(x[str(user.guild.id)])
+            sent = x[str(reaction.message.id)]
+            em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
+            em.description = reaction.message.content
+            em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+            await sent.edit(embed=em)
         except KeyError:
-            return
-        chan = bot.get_channel(channel)
-        if chan is None:
-            return
-        em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Another STAR!")
-        em.description = reaction.message.content
-        em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
-        await chan.send(embed=em)
+            with open('data/starboard.json') as f:
+                x = json.loads(f.read())
+            try:
+                channel = int(x[str(user.guild.id)])
+            except KeyError:
+                return
+            chan = bot.get_channel(channel)
+            if chan is None:
+                return
+            em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Stars: 1")
+            em.description = reaction.message.content
+            em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+            msg = await chan.send(embed=em)
+            ezjson.dump('data/starmsgs.json', reaction.message.id, msg.id)
+
     else:
         return
         
