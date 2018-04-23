@@ -51,7 +51,7 @@ class Developer:
        
        
     @commands.command()
-    async def restart(self, ctx):
+    async def shutdown(self, ctx):
         """Makes the bot shut UP and then shut DOWN, then start up again."""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
