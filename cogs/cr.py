@@ -67,32 +67,26 @@ class CR:
         color = discord.Color(value=0xf1f442)
         em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
         em.add_field(name='Trophies', value=f"{profile.trophies} {self.emoji('trophy')}")
-        em.add_field(name='Personal Best', value=f'{profile.stats.maxTrophies}')
-        em.add_field(name='XP Level', value=f'{profile.stats.level}')
+        em.add_field(name='Personal Best', value=f"{profile.stats.maxTrophies} {self.emoji('trophy')}")
+        em.add_field(name='XP Level', value=f"{profile.stats.level} {self.emoji('xplevel')}")
         em.add_field(name='Arena', value=f'{profile.arena.name}')
-        em.add_field(name='Total Games', value=profile.games.total)
-        em.add_field(name='Wins', value=f'{profile.games.wins} ({profile.games.winsPercent * 100}% of all games)')
-        em.add_field(name='Three Crown Wins', value=f"{profile.stats.threeCrownWins} {self.emoji('threestar')}")
-        em.add_field(name='Losses', value=f'{profile.games.losses} ({profile.games.lossesPercent * 100}% of all games)')
-        em.add_field(name='Draws', value=f'{profile.games.draws} ({profile.games.drawsPercent * 100}% of all games)')
-        em.add_field(name='Win Rate', value=f'{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}%')
+        em.add_field(name='Total Games', value=f"{profile.games.total} {self.emoji('battle')}")
+        em.add_field(name='Wins', value=f"{profile.games.wins} ({profile.games.winsPercent * 100}% of all games) {self.emoji('battle')}")
+        em.add_field(name='Three Crown Wins', value=f"{profile.stats.threeCrownWins} {self.emoji('threecrown')}")
+        em.add_field(name='Losses', value=f"{profile.games.losses} ({profile.games.lossesPercent * 100}% of all games) {self.emoji('battle')}")
+        em.add_field(name='Draws', value=f"{profile.games.draws} ({profile.games.drawsPercent * 100}% of all games) {self.emoji('battle')}")
+        em.add_field(name='Win Rate', value=f"{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji('sword')}")
         em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name} {self.emoji(profile.stats.favoriteCard.name)}')
         if not profile.rank:
             globalrank = 'Unranked'
         else:
             globalrank = profile.rank
-        em.add_field(name='Global Rank', value=globalrank)    
-        em.add_field(name='Challenge Max Wins', value=f'{profile.stats.challengeMaxWins}')
-        em.add_field(name='Challenge Cards Won', value=f'{profile.stats.challengeCardsWon}')
-        em.add_field(name='Tourney Cards Won', value=f'{profile.stats.tournamentCardsWon}')                                                                                                                                                
-        em.set_author(name=f'dat banana bot Stats')
-        em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
-        em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
-        await ctx.send(embed=em)
+        em.add_field(name='Global Rank', value=f"{globalrank}{self.emoji('legendtrophy')}")    
+        em.add_field(name='Challenge Max Wins', value=f"{profile.stats.challengeMaxWins} {self.emoji('12wins')}")
+        em.add_field(name='Challenge Cards Won', value=f"{profile.stats.challengeCardsWon} {self.emoji('deck')}")
+        em.add_field(name='Tourney Cards Won', value=f"{profile.stats.tournamentCardsWon} {self.emoji('deck')}")                                                                                                                                                
         clan = await profile.get_clan()
-        color = discord.Color(value=0xf1f442)
-        em = discord.Embed(color=color, title='Clan')
-        em.description = f'{clan.name} (#{clan.tag})'
+        em.add_field(name='Clan', value=f"{clan.name} (#{clan.tag}) {self.emoji('clan')}", inline=True)
         clanroles = {
             "member": "Member",
             "elder": "Elder",
@@ -100,9 +94,12 @@ class CR:
             "leader": "Leader"
         }
         em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}')                                                                                                                                                                      
-        em.add_field(name='Clan Score', value=f'{clan.score}')
+        em.add_field(name='Clan Score', value=f"{clan.score} {self.emoji('trophy')}")
         em.add_field(name='Members', value=f'{len(clan.members)}/50')
-        em.set_thumbnail(url=clan.badge.image)
+        em.add_field(name='Donations', value=profile.clan.donations)
+        em.add_field(name='Donations Received', value=profile.clan.donationsReceived)
+        em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
+        em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         await ctx.send(embed=em)
 
 
