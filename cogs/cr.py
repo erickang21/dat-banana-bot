@@ -26,7 +26,7 @@ class CR:
 
     def emoji(self, name):
         with open('data/emojis.json') as f:
-            lol = json.load(f)
+            lol = json.loads(f.read())
         e = lol[name]
         emo = self.bot.get_emoji(int(e))
         return emo if emo is not None else None
@@ -68,7 +68,7 @@ class CR:
         em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
         em.add_field(name='Trophies', value=f"{profile.trophies} {self.emoji('trophy')}")
         em.add_field(name='Personal Best', value=f"{profile.stats.maxTrophies} {self.emoji('trophy')}")
-        em.add_field(name='XP Level', value=f"{profile.stats.level}")
+        em.add_field(name='XP Level', value=f"{profile.stats.level} {self.emoji('xplevel')}")
         em.add_field(name='Arena', value=f'{profile.arena.name}')
         em.add_field(name='Total Games', value=f"{profile.games.total} {self.emoji('battle')}")
         em.add_field(name='Wins', value=f"{profile.games.wins} ({profile.games.winsPercent * 100}% of all games) {self.emoji('battle')}")
