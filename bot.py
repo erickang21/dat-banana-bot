@@ -152,7 +152,7 @@ async def on_reaction_add(reaction, user):
             with open('data/starboard.json') as f:
                 a = json.loads(f.read())
             try:
-                channel = int(a[str(user.guild.id)])
+                channel = bot.get_channel(int(a[str(user.guild.id)]))
             except KeyError:
                 return
             msg = await channel.get_message(int(sent))
