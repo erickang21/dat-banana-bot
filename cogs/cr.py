@@ -84,7 +84,7 @@ class CR:
         em.add_field(name='Global Rank', value=f"{globalrank}{self.emoji('legendtrophy')}")    
         em.add_field(name='Challenge Max Wins', value=f"{profile.stats.challengeMaxWins} {self.emoji('12wins')}")
         em.add_field(name='Challenge Cards Won', value=f"{profile.stats.challengeCardsWon} {self.emoji('deck')}")
-        em.add_field(name='Tourney Cards Won', value=f"{profile.stats.tournamentCardsWon} {self.emoji('deck')}")                                                                                                                                                
+        em.add_field(name='Tourney Cards Won', value=f"{profile.stats.tournamentCardsWon} {self.emoji('deck')}", inline=True)                                                                                                                                                
         clan = await profile.get_clan()
         em.add_field(name='Clan', value=f"{clan.name} (#{clan.tag}) {self.emoji('clan')}", inline=True)
         clanroles = {
@@ -93,7 +93,7 @@ class CR:
             "coLeader": "Co-Leader",
             "leader": "Leader"
         }
-        em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}')                                                                                                                                                                      
+        em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}', inline=True)                                                                                                                                                                      
         em.add_field(name='Clan Score', value=f"{clan.score} {self.emoji('trophy')}")
         em.add_field(name='Members', value=f'{len(clan.members)}/50')
         em.add_field(name='Donations', value=profile.clan.donations)
