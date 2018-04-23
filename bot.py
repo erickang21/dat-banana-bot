@@ -139,6 +139,27 @@ async def on_message_edit(before, after):
         pass
 
 
+@bot.event
+async def on_reaction_add(reaction, user):
+    if reaction.emoji == '⭐' or reaction.emoji == '🌟':
+        with open('data/starboard.json') as f:
+            x = json.loads(f.read())
+        try:
+            channel = int(x[str(user.guild.id)])
+        except KeyError:
+            return
+        chan = bot.get_channel(channel)
+        if chan is None:
+            return
+        em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Another STAR!")
+        em.description = reaction.message.content
+        em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+        await chan.send(embed=em)
+    else:
+        return
+        
+
+
 
 @bot.event
 async def on_guild_join(guild):

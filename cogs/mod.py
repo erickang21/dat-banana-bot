@@ -11,7 +11,42 @@ from discord.ext import commands
 class mod:
     def __init__(self, bot):
         self.bot = bot
-        
+
+
+    @commands.command()
+    @commands.has_permissions(manage_guild = True)
+    async def starboard(self, ctx, action=None):
+        """Turn on a starboard for the server that is for STARS!"""
+        if action is None:
+            with open("data/starboard.json") as f:
+                x = json.loads(f.read())
+            try:
+                x[str(ctx.guild.id)]
+                return await ctx.send(f"A starboard for this server has already been created. If the channel was deleted, use *starboard reset to re-create it.")
+            except KeyError:
+                msg = await ctx.send("One sec, building the awesome starboard with :star:s")
+                overwrites = {
+                    ctx.guild.default_role: discord.PermissionOverwrite(send_messages = False),
+                    ctx.guild.me: discord.PermissionOverwrite(send_messages = True)
+                }
+                try:
+                    channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
+                except Exception as e:
+                    return await ctx.send(f"An unexpected error occurred. Details: \n```{e}```")
+                ezjson.dump("data/starboard.json", ctx.guild.id, channel.id)
+                return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
+        elif action.lower() == 'reset':
+            msg = await ctx.send("One sec, building the awesome starboard with :star:s")
+            overwrites = {
+                ctx.guild.default_role: discord.PermissionOverwrite(send_messages = False),
+                ctx.guild.me: discord.PermissionOverwrite(send_messages = True)
+            }
+            channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
+            ezjson.dump("data/starboard.json", ctx.guild.id, channel.id)
+            return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
+        else:
+            return await ctx.send("Unknown action. Either ignore or use *starboard clear to re-create a deleted channel.")
+
         
     @commands.command()
     @commands.has_permissions(administrator = True)
