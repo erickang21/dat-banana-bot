@@ -142,6 +142,8 @@ async def on_message_edit(before, after):
 @bot.event
 async def on_reaction_add(reaction, user):
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
+        if reaction.message.author == user:
+            return
         with open('data/starboard.json') as f:
             x = json.loads(f.read())
         try:
