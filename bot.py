@@ -148,11 +148,8 @@ async def on_reaction_add(reaction, user):
         return
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
         with open('data/starboard.json') as f:
-            x = json.loads(f.read())
-        try:
-            channel = int(x[str(user.guild.id)])
-        except KeyError:
-            return
+            x = json.load(f)
+        channel = x[str(user.guild.id)]
         chan = bot.get_channel(channel)
         if chan is None:
             return
