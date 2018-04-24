@@ -57,6 +57,7 @@ class mod:
             except:
                 ezjson.dump("data/starboard.json", ctx.guild.id, False)
                 return await msg.edit(content="Starboard is disabled, but I was unable to delete the channel.")
+            ezjson.dump("data/starboard.json", ctx.guild.id, False)
             return await msg.edit(content='Successfully removed the starboard. :cry:')
         else:
             return await ctx.send("Unknown action. Either leave blank, use *starboard reset to re-create a deleted channel, or *starboard delete to remove the server's starboard.")
