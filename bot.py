@@ -234,6 +234,14 @@ async def on_member_join(member):
         await lol.send(embed=em)
     else:
         pass
+    with open('data/autorole.json') as f:
+        x = json.loads(f.read())
+    try:
+        rolename = x[str(member.guild.id)]
+    except KeyError:
+        return
+    r = discord.utils.get(member.guild.roles, name=rolename)
+    await member.add_roles(r)
 
 
 @bot.event
