@@ -148,36 +148,36 @@ async def on_reaction_add(reaction, user):
         return
     if reaction.message.author == user:
         return
-    with open('data/starmsgs.json') as f:
+    # with open('data/starmsgs.json') as f:
+    #     x = json.loads(f.read())
+    # try:
+    #     sent = x[str(reaction.message.id)]
+    #     with open('data/starboard.json') as f:
+    #         a = json.loads(f.read())
+    #     try:
+    #         channel = bot.get_channel(int(a[str(user.guild.id)]))
+    #     except KeyError:
+    #         return
+    #     msg = await channel.get_message(int(sent))
+    #     em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
+    #     em.description = reaction.message.content
+    #     em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+    #     await msg.edit(embed=em)
+    # except KeyError:
+    with open('data/starboard.json') as f:
         x = json.loads(f.read())
     try:
-        sent = x[str(reaction.message.id)]
-        with open('data/starboard.json') as f:
-            a = json.loads(f.read())
-        try:
-            channel = bot.get_channel(int(a[str(user.guild.id)]))
-        except KeyError:
-            return
-        msg = await channel.get_message(int(sent))
-        em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
-        em.description = reaction.message.content
-        em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
-        await msg.edit(embed=em)
+        channel = int(x[str(user.guild.id)])
     except KeyError:
-        with open('data/starboard.json') as f:
-            x = json.loads(f.read())
-        try:
-            channel = int(x[str(user.guild.id)])
-        except KeyError:
-            return
-        chan = bot.get_channel(channel)
-        if chan is None:
-            return
-        em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Stars: 1")
-        em.description = reaction.message.content
-        em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
-        msg = await chan.send(embed=em)
-        ezjson.dump('data/starmsgs.json', reaction.message.id, msg.id)
+        return
+    chan = bot.get_channel(channel)
+    if chan is None:
+        return
+    em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Stars: 1")
+    em.description = reaction.message.content
+    em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+    await chan.send(embed=em)
+    ezjson.dump('data/starmsgs.json', reaction.message.id, msg.id)
 
         
 
