@@ -240,6 +240,22 @@ class mod:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
     
 
+    @commands.command()
+    @commands.has_permissions(manage_roles = True)
+    async def addrole(self, ctx, user: discord.Member=None, role=None):
+        """Adds a role to the user."""
+        if user is None or role is None:
+            return await ctx.send("Incorrect usage! *addrole [user] [role name]")
+        r = discord.utils.get(ctx.guild.roles, name=str(role))
+        if r is None:
+            return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        try:
+            await user.add_roles(r)
+            return await ctx.send(f"Success! **{str(user)}** has been given the role **{role}**.")
+        except discord.Forbidden:
+            return await ctx.send("Bot does not have enough permissions to give roles.")
+
+
     @commands.command(aliases=['welcome'])
     async def welcomemsg(self, ctx, action=None):
         if action is None:
