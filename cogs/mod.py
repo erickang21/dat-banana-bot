@@ -242,7 +242,7 @@ class mod:
 
     @commands.command(aliases=['giverole'])
     @commands.has_permissions(manage_roles = True)
-    async def addrole(self, ctx, user: discord.Member=None, role=None):
+    async def addrole(self, ctx, user: discord.Member=None, *, role=None):
         """Adds a role to the user."""
         if user is None or role is None:
             return await ctx.send("Incorrect usage! *addrole [user] [role name]")
