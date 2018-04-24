@@ -44,8 +44,22 @@ class mod:
             channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
             ezjson.dump("data/starboard.json", ctx.guild.id, channel.id)
             return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
+        elif action.lower() == 'delete':
+            msg = await ctx.send("Deleting the :star:board of awesomeness...")
+            with open("data/starboard.json") as f:
+                x = json.loads(f.read())
+            try:
+                channel = self.bot.get_channel(x[str(ctx.guild.id)])
+            except KeyError:
+                return await ctx.send(f"A starboard for this server was never created. Why delete something that doesn't exist? {self.bot.get_emoji(430853715059277863)}")
+            try:
+                await channel.delete()
+            except:
+                ezjson.dump("data/starboard.json", ctx.guild.id, False)
+                return await msg.edit(content="Starboard is disabled, but I was unable to delete the channel.")
+            return await msg.edit(content='Successfully removed the starboard. :cry:')
         else:
-            return await ctx.send("Unknown action. Either ignore or use *starboard clear to re-create a deleted channel.")
+            return await ctx.send("Unknown action. Either leave blank, use *starboard reset to re-create a deleted channel, or *starboard delete to remove the server's starboard.")
 
         
     @commands.command()
