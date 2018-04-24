@@ -177,7 +177,7 @@ async def on_reaction_add(reaction, user):
     em.description = reaction.message.content
     em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
     await chan.send(embed=em)
-    ezjson.dump('data/starmsgs.json', reaction.message.id, msg.id)
+    
 
         
 
