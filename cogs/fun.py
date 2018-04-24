@@ -8,6 +8,7 @@ import random
 import json
 import idioticapi
 from discord.ext import commands
+import base64
 
 
 class fun:
@@ -328,6 +329,36 @@ class fun:
         em.set_footer(text=f"Sent by {ctx.message.author.name}")
         await ctx.message.delete()
         await ctx.send(embed=em)
+        
+        
+    @commands.group(invoke_without_command=True)
+    async def base64(self, ctx):
+        '''Encode and decode base64 Text time to annoy your friends with encoded text.'''
+        await ctx.send("Base64 Encode/Decode\nCommands: encode: Encode text\ndecode: Decode text")
+
+    @base64.command()
+    async def encode(self, ctx, msg: str = None):
+        '''Encode base64 text'''
+        if not msg: return await ctx.send("Please provide text to encode")
+        try:
+            x = base64.b64encode(msg.encode("ascii")).decode("ascii")
+            if len(x) > 1950: return await ctx.send("Results too long")
+            await ctx.send(f"```{x}```")
+        except Exception as e:
+            await ctx.send("Something went wrong.")
+            print(e)
+        
+    @base64.command()
+    async def decode(self, ctx, msg: str = None):
+        '''Decode base64 text'''
+        if not msg: return await ctx.send("Please provide text to decode")
+        try:
+            x = base64.b64decode(msg)
+            if len(x) > 1950: return await ctx.send("Results too long")
+            await ctx.send(f"```{x.decode('ascii')}```")
+        except Exception as e:
+            await ctx.send("Something went wrong")
+            print(e)
         
 
 
