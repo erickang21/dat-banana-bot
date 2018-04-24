@@ -339,11 +339,15 @@ class mod:
         """Sets the bot to automatically give a role on a member's join."""
         if role is None:
             return await ctx.send("Please specify the role you want to give!")
-        r = discord.utils.get(ctx.guild.roles, name=str(role))
-        if r is None:
-            return await ctx.send("Role not found in the server. Note that roles muts be entered case sensitive.")
-        ezjson.dump('data/autorole.json', ctx.guild.id, str(r))
-        await ctx.send(f"Successfully enabled an autorole for the role: **{str(r)}**.")
+        elif role.lower() == 'off':
+            ezjson.dump('data/autorole.json', ctx.guild.id, False)
+            await ctx.send(f"Disabled autoroles for this server.")
+        else:
+            r = discord.utils.get(ctx.guild.roles, name=str(role))
+            if r is None:
+                return await ctx.send("Role not found in the server. Note that roles muts be entered case sensitive.")
+            ezjson.dump('data/autorole.json', ctx.guild.id, str(r))
+            await ctx.send(f"Successfully enabled an autorole for the role: **{str(r)}**.")
 
 
     @commands.command()
