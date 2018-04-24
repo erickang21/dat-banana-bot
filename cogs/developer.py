@@ -52,13 +52,24 @@ class Developer:
        
     @commands.command()
     async def shutdown(self, ctx):
-        """Makes the bot shut UP and then shut DOWN, then start up again."""
+        """Shuts DOWN the bot. Cya!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         msg = await ctx.send("Shutting down...")
         await asyncio.sleep(1)
         await msg.edit(content="Goodbye! :wave:")
         await self.bot.logout()
+
+
+    @commands.command()
+    async def restart(self, ctx):
+        """Restarts the bot. Be Back S00N"""
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+        msg = await ctx.send("Restarting...")
+        await asyncio.sleep(1)
+        await msg.edit(content="BRB! :wave:")
+        os.execv(sys.executable, ['python'] + ['bot.py'])
         
         
     @commands.command()
