@@ -18,13 +18,14 @@ import ezjson
 from motor.motor_asyncio import AsyncIOMotorClient
 
 
+with open("data/apikeys.json") as f:
+    x = json.load(f)
+db = AsyncIOMotorClient(x['mongodb'])
 
 
-
-def getprefix(bot, message):
-    with open("data/prefix.json") as f:
-        x = json.loads(f.read())
-    pre = x.get(str(message.guild.id), "*")
+async def getprefix(bot, message):
+    x = await db.datbananabot.prefix.find_one({"id": str(ctx.guild.id)})
+    pre = x['prefix'] if x is not None else '*'
     return pre 
 
 
