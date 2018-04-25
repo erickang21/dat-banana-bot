@@ -14,8 +14,8 @@ class dbl:
             x = json.loads(f.read())
         self.token = x['dblapi']
 
-    def __unload(self):
-        self.bot.loop.create_task(self.session.close())
+    # def __unload(self):
+    #     self.bot.loop.create_task(self.session.close())
 
     async def send(self):
         dump = json.dumps({
