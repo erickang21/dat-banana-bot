@@ -5,6 +5,7 @@ import io
 import asyncio
 import psutil
 import time
+import textwrap
 from discord.ext import commands
 
 
@@ -48,8 +49,34 @@ class Info:
 
 
 
-        
-        
+    @commands.command(aliases=['updates'])
+    async def botupdates(self, ctx):
+        """Read the latest notes on the latest update!"""    
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='v6.0.9 says MANS NOT HOT!')
+        em.description = textwrap.dedent("""
+        -Removed the list of server roles in serverinfo in case the server had too many roles to fit.
+
+        -Removed the list of members in roleinfo in case a role was too popular and had too many members to fit.
+
+        -Tried to swing the ban hammer without permissions? Error now tells you what permissions you were deprived from.
+
+        -Ping command looks awesome-r, with a kewl kat playing ping pong.
+
+        -How long was the bot awake without dying? Find out in the bot stats! (aka uptime)
+
+        -Fixed cocclan. It...sends now.
+
+        -Why pin those dank memes? Use *starboard to set up a server-wide pin-board for the dankest memes in the universe! React to your fav's with :star2:!
+        -Need to see:
+        1) Awesome animated emojis
+        2) The ability of the bot?
+        Try pinging the bot! You'll get gud stuff...
+
+        -Got that memey new role but too lazy to add it every time? Autoroles can save you that problem. Set up now with *autorole [role]!
+
+        -crprofile got them kewl emojis now. And everything sends in one message. How neat of me!
+        """)
+        await ctx.send(embed=em)
 
 def setup(bot): 
     bot.add_cog(Info(bot)) 
