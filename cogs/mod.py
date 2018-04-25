@@ -393,11 +393,11 @@ class mod:
             em.description = f"The bot's prefix for server **{ctx.guild.name}** is set to `{ctx.prefix}`."
             return await ctx.send(embed=em)
         if prefix.lower() == 'clear':
-            ezjson.dump("data/prefix.json", ctx.guild.id, "*")
+            await self.bot.db.datbananabot.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": "*"}}, upsert=True)
             em.description = f"The bot's prefix is now set to the default: `*`."
             return await ctx.send(embed=em)
         else:
-            ezjson.dump("data/prefix.json", ctx.guild.id, prefix)
+            await self.bot.db.datbananabot.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": prefix}}, upsert=True)
             em.description = f"The bot's prefix for this server is set to: `{prefix}`."
             return await ctx.send(embed=em)
         
