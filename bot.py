@@ -23,17 +23,17 @@ with open("data/apikeys.json") as f:
 db = AsyncIOMotorClient(x['mongodb'])
 
 
-def getprefix(bot, message):
-    with open('data/prefix.json') as f:
-        x = json.load(f)
-    try:
-        pre = x[str(message.guild.id)]
-        return pre
-    except KeyError:
-        return '*'
-    # x = await db.datbananabot.prefix.find_one({"id": str(message.guild.id)})
-    # pre = x['prefix'] if x is not None else '*'
-    # return pre 
+async def getprefix(bot, message):
+    # with open('data/prefix.json') as f:
+    #     x = json.load(f)
+    # try:
+    #     pre = x[str(message.guild.id)]
+    #     return pre
+    # except KeyError:
+    #     return '*'
+    x = await db.datbananabot.prefix.find_one({"id": str(message.guild.id)})
+    pre = x['prefix'] if x is not None else '*'
+    return pre 
 
 
 bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
