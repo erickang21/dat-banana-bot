@@ -24,7 +24,7 @@ db = AsyncIOMotorClient(x['mongodb'])
 
 
 async def getprefix(bot, message):
-    x = await db.datbananabot.prefix.find_one({"id": str(ctx.guild.id)})
+    x = await db.datbananabot.prefix.find_one({"id": str(message.guild.id)})
     pre = x['prefix'] if x is not None else '*'
     return pre 
 
