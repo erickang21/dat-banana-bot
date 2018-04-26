@@ -241,7 +241,7 @@ async def on_member_join(member):
     x = await bot.db.datbananabot.autorole.find_one({"id": str(member.guild.id)})
     if x is None:
         return
-    rolename = x[str(member.guild.id)]
+    rolename = x['role']
     r = discord.utils.get(member.guild.roles, name=rolename)
     await member.add_roles(r)
 
