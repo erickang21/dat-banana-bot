@@ -18,12 +18,10 @@ class mod:
     async def starboard(self, ctx, action=None):
         """Turn on a starboard for the server that is for STARS!"""
         if action is None:
-            with open("data/starboard.json") as f:
-                x = json.loads(f.read())
-            try:
-                x[str(ctx.guild.id)]
+            x = await self.bot.db.datbananabot.starboard.find_one({'id': str(ctx.guild.id)})
+            if x is not None:
                 return await ctx.send(f"A starboard for this server has already been created. If the channel was deleted, use *starboard reset to re-create it.")
-            except KeyError:
+            else:
                 msg = await ctx.send("One sec, building the awesome starboard with :star:s")
                 overwrites = {
                     ctx.guild.default_role: discord.PermissionOverwrite(send_messages = False),
@@ -33,7 +31,7 @@ class mod:
                     channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
                 except Exception as e:
                     return await ctx.send(f"An unexpected error occurred. Details: \n```{e}```")
-                ezjson.dump("data/starboard.json", ctx.guild.id, channel.id)
+                await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel.id}}, upsert=True)
                 return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
         elif action.lower() == 'reset':
             msg = await ctx.send("One sec, building the awesome starboard with :star:s")
@@ -42,7 +40,7 @@ class mod:
                 ctx.guild.me: discord.PermissionOverwrite(send_messages = True)
             }
             channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
-            ezjson.dump("data/starboard.json", ctx.guild.id, channel.id)
+            await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel.id}}, upsert=True)
             return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
         elif action.lower() == 'delete':
             msg = await ctx.send("Deleting the :star:board of awesomeness...")
@@ -55,9 +53,9 @@ class mod:
             try:
                 await channel.delete()
             except:
-                ezjson.dump("data/starboard.json", ctx.guild.id, False)
+                await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
                 return await msg.edit(content="Starboard is disabled, but I was unable to delete the channel.")
-            ezjson.dump("data/starboard.json", ctx.guild.id, False)
+            await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
             return await msg.edit(content='Successfully removed the starboard. :cry:')
         else:
             return await ctx.send("Unknown action. Either leave blank, use *starboard reset to re-create a deleted channel, or *starboard delete to remove the server's starboard.")

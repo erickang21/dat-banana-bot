@@ -154,11 +154,9 @@ async def on_reaction_add(reaction, user):
     if reaction.message.author == user:
         return
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
-        with open('data/starboard.json') as f:
-            x = json.load(f)
-        channel = x[str(user.guild.id)]
-        chan = bot.get_channel(channel)
-        if chan is None:
+        x = await bot.db.datbananabot.starboard.find_one({"id": str(user.guild.id)})
+        chan = bot.get_channel(x['channel'])
+        if x is None:
             return
         em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Starred Message")
         em.description = reaction.message.content
