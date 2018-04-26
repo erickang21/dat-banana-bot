@@ -340,13 +340,13 @@ class mod:
         if role is None:
             return await ctx.send("Please specify the role you want to give!")
         elif role.lower() == 'off':
-            ezjson.dump('data/autorole.json', ctx.guild.id, False)
+            await self.bot.db.datbananabot.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": False}})
             await ctx.send(f"Disabled autoroles for this server.")
         else:
             r = discord.utils.get(ctx.guild.roles, name=str(role))
             if r is None:
                 return await ctx.send("Role not found in the server. Note that roles muts be entered case sensitive.")
-            ezjson.dump('data/autorole.json', ctx.guild.id, str(r))
+            await self.bot.db.datbananabot.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": str(r)}})
             await ctx.send(f"Successfully enabled an autorole for the role: **{str(r)}**.")
 
 
