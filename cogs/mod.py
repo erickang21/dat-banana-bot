@@ -376,10 +376,11 @@ class mod:
                 channel = int(channel)
             except ValueError:
                 return await ctx.send("Did you properly mention a channel? Probably not.")
+            await self.bot.db.datbananabot.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel}})
             ezjson.dump("data/modlog.json", ctx.guild.id, channel)
             return await ctx.send(f"Successfully turned on Mod Logs in <#{channel}>. Enjoy! :white_check_mark:")
         if action.lower() == 'off':
-            ezjson.dump("data/modlog.json", ctx.guild.id, False)
+            await self.bot.db.datbananabot.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}})
             return await ctx.send("Turned off Mod Logs. Whew...")
         else:
             return await ctx.send("That ain't an action. Please enter either `on` or `off`.")

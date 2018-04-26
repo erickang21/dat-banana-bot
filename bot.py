@@ -75,15 +75,16 @@ def dev_check(id):
         return False  
 
 
-def modlog_check(guildid):
-    with open('data/modlog.json') as f:
-        x = json.loads(f.read())
-    try:
-        x[str(guildid)]
-        return True
-    except KeyError:
+async def modlog_check(guildid):
+    x = await bot.db.datbananabot.modlog.find_one({'id': str(guildid)})
+    if not x:
         return False
+    return True
 
+
+async def get_modlog_channel(guildid):
+    x = await bot.db.datbananabot.modlog.find_one({'id': str(guildid)})
+    return int(x['channel'])
 
 @bot.event
 async def on_ready():
@@ -133,11 +134,9 @@ async def on_message(message):
 async def on_message_edit(before, after):
     if before is None or after is None:
         return
-    if modlog_check(before.guild.id):
-        with open("data/modlog.json") as f:
-            x = json.loads(f.read())
+    if await modlog_check(before.guild.id):
         try:
-            lol = bot.get_channel(x[str(before.guild.id)])
+            lol = bot.get_channel(await get_modlog_channel(before.guild.id))
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
             em.add_field(name='Channel', value=f"<#{before.channel.id}>")
             em.add_field(name='Content Before', value=before.content)
@@ -229,10 +228,8 @@ async def on_member_join(member):
         if lol is None:
             return
         await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
-    if modlog_check(member.guild.id):
-        with open("data/modlog.json") as f:
-            x = json.loads(f.read())
-        lol = bot.get_channel(x[str(member.guild.id)])
+    if await modlog_check(member.guild.id):
+        lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Joined')
         em.add_field(name="Name", value=str(member))
         em.add_field(name='Joined At', value=str(member.joined_at.strftime("%b %m, %Y, %A, %I:%M %p")))
@@ -267,10 +264,8 @@ async def on_member_remove(member):
         if lol is None:
             return
         await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
-    if modlog_check(member.guild.id):
-        with open("data/modlog.json") as f:
-            x = json.loads(f.read())
-        lol = bot.get_channel(x[str(member.guild.id)])
+    if await modlog_check(member.guild.id):
+        lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Left')
         em.add_field(name="Name", value=str(member))
         em.add_field(name="ID", value=member.id)
@@ -284,11 +279,9 @@ async def on_member_remove(member):
 async def on_message_delete(message):
     if message is None:
         return
-    if modlog_check(message.guild.id):
-        with open("data/modlog.json") as f:
-            x = json.loads(f.read())
+    if await modlog_check(message.guild.id):
         try:
-            lol = bot.get_channel(x[str(message.guild.id)])
+            lol = bot.get_channel(await get_modlog_channel(message.guild.id))
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
             em.add_field(name='Content', value=message.content)
             em.add_field(name='Sent By', value=str(message.author))
