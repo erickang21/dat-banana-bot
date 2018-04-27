@@ -32,6 +32,9 @@ class CR:
         return emo if emo is not None else None
 
 
+    async def get_tag(self, id):
+        x = await self.bot.db.datbananabot.crtags.find_one({"id": str(id)})
+        return x['tag'] if x is not None else None
     
 
     @commands.command()
@@ -41,7 +44,7 @@ class CR:
             return await ctx.send("Please enter a tag to save. Usage: *crsave [tag]")
         if not self.check_tag(crtag):
             return await ctx.send("That must be an invalid tag. Please use a valid tag. :x:")   
-        ezjson.dump("data/crtags.json", ctx.author.id, crtag)                
+        await self.bot.db.datbananabot.crtags.update_one({"id": str(ctx.uathor.id)}, {"$set": {"tag": crtag}}, upsert=True)
         await ctx.send("Success. :white_check_mark: Your tag is now saved to your account.")
 
 
@@ -49,12 +52,12 @@ class CR:
     async def crprofile(self, ctx, crtag=None):
         """Gets those sweet Stats for CR...Usage: *crprofile [tag]"""
         if crtag is None:
-            try:
-                with open('data/crtags.json') as f:
-                    lol = json.load(f)
-                    userid = str(ctx.author.id)
-                    crtag = lol[userid]
-            except KeyError:
+                # with open('data/crtags.json') as f:
+                #     lol = json.load(f)
+                #     userid = str(ctx.author.id)
+                #     crtag = lol[userid]
+            crtag = await self.get_tag(ctx.author.id)
+            if not crtag:
                 return await ctx.send("Uh-oh, no tag found! Use `*crsave [tag]` to save your tag to your Discord account. :x:")
         try:
             profile = await self.client.get_player(crtag)
@@ -109,12 +112,12 @@ class CR:
     async def crclan(self, ctx, clantag=None):
         """Shows info for a clan. Usage: *crclan [CLAN TAG]"""
         if clantag is None:
-            try:
-                with open('data/crtags.json') as f:
-                    lol = json.load(f)
-                    userid = str(ctx.author.id)
-                    crtag = lol[userid]
-            except KeyError:
+                # with open('data/crtags.json') as f:
+                #     lol = json.load(f)
+                #     userid = str(ctx.author.id)
+                #     crtag = lol[userid]
+            crtag = await self.get_tag(ctx.author.id)
+            if not crtag:
                 return await ctx.send("Uh-oh, no tag found! Use *crsave [tag] to save your tag to your Discord account. :x:")
             try:
                 profile = await self.client.get_player(crtag)
@@ -225,12 +228,12 @@ class CR:
     async def crdeck(self, ctx, crtag=None):
         """What's that deck you got there? Find out!"""
         if crtag is None:
-            try:
-                with open('data/crtags.json') as f:
-                    lol = json.load(f)
-                userid = str(ctx.author.id)
-                crtag = lol[userid]
-            except KeyError:
+                # with open('data/crtags.json') as f:
+                #     lol = json.load(f)
+                # userid = str(ctx.author.id)
+                # crtag = lol[userid]
+            crtag = await self.get_tag(ctx.author.id)
+            if not crtag:
                 return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
         try:
             profile = await self.client.get_player(crtag)
@@ -262,12 +265,12 @@ class CR:
     async def crchests(self, ctx, crtag=None):
         """Get your upcoming chests!"""
         if crtag is None:
-            try:
-                with open('data/crtags.json') as f:
-                    lol = json.load(f)
-                userid = str(ctx.author.id)
-                crtag = lol[userid]
-            except KeyError:
+                # with open('data/crtags.json') as f:
+                #     lol = json.load(f)
+                # userid = str(ctx.author.id)
+                # crtag = lol[userid]
+            crtag = await self.get_tag(ctx.author.id)
+            if not crtag:
                 return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
         try:
             profile = await self.client.get_player(crtag)
