@@ -278,6 +278,35 @@ async def on_member_remove(member):
 
 
 @bot.event
+async def on_member_ban(guild, member):
+    x = await bot.db.datbananabot.ban.find_one({"id": str(member.guild.id)})
+    if not x:
+        return
+    try:
+        channel = int(x['channel'])
+    except KeyError:
+        return
+    if channel is False:
+        pass
+    else:
+        lol = bot.get_channel(channel)
+        if lol is None:
+            return
+        await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
+    if await modlog_check(member.guild.id):
+        lol = bot.get_channel(await get_modlog_channel(member.guild.id))
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Banned')
+        em.add_field(name="Name", value=str(member))
+        em.add_field(name="ID", value=member.id)
+        em.add_field(name="Server", value=guild.name)
+        em.set_thumbnail(url=member.avatar_url)
+        await lol.send(embed=em)
+    else:
+        pass
+
+
+
+@bot.event
 async def on_message_delete(message):
     if message is None:
         return
