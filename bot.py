@@ -40,6 +40,7 @@ bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana
 bot._last_result = None
 bot.session = aiohttp.ClientSession()
 bot.starttime = time.time()
+bot.commands_run = 0
 with open("data/apikeys.json") as f:
     x = json.load(f)
 bot.db = AsyncIOMotorClient(x['mongodb'])
@@ -127,6 +128,11 @@ async def on_message(message):
         await bot.process_commands(message)
     else:
         return
+
+
+@bot.event
+async def on_command(ctx):
+    bot.commands_run += 1
         
 
 

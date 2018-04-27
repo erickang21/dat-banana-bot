@@ -40,6 +40,7 @@ class CR:
     @commands.command()
     async def crsave(self, ctx, crtag=None):
         """Saves your CR tag to your account. Usage: *crsave [player tag]"""
+        await ctx.trigger_typing()
         if crtag is None:
             return await ctx.send("Please enter a tag to save. Usage: *crsave [tag]")
         if not self.check_tag(crtag):
@@ -51,6 +52,7 @@ class CR:
     @commands.command()
     async def crprofile(self, ctx, crtag=None):
         """Gets those sweet Stats for CR...Usage: *crprofile [tag]"""
+        await ctx.trigger_typing()
         if crtag is None:
                 # with open('data/crtags.json') as f:
                 #     lol = json.load(f)
@@ -111,6 +113,7 @@ class CR:
     @commands.command()
     async def crclan(self, ctx, clantag=None):
         """Shows info for a clan. Usage: *crclan [CLAN TAG]"""
+        await ctx.trigger_typing()
         if clantag is None:
                 # with open('data/crtags.json') as f:
                 #     lol = json.load(f)
@@ -227,6 +230,7 @@ class CR:
     @commands.command()
     async def crdeck(self, ctx, crtag=None):
         """What's that deck you got there? Find out!"""
+        await ctx.trigger_typing()
         if crtag is None:
                 # with open('data/crtags.json') as f:
                 #     lol = json.load(f)
@@ -264,6 +268,7 @@ class CR:
     @commands.command()
     async def crchests(self, ctx, crtag=None):
         """Get your upcoming chests!"""
+        await ctx.trigger_typing()
         if crtag is None:
                 # with open('data/crtags.json') as f:
                 #     lol = json.load(f)

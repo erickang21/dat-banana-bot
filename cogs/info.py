@@ -44,7 +44,12 @@ class Info:
         em.add_field(name='Start Date', value='12/08/2017')
         em.add_field(name='Coding Language', value='Python, discord.py')  
         em.add_field(name='Memory Usage', value=f"{used} MB ({percent}%)")
-        em.add_field(name='Bot Uptime', value="%d days, %d hours, %d minutes, %d seconds" % (day, hour, minute, second))    
+        em.add_field(name='Bot Uptime', value="%d days, %d hours, %d minutes, %d seconds" % (day, hour, minute, second)) 
+        em.add_field(name='Commands Run (Since Uptime)', value=self.bot.commands_run)  
+        em.add_field(name='Starboards', value=await self.bot.db.datbananabot.starboard.count())
+        em.add_field(name='Saved CR Tags', value=await self.bot.db.datbananabot.crtags.count())
+        em.add_field(name='Saved COC Tags', value=await self.bot.db.datbananabot.coctags.count())
+        em.add_field(name='Active Mod Logs', value=await self.bot.db.datbananabot.modlog.count())
         await ctx.send(embed=em)
 
 
