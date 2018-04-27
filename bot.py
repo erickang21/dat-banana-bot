@@ -16,6 +16,7 @@ from discord.ext import commands
 import json
 import ezjson
 from motor.motor_asyncio import AsyncIOMotorClient
+from ext.context import DatContext
 
 
 with open("data/apikeys.json") as f:
@@ -24,6 +25,7 @@ db = AsyncIOMotorClient(x['mongodb'])
 
 
 async def getprefix(bot, message):
+    if isinstance(message.channel, discord.DMChannel): return "*"
     # with open('data/prefix.json') as f:
     #     x = json.load(f)
     # try:
@@ -76,6 +78,12 @@ def dev_check(id):
         return False  
 
 
+async def process_commands(message):
+    ctx = await bot.get_context(message, cls=DatContext)
+    if not ctx.command:
+        return
+    await bot.invoke(ctx)
+
 async def modlog_check(guildid):
     x = await bot.db.datbananabot.modlog.find_one({'id': str(guildid)})
     if not x:
@@ -125,7 +133,9 @@ async def on_message(message):
     if message.content == '<@388476336777461770>':
         await message.channel.send(f"{bot.get_emoji(430853515217469451)} BAH! Why you :regional_indicator_p:ing me? Anyway, I'm dat banana bot, so nice to meet you. I do a LOT of kewl stuff, like music, starboard, welcome/leave messages, Canvas, and so much more! All it takes is `*help` to see the powers I got! {bot.get_emoji(430853629570711562)}")
     if not message.author.bot:
-        await bot.process_commands(message)
+        # await bot.process_commands(message)
+        # be ready to revert :p
+        await process_commands(message)
     else:
         return
 
