@@ -42,12 +42,12 @@ class DatContext(commands.Context):
             x = self.paginate(content)
             for page in x:
                 if page == x[-1]:
-                    super().send(content=content, *, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+                    super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
                     break
                 else:
-                    super().send(content=content, *, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+                    super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
         else:
-            super().send(content=content, *, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+            super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
             
     async def get(self, url, headers={}, params={}, json=False):
         '''Easy method to request APIs etc.
