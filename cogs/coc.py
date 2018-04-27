@@ -19,6 +19,12 @@ class COC:
         self.client = {'Authorization': self.token}
 
 
+    async def get_tag(self, id):
+        '''Gets a COC tag by user ID.'''
+        x = await self.bot.db.datbananabot.coctags.find_one({"id": id})
+        return x['tag'] if x is not None else None
+
+
 
     @commands.command()
     async def cocsave(self, ctx, coctag=None):
@@ -30,7 +36,7 @@ class COC:
         for char in coctag:
             if char.upper() not in '0289PYLQGRJCUV':
                 return await ctx.send(f'Oops again! Looks like your tag `#{coctag}` is not a valid tag!')
-        ezjson.dump("data/coctags.json", ctx.author.id, coctag)
+        await self.bot.db.datbananabot.coctags.update_one({"id": str(ctx.uathor.id)}, {"$set": {"tag": coctag}}, upsert=True)
         await ctx.send("Success. :white_check_mark: Your tag is now saved to your account.")
 
 
@@ -39,12 +45,8 @@ class COC:
     async def cocprofile(self, ctx, coctag=None):
         '''Gets a Clash of Clans profile! Yay!'''
         if coctag is None:
-            try:
-                with open('data/coctags.json') as f:
-                    lol = json.load(f)
-                    userid = str(ctx.author.id)
-                    coctag = lol[userid]
-            except KeyError:
+            coctag = await self.get_tag(ctx.author.id)
+            if not coctag:
                 return await ctx.send("Oops, looks like you don't have a saved tag yet! Use `*cocsave [tag]` to save your tag to your Discord profile.")              
             resp = await self.session.get(f'https://api.clashofclans.com/v1/players/%23{coctag}', headers=self.client)
             resp = await resp.json()
@@ -165,12 +167,8 @@ class COC:
     async def cocclan(self, ctx, clantag=None):
         """Gets clan info for a Clash of Clans clan."""
         if clantag is None:
-            try:
-                with open('data/coctags.json') as f:
-                    lol = json.load(f)
-                    userid = str(ctx.author.id)
-                    coctag = lol[userid]
-            except KeyError:
+            coctag = await self.get_tag(ctx.author.id)
+            if not coctag:
                 return await ctx.send("Oops, looks like you don't have a saved tag yet! Use `*cocsave [tag]` to save your tag to your Discord profile.")
             resp = await self.session.get(f'https://api.clashofclans.com/v1/players/%23{coctag}', headers=self.client)
             resp = await resp.json()
@@ -234,12 +232,8 @@ class COC:
     @commands.command()
     async def cocwar(self, ctx, clantag=None):
         if clantag is None:
-            try:
-                with open('data/coctags.json') as f:
-                    lol = json.load(f)
-                    userid = str(ctx.author.id)
-                    coctag = lol[userid]
-            except KeyError:
+            coctag = await self.get_tag(ctx.author.id)
+            if not coctag:
                 return await ctx.send("Oops, looks like you don't have a saved tag yet! Use `*cocsave [tag]` to save your tag to your Discord profile.")
             resp = await self.session.get(f'https://api.clashofclans.com/v1/players/%23{coctag}', headers=self.client) 
             resp = await resp.json()
