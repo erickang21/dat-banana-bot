@@ -247,5 +247,16 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
 
+    @commands.command()
+    async def snapchat(self, ctx, *, text=None):
+        await ctx.trigger_typing()
+        if text is None:
+            return await ctx.send("I'm sorry, *what did you want to write on the Snapchat?*")
+        try:
+            await ctx.send(f"**{ctx.author.name}** sent a Snapchat!", file=discord.File(await self.client.snapchat(text), "snapchat.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+
 def setup(bot):
     bot.add_cog(Idiotic(bot))
