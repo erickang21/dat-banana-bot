@@ -78,11 +78,11 @@ def dev_check(id):
         return False  
 
 
-async def process_commands(message):
-    ctx = await bot.get_context(message, cls=DatContext)
-    if not ctx.command:
-        return
-    await bot.invoke(ctx)
+# async def process_commands(message):
+#     ctx = await bot.get_context(message, cls=DatContext)
+#     if not ctx.command:
+#         return
+#     await bot.invoke(ctx)
 
 async def modlog_check(guildid):
     x = await bot.db.datbananabot.modlog.find_one({'id': str(guildid)})
