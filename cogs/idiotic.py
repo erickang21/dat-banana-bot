@@ -258,5 +258,16 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
 
+    @commands.command()
+    async def respect(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is being respected!", file=discord.File(await self.client.respect(user.avatar_url), "respect.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+        
+
+
 def setup(bot):
     bot.add_cog(Idiotic(bot))
