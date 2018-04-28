@@ -21,7 +21,7 @@ class COC:
 
     async def get_tag(self, id):
         '''Gets a COC tag by user ID.'''
-        x = await self.bot.db.datbananabot.coctags.find_one({"id": id})
+        x = await self.bot.db.datbananabot.coctags.find_one({"id": str(id)})
         return x['tag'] if x is not None else None
 
 
