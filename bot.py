@@ -135,7 +135,7 @@ async def on_message(message):
     if not message.author.bot:
         # await bot.process_commands(message)
         # be ready to revert :p
-        await process_commands(message)
+        await bot.process_commands(message)
     else:
         return
 
