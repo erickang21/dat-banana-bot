@@ -13,7 +13,7 @@ class CR:
         self.bot = bot
         with open('data/apikeys.json') as f:
             lol = json.load(f)
-            self.token = lol.get("crapi")
+            self.token = lol['crapi']
         self.client = clashroyale.Client(token=self.token, is_async=True)
 
 
