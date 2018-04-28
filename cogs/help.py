@@ -51,7 +51,7 @@ class Help:
                     lol.append(x)
                 for x in lol:
                     cmdlist = self.bot.get_cog_commands(x)
-                    if x.cog_name == lol[pgnumber]:
+                    if x == lol[pgnumber]:
                         commands.append(cmdlist)
                 for x in commands:
                     em.description += f"**{x.callback.__name__}**\n{x.short_doc}"    
