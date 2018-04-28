@@ -50,7 +50,7 @@ class Help:
                     lol.append(x)
                     for x in lol:
                         commands = []
-                        commands.append(x.name for x in self.bot.commands if x.cog_name == lol[pgnumber])
+                        commands.append(x.callback.__name__ for x in self.bot.commands if x.cog_name == lol[pgnumber])
                 for x in commands:
                     em.description += f"**{x.name}**\n{x.short_doc}"    
             em.set_footer(text="Pulling your hair out? Use the '?' to GET HELP!")
