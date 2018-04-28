@@ -45,12 +45,14 @@ class Help:
                 color = discord.Color(value=0x00ff00)
                 em = discord.Embed(color=color, title='dat banana bot Help')
                 lol = []
+                commands = []
                 pgnumber = 0
                 for x in self.bot.cogs:
                     lol.append(x)
-                    for x in lol:
-                        commands = []
-                        commands.append(x.callback.__name__ for x in self.bot.commands if x.cog_name == lol[pgnumber])
+                for x in lol:
+                    cmdlist = self.bot.get_cog_commands(x)
+                    if x.cog_name == lol[pgnumber]:
+                        commands.append(cmdlist)
                 for x in commands:
                     em.description += f"**{x.callback.__name__}**\n{x.short_doc}"    
             em.set_footer(text="Pulling your hair out? Use the '?' to GET HELP!")
