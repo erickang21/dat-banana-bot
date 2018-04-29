@@ -16,7 +16,7 @@ from discord.ext import commands
 import json
 import ezjson
 from motor.motor_asyncio import AsyncIOMotorClient
-from ext.context import DatContext
+#from ext.context import DatContext
 
 
 with open("data/apikeys.json") as f:
