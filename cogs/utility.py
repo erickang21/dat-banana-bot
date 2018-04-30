@@ -144,7 +144,7 @@ class Utility:
         try:
             for x in emojis:
                 e = self.bot.get_emoji(x)
-                resp = await self.session.get(f"https://cdn.discordapp.com/emojis/{x}")
+                resp = await self.session.get(e.url)
                 img = await resp.read()
                 await ctx.guild.create_custom_emoji(name=e.name, image=img)
             await msg.edit(content="Done! Enjoy dat banana boi's collection of dank emojis. :white_check_mark:")
