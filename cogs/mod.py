@@ -87,8 +87,6 @@ class mod:
             await user.send(embed=em)
             await ctx.message.delete()
             await ctx.send("User has been DM'd :white_check_mark:. Pray that the user is a gud boi now. :pray:")
-        except discord.ext.commands.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with warning people without permissions.")
         except:
             await ctx.send("Something happened and the DM could not make it :x:. The user could be blocking DMs from the server, or you did not use the format correctly. Usage: *warn [tag person] [reason].")    
        
