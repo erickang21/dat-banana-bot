@@ -178,7 +178,7 @@ class Idiotic:
         await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
-            await ctx.send(f"**{user.name}** got insulted.", file=discord.File(await self.client.waifuinsult(user.avatar_url), "waifuinsult.png"))
+            await ctx.send(f"**{user.name}** got insulted.", file=discord.File(await self.client.waifu_insult(user.avatar_url), "waifuinsult.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
@@ -187,7 +187,7 @@ class Idiotic:
         await ctx.trigger_typing()
         user = user if user is not None else ctx.author
         try:
-            await ctx.send(f"**{user.name}** scared off a poor kid.", file=discord.File(await self.client.wreckit(user.avatar_url, ctx.author.name), "scary.png"))
+            await ctx.send(f"**{user.name}** scared off a poor kid.", file=discord.File(await self.client.wreckit(user.avatar_url), "scary.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
@@ -266,7 +266,81 @@ class Idiotic:
             await ctx.send(f"**{user.name}** is being respected!", file=discord.File(await self.client.respect(user.avatar_url), "respe.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
-        
+
+
+    @commands.command()
+    async def cursive(self, ctx, *, text=None):
+        """Turn your text into cursive!"""
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+        try:
+            await ctx.send(await self.client.cursive(text, 'bold'))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+
+    @commands.command()
+    async def spank(self, ctx, user: discord.Member = None):
+        """Spank someone. Spank someone hARD!"""
+        await ctx.trigger_typing()
+        if user is None:
+            return await ctx.send("I'm sorry, can you *tag the person you wanna spank*")
+        try:
+            await ctx.send(f"Ouch! **{ctx.author.name}** spanked **{user.name}** hard on the ass.", file=discord.File(await self.client.super_spank(ctx.author.avatar_url, user.avatar_url), "spank.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def garbage(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is garbage.", file=discord.File(await self.client.garbage(user.avatar_url), "garbage.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def confused(self, ctx, user: discord.Member = None):
+        await ctx.trigger_typing()
+        user = user if user is not None else ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is confused?!", file=discord.File(await self.client.confused(user.avatar_url, self.bot.get_user(277981712989028353).avatar_url), "confused.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    
+    @commands.command()
+    async def mock(self, ctx, *, text=None):
+        """Send someone in a MoCKinG voIcE."""
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+        await ctx.send(await self.client.mock(text))
+
+
+    @commands.command()
+    async def tiny(self, ctx, *, text=None):
+        """Send your text in ᵗᶦⁿʸ ˡᵉᵗᵗᵉʳˢ."""
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+        await ctx.send(await self.client.tiny(text, 'superscript'))
+
+    @commands.command()
+    async def tindermatch(self, ctx, user: discord.Member = None):
+        """Match yourself with someone like Tinder!"""
+        await ctx.trigger_typing()
+        if user is None:
+            return await ctx.send("I'm sorry, can you *tag the person you wanna match with?*")
+        try:
+            await ctx.send(f"**{ctx.author.name}** got matched with **{user.name}**.", file=discord.File(await self.client.tinder_match(ctx.author.avatar_url, user.avatar_url), "tindermatch.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
 
 
 def setup(bot):
