@@ -402,7 +402,7 @@ async def ping(ctx):
     msg = await ctx.send(embed=e)
     em = discord.Embed(color=color, title='PoIIIng! Your supersonic latency is:')
     em.description = f"{bot.latency * 1000:.4f} ms"
-    em.set_thumbnail(url="https://media.giphy.com/media/4IAzyrhy9rkis/giphy.gif")
+    em.set_thumbnail(url="https://media.giphy.com/media/kcpobK0upw5gY/giphy.gif")
     em.set_footer(text="Psst...A heartbeat is 27 ms!")
     await msg.edit(embed=em)
   
