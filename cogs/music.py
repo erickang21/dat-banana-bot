@@ -11,7 +11,7 @@ from discord.ext.commands.cooldowns import BucketType
 
 
 YOUTUBE_DL_OPTIONS = {
-    'format': 'bestaudio',
+    'format': 'bestaudio/best',
     'noplaylist': True,
     'nocheckcertificate': True,
     'ignoreerrors': False,
@@ -61,10 +61,11 @@ class Music:
        self.bot = bot
        self.queue = list()
 
-    async def next_song(self, ctx, loop): #Player is not needed smh
-        self.queue.pop(0)  # Remove the first element
-        if len(self.queue) == 0: #Check if the queue length is 0 if it is disconnect else play the next song
+    async def next_song(self, ctx, loop):
+        del self.queue[0] # Remove first element
+        if len(self.queue) is 0:
             await ctx.voice_client.disconnect()
+            await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
         else:
             next = await YTDLSource.from_url(self.queue[0], loop=loop)
             ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
