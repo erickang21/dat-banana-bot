@@ -99,7 +99,7 @@ class Music:
             return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
         if ctx.voice_client is None:
             await ctx.author.voice.channel.connect()
-        await ctx.trigger_typing()
+        em = discord.Embed(color=discord.Color, title="Searching...", description=f"{self.bot.get_emoji(441385713091477504)} Searching `{url}`...")
         if not ctx.voice_client.is_playing():
             try:            
                 player = await YTDLSource.from_url(url, loop=self.bot.loop)
