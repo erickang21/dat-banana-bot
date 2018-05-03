@@ -100,6 +100,7 @@ class Music:
         if ctx.voice_client is None:
             await ctx.author.voice.channel.connect()
         em = discord.Embed(color=discord.Color, title="Searching...", description=f"{self.bot.get_emoji(441385713091477504)} Searching `{url}`...")
+        m = await ctx.send(embed=em)
         if not ctx.voice_client.is_playing():
             try:            
                 player = await YTDLSource.from_url(url, loop=self.bot.loop)
@@ -109,6 +110,7 @@ class Music:
                 ctx.voice_client.play(player, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, self.bot.loop), loop=self.bot.loop).result())
             except discord.Forbidden:
                 return await ctx.send("I don't have permissions to play in this channel.")
+            await m.delete()
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
             em.description = player.title
             em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)

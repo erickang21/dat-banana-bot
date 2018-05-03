@@ -55,7 +55,7 @@ class Developer:
         """Shuts DOWN the bot. Cya!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        msg = await ctx.send("Shutting down...")
+        msg = await ctx.send(f"Shutting down... {self.bot.get_emoji(441385713091477504)}")
         await asyncio.sleep(1)
         await msg.edit(content="Goodbye! :wave:")
         await self.bot.logout()
@@ -66,7 +66,7 @@ class Developer:
         """Restarts the bot. Be Back S00N"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        msg = await ctx.send("Restarting...")
+        msg = await ctx.send(f"Restarting... {self.bot.get_emoji(441385713091477504)}")
         await asyncio.sleep(1)
         await msg.edit(content="BRB! :wave:")
         os.execv(sys.executable, ['python'] + ['bot.py'])
@@ -89,7 +89,7 @@ class Developer:
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         e = discord.Embed(color=discord.Color(value=0x00ff00), title='Running code...')
-        e.description = f'```{code}```'
+        e.description = f'```Please wait... {self.bot.get_emoji(441385713091477504)}```'
         msg = await ctx.send(embed=e)
         lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Ran on the Command Prompt!')
@@ -107,7 +107,7 @@ class Developer:
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        msg = await ctx.send("Bot updating... :arrows_counterclockwise:")
+        msg = await ctx.send(f"Bot updating... {self.bot.get_emoji(441385713091477504)}")
         try:
             lol = subprocess.run("git pull", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
             for cog in self.bot.cogs:
