@@ -83,18 +83,18 @@ class Developer:
             await self.bot.user.edit(username=f'{name}')
 
 
-    @commands.command()
-    async def exec(self, ctx, *, code):
+    @commands.command(name='exec')
+    async def _exec(self, ctx, *, code):
         """Executes code like the Command Line."""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        e = discord.Embed(color=discord.Color(value=0x00ff00), title='Running code...')
-        e.description = f'```Please wait... {self.bot.get_emoji(441385713091477504)}```'
+        e = discord.Embed(color=discord.Color(value=0x00ff00), title='Running code')
+        e.description = f'Please wait... {self.bot.get_emoji(441385713091477504)}'
         msg = await ctx.send(embed=e)
         lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Ran on the Command Prompt!')
         if lol == '':
-            code = 'The output is empty. (This is not a Command Prompt message.)'
+            lol = 'The output is empty. (This is not a Command Prompt message.)'
         if len(lol) > 1850:
             em.description = f"Ran on the Command Line ```{code}``` Output: \nThe process details are too large to fit in a message."
             await msg.edit(embed=em)
