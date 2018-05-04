@@ -36,7 +36,7 @@ class fun:
             if char == " ":
                 to_send += " "
             elif char.lower() in 'qwertyuiopasdfghjklzxcvbnm':
-                to_send += f":regional_indicator_{char.lower()}: "
+                to_send += f":regional_indicator_{char.lower()}:  "
             elif char in '1234567890':
                 numbers = {
                     "1": "one",
