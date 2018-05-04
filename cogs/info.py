@@ -40,7 +40,7 @@ class Info:
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
-        em.add_field(name='Version', value='6.0.6')
+        em.add_field(name='Version', value='7.0')
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py {self.bot.get_emoji(418934774623764491)}') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
@@ -60,27 +60,34 @@ class Info:
         """Read the latest notes on the latest update!"""    
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='v6.0.9 says MANS NOT HOT!')
         em.description = textwrap.dedent("""
-        -Removed the list of server roles in serverinfo in case the server had too many roles to fit.
+        This doesn't directly change bot features, but most JSON files (local data) have been changed to MongoDB (cloud storage) for
+        1) safer storage
+        2) less bugs and JSONDecodeErrors
+        3) ease of transitioning to Heroku
 
-        -Removed the list of members in roleinfo in case a role was too popular and had too many members to fit.
+        **ADDED**
 
-        -Tried to swing the ban hammer without permissions? Error now tells you what permissions you were deprived from.
+        -From now on, you can SEE THESE NOTES through the *botupdates command! How 2018 is that?
 
-        -Ping command looks awesome-r, with a kewl kat playing ping pong.
+        -Did you see a dank meme and star it, but realize image doesn't show on starboard? That's fixed! The dankest memes can appear as an embed image on the starboard now. 3018, man. 3018...
 
-        -How long was the bot awake without dying? Find out in the bot stats! (aka uptime)
+        -Made the Help menu's color more banana-y. So kewl, man.
 
-        -Fixed cocclan. It...sends now.
+        -Made info a lot more info-rmative. Like adding a counter of how many commands were used.
 
-        -Why pin those dank memes? Use *starboard to set up a server-wide pin-board for the dankest memes in the universe! React to your fav's with :star2:!
-        -Need to see:
-        1) Awesome animated emojis
-        2) The ability of the bot?
-        Try pinging the bot! You'll get gud stuff...
+        -Added a dramatic exit message when a person is banned. Set up with *banmsg.
 
-        -Got that memey new role but too lazy to add it every time? Autoroles can save you that problem. Set up now with *autorole [role]!
+        -Show your best respect to people with the *respect command.
 
-        -crprofile got them kewl emojis now. And everything sends in one message. How neat of me!
+        -Added 7 more Idiotic commands, including fancy text that don't come with your shitty PC's keyboard. WOOP!
+
+        -Have more fun with base64 encoding and decoding because now, the bug has been fixed so you can type more than one word.
+
+        -Music queue got fixed (I think?), so have fun queuing your favorite party song list.
+
+        **REMOVED**
+
+        -Removed anim because it was causing problems with DBL mods.
         """)
         await ctx.send(embed=em)
 
