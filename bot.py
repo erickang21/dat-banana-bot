@@ -129,7 +129,7 @@ async def on_ready():
     print('Bot is online, and ready to ROLL!')
     while True:
         await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
-        await asyncio.sleep(15)
+        await asyncio.sleep(20)
 
 
 @bot.event
