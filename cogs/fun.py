@@ -337,7 +337,7 @@ class fun:
         await ctx.send("Base64 Encode/Decode\nCommands: encode: Encode text\ndecode: Decode text")
 
     @base64.command()
-    async def encode(self, ctx, msg: str = None):
+    async def encode(self, ctx, *, msg: str = None):
         '''Encode base64 text'''
         if not msg: return await ctx.send("Please provide text to encode")
         try:
@@ -349,7 +349,7 @@ class fun:
             print(e)
         
     @base64.command()
-    async def decode(self, ctx, msg: str = None):
+    async def decode(self, ctx, *, msg: str = None):
         '''Decode base64 text'''
         if not msg: return await ctx.send("Please provide text to decode")
         try:
