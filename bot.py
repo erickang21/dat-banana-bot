@@ -329,11 +329,22 @@ async def on_message_delete(message):
         return
     if await modlog_check(message.guild.id):
         try:
+            try:
+                img_url = message.attachments[0].url
+            except IndexError:
+                img_url = None
+            if not img_url:
+                try:
+                    img_url = message.embeds[0].url
+                except IndexError:
+                    img_url = None
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
             em.add_field(name='Content', value=message.content)
             em.add_field(name='Sent By', value=str(message.author))
             em.add_field(name='Channel', value=f"<#{message.channel.id}>")
+            if img_url:
+                em.set_thumbnail(url=img_url)
             await lol.send(embed=em)
         except KeyError:
             pass
