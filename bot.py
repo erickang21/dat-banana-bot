@@ -151,6 +151,8 @@ async def on_command(ctx):
 async def on_message_edit(before, after):
     if before is None or after is None:
         return
+    if before.content == after.content:
+        return
     if await modlog_check(before.guild.id):
         try:
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
