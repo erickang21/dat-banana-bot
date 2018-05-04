@@ -357,7 +357,7 @@ class fun:
             if len(x) > 1950: return await ctx.send("Results too long")
             await ctx.send(f"```{x.decode('ascii')}```")
         except Exception as e:
-            await ctx.send("Something went wrong")
+            await ctx.send("Invalid Base64 Text")
             print(e)
         
 
