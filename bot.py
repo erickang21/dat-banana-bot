@@ -18,6 +18,7 @@ import json
 import ezjson
 from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
+from ext.logger import Logger as logger
 
 
 with open("data/apikeys.json") as f:
@@ -44,6 +45,7 @@ bot._last_result = None
 bot.session = aiohttp.ClientSession()
 bot.starttime = time.time()
 bot.commands_run = 0
+bot.logger = logger
 with open("data/apikeys.json") as f:
     x = json.load(f)
 bot.db = AsyncIOMotorClient(x['mongodb'])
@@ -364,7 +366,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CommandNotFound):
         pass
     else:
-        print(error)
+        logger.error(error)
 
             
             
