@@ -58,7 +58,7 @@ class Info:
     @commands.command(aliases=['updates'])
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='v6.0.9 says MANS NOT HOT!')
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='v7.0 is out in paradise!')
         em.description = textwrap.dedent("""
         This doesn't directly change bot features, but most JSON files (local data) have been changed to MongoDB (cloud storage) for
         1) safer storage
