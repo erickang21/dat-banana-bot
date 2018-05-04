@@ -194,7 +194,8 @@ async def on_reaction_add(reaction, user):
         em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Starred Message")
         em.description = reaction.message.content
         em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
-        em.set_image(url=img_url if img_url else None)
+        if img_url:
+            em.set_image(url=str(img_url))
         await chan.send(embed=em)
     else:
         pass
