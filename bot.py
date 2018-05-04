@@ -130,7 +130,7 @@ async def on_ready():
 async def on_message(message):
     if bot.session.closed:
         bot.session = aiohttp.ClientSession()
-    if message.content == '<@388476336777461770>':
+    if re.match(f"^<@!?{bot.user.id}>$", message.content):
         await message.channel.send(f"{bot.get_emoji(430853515217469451)} BAH! Why you :regional_indicator_p:ing me? Anyway, I'm dat banana bot, so nice to meet you. I do a LOT of kewl stuff, like music, starboard, welcome/leave messages, Canvas, and so much more! All it takes is `*help` to see the powers I got! {bot.get_emoji(430853629570711562)}")
     if not message.author.bot:
         # await bot.process_commands(message)
