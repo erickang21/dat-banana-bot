@@ -449,7 +449,7 @@ class Utility:
         em.add_field(name='Total Member Count :busts_in_silhouette:', value=str(guild.member_count), inline=False)
         em.add_field(name='Humans :family:', value=len([x for x in ctx.guild.members if not x.bot]), inline=False)
         em.add_field(name='Bots :robot:', value=len([x for x in ctx.guild.members if x.bot]), inline=False)
-        em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n**Voice:** {voicechannels}", inline=False)
+        em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n:loud_sound: **Voice:** {voicechannels}", inline=False)
         em.add_field(name='AFK Channel :sleeping: ', value=str(guild.afk_channel), inline=False)
         em.add_field(name='Server Region :globe_with_meridians: ', value=str(guild.region), inline=False)
         em.add_field(name='Role Count :bust_in_silhouette: ', value=str(role_length), inline=False)
