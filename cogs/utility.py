@@ -431,21 +431,30 @@ class Utility:
         roles = [x.name for x in guild.roles]
         role_length = len(roles)
         roles = ', '.join(roles)
-        channels = len(guild.channels)
-        time = str(guild.created_at.strftime("%b %m, %Y, %A, %I:%M %p"))         
-        em = discord.Embed(description= "-", title='Server Info', colour=0x00ff00)
+        textchannels = len(guild.text_channels)
+        voicechannels = len(guild.voice_channels)
+        time = str(guild.created_at.strftime("%b %m, %Y, %A, %I:%M %p"))
+        ban_count = len(await guild.bans())
+        verification_levels = {
+            0: "**None** (Unrestricted)",
+            1: "**Low** (Verified email)",
+            2: "**Medium** (Registered on Discord for longer than 5 minutes)",
+            3: "**(╯°□°）╯︵ ┻━┻** (Registered on Discord for longer than 10 minutes)",
+            4: "**(ノಠ益ಠ)ノ彡┻━┻** (Verified phone)"
+        }         
+        em = discord.Embed(title=guild.name, colour=0x00ff00)
         em.set_thumbnail(url=guild.icon_url)
-        em.add_field(name='__Server __', value=str(guild.name))
-        em.add_field(name='__Server ID__', value=str(guild.id))
-        em.add_field(name='__Owner__', value=str(guild.owner))
-        em.add_field(name='__Owner ID__', value=guild.owner_id) 
-        em.add_field(name='__Member Count__', value=str(guild.member_count))
-        em.add_field(name='__Humans__', value=len([x for x in ctx.guild.members if not x.bot]))
-        em.add_field(name='__Bots__', value=len([x for x in ctx.guild.members if x.bot]))
-        em.add_field(name='__Text/Voice Channels__', value=str(channels))
-        em.add_field(name='__Server Region__', value='%s' % str(guild.region))
-        em.add_field(name='__ Total Roles__', value='%s' % str(role_length))
-        #em.add_field(name='__Roles__', value='%s' % str(roles))
+        em.add_field(name='Server ID :id:', value=str(guild.id), inline=False)
+        em.add_field(name=f'Owner {self.bot.get_emoji(430340802879946773)}', value=str(guild.owner), inline=False)
+        em.add_field(name='Total Member Count :busts_in_silhouette:', value=str(guild.member_count), inline=False)
+        em.add_field(name='Humans :family:', value=len([x for x in ctx.guild.members if not x.bot]), inline=False)
+        em.add_field(name='Bots :robot:', value=len([x for x in ctx.guild.members if x.bot]), inline=False)
+        em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n**Voice:** {voicechannels}", inline=False)
+        em.add_field(name='AFK Channel :sleeping: ', value=str(guild.afk_channel), inline=False)
+        em.add_field(name='Server Region :globe_with_meridians: ', value=str(guild.region), inline=False)
+        em.add_field(name='Role Count :bust_in_silhouette: ', value=str(role_length), inline=False)
+        em.add_field(name=f'Server Verification Level {self.bot.get_emoji(430851951740321793)}', value=verification_levels[guild.verification_level], inline=False)
+        em.add_field(name=f'Ban Count {self.bot.get_emoji(433381603020898326)}', value=ban_count, inline=False)
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
               
