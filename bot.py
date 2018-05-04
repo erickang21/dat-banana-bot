@@ -180,11 +180,21 @@ async def on_reaction_add(reaction, user):
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
         x = await bot.db.datbananabot.starboard.find_one({"id": str(user.guild.id)})
         chan = bot.get_channel(x['channel'])
-        if x is None:
+        if not chan:
             return
+        try:
+            img_url = reaction.message.attachments[0].url
+        except IndexError:
+            img_url = None
+        if not img_url:
+            try:
+                img_url = reaction.message.embeds[0].url
+            except IndexError:
+                img_url = None
         em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Starred Message")
         em.description = reaction.message.content
         em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+        em.set_image(url=img_url if img_url else None)
         await chan.send(embed=em)
     else:
         pass
@@ -239,17 +249,11 @@ async def on_member_join(member):
     x = await bot.db.datbananabot.welcome.find_one({"id": str(member.guild.id)})
     if not x:
         return
-    try:
-        channel = int(x['channel'])
-    except KeyError:
+    channel = int(x['channel'])
+    lol = bot.get_channel(channel)
+    if not lol:
         return
-    if channel is False:
-        pass
-    else:
-        lol = bot.get_channel(channel)
-        if lol is None:
-            return
-        await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
+    await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Joined')
@@ -273,17 +277,11 @@ async def on_member_remove(member):
     x = await bot.db.datbananabot.leave.find_one({"id": str(member.guild.id)})
     if not x:
         return
-    try:
-        channel = int(x['channel'])
-    except KeyError:
+    channel = int(x['channel'])
+    lol = bot.get_channel(channel)
+    if not lol:
         return
-    if channel is False:
-        pass
-    else:
-        lol = bot.get_channel(channel)
-        if lol is None:
-            return
-        await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
+    await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Left')
