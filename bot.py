@@ -372,13 +372,13 @@ async def on_command_error(ctx, error):
             
 @bot.command(name='presence')
 @commands.is_owner()
-async def _set(ctx, Type=None,*,thing=None):
+async def _set(ctx, Type=None, *, thing=None):
     """What AM I doing?!?!?!"""
     if Type is None:
         await ctx.send('Do it right, plz! Usage: *presence [game/stream] [msg]')
     else:
       if Type.lower() == 'stream':
-        await bot.change_presence(activity=discord.Game(name=thing,type=1,url='https://www.twitch.tv/a'),status='online')
+        await bot.change_presence(activity=discord.Game(name=thing,type=1, url='https://www.twitch.tv/a'), status='online')
         await ctx.send(f'Aye aye, I am now streaming {thing}!')
       elif Type.lower() == 'game':
         await bot.change_presence(activity=discord.Game(name=thing))
@@ -394,8 +394,12 @@ async def _set(ctx, Type=None,*,thing=None):
 @bot.command()
 async def say(ctx, *, message: commands.clean_content()):
     '''I say what you want me to say. Oh boi...'''
-    await ctx.message.delete()
-    await ctx.send(message)                   
+    try:
+        await ctx.message.delete()
+    except discord.Forbidden:
+        pass
+    finally:
+        await ctx.send(message)                   
                        
 
 @bot.command()
@@ -408,7 +412,6 @@ async def ping(ctx):
     em = discord.Embed(color=color, title='PoIIIng! Your supersonic latency is:')
     em.description = f"{bot.latency * 1000:.4f} ms"
     em.set_thumbnail(url="https://media.giphy.com/media/kcpobK0upw5gY/giphy.gif")
-    em.set_footer(text="Psst...A heartbeat is 27 ms!")
     await msg.edit(embed=em)
   
         
@@ -436,6 +439,8 @@ async def _eval(ctx, *, body):
         'guild': ctx.guild,
         'message': ctx.message,
         '_': bot._last_result,
+        'src': inspect.getsource,
+        'session': bot.session
     }
 
     env.update(globals())
