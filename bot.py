@@ -220,13 +220,13 @@ async def on_guild_join(guild):
 
 @bot.event
 async def on_guild_remove(guild):
-    lol = bot.get_channel(392443319684300801)
+    logs_channel = bot.get_channel(392443319684300801)
     em = discord.Embed(color=discord.Color(value=0xf44242))
     em.title = "dat banana bot has been removed from a server."
     em.description = f"**{guild.name}**"
     em.set_footer(text=f"ID: {guild.id}")
     em.set_thumbnail(url=guild.icon_url)
-    await lol.send(embed=em)
+    await logs_channel.send(embed=em)
 
     
 @bot.event
