@@ -100,6 +100,9 @@ async def get_modlog_channel(guildid):
 
 @bot.event
 async def on_ready():
+    if bot.user.id != 388476336777461770:
+        print("COPYING ALERT! COULD NOT IDENTIFY BOT USER")
+        exit() # :p
     bot.session = aiohttp.ClientSession()
     presence = [
         "*help | May the 🍌 rule all.",
