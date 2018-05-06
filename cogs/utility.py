@@ -23,6 +23,24 @@ class Utility:
        self.session = self.bot.session
 
 
+    @commands.command()
+    async def poll(self, ctx, *, args):
+        """Creates a poll with reactions. Seperate choices with |."""
+        if not "|" in args:
+            return await ctx.send("Seperate the question and choices with |.\nUsage: *poll What is the question? | Idk. | You tell me.")
+        choices = args.replace(' ', '').split("|")
+        desc = ""
+        counter = 0
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=choices[0])
+        choices.remove(choices[0])
+        if len(choices) > 10:
+            return await ctx.send("You can have a maximum of 10 choices for a poll.")
+        for x in choices:
+            counter += 1
+            desc += f"{str(counter)} - {x}\n"
+        em.description = desc
+        await ctx.send(embed=em)
+
 
     @commands.command(name='wikipedia', aliases=['wiki'])
     async def _wikipedia(self, ctx, *, query=None):
