@@ -33,7 +33,7 @@ class Utility:
         counter = 0
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=choices[0])
         choices.remove(choices[0])
-        if len(choices) > 10:
+        if len(choices) > 9:
             return await ctx.send("You can have a maximum of 9 choices for a poll.")
         for x in choices:
             counter += 1
@@ -41,19 +41,19 @@ class Utility:
         em.description = desc
         msg = await ctx.send(embed=em)
         emojis = {
-            1: "\U00000031",
-            2: "\U00000032",
-            3: "\U00000033",
-            4: "\U00000034",
-            5: "\U00000035",
-            6: "\U00000036",
-            7: "\U00000037",
-            8: "\U00000038",
-            9: "\U00000039"
+            "1": "\U00000031",
+            "2": "\U00000032",
+            "3": "\U00000033",
+            "4": "\U00000034",
+            "5": "\U00000035",
+            "6": "\U00000036",
+            "7": "\U00000037",
+            "8": "\U00000038",
+            "9": "\U00000039"
         }
         for x in choices:
             counter += 1
-            await msg.add_reaction(emojis[counter])
+            await msg.add_reaction(emojis[str(counter)])
 
 
     @commands.command(name='wikipedia', aliases=['wiki'])
