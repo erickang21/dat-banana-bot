@@ -1,4 +1,3 @@
-
 class Logger(object):
     def __init__(self):
         raise Exception("Attempt to instantiate a static class")
@@ -9,7 +8,7 @@ class Logger(object):
     
     @staticmethod
     def error(*args):
-        print(f"\x1b[41mERROR\x1b[0m \x1b[31m{' '.join(args)}\x1b[0m")
+        print(f"\x1b[41mERROR\x1b[0m \x1b[31m{' '.join([str(x) for x in args)])}\x1b[0m")
     
     @staticmethod
     def warn(*args):
