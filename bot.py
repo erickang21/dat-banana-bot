@@ -30,7 +30,8 @@ async def getprefix(bot, message):
     if isinstance(message.channel, discord.DMChannel): return "*"
     x = await db.datbananabot.prefix.find_one({"id": str(message.guild.id)})
     pre = x['prefix'] if x is not None else '*'
-    return pre
+    match = re.match(f"<@!?{bot.user.id}>", message.content)
+    return match.group() if match else pre
 
 
 bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
