@@ -107,7 +107,7 @@ class Developer:
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        msg = await ctx.send(f"Bot updating... {self.bot.get_emoji(441385713091477504)}")
+        msg = await ctx.send(f"Dpdating... {self.bot.get_emoji(442864634987413506)}")
         try:
             lol = subprocess.run("git pull", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
             for cog in self.bot.cogs:
