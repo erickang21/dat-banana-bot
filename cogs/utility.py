@@ -51,6 +51,7 @@ class Utility:
         #     "8": ":eight:",
         #     "9": ":nine:"
         # }
+        counter = 0
         for x in choices:
             counter += 1
             await msg.add_reaction(f"{str(counter)}\u20e3")
