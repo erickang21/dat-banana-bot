@@ -40,20 +40,20 @@ class Utility:
             desc += f"{str(counter)} - {x}\n"
         em.description = desc
         msg = await ctx.send(embed=em)
-        emojis = {
-            "1": ":one:",
-            "2": ":two:",
-            "3": ":three:",
-            "4": ":four:",
-            "5": ":five:",
-            "6": ":six:",
-            "7": ":seven:",
-            "8": ":eight:",
-            "9": ":nine:"
-        }
+        # emojis = {
+        #     "1": ":one:",
+        #     "2": ":two",
+        #     "3": ":three:",
+        #     "4": ":four:",
+        #     "5": ":five:",
+        #     "6": ":six:",
+        #     "7": ":seven:",
+        #     "8": ":eight:",
+        #     "9": ":nine:"
+        # }
         for x in choices:
             counter += 1
-            await msg.add_reaction(emojis[str(counter)])
+            await msg.add_reaction(f"{str(counter)}\u20e3")
 
 
     @commands.command(name='wikipedia', aliases=['wiki'])
