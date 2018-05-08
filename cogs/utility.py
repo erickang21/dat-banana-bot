@@ -32,7 +32,7 @@ class Utility:
 
 
     @commands.command()
-    async def coliru(self, ctx, language: str, *, code: str):
+    async def coliru(self, ctx, language: str = None, *, code: str = None):
         """Compiles code through Coliru."""
         if not language and not code:
             return await ctx.send(textwrap.dedent("""
@@ -68,12 +68,12 @@ class Utility:
             "src": textwrap.indent(code, "  ")
         }
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Evaluated!')
-        resp = await self.bot.session.post('http://coliru.stacked-crooked.com/compile', data=data)
+        resp = await self.bot.session.post('http://coliru.stacked-crooked.com/compile', json=data)
         output = await resp.text(encoding='utf-8')
         if len(output) < 1992:
             em.description = f"```{output}```"
         else:
-            resp = await self.bot.session.post('http://coliru.stacked-crooked.com/share', data=data)
+            resp = await self.bot.session.post('http://coliru.stacked-crooked.com/share', json=data)
             share_id = await resp.text()
             em.description = f"The result was too large to fit in a message. View the result here:\nhttp://coliru.stacked-crooked.com/a/{share_id}"
         await ctx.send(embed=em)
