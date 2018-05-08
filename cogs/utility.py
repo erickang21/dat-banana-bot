@@ -23,6 +23,61 @@ class Utility:
        self.session = self.bot.session
 
 
+    def cleanup_code(self, content):
+    # remove ```py\n```
+        if content.startswith('```') and content.endswith('```'):
+            return '\n'.join(content.split('\n')[1:-1])
+
+        return content.strip('` \n')
+
+
+    @commands.command()
+    async def coliru(self, ctx, language: str, code: str):
+        """Compiles code through Coliru."""
+        if not language and not code:
+            return await ctx.send(textwrap.dedent("""
+            This will evaluate code through Coliru.
+
+            Usage: *coliru [language] [body]
+
+            Available languages:
+            
+            cpp: C++
+            c: C
+            py / python: Python
+            haskell: Haskell
+
+            **Some things to note:**
+            -Python only supports v2.7, unfortunately.
+            -The C++ compiler uses g++ -std=c++14
+            """))
+        cmds = {
+            'cpp': 'g++ -std=c++1z -O2 -Wall -Wextra -pedantic -pthread main.cpp -lstdc++fs && ./a.out',
+            'c': 'mv main.cpp main.c && gcc -std=c11 -O2 -Wall -Wextra -pedantic main.c && ./a.out',
+            'py': 'python main.cpp', # coliru has no python3
+            'python': 'python main.cpp',
+            'haskell': 'runhaskell main.cpp'
+        }
+        try:
+            lang = cmds[language]
+        except KeyError:
+            return await ctx.send("Invalid language provided. Please choose from cpp, c, py, python, haskell.")
+        code = self.cleanup_code(code)
+        data = {
+            "cmd": lang,
+            "src": textwrap.indent(code, "  ")
+        }
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Evaluated!')
+        resp = await self.bot.session.post('http://coliru.stacked-crooked.com/compile', data=data)
+        output = await resp.text(encoding='utf-8')
+        if len(output) < 1992:
+            em.description = f"```{output}```"
+        else:
+            resp = await self.bot.session.post('http://coliru.stacked-crooked.com/share', data=data)
+            share_id = await resp.text()
+            em.description = f"The result was too large to fit in a message. View the result here:\nhttp://coliru.stacked-crooked.com/a/{share_id}"
+        await ctx.send(embed=em)
+
     @commands.command()
     async def poll(self, ctx, *, args):
         """Creates a poll with reactions. Seperate choices with |."""

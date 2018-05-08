@@ -36,7 +36,6 @@ class Help:
         except Exception as e:
             await ctx.send(e)
             
-            
     @commands.command()
     async def testhelp(self, ctx, *, command: str = None):
         """HELP! Not this one, tho..."""
@@ -54,16 +53,17 @@ class Help:
                     if x == lol[pgnumber]:
                         commands.append(cmdlist)
                 for x in commands:
-                    em.description += f"**{x.callback.__name__}**\n{x.short_doc}"    
-            em.set_footer(text="Pulling your hair out? Use the '?' to GET HELP!")
+                    em.description += f"**{x.callback.__name__}**\n{x.short_doc}"
+            em.set_footer(
+                text="Pulling your hair out? Use the '?' to GET HELP!")
             msg = await ctx.send(embed=em)
             try:
-                await msg.add_reaction("\U000021a9") #Fast forward left
-                await msg.add_reaction("\U00002b05") #Turn left
-                await msg.add_reaction("\U000027a1") #Turn right
-                await msg.add_reaction("\U000021aa") #Fast forward right
-                await msg.add_reaction("\U0001f6d1") #Stop
-                await msg.add_reaction("\U00002049") #Info
+                await msg.add_reaction("\U000021a9")  # Fast forward left
+                await msg.add_reaction("\U00002b05")  # Turn left
+                await msg.add_reaction("\U000027a1")  # Turn right
+                await msg.add_reaction("\U000021aa")  # Fast forward right
+                await msg.add_reaction("\U0001f6d1")  # Stop
+                await msg.add_reaction("\U00002049")  # Info
             except discord.Forbidden:
                 return await ctx.send("Uh-oh! I don't have the 'Add Reactions' permission, so I can't paginate...")
             while True:
