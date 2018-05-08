@@ -65,7 +65,7 @@ class Utility:
         code = self.cleanup_code(code)
         data = {
             "cmd": lang,
-            "src": textwrap.indent(code, "  ")
+            "src": code
         }
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Evaluated!')
         resp = await self.bot.session.post('http://coliru.stacked-crooked.com/compile', json=data)
