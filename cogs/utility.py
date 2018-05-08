@@ -32,7 +32,7 @@ class Utility:
 
 
     @commands.command()
-    async def coliru(self, ctx, language: str, code: str):
+    async def coliru(self, ctx, language: str, *, code: str):
         """Compiles code through Coliru."""
         if not language and not code:
             return await ctx.send(textwrap.dedent("""
