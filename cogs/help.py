@@ -7,6 +7,7 @@ import aiohttp
 import textwrap
 from discord.ext import commands
 from .utils.paginator import HelpPaginator, CannotPaginate
+from .utils.datpaginator import DatPaginator
 
 
 class Help:
@@ -112,7 +113,10 @@ class Help:
 
 
 
-
+    @commands.command()
+    async def paginate(self, ctx):
+        p = DatPaginator(ctx, ["Page 1", "Page 2", "Page 3","Page 4", "Page 5"], page_count=True)
+        await p.run()
 
 
 
