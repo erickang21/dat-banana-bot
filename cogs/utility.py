@@ -508,7 +508,10 @@ class Utility:
         textchannels = len(guild.text_channels)
         voicechannels = len(guild.voice_channels)
         time = str(guild.created_at.strftime("%b %m, %Y, %A, %I:%M %p"))
-        ban_count = len(await guild.bans())
+        try:
+            ban_count = len(await guild.bans())
+        except discord.Forbidden:
+            ban_count = "Could not retrieve bans (I need Ban Members permission)"
         verification_levels = {
             0: "**None** (Unrestricted)",
             1: "**Low** (Verified email)",
