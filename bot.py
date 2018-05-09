@@ -228,11 +228,6 @@ async def on_guild_join(guild):
     em.set_thumbnail(url=guild.icon_url)
     await lol.send(embed=em)
     await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help! Here's a rundown of what I can do:\n-Music\n-Starboard\n-Custom Prefix\n-Welcome/Leave/Ban Messages\n-A stack of canvas commands.\n-Statistics for CR, COC and LoL\n\nTo get the most out of me, I do recommend giving me **Administrator** permissions.\n\nHave a nice day! :blush:")
-    try:
-        invite_link = await guild.create_invite(unique=True)
-    except discord.Forbidden:
-        return
-    await bot.get_channel(443530457145933844).send(invite_link)
 
 @bot.event
 async def on_guild_remove(guild):
