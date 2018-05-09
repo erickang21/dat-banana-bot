@@ -38,7 +38,7 @@ class DatPaginator(object):
             page = self.pages[index]
             self.embed.description = page
             if self.show_page_count:
-                self.embed.title = f"Page {self.current_page + 1}/{len(self.pages)}"
+                self.embed.title = f"Page {self.current_page}/{len(self.pages)}"
             await self.message.edit(embed=self.embed)
             self.current_page = index
 
