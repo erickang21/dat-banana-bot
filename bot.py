@@ -370,7 +370,16 @@ async def on_command_error(ctx, error):
         em.description = f'{bot.get_emoji(430853687754358788)} Uh-oh, not enough permissions! You are missing the following permissions required to run this command:\n\n{missing}'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandOnCooldown):
-        em.description = f'ACK. The command is on cooldown! You can use it again in:\n{int(error.retry_after/60)} minutes.'
+        retry_time = error.retry_after
+        if retry_time < 60:
+            actual_time = f"{int(retry_time)} seconds"
+        elif retry_time >= 60 and retry_time < 3600:
+            actual_time = f"{int(retry_time / 60)} minutes"
+        elif retry_time >= 3600 and retry_time < 86400:
+            actual_time = f"{int(retry_time / 3600)} hours"
+        elif retry_time >= 86400:
+            actual_time = f"{int(retry_time / 86400)} days"
+        em.description = f'ACK. The command is on cooldown! You can use it again in **{actual_time}**.'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandNotFound):
         pass
