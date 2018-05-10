@@ -51,12 +51,13 @@ class Economy:
     async def balance(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
         user = user or ctx.author
+        person = "You" if not user else f"**{user.name}**"
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Current Balance')
         x = await self.db.datbananabot.economy.find_one({"user": user.id})
         if not x:
-            em.description = "You don't have an account on dat banana bot yet! Open one using `*openaccount`."
+            em.description = f"{person} don't have an account on dat banana bot yet! Open one using `*openaccount`."
         else:
-            em.description = f"You currently have **{x['points']}** :banana:. WOOP!"
+            em.description = f"{person} currently have **{x['points']}** :banana:. WOOP!"
         await ctx.send(embed=em)
 
 
