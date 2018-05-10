@@ -124,19 +124,41 @@ class Economy:
             em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
             return await ctx.send(embed=em)
 
-    # @commands.command(aliases=['give'])
-    # @commands.has_permissions(manage_guild=True)
-    # async def reward(self, ctx, user: discord.Member, points: int):
-    #     '''Reward a good person'''
-    #     if not self.is_registered(user.id):
-    #         return await ctx.send("Sorry, the user doesn't have a bank account, tell them to `*openaccount` and try again")
-    #     else:
-    #         try:
-    #             self.add_points(user.id, points)
-    #             await ctx.send(f"Added {points} to {user.name}!")
-    #         except Exception as e:
-    #             await ctx.send(f"Oops something went wrong. ```{e}```Please report to the developers")
-    #             print(e)
+    @commands.command(aliases=['give'])
+    @commands.has_permissions(manage_guild=True)
+    async def reward(self, ctx, user: discord.Member, points):
+        '''Reward a good person'''
+        if not self.is_registered(user):
+            return await ctx.send(f"ACK! **{str(user)}** doesn't have an account yet, so they can't get the gucci money!")
+        else:
+            try:
+                points = int(points)
+            except ValueError:
+                return await ctx.send("ACK! Please enter a valid number for points.")
+            try:
+                self.add_points(user, points)
+                await ctx.send(f"YEET! Added **{points}** :banana: to **{str(user)}**!")
+            except Exception as e:
+                await ctx.send(f"Oops, something went wrong. ```{e}```Please report to the developers!")
+                print(e)
+
+    @commands.command(aliases=['remove'])
+    @commands.has_permissions(manage_guild=True)
+    async def deduct(self, ctx, user: discord.Member, points):
+        '''Fines a bad boi.'''
+        if not self.is_registered(user):
+            return await ctx.send(f"ACK! **{str(user)}** doesn't have an account yet, so you can't take away money from them!")
+        else:
+            try:
+                points = int(points)
+            except ValueError:
+                return await ctx.send("ACK! Please enter a valid number for points.")
+            try:
+                self.add_points(user, -points)
+                await ctx.send(f"OOF! Removed **{points}** :banana: to **{str(user)}**!")
+            except Exception as e:
+                await ctx.send(f"Oops, something went wrong. ```{e}```Please report to the developers!")
+                print(e)
 
 
 def setup(bot):
