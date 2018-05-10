@@ -25,7 +25,7 @@ class Economy:
     async def add_points(self, user, points):
         x = await self.db.datbananabot.economy.find_one({"user": user.id})
         total = int(x['points']) + points
-        await self.db.datbananabot.economy.update_one({"user": user.id}, {"$set": {"points": total}}, upsert=True)
+        await self.db.datbananabot.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
         
 
     async def is_registered(self, user):
@@ -40,7 +40,7 @@ class Economy:
     async def openaccount(self, ctx):
         '''Opens a bank account for the economy!'''
         registered = await self.is_registered(ctx.author)
-        if registered is True:
+        if registered:
             return await ctx.send(f"You already have a bank account!")
         await self.db.datbananabot.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
         await ctx.send("Your bank account is now open! GLHF!")
@@ -52,10 +52,10 @@ class Economy:
         '''Check how much bananas ya got!'''
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Current Balance')
         x = await self.db.datbananabot.economy.find_one({"user": ctx.author.id})
-        try:
-            em.description = f"You currently have **{x['points']}** :banana:. WOOP!"
-        except KeyError:
+        if not x:
             em.description = "You don't have an account on dat banana bot yet! Open one using `*openaccount`."
+        else:
+            em.description = f"You currently have **{x['points']}** :banana:. WOOP!"
         await ctx.send(embed=em)
 
 
