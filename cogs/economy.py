@@ -136,7 +136,7 @@ class Economy:
             except ValueError:
                 return await ctx.send("ACK! Please enter a valid number for points.")
             try:
-                self.add_points(user, points)
+                await self.add_points(user, points)
                 await ctx.send(f"YEET! Added **{points}** :banana: to **{str(user)}**!")
             except Exception as e:
                 await ctx.send(f"Oops, something went wrong. ```{e}```Please report to the developers!")
@@ -154,7 +154,7 @@ class Economy:
             except ValueError:
                 return await ctx.send("ACK! Please enter a valid number for points.")
             try:
-                self.add_points(user, -points)
+                await self.add_points(user, -points)
                 await ctx.send(f"OOF! Removed **{points}** :banana: to **{str(user)}**!")
             except Exception as e:
                 await ctx.send(f"Oops, something went wrong. ```{e}```Please report to the developers!")
