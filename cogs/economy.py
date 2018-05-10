@@ -50,8 +50,8 @@ class Economy:
     @commands.command(aliases=['bal'])
     async def balance(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
-        user = user or ctx.author
         person = "You currently have" if not user else f"**{user.name}** currently has"
+        user = user or ctx.author
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Current Balance')
         x = await self.db.datbananabot.economy.find_one({"user": user.id})
         if not x:
