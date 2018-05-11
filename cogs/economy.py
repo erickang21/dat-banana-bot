@@ -140,6 +140,8 @@ class Economy:
             amount = int(amount)
         except ValueError:
             return await ctx.send("Please enter a valid number for the amount.")
+        if amount <= 0:
+            return await ctx.send("Gamble more. Not less. Enter a number more than 0.")
         if amount > x['points']:
             return await ctx.send(f"You gambled WAY TOO MUCH! You currently can gamble up to **{x['points']}** :banana:.")
         choose = random.randint(1, 2)
