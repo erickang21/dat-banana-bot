@@ -61,7 +61,7 @@ class Economy:
         await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(aliases=['daily', 'dailyshit'])
     @commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
@@ -84,6 +84,9 @@ class Economy:
         #                 return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
         #             return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
         #     else:
+        x = await self.db.economy.find_one({"user": ctx.author.id})
+        if not x:
+            return await ctx.send("You don't have an account on dat banana bot yet! Time to open one with `*openaccount.`")
         number = random.randint(300, 500)
         try:
             await self.add_points(ctx.author, number)
@@ -130,10 +133,15 @@ class Economy:
     @commands.command(aliases=['bet'])
     async def gamble(self, ctx, amount):
         """Choose an amount. Will you win it or will you lose it?"""
+        x = await self.db.economy.find_one({"user": ctx.author.id})
+        if not x:
+            return await ctx.send("You haven't created an account on dat banana bot yet! Time to create one with `*openaccount`")
         try:
             amount = int(amount)
         except ValueError:
             return await ctx.send("Please enter a valid number for the amount.")
+        if amount > x['points']:
+            return await ctx.send(f"You gambled WAY TOO MUCH! You currently can gamble up to **{x['points']}** :banana:.")
         choose = random.randint(1, 2)
         if choose == 1:
             await self.add_points(ctx.author, amount)
