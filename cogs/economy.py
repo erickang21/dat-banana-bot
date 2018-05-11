@@ -23,13 +23,13 @@ class Economy:
         self.dbl = x['dblapi']
 
     async def add_points(self, user, points):
-        x = await self.db.datbananabot.economy.find_one({"user": user.id})
+        x = await self.db.economy.find_one({"user": user.id})
         total = int(x['points']) + points
-        await self.db.datbananabot.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
+        await self.db.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
         
 
     async def is_registered(self, user):
-        x = await self.db.datbananabot.economy.find_one({"user": user.id})
+        x = await self.db.economy.find_one({"user": user.id})
         if x is None:
             return False
         else:
@@ -42,7 +42,7 @@ class Economy:
         registered = await self.is_registered(ctx.author)
         if registered:
             return await ctx.send(f"You already have a bank account!")
-        await self.db.datbananabot.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
+        await self.db.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
         await ctx.send("Your bank account is now open! GLHF!")
 
 
@@ -53,7 +53,7 @@ class Economy:
         person = "You currently have" if not user else f"**{user.name}** currently has"
         user = user or ctx.author
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Current Balance')
-        x = await self.db.datbananabot.economy.find_one({"user": user.id})
+        x = await self.db.economy.find_one({"user": user.id})
         if not x:
             em.description = f"{person} don't have an account on dat banana bot yet! Open one using `*openaccount`."
         else:
@@ -97,7 +97,7 @@ class Economy:
     @commands.command()
     async def lottery(self, ctx, numbers: str = None):
         '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
-        x = await self.db.datbananabot.economy.find_one({"user": ctx.author.id})
+        x = await self.db.economy.find_one({"user": ctx.author.id})
         if x is None:
             return await ctx.send("Oof. You don't have an account yet! Time to create one with `*openaccount`.")
         if int(x['points']) < 100:

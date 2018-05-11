@@ -42,7 +42,7 @@ bot.commands_run = 0
 bot.logger = logger
 with open("data/apikeys.json") as f:
     x = json.load(f)
-bot.db = AsyncIOMotorClient(x['mongodb'])
+bot.db = db
 bot.remove_command("help")
 bot.load_extension("cogs.math")
 bot.load_extension("cogs.mod")
@@ -82,14 +82,14 @@ def dev_check(id):
 #     await bot.invoke(ctx)
 
 async def modlog_check(guildid):
-    x = await bot.db.datbananabot.modlog.find_one({'id': str(guildid)})
+    x = await bot.db.modlog.find_one({'id': str(guildid)})
     if not x:
         return False
     return True
 
 
 async def get_modlog_channel(guildid):
-    x = await bot.db.datbananabot.modlog.find_one({'id': str(guildid)})
+    x = await bot.db.modlog.find_one({'id': str(guildid)})
     return int(x['channel'])
 
 @bot.event
@@ -172,7 +172,7 @@ async def on_reaction_add(reaction, user):
     if reaction.message.author == user:
         return
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
-        x = await bot.db.datbananabot.starboard.find_one({"id": str(user.guild.id)})
+        x = await bot.db.starboard.find_one({"id": str(user.guild.id)})
         chan = bot.get_channel(x['channel'])
         if not chan:
             return
@@ -242,7 +242,7 @@ async def on_guild_remove(guild):
     
 @bot.event
 async def on_member_join(member):
-    x = await bot.db.datbananabot.welcome.find_one({"id": str(member.guild.id)})
+    x = await bot.db.welcome.find_one({"id": str(member.guild.id)})
     if not x:
         return
     channel = int(x['channel'])
@@ -260,7 +260,7 @@ async def on_member_join(member):
         await lol.send(embed=em)
     else:
         pass
-    x = await bot.db.datbananabot.autorole.find_one({"id": str(member.guild.id)})
+    x = await bot.db.autorole.find_one({"id": str(member.guild.id)})
     if x is None:
         return
     rolename = x['role']
@@ -270,7 +270,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
-    x = await bot.db.datbananabot.leave.find_one({"id": str(member.guild.id)})
+    x = await bot.db.leave.find_one({"id": str(member.guild.id)})
     if not x:
         return
     channel = int(x['channel'])
@@ -291,7 +291,7 @@ async def on_member_remove(member):
 
 @bot.event
 async def on_member_ban(guild, member):
-    x = await bot.db.datbananabot.ban.find_one({"id": str(member.guild.id)})
+    x = await bot.db.ban.find_one({"id": str(member.guild.id)})
     if not x:
         return
     try:

@@ -33,7 +33,7 @@ class CR:
 
 
     async def get_tag(self, id):
-        x = await self.bot.db.datbananabot.crtags.find_one({"id": str(id)})
+        x = await self.bot.db.crtags.find_one({"id": str(id)})
         return x['tag'] if x is not None else None
     
 
@@ -45,7 +45,7 @@ class CR:
             return await ctx.send("Please enter a tag to save. Usage: *crsave [tag]")
         if not self.check_tag(crtag):
             return await ctx.send("That must be an invalid tag. Please use a valid tag. :x:")   
-        await self.bot.db.datbananabot.crtags.update_one({"id": str(ctx.author.id)}, {"$set": {"tag": crtag}}, upsert=True)
+        await self.bot.db.crtags.update_one({"id": str(ctx.author.id)}, {"$set": {"tag": crtag}}, upsert=True)
         await ctx.send("Success. :white_check_mark: Your tag is now saved to your account.")
 
 

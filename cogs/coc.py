@@ -21,7 +21,7 @@ class COC:
 
     async def get_tag(self, id):
         '''Gets a COC tag by user ID.'''
-        x = await self.bot.db.datbananabot.coctags.find_one({"id": str(id)})
+        x = await self.bot.db.coctags.find_one({"id": str(id)})
         return x['tag'] if x is not None else None
 
 
@@ -36,7 +36,7 @@ class COC:
         for char in coctag:
             if char.upper() not in '0289PYLQGRJCUV':
                 return await ctx.send(f'Oops again! Looks like your tag `#{coctag}` is not a valid tag!')
-        await self.bot.db.datbananabot.coctags.update_one({"id": str(ctx.author.id)}, {"$set": {"tag": coctag}}, upsert=True)
+        await self.bot.db.coctags.update_one({"id": str(ctx.author.id)}, {"$set": {"tag": coctag}}, upsert=True)
         await ctx.send("Success. :white_check_mark: Your tag is now saved to your account.")
 
 

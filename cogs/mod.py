@@ -39,7 +39,7 @@ class mod:
     async def starboard(self, ctx, action=None):
         """Turn on a starboard for the server that is for STARS!"""
         if action is None:
-            x = await self.bot.db.datbananabot.starboard.find_one({'id': str(ctx.guild.id)})
+            x = await self.bot.db.starboard.find_one({'id': str(ctx.guild.id)})
             if x is not None:
                 return await ctx.send(f"A starboard for this server has already been created. If the channel was deleted, use *starboard reset to re-create it.")
             else:
@@ -52,7 +52,7 @@ class mod:
                     channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
                 except Exception as e:
                     return await ctx.send(f"An unexpected error occurred. Details: \n```{e}```")
-                await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel.id}}, upsert=True)
+                await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel.id}}, upsert=True)
                 return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
         elif action.lower() == 'reset':
             msg = await ctx.send("One sec, building the awesome starboard with :star:s")
@@ -61,7 +61,7 @@ class mod:
                 ctx.guild.me: discord.PermissionOverwrite(send_messages = True)
             }
             channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
-            await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel.id}}, upsert=True)
+            await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel.id}}, upsert=True)
             return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
         elif action.lower() == 'delete':
             msg = await ctx.send("Deleting the :star:board of awesomeness...")
@@ -74,9 +74,9 @@ class mod:
             try:
                 await channel.delete()
             except:
-                await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
+                await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
                 return await msg.edit(content="Starboard is disabled, but I was unable to delete the channel.")
-            await self.bot.db.datbananabot.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
+            await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
             return await msg.edit(content='Successfully removed the starboard. :cry:')
         else:
             return await ctx.send("Unknown action. Either leave blank, use *starboard reset to re-create a deleted channel, or *starboard delete to remove the server's starboard.")
@@ -279,7 +279,7 @@ class mod:
         if action is None:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Welcome Messages')
             try:
-                x = await self.bot.db.datbananabot.welcome.find_one({"id": str(ctx.guild.id)})
+                x = await self.bot.db.welcome.find_one({"id": str(ctx.guild.id)})
                 if x['channel'] is False:
                     em.description = 'Welcome messages are disabled for this server.'
                 else:
@@ -306,10 +306,10 @@ class mod:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
                     return await ctx.send("Request timed out. Please try again.")
-                await self.bot.db.datbananabot.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
+                await self.bot.db.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
                 await ctx.send("Successfully turned on welcome messages for this guild.")
             elif action.lower() == 'off':
-                await self.bot.db.datbananabot.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
+                await self.bot.db.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off welcome messages for this guild.")
 
     @commands.command(aliases=['leave'])
@@ -318,7 +318,7 @@ class mod:
         if action is None:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Leave Messages')
             try:
-                x = await self.bot.db.datbananabot.leave.find_one({"id": str(ctx.guild.id)})
+                x = await self.bot.db.leave.find_one({"id": str(ctx.guild.id)})
                 if x['channel'] is False:
                     em.description = 'Leave messages are disabled for this server.'
                 else:
@@ -345,10 +345,10 @@ class mod:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
                     return await ctx.send("Request timed out. Please try again.")
-                await self.bot.db.datbananabot.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
+                await self.bot.db.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
                 await ctx.send("Successfully turned on leave messages for this guild.")
             elif action.lower() == 'off':
-                await self.bot.db.datbananabot.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
+                await self.bot.db.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off leave messages for this guild.")
 
 
@@ -358,7 +358,7 @@ class mod:
         if action is None:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Leave Messages')
             try:
-                x = await self.bot.db.datbananabot.ban.find_one({"id": str(ctx.guild.id)})
+                x = await self.bot.db.ban.find_one({"id": str(ctx.guild.id)})
                 if x['channel'] is False:
                     em.description = 'Ban messages are disabled for this server.'
                 else:
@@ -385,10 +385,10 @@ class mod:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
                     return await ctx.send("Request timed out. Please try again.")
-                await self.bot.db.datbananabot.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
+                await self.bot.db.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
                 await ctx.send("Successfully turned on ban messages for this guild.")
             elif action.lower() == 'off':
-                await self.bot.db.datbananabot.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
+                await self.bot.db.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off ban messages for this guild.")
             
     
@@ -399,13 +399,13 @@ class mod:
         if role is None:
             return await ctx.send("Please specify the role you want to give!")
         elif role.lower() == 'off':
-            await self.bot.db.datbananabot.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": False}}, upsert=True)
+            await self.bot.db.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": False}}, upsert=True)
             await ctx.send(f"Disabled autoroles for this server.")
         else:
             r = discord.utils.get(ctx.guild.roles, name=str(role))
             if r is None:
                 return await ctx.send("Role not found in the server. Note that roles muts be entered case sensitive.")
-            await self.bot.db.datbananabot.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": str(r)}}, upsert=True)
+            await self.bot.db.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": str(r)}}, upsert=True)
             await ctx.send(f"Successfully enabled an autorole for the role: **{str(r)}**.")
 
 
@@ -413,7 +413,7 @@ class mod:
     @commands.has_permissions(manage_guild = True)
     async def modlog(self, ctx, action=None):
         if action is None:
-            x = await self.bot.db.datbananabot.modlog.find_one({"id": str(ctx.guild.id)})
+            x = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Mod Log Status")
             em.description = f"Mod logs are enabled in this server, in <#{x['channel']}>."
             if x is None:
@@ -432,11 +432,11 @@ class mod:
                 channel = int(channel)
             except ValueError:
                 return await ctx.send("Did you properly mention a channel? Probably not.")
-            await self.bot.db.datbananabot.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel}}, upsert=True)
+            await self.bot.db.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel}}, upsert=True)
             ezjson.dump("data/modlog.json", ctx.guild.id, channel)
             return await ctx.send(f"Successfully turned on Mod Logs in <#{channel}>. Enjoy! :white_check_mark:")
         if action.lower() == 'off':
-            await self.bot.db.datbananabot.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
+            await self.bot.db.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
             return await ctx.send("Turned off Mod Logs. Whew...")
         else:
             return await ctx.send("That ain't an action. Please enter either `on` or `off`.")
@@ -450,11 +450,11 @@ class mod:
             em.description = f"The bot's prefix for server **{ctx.guild.name}** is set to `{ctx.prefix}`."
             return await ctx.send(embed=em)
         if prefix.lower() == 'clear':
-            await self.bot.db.datbananabot.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": "*"}}, upsert=True)
+            await self.bot.db.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": "*"}}, upsert=True)
             em.description = f"The bot's prefix is now set to the default: `*`."
             return await ctx.send(embed=em)
         else:
-            await self.bot.db.datbananabot.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": prefix}}, upsert=True)
+            await self.bot.db.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": prefix}}, upsert=True)
             em.description = f"The bot's prefix for this server is set to: `{prefix}`."
             return await ctx.send(embed=em)
         
