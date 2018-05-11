@@ -42,7 +42,7 @@ bot.commands_run = 0
 bot.logger = logger
 with open("data/apikeys.json") as f:
     x = json.load(f)
-bot.db = db
+bot.db = db.datbananabot
 bot.remove_command("help")
 bot.load_extension("cogs.math")
 bot.load_extension("cogs.mod")
