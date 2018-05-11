@@ -179,7 +179,7 @@ class Developer:
     async def sudo(self, ctx, user: discord.Member, command=None):
         if not self.dev_check(ctx.author.id):
             return
-        ctx.author = self.bot.get_user(user.id)
+        ctx.author = user
         cmd = self.bot.get_command(command.lower())
         if not cmd:
             return await ctx.send("Invalid command.")
