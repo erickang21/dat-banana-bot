@@ -126,6 +126,23 @@ class Economy:
             em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
             return await ctx.send(embed=em)
 
+
+    @commands.command(aliases=['bet'])
+    async def gamble(self, ctx, amount):
+        """Choose an amount. Will you win it or will you lose it?"""
+        try:
+            amount = int(amount)
+        except ValueError:
+            return await ctx.send("Please enter a valid number for the amount.")
+        choose = random.randint(1, 2)
+        if choose == 1:
+            await self.add_points(ctx.author, amount)
+            return await ctx.send(f"HOORAY! You won **{amount}** :banana:. YEET!")
+        elif choose == 2:
+            await self.add_points(ctx.author, -amount)
+            return await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
+
+
     @commands.command(aliases=['give'])
     @commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
