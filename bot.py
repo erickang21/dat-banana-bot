@@ -16,10 +16,12 @@ from contextlib import redirect_stdout
 from discord.ext import commands
 import json
 import ezjson
+import colorama
 from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
 from ext.logger import Logger as logger
 
+colorama.init()
 
 with open("data/apikeys.json") as f:
     x = json.load(f)
