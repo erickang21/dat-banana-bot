@@ -57,7 +57,15 @@ class Economy:
         if not x:
             em.description = f"{person} don't have an account on dat banana bot yet! Open one using `*openaccount`."
         else:
-            em.description = f"{person} **{x['points']}** :banana:. WOOP!"
+            responses = [
+                f"{person} only has **{x['points']}** :banana:. Kinda sad.",
+                f"Idk how {person} already has**{x['points']}** :banana:?!",
+                f"REEEEEE! {person} has **{x['points']}** :banana:.",
+                f"{person} has **{x['points']}** :banana:. Man, hella rich.",
+                f"{person} has **{x['points']}** :banana:. Deal with it.",
+                f"{person} has **{x['points']}** :banana:. I wonder where this dood's money comes from?!"
+            ]
+            em.description = random.choice(responses)
         await ctx.send(embed=em)
 
 
@@ -92,7 +100,17 @@ class Economy:
             await self.add_points(ctx.author, number)
         except Exception as e:
             return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
-        return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
+        responses = [
+            f"Be proud. You just got **{number}** :banana:.",
+            f"*Why u ask me for da MONEY? Anyways, you got **{number}** :banana:.",
+            f"Ugh fine, take my money. But only **{number}** :banana:.",
+            f"Why would you ever rob a poor man? Fine, take **{number}** :banana:.",
+            f"You can have **{number}** :banana:, if that means you can shut up.",
+            f"If you take **{number}** :banana:, ur mom gay. Oh well, you did :rofl:",
+            f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
+            f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
+        ]
+        return await ctx.send(random.choice(responses))
         
 
         
@@ -119,14 +137,31 @@ class Economy:
         for x in lucky:
             lol += f"`{x}` "
         if numbers == lucky:
+            responses = [
+                "Bruh. Just how...",
+                "Y'know only 0.8% people can even get to see this.",
+                "I'm gonna be SO BROKE!",
+                "Take it. Don't even look at me...",
+                "You just...WON?",
+                "Could I be dreaming this?"
+            ]
             await self.add_points(ctx.author, 10000000)
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='You are the lucky winner!')
-            em.description = 'Awesome job! You are part of the 0.8% population that won the lottery! :tada:\n\nYou won 10,000,000 :banana:!'
+            em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
             return await ctx.send(embed=em)
         else:
             await self.add_points(ctx.author, -100)
             em = discord.Embed(color=discord.Color(value=0xf44e42))
-            em.description = f"Ouch. You are part of the 99.2% population that didn't cut it! ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
+            responses = [
+                f"OOF! Guess who didn't win the giant $$ this time!",
+                "Aw, try again!",
+                "Yo luck really succs...",
+                "Cry all you want, but you ain't gonna get that 10,000,000 :banana:.",
+                "Well, I ain't gonna stick around and waste time on someone who didn't win...",
+                "And the bad luck goes SKRRRRRRA!",
+                "Guess you're part of the 99.2% that didn't make it."
+            ]
+            em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
             return await ctx.send(embed=em)
 
 
