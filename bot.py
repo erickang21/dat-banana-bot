@@ -341,7 +341,7 @@ async def on_message_delete(message):
             em.add_field(name='Sent By', value=str(message.author))
             em.add_field(name='Channel', value=f"<#{message.channel.id}>")
             if img_url:
-                em.set_thumbnail(url=img_url)
+                em.set_image(url=img_url)
             await lol.send(embed=em)
         except KeyError:
             pass
