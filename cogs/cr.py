@@ -91,22 +91,25 @@ class CR:
             em.add_field(name='Global Rank', value=f"{globalrank}{self.emoji('legendtrophy')}")    
             em.add_field(name='Challenge Max Wins', value=f"{profile.stats.challengeMaxWins} {self.emoji('12wins')}")
             em.add_field(name='Challenge Cards Won', value=f"{profile.stats.challengeCardsWon} {self.emoji('deck')}")
-            em.add_field(name='Tourney Cards Won', value=f"{profile.stats.tournamentCardsWon} {self.emoji('deck')}")                                                                                                                                                
-            clan = await profile.get_clan()
-            em.add_field(name='Clan', value=f"{clan.name} (#{clan.tag}) {self.emoji('clan')}", inline=False)
-            clanroles = {
-                "member": "Member",
-                "elder": "Elder",
-                "coLeader": "Co-Leader",
-                "leader": "Leader"
-            }
-            em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}', inline=False)                                                                                                                                                                      
-            em.add_field(name='Clan Score', value=f"{clan.score} {self.emoji('trophy')}")
-            em.add_field(name='Members', value=f'{len(clan.members)}/50')
-            em.add_field(name='Donations', value=profile.clan.donations)
-            em.add_field(name='Donations Received', value=profile.clan.donationsReceived)
-            em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
-            em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+            em.add_field(name='Tourney Cards Won', value=f"{profile.stats.tournamentCardsWon} {self.emoji('deck')}") 
+            try:                                                                                                                                               
+                clan = await profile.get_clan()
+                em.add_field(name='Clan', value=f"{clan.name} (#{clan.tag}) {self.emoji('clan')}", inline=False)
+                clanroles = {
+                    "member": "Member",
+                    "elder": "Elder",
+                    "coLeader": "Co-Leader",
+                    "leader": "Leader"
+                }
+                em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}', inline=False)                                                                                                                                                                      
+                em.add_field(name='Clan Score', value=f"{clan.score} {self.emoji('trophy')}")
+                em.add_field(name='Members', value=f'{len(clan.members)}/50')
+                em.add_field(name='Donations', value=profile.clan.donations)
+                em.add_field(name='Donations Received', value=profile.clan.donationsReceived)
+                em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
+                em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+            except AttributeError:
+                em.add_field(name="Clan", value=f"No Clan {self.emoji('noclan')}", inline=False)
             await ctx.send(embed=em)
         except Exception as e:
             print(traceback.format_exc())
