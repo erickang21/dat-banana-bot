@@ -58,12 +58,12 @@ class Economy:
             em.description = f"{person} don't have an account on dat banana bot yet! Open one using `*openaccount`."
         else:
             responses = [
-                f"{person} only has **{x['points']}** :banana:. Kinda sad.",
-                f"Idk how {person} already has**{x['points']}** :banana:?!",
-                f"REEEEEE! {person} has **{x['points']}** :banana:.",
-                f"{person} has **{x['points']}** :banana:. Man, hella rich.",
-                f"{person} has **{x['points']}** :banana:. Deal with it.",
-                f"{person} has **{x['points']}** :banana:. I wonder where this dood's money comes from?!"
+                f"{person} **{x['points']}** :banana:. Kinda sad.",
+                f"Idk how {person} **{x['points']}** :banana:?!",
+                f"REEEEEE! {person} **{x['points']}** :banana:.",
+                f"{person} **{x['points']}** :banana:. Man, hella rich.",
+                f"{person} **{x['points']}** :banana:. Deal with it.",
+                f"{person} **{x['points']}** :banana:. I wonder where this dood's money comes from?!"
             ]
             em.description = random.choice(responses)
         await ctx.send(embed=em)
