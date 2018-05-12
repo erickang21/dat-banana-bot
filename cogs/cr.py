@@ -132,6 +132,10 @@ class CR:
             try:
                 profile = await self.client.get_player(crtag)
                 clan = await profile.get_clan()
+            except AttributeError:
+                em = discord.Embed(color=discord.Color(value=0xf44e42), title="Oof!")
+                em.description = "You currently aren't in a clan."
+                return await ctx.send(embed=em)
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 print(e)
                 color = discord.Color(value=0xf44e42)
