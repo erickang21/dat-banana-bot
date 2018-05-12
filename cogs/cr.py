@@ -5,6 +5,7 @@ import io
 import json
 import ezjson
 import clashroyale
+import traceback
 from discord.ext import commands
 
 
@@ -53,59 +54,62 @@ class CR:
     async def crprofile(self, ctx, crtag=None):
         """Gets those sweet Stats for CR...Usage: *crprofile [tag]"""
         await ctx.trigger_typing()
-        if crtag is None:
-                # with open('data/crtags.json') as f:
-                #     lol = json.load(f)
-                #     userid = str(ctx.author.id)
-                #     crtag = lol[userid]
-            crtag = await self.get_tag(ctx.author.id)
-            if not crtag:
-                return await ctx.send("Uh-oh, no tag found! Use `*crsave [tag]` to save your tag to your Discord account. :x:")
         try:
-            profile = await self.client.get_player(crtag)
-        except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
-            print(e)
-            color = discord.Color(value=0xf44e42)
-            em = discord.Embed(color=color, title='Royale API error.')
-            em.description = f"{e.code}: {e.error}"
-            return await ctx.send(embed=em)
-        color = discord.Color(value=0xf1f442)
-        em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
-        em.add_field(name='Trophies', value=f"{profile.trophies} {self.emoji('trophy')}")
-        em.add_field(name='Personal Best', value=f"{profile.stats.maxTrophies} {self.emoji('trophy')}")
-        em.add_field(name='XP Level', value=f"{profile.stats.level} {self.emoji('xplevel')}")
-        em.add_field(name='Arena', value=f'{profile.arena.name}')
-        em.add_field(name='Total Games', value=f"{profile.games.total} {self.emoji('battle')}")
-        em.add_field(name='Wins', value=f"{profile.games.wins} ({profile.games.winsPercent * 100}% of all games) {self.emoji('battle')}")
-        em.add_field(name='Three Crown Wins', value=f"{profile.stats.threeCrownWins} {self.emoji('threecrown')}")
-        em.add_field(name='Losses', value=f"{profile.games.losses} ({profile.games.lossesPercent * 100}% of all games) {self.emoji('battle')}")
-        em.add_field(name='Draws', value=f"{profile.games.draws} ({profile.games.drawsPercent * 100}% of all games) {self.emoji('battle')}")
-        em.add_field(name='Win Rate', value=f"{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji('sword')}")
-        em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name} {self.emoji(profile.stats.favoriteCard.name)}')
-        if not profile.rank:
-            globalrank = 'Unranked'
-        else:
-            globalrank = profile.rank
-        em.add_field(name='Global Rank', value=f"{globalrank}{self.emoji('legendtrophy')}")    
-        em.add_field(name='Challenge Max Wins', value=f"{profile.stats.challengeMaxWins} {self.emoji('12wins')}")
-        em.add_field(name='Challenge Cards Won', value=f"{profile.stats.challengeCardsWon} {self.emoji('deck')}")
-        em.add_field(name='Tourney Cards Won', value=f"{profile.stats.tournamentCardsWon} {self.emoji('deck')}")                                                                                                                                                
-        clan = await profile.get_clan()
-        em.add_field(name='Clan', value=f"{clan.name} (#{clan.tag}) {self.emoji('clan')}", inline=False)
-        clanroles = {
-            "member": "Member",
-            "elder": "Elder",
-            "coLeader": "Co-Leader",
-            "leader": "Leader"
-        }
-        em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}', inline=False)                                                                                                                                                                      
-        em.add_field(name='Clan Score', value=f"{clan.score} {self.emoji('trophy')}")
-        em.add_field(name='Members', value=f'{len(clan.members)}/50')
-        em.add_field(name='Donations', value=profile.clan.donations)
-        em.add_field(name='Donations Received', value=profile.clan.donationsReceived)
-        em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
-        em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
-        await ctx.send(embed=em)
+            if crtag is None:
+                    # with open('data/crtags.json') as f:
+                    #     lol = json.load(f)
+                    #     userid = str(ctx.author.id)
+                    #     crtag = lol[userid]
+                crtag = await self.get_tag(ctx.author.id)
+                if not crtag:
+                    return await ctx.send("Uh-oh, no tag found! Use `*crsave [tag]` to save your tag to your Discord account. :x:")
+            try:
+                profile = await self.client.get_player(crtag)
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
+                print(e)
+                color = discord.Color(value=0xf44e42)
+                em = discord.Embed(color=color, title='Royale API error.')
+                em.description = f"{e.code}: {e.error}"
+                return await ctx.send(embed=em)
+            color = discord.Color(value=0xf1f442)
+            em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
+            em.add_field(name='Trophies', value=f"{profile.trophies} {self.emoji('trophy')}")
+            em.add_field(name='Personal Best', value=f"{profile.stats.maxTrophies} {self.emoji('trophy')}")
+            em.add_field(name='XP Level', value=f"{profile.stats.level} {self.emoji('xplevel')}")
+            em.add_field(name='Arena', value=f'{profile.arena.name}')
+            em.add_field(name='Total Games', value=f"{profile.games.total} {self.emoji('battle')}")
+            em.add_field(name='Wins', value=f"{profile.games.wins} ({profile.games.winsPercent * 100}% of all games) {self.emoji('battle')}")
+            em.add_field(name='Three Crown Wins', value=f"{profile.stats.threeCrownWins} {self.emoji('threecrown')}")
+            em.add_field(name='Losses', value=f"{profile.games.losses} ({profile.games.lossesPercent * 100}% of all games) {self.emoji('battle')}")
+            em.add_field(name='Draws', value=f"{profile.games.draws} ({profile.games.drawsPercent * 100}% of all games) {self.emoji('battle')}")
+            em.add_field(name='Win Rate', value=f"{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji('sword')}")
+            em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name} {self.emoji(profile.stats.favoriteCard.name)}')
+            if not profile.rank:
+                globalrank = 'Unranked'
+            else:
+                globalrank = profile.rank
+            em.add_field(name='Global Rank', value=f"{globalrank}{self.emoji('legendtrophy')}")    
+            em.add_field(name='Challenge Max Wins', value=f"{profile.stats.challengeMaxWins} {self.emoji('12wins')}")
+            em.add_field(name='Challenge Cards Won', value=f"{profile.stats.challengeCardsWon} {self.emoji('deck')}")
+            em.add_field(name='Tourney Cards Won', value=f"{profile.stats.tournamentCardsWon} {self.emoji('deck')}")                                                                                                                                                
+            clan = await profile.get_clan()
+            em.add_field(name='Clan', value=f"{clan.name} (#{clan.tag}) {self.emoji('clan')}", inline=False)
+            clanroles = {
+                "member": "Member",
+                "elder": "Elder",
+                "coLeader": "Co-Leader",
+                "leader": "Leader"
+            }
+            em.add_field(name='Role', value=f'{clanroles[profile.clan.role]}', inline=False)                                                                                                                                                                      
+            em.add_field(name='Clan Score', value=f"{clan.score} {self.emoji('trophy')}")
+            em.add_field(name='Members', value=f'{len(clan.members)}/50')
+            em.add_field(name='Donations', value=profile.clan.donations)
+            em.add_field(name='Donations Received', value=profile.clan.donationsReceived)
+            em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png') # This allows thumbnail to match your arena! Maybe it IS possible after all...
+            em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+            await ctx.send(embed=em)
+        except Exception as e:
+            print(traceback.format_exc())
 
 
 
