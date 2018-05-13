@@ -41,15 +41,15 @@ class fun:
         await asyncio.sleep(3)
         rate = random.randint(0, 100)
         if rate < 20:
-            text = f"**{one}** + **{two}**\n\nComplete CRAP! :unamused:\n\nRating: **{rate}**%"
+            text = f"**{one.name}** + **{two}**\n\nComplete CRAP! :unamused:\n\nRating: **{rate}**%"
         elif rate >= 20 and rate < 40:
-            text = f"**{one}** + **{two}**\n\nQuite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
+            text = f"**{one.name}** + **{two}**\n\nQuite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
         elif rate >= 40 and rate < 60:
-            text = f"**{one}** + **{two}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(434099401397633024)}\n\nRating: **{rate}**%"
+            text = f"**{one.name}** + **{two}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(434099401397633024)}\n\nRating: **{rate}**%"
         elif rate >= 60 and rate < 80:
-            text = f"**{one}** + **{two}**\n\nPretty gucci! {self.bot.get_emoji(445271298319319049)}\n\nRating: **{rate}**%"
+            text = f"**{one.name}** + **{two}**\n\nPretty gucci! {self.bot.get_emoji(445271298319319049)}\n\nRating: **{rate}**%"
         elif rate >= 80 and rate <= 100:
-            text = f"**{one}** + **{two}**\n\nOne True Pair! {self.bot.get_emoji(440615013984763914)}\n\nRating: **{rate}**%"
+            text = f"**{one.name}** + **{two}**\n\nOne True Pair! {self.bot.get_emoji(440615013984763914)}\n\nRating: **{rate}**%"
         e = discord.Embed(color=discord.Color(value=0x00ff00), title="Matchmaking")
         e.description = text
         await msg.edit(embed=e)
