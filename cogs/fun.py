@@ -28,7 +28,6 @@ class fun:
             return await ctx.send("Please tag a valid person for the first argument, kthx.")
         if not two:
             two = ctx.author
-        two = two if type(two) == str else two.name
         em = discord.Embed(color=discord.Color(value=0xebf442), title='Please wait...')
         responses = [
             "*What's on your mind?*",
