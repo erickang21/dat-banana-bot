@@ -22,10 +22,8 @@ class fun:
 
 
     @commands.command()
-    async def ship(self, ctx, one, two: discord.Member or str):
+    async def ship(self, ctx, one: discord.Member or str, two: discord.Member or str):
         """Who's your true love? Or enemy..."""
-        if not one.startswith("<@") or not one.endswith(">"):
-            return await ctx.send("Please tag a valid person for the first argument, kthx.")
         if not two:
             two = ctx.author
         em = discord.Embed(color=discord.Color(value=0xebf442), title='Please wait...')
