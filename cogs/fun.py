@@ -22,7 +22,7 @@ class fun:
 
 
     @commands.command()
-    async def ship(self, ctx, one, two: discord.Member):
+    async def ship(self, ctx, one, two):
         """Who's your true love? Or enemy..."""
         if type(one) != discord.member.Member:
             return await ctx.send("Please tag a valid person for the first argument, kthx.")
