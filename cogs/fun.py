@@ -21,6 +21,35 @@ class fun:
         self.giphy_key = lol.get("giphyapi")
 
 
+    @commands.command()
+    async def ship(self, ctx, one: discord.Member, two: discord.Member):
+        """Who's your true love? Or enemy..."""
+        em = discord.Embed(color=discord.Color(value=0xebf442), title='Please wait...')
+        responses = [
+            "*What's on your mind?*",
+            "Is she the one?",
+            "Calculating how much they love each other...",
+            "Could it be?"
+        ]
+        em.description = random.choice(responses)
+        msg = await ctx.send(embed=em)
+        await asyncio.sleep(3)
+        rate = random.randint(0, 100)
+        if rate < 20:
+            text = "Complete CRAP! :unamused:"
+        elif rate >= 20 and rate < 40:
+            text = f"Quite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
+        elif rate >= 40 and rate < 60:
+            text = f"Meh, it's *okay*, I guess. {self.bot.get_emoji(434099401397633024)}\n\nRating: **{rate}**%"
+        elif rate >= 60 and rate < 80:
+            text = f"Pretty gucci! {self.bot.get_emoji(445271298319319049)}\n\nRating: **{rate}**%"
+        elif rate >= 80 and rate <= 100:
+            text = f"One True Pair! {self.bot.get_emoji(440615013984763914)}\n\nRating: **{rate}**%"
+        e = discord.Embed(color=discord.Color(value=0x00ff00), title="Matchmaking")
+        e.description = text
+        await msg.edit(embed=e)
+
+
     
     @commands.command()
     async def emojify(self, ctx, *, text: str = None):
