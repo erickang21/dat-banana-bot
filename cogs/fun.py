@@ -22,13 +22,13 @@ class fun:
 
 
     @commands.command()
-    async def ship(self, ctx, one, two):
+    async def ship(self, ctx, one, two: discord.Member or str):
         """Who's your true love? Or enemy..."""
-        if type(one) != discord.Member:
+        if not one.startswith("<@") or not one.endswith(">"):
             return await ctx.send("Please tag a valid person for the first argument, kthx.")
         if not two:
             two = ctx.author
-        two = two.name if type(two) == discord.member.Member else two
+        two = two.name if type(two) == discord.Member else two
         em = discord.Embed(color=discord.Color(value=0xebf442), title='Please wait...')
         responses = [
             "*What's on your mind?*",
