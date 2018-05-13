@@ -36,7 +36,7 @@ class fun:
         await asyncio.sleep(3)
         rate = random.randint(0, 100)
         if rate < 20:
-            text = f"**{one}** + **{two}**\n\nComplete CRAP! :unamused:"
+            text = f"**{one}** + **{two}**\n\nComplete CRAP! :unamused:\n\nRating: **{rate}**%"
         elif rate >= 20 and rate < 40:
             text = f"**{one}** + **{two}**\n\nQuite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
         elif rate >= 40 and rate < 60:
