@@ -187,7 +187,7 @@ async def on_reaction_add(reaction, user):
         chan = bot.get_channel(x['channel'])
         if not chan:
             return
-        emoji_count = len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])
+        emoji_count = reaction.message.reactions[0].count
         if emoji_count > 1:
             async for x in chan.history(limit=50):
                 if x.embeds[0].description == reaction.message.content:
