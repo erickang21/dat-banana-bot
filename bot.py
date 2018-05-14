@@ -187,21 +187,32 @@ async def on_reaction_add(reaction, user):
         chan = bot.get_channel(x['channel'])
         if not chan:
             return
-        try:
-            img_url = reaction.message.attachments[0].url
-        except IndexError:
-            img_url = None
-        if not img_url:
+        emoji_count = len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])
+        if emoji_count > 1:
+            async for x in chan.history(limit=50):
+                if x.embeds[0].description == reaction.message.content:
+                    await x.edit(embed=discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}"), description=reaction.message.content)
+                    break
+        else:
+            x = await bot.db.starboard.find_one({"id": str(user.guild.id)})
+            chan = bot.get_channel(x['channel'])
+            if not chan:
+                return
             try:
-                img_url = reaction.message.embeds[0].url
+                img_url = reaction.message.attachments[0].url
             except IndexError:
                 img_url = None
-        em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Starred Message")
-        em.description = reaction.message.content
-        em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
-        if img_url:
-            em.set_image(url=str(img_url))
-        await chan.send(embed=em)
+            if not img_url:
+                try:
+                    img_url = reaction.message.embeds[0].url
+                except IndexError:
+                    img_url = None
+            em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Stars: 1")
+            em.description = reaction.message.content
+            em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+            if img_url:
+                em.set_image(url=str(img_url))
+            await chan.send(embed=em)
     else:
         pass
     # with open('data/starmsgs.json') as f:
