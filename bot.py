@@ -189,9 +189,12 @@ async def on_reaction_add(reaction, user):
             return
         emoji_count = reaction.message.reactions[0].count
         if emoji_count > 1:
+            em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
+            em.description = reaction.message.content
+            em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
             async for x in chan.history(limit=50):
                 if x.embeds[0].description == reaction.message.content:
-                    await x.edit(embed=discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}"), description=reaction.message.content)
+                    await x.edit(embed=em)
                     break
         else:
             x = await bot.db.starboard.find_one({"id": str(user.guild.id)})
