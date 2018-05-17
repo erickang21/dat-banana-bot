@@ -19,6 +19,8 @@ class fun:
             lol = json.load(f)
             self.client = lol.get("idioticapi")
         self.giphy_key = lol.get("giphyapi")
+        self.guess_number = random.randint(1, 100)
+        
 
 
     @commands.command()
@@ -28,15 +30,17 @@ class fun:
             number = int(number)
         except ValueError:
             return await ctx.send("Please enter a valid number.")
-        match = random.randint(1, 1000)
+        match = self.guess_number
         if match == number:
+            self.guess_number = random.randint(1, 100)
             em = discord.Embed(color=discord.Color(value=0x00ff00))
             em.title = "SUCCESS!"
             em.description = "You guessed the number CORRECT-O! Awesome job."
         else:
             em = discord.Embed(color=discord.Color(value=0xf44542))
             em.title = "Oof..."
-            em.description = f"The number was wrong. \n\nThe correct one is: `{match}`"
+            em.description = f"The number was wrong. Keep guessing!"
+            await self.bot.get_channel(445332002942484482).send(f"The number is {self.guess_number}")
         return await ctx.send(embed=em)
 
 
