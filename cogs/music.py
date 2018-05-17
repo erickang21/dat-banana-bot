@@ -65,10 +65,53 @@ class Music:
         if len(self.queue) is 0:
             await ctx.voice_client.disconnect()
             await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
-        self.queue.remove(self.queue[0])  # Remove first element
-        # Dammimt ice, you should CHECK 0 FIRST BEFORE REMOVING!
         next = await YTDLSource.from_url(self.queue[0], loop=loop)
+        self.queue.remove(self.queue[0])
         ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
+        em.description = next.title
+        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.add_field(name='Length', value=f"{int(int(next.get_duration())/60)}:{int(next.get_duration()) - int(int(next.get_duration())/60)*60}")
+        em.add_field(name='Volume', value=next.volume)
+        em.add_field(name='Position in Queue', value='0')
+        msg = await ctx.send(embed=em)
+        try:
+            await msg.add_reaction("\U000023f8") # Pause
+            await msg.add_reaction("\U000025b6") # Play
+            await msg.add_reaction("\U000023f9") # Stop
+            await msg.add_reaction("\U0001f501") # Repeat
+            await msg.add_reaction("\U00002753") # Help
+        except discord.Forbidden:
+            return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
+        try:    
+            while ctx.voice_client.is_playing():
+                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
+                if reaction.emoji == "⏸":
+                    ctx.voice_client.pause()
+                    await msg.remove_reaction("\U000023f8", ctx.author)
+                elif reaction.emoji == "▶":
+                    ctx.voice_client.resume()
+                    await msg.remove_reaction("\U000025b6", ctx.author)
+                elif reaction.emoji == "⏹":
+                    ctx.voice_client.stop()
+                    await msg.delete()
+                elif reaction.emoji == "🔁":
+                    ctx.voice_client.stop()
+                    ctx.voice_client.play(next, after=lambda e: print('Player error: %s' % e) if e else None)
+                    await msg.remove_reaction("\U0001f501", ctx.author)
+                elif reaction.emoji == "❓":
+                    await msg.remove_reaction("\U00002753", ctx.author)
+                    embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
+                    embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
+                    embed.set_footer(text='This will revert back in 15 seconds.')
+                    await msg.edit(embed=embed)
+                    await asyncio.sleep(15)
+                    await msg.edit(embed=em)    
+        except discord.Forbidden:
+            return await ctx.send("I can't remove your reactions! Ouch.")
+        except Exception as e:
+            return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
+
 
     @commands.command()
     async def connect(self, ctx):
