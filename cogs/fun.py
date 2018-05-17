@@ -22,6 +22,25 @@ class fun:
 
 
     @commands.command()
+    async def guess(self, ctx, number):
+        """Guess a number between 1 and 1000!"""
+        try:
+            number = int(number)
+        except ValueError:
+            return await ctx.send("Please enter a valid number.")
+        match = random.randint(1, 1000)
+        if match == number:
+            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em.title = "SUCCESS!"
+            em.description = "You guessed the number CORRECT-O! Awesome job."
+        else:
+            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em.title = "Oof..."
+            em.description = f"The number was wrong. \n\nThe correct one is: `{match}`"
+        return await ctx.send(embed=em)
+
+
+    @commands.command()
     async def ship(self, ctx, one: discord.Member or str, two: discord.Member or str):
         """Who's your true love? Or enemy..."""
         if not two:
