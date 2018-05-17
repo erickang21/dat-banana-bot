@@ -229,9 +229,17 @@ class Music:
     async def resume(self, ctx):
         """Resumes whatever isn't playing."""
         if ctx.voice_client is None:
-            return await ctx.send("How do I pause without me connected to a voice channel?")
+            return await ctx.send("How do I resume without me connected to a voice channel?")
         ctx.voice_client.resume()
         await ctx.send("**Carrying on!** :arrow_forward:")
+
+    @commands.command()
+    async def stop(self, ctx):
+        """Stops the current song."""
+        if ctx.voice_client is None:
+            return await ctx.send("How do I resume without me connected to a voice channel?")
+        ctx.voice_client.stop()
+        await ctx.send("**HALT!** Music has been stopped. :stop_button:")
 
 
 def setup(bot):
