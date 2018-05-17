@@ -65,14 +65,14 @@ class Music:
         if len(self.queue) is 0:
             await ctx.voice_client.disconnect()
             await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
-        next = await YTDLSource.from_url(self.queue[str(ctx.guild.id)][0], loop=loop)
-        self.queue[str(ctx.guild.id)].remove(self.queue[0])
-        ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
+        player = await YTDLSource.from_url(self.queue[str(ctx.guild.id)][0], loop=loop)
+        self.queue[str(ctx.guild.id)].remove(self.queue[str(ctx.guild.id)][0])
+        ctx.voice_client.play(player, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
-        em.description = next.title
+        em.description = player.title
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-        em.add_field(name='Length', value=f"{int(int(next.get_duration())/60)}:{int(next.get_duration()) - int(int(next.get_duration())/60)*60}")
-        em.add_field(name='Volume', value=next.volume)
+        em.add_field(name='Length', value=f"{int(int(player.get_duration())/60)}:{int(player.get_duration()) - int(int(player.get_duration())/60)*60}")
+        em.add_field(name='Volume', value=player.volume)
         em.add_field(name='Position in Queue', value='0')
         msg = await ctx.send(embed=em)
         try:
