@@ -34,7 +34,7 @@ class fun:
             em.title = "SUCCESS!"
             em.description = "You guessed the number CORRECT-O! Awesome job."
         else:
-            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em = discord.Embed(color=discord.Color(value=0xf44542))
             em.title = "Oof..."
             em.description = f"The number was wrong. \n\nThe correct one is: `{match}`"
         return await ctx.send(embed=em)
