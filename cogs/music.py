@@ -62,7 +62,7 @@ class Music:
        self.queue = {}
 
     async def next_song(self, ctx, loop):
-        if len(self.queue) is 0:
+        if len(self.queue[str(ctx.guild.id)]) is 0:
             await ctx.voice_client.disconnect()
             await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
         player = await YTDLSource.from_url(self.queue[str(ctx.guild.id)][0], loop=loop)
@@ -73,7 +73,7 @@ class Music:
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.add_field(name='Length', value=f"{int(int(player.get_duration())/60)}:{int(player.get_duration()) - int(int(player.get_duration())/60)*60}")
         em.add_field(name='Volume', value=player.volume)
-        em.add_field(name='Position in Queue', value='0')
+        em.add_field(name='Position in Queue', value=len(self.queue[str(ctx.guild.id)]))
         msg = await ctx.send(embed=em)
         try:
             await msg.add_reaction("\U000023f8") # Pause
@@ -209,7 +209,8 @@ class Music:
                 self.queue[str(ctx.guild.id)] = [url]
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Added to queue!')
             em.description = f"Song: {to_play.title}"
-            em.add_field(name='Position in Queue', value=len(self.queue))
+            em.add_field(name='Position in Queue', value=len(
+                self.queue[str(ctx.guild.id)]))
             dur = int(to_play.get_duration())
             em.add_field(name='Length', value=f"{int(dur/60)}:{str(int(dur) - int(dur)/60*60).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
             em.set_author(name=f"Played by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
