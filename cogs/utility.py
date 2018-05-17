@@ -487,14 +487,14 @@ class Utility:
         if user is None:
             user = ctx.author
         color = discord.Color(value=0xf2f760)
-        em = discord.Embed(color=color, title=f'User Info: {ctx.message.author.name}')
-        em.add_field(name='Status', value=f'{ctx.message.author.status}')       
-        em.add_field(name='Account Created', value=ctx.message.author.created_at.__format__('%A, %B %d, %Y'))
-        em.add_field(name='ID', value=f'{ctx.message.author.id}')
-        Type = 'Bot' if ctx.message.author.bot else 'Human'
+        em = discord.Embed(color=color, title=f'User Info: {user.name}')
+        em.add_field(name='Status', value=f'{user.status}')       
+        em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
+        em.add_field(name='ID', value=f'{user.id}')
+        Type = 'Bot' if user.bot else 'Human'
         em.add_field(name='Profile Type', value=Type)
         em.add_field(name='Currently Playing', value=user.activity if user.activity else 'None')
-        em.set_thumbnail(url=ctx.message.author.avatar_url)
+        em.set_thumbnail(url=user.avatar_url)
         await ctx.send(embed=em)  
         
               

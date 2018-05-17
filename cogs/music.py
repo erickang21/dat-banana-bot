@@ -59,10 +59,10 @@ class YTDLSource(discord.PCMVolumeTransformer):
 class Music:
     def __init__(self, bot):
        self.bot = bot
-       self.queue = list()
+       self.queue = []
 
     async def next_song(self, ctx, loop):
-        del self.queue[0] # Remove first element
+        self.queue.remove(self.queue[0]) # Remove first element
         if len(self.queue) is 0:
             await ctx.voice_client.disconnect()
             await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
@@ -128,7 +128,7 @@ class Music:
             except discord.Forbidden:
                 return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
             try:    
-                while True:
+                while ctx.voice_client.is_playing():
                     reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
                     if reaction.emoji == "⏸":
                         ctx.voice_client.pause()
