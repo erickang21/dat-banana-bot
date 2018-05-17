@@ -62,13 +62,13 @@ class Music:
        self.queue = []
 
     async def next_song(self, ctx, loop):
-        self.queue.remove(self.queue[0]) # Remove first element
         if len(self.queue) is 0:
             await ctx.voice_client.disconnect()
             await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
-        else:
-            next = await YTDLSource.from_url(self.queue[0], loop=loop)
-            ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
+        self.queue.remove(self.queue[0])  # Remove first element
+        # Dammimt ice, you should CHECK 0 FIRST BEFORE REMOVING!
+        next = await YTDLSource.from_url(self.queue[0], loop=loop)
+        ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
 
     @commands.command()
     async def connect(self, ctx):
