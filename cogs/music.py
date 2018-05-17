@@ -59,14 +59,14 @@ class YTDLSource(discord.PCMVolumeTransformer):
 class Music:
     def __init__(self, bot):
        self.bot = bot
-       self.queue = []
+       self.queue = {}
 
     async def next_song(self, ctx, loop):
         if len(self.queue) is 0:
             await ctx.voice_client.disconnect()
             await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
         next = await YTDLSource.from_url(self.queue[0], loop=loop)
-        self.queue.remove(self.queue[0])
+        self.queue[str(ctx.guild.id)].remove(self.queue[0])
         ctx.voice_client.play(next, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
         em.description = next.title
@@ -203,7 +203,10 @@ class Music:
                 to_play = await YTDLSource.from_url(url, loop=self.bot.loop)
             except youtube_dl.DownloadError:
                 return await ctx.send("Couldn't find any video with that name. Try something else.")
-            self.queue.append(url)       
+            try:
+                self.queue[str(ctx.guild.id)].append(url)
+            except KeyError:
+                self.queue[str(ctx.guild.id)] = [url]
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Added to queue!')
             em.description = f"Song: {to_play.title}"
             em.add_field(name='Position in Queue', value=len(self.queue))
