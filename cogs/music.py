@@ -65,9 +65,10 @@ class Music:
         if len(self.queue[str(ctx.guild.id)]) is 0:
             await ctx.voice_client.disconnect()
             await ctx.send("No songs are left in the queue... Just queue the 🍌 song.")
-        player = await YTDLSource.from_url(self.queue[str(ctx.guild.id)][0], loop=loop)
-        self.queue[str(ctx.guild.id)].remove(self.queue[str(ctx.guild.id)][0])
+        #player = await YTDLSource.from_url(self.queue[str(ctx.guild.id)][0], loop=loop)
+        player = self.queue[str(ctx.guild.id)][0]
         ctx.voice_client.play(player, after=lambda e: asyncio.run_coroutine_threadsafe(self.next_song(ctx, loop), loop=self.bot.loop).result())
+        self.queue[str(ctx.guild.id)].remove(self.queue[str(ctx.guild.id)][0])
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
         em.description = player.title
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
@@ -136,7 +137,7 @@ class Music:
             await ctx.send(f"Successfully disconnected from the voice channel. :white_check_mark:")
 
     @commands.command()
-    @commands.cooldown(2, 15.0, BucketType.user)
+    #@commands.cooldown(2, 15.0, BucketType.user)
     async def play(self, ctx, *, url):
         """Search for a YouTube video to play, by name."""
         if ctx.author.voice is None:
@@ -156,7 +157,7 @@ class Music:
                 return await ctx.send("I don't have permissions to play in this channel.")
             await m.delete()
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
-            em.description = player.title
+            em.description = f"**{player.title}**"
             em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
             em.add_field(name='Length', value=f"{int(int(player.get_duration())/60)}:{int(player.get_duration()) - int(int(player.get_duration())/60)*60}")
             em.add_field(name='Volume', value=player.volume)
@@ -204,11 +205,11 @@ class Music:
             except youtube_dl.DownloadError:
                 return await ctx.send("Couldn't find any video with that name. Try something else.")
             try:
-                self.queue[str(ctx.guild.id)].append(url)
+                self.queue[str(ctx.guild.id)].append(to_play)
             except KeyError:
-                self.queue[str(ctx.guild.id)] = [url]
+                self.queue[str(ctx.guild.id)] = [to_play]
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Added to queue!')
-            em.description = f"Song: {to_play.title}"
+            em.description = f"**{to_play.title}**"
             em.add_field(name='Position in Queue', value=len(
                 self.queue[str(ctx.guild.id)]))
             dur = int(to_play.get_duration())
@@ -251,7 +252,7 @@ class Music:
         count = 0
         for x in self.queue[str(ctx.guild.id)]:
             count += 1
-            songs += f"{str(count)}: **{x}**\n"
+            songs += f"{str(count)}: **{x.title}**\n"
         em.description = songs if self.queue[str(ctx.guild.id)] != [] else "No songs are currently in the queue! Just queue the :banana: song, kthx."
         await ctx.send(embed=em)
 
