@@ -242,6 +242,19 @@ class Music:
         await ctx.send("**HALT!** Music has been stopped. :stop_button:")
 
 
+    @commands.command(name="queue")
+    async def _queue(self, ctx):
+        """Gets the queue for the server."""
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Music Queue")
+        em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        songs = ""
+        count = 0
+        for x in self.queue[str(ctx.guild.id)]:
+            count += 1
+            songs += f"{str(count)}: **{x}**\n"
+        em.description = songs if self.queue[str(ctx.guild.id)] != [] else "No songs are currently in the queue! Just queue the :banana: song, kthx."
+        await ctx.send(embed=em)
+
 def setup(bot):
     bot.add_cog(Music(bot))
 
