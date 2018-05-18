@@ -83,6 +83,10 @@ class Utility:
         """Creates a poll with reactions. Seperate choices with |."""
         if not "|" in args:
             return await ctx.send("Seperate the question and choices with |.\nUsage: *poll What is the question? | Idk. | You tell me.")
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         choices = args.split("|")
         desc = ""
         counter = 0
