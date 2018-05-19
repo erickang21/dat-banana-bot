@@ -188,6 +188,25 @@ class Economy:
             return await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
 
 
+    @commands.command(alises=['steal'])
+    @commands.cooldown(1, 300, BucketType.user)
+    async def rob(self, ctx, user: discord.Member = None, points: int = None):
+        """Steal from someone else!"""
+        try:
+            points = int(points)
+        except ValueError:
+            return await ctx.send("Please enter a valid number to rob.")
+        your_fate = random.randint(1, 2)
+        if your_fate == 1:
+            await self.add_points(ctx.author, points)
+            await self.add_points(user, -points)
+            return await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
+        elif your_fate == 2:
+            await self.add_points(ctx.author, -points)
+            await self.add_points(user, points)
+            return await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
+
+
     @commands.command(aliases=['give'])
     @commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
