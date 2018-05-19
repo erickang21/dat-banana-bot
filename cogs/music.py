@@ -253,12 +253,17 @@ class Music:
         """Gets the queue for the server."""
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Music Queue")
         em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        try:
+            song_list = self.queue[str(ctx.guild.id)]
+        except KeyError:
+            em.description = "No songs are currently in the queue! Just queue the :banana: song, kthx."
+            return await ctx.send(embed=em)
         songs = ""
         count = 0
-        for x in self.queue[str(ctx.guild.id)]:
+        for x in song_list:
             count += 1
             songs += f"{str(count)}: **{x.title}**\n"
-        em.description = songs if self.queue[str(ctx.guild.id)] != [] else "No songs are currently in the queue! Just queue the :banana: song, kthx."
+        em.description = songs if song_list != [] else "No songs are currently in the queue! Just queue the :banana: song, kthx."
         await ctx.send(embed=em)
 
 def setup(bot):
