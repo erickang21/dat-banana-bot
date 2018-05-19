@@ -112,8 +112,10 @@ class Music:
                     await msg.edit(embed=em)    
         except discord.Forbidden:
             return await ctx.send("I can't remove your reactions! Ouch.")
-        except Exception as e:
-            return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
+        # except Exception as e:
+        #     return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
+
+        # This made shit way too spammy, can't think of a good way to avoid it, rather just remove it.
 
 
     @commands.command()
@@ -201,8 +203,10 @@ class Music:
                         await msg.edit(embed=em)    
             except discord.Forbidden:
                 return await ctx.send("I can't remove your reactions! Ouch.")
-            except Exception as e:
-                return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
+            # except Exception as e:
+            #     return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
+
+            # This made shit way too spammy, can't think of a good way to avoid it, rather just remove it.
         else:
             try:
                 to_play = await YTDLSource.from_url(url, loop=self.bot.loop)
