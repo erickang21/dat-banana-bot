@@ -27,10 +27,8 @@ class COC:
 
 
     @commands.command()
-    async def cocsave(self, ctx, coctag=None):
+    async def cocsave(self, ctx, coctag):
         '''Saves a Clash of Clans tag to your Discord account.'''
-        if coctag is None:
-            return await ctx.send('Oops! Enter a tag to save! Usage: *cocsave [tag]')
         coctag = coctag.strip('#')
         coctag = coctag.upper()
         for char in coctag:
