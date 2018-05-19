@@ -15,10 +15,8 @@ class mod:
 
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def lockdown(self, ctx, action=None):
+    async def lockdown(self, ctx, action):
         """Prevents anyone from chatting in the current channel."""
-        if not action:
-            return await ctx.send("Lockdown command:\n*lockdown [on/off]")
         if action.lower() == 'on':
             msg = await ctx.send("Locking down the channel...")
             for x in ctx.guild.members:
@@ -115,28 +113,22 @@ class mod:
     @commands.has_permissions(manage_messages = True)
     async def purge(self, ctx, num: int):
         """Deletes a # of msgs. *purge [# of msgs].""" 
-        try: 
-            if num is None:
-                await ctx.send("How many messages would you like me to delete? Usage: *purge [number of msgs]")
-            else:
-                try:
-                    float(num)
-                except ValueError:
-                    return await ctx.send("The number is invalid. Make sure it is valid! Usage: *purge [number of msgs]")
-                await ctx.channel.purge(limit=num+1)
-                msg = await ctx.send("Purged successfully :white_check_mark:", delete_after=3)
+        try:
+            float(num)
+        except ValueError:
+            return await ctx.send("The number is invalid. Make sure it is valid! Usage: *purge [number of msgs]")
+        try:
+            await ctx.channel.purge(limit=num+1)
+            msg = await ctx.send("Purged successfully :white_check_mark:", delete_after=3)
         except discord.Forbidden:
             await ctx.send("Purge unsuccessful. The bot does not have Manage Msgs permission.")
-        except commands.errors.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with purging without permissions.")
+
     
     
     @commands.command()
     @commands.has_permissions(kick_members = True)
-    async def kick(self, ctx, user: discord.Member = None, *, reason=None):
+    async def kick(self, ctx, user: discord.Member, *, reason=None):
         """Kicks a member into the world outside your server."""
-        if user is None:
-            await ctx.send("To boot the member, use the command like this: \n*kick [@user] [reason]")
         try:
             await user.kick(reason=reason)
             color = discord.Color(value=0x00ff00)
@@ -152,17 +144,13 @@ class mod:
             await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to use the boot.")
-        except commands.errors.MissingPermissions:
-            await ctx.send("Nice try. You need `Kick Members` Permission to use this!")
         
         
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def ban(self, ctx, user: discord.Member = None, *, reason=None):
+    async def ban(self, ctx, user: discord.Member, *, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
-        if user is None:
-            await ctx.send(f"{self.bot.get_emoji(436342184330002442)} To swing the ban hammer, use the command like this: \n*ban [@user] [reason]")
         try:
             await user.ban(reason=reason)
             color = discord.Color(value=0x00ff00)
@@ -176,8 +164,6 @@ class mod:
             await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
-        except commands.errors.MissingPermissions:
-            await ctx.send("Nice try. You need `Ban Members` Permissions to use this!")
 
 
 
@@ -259,10 +245,8 @@ class mod:
 
     @commands.command(aliases=['giverole'])
     @commands.has_permissions(manage_roles = True)
-    async def addrole(self, ctx, user: discord.Member=None, *, role=None):
+    async def addrole(self, ctx, user: discord.Member, *, role):
         """Adds a role to the user."""
-        if user is None or role is None:
-            return await ctx.send("Incorrect usage! *addrole [user] [role name]")
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
@@ -394,11 +378,9 @@ class mod:
     
     @commands.command()
     @commands.has_permissions(manage_roles = True)
-    async def autorole(self, ctx, *, role=None):
+    async def autorole(self, ctx, *, role):
         """Sets the bot to automatically give a role on a member's join."""
-        if role is None:
-            return await ctx.send("Please specify the role you want to give!")
-        elif role.lower() == 'off':
+        if role.lower() == 'off':
             await self.bot.db.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": False}}, upsert=True)
             await ctx.send(f"Disabled autoroles for this server.")
         else:
@@ -461,9 +443,7 @@ class mod:
             
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def hackban(self, ctx, id = None, reason=None):
-        if id is None:
-            return await ctx.send("Please enter the ID of a person to ban them.")
+    async def hackban(self, ctx, id, reason=None):
         try:
             id = int(id)
         except ValueError:

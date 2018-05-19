@@ -117,9 +117,7 @@ class Utility:
 
 
     @commands.command(name='wikipedia', aliases=['wiki'])
-    async def _wikipedia(self, ctx, *, query=None):
-        if query is None:
-            return await ctx.send("Please include what you want to search.")
+    async def _wikipedia(self, ctx, *, query):
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Wikipedia Results for: {query}")
         try:
             res = wikipedia.summary(str(query))
@@ -245,9 +243,7 @@ class Utility:
 
 
     @commands.command(aliases=['g', 'gg'])
-    async def google(self, ctx, *, query: str = None):
-        if query is None:
-            return await ctx.send("Please enter a search query.")
+    async def google(self, ctx, *, query: str):
         search = GoogleSearch(query)
         search.start_search()
         result = search.search_result
@@ -294,90 +290,61 @@ class Utility:
 
 
     @commands.command()
-    async def hastebin(self, ctx, *, text=None):
-        if text is None:
-            await ctx.send("Please enter the text you want to put into Hastebin: *hastebin [text]")
-        else:
-            try:
-                resp = await self.session.post("https://hastebin.com/documents", data=text)
-                resp = await resp.json()
-                color = discord.Color(value=0x00ff00)
-                em = discord.Embed(color=color, title='Hastebin-ified!')
-                em.description = f"Your Hastebin link: \nhttps://hastebin.com/{resp['key']}"
-                em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
-                await ctx.send(embed=em)
-            except Exception as e:
-                color = discord.Color(value=0xf44e42)
-                em = discord.Embed(color=color, title='An error occured. :x:')
-                em.description = f"More details: \n```{e}```"
-                await ctx.send(embed=em)
-
-
-    @commands.command()
-    async def shortenurl(self, ctx, *, url=None):
-        '''Shortens a URL through Tinyurl.'''
-        if url is None:
-            await ctx.send("Umm...Please enter a URL to shorten!")
-        else:
+    async def hastebin(self, ctx, *, text):
+        try:
+            resp = await self.session.post("https://hastebin.com/documents", data=text)
+            resp = await resp.json()
             color = discord.Color(value=0x00ff00)
-            em = discord.Embed(color=color, title='TinyURL Link Shortener')
-            resp = await self.session.get(f'http://tinyurl.com/api-create.php?url={url}')
-            resp = await resp.text()
-            em.description = f"Shortened Link: \n{resp}"
-            em.add_field(name='Original Link', value=url)
+            em = discord.Embed(color=color, title='Hastebin-ified!')
+            em.description = f"Your Hastebin link: \nhttps://hastebin.com/{resp['key']}"
+            em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+            await ctx.send(embed=em)
+        except Exception as e:
+            color = discord.Color(value=0xf44e42)
+            em = discord.Embed(color=color, title='An error occured. :x:')
+            em.description = f"More details: \n```{e}```"
             await ctx.send(embed=em)
 
 
     @commands.command()
-    async def urban(self, ctx, *, word=None):
+    async def shortenurl(self, ctx, *, url):
+        '''Shortens a URL through Tinyurl.'''
+        color = discord.Color(value=0x00ff00)
+        em = discord.Embed(color=color, title='TinyURL Link Shortener')
+        resp = await self.session.get(f'http://tinyurl.com/api-create.php?url={url}')
+        resp = await resp.text()
+        em.description = f"Shortened Link: \n{resp}"
+        em.add_field(name='Original Link', value=url)
+        await ctx.send(embed=em)
+
+
+    @commands.command()
+    async def urban(self, ctx, *, word):
         '''Gets the definition of a word from Urban Dictionary.'''
-        if word is None:
-            await ctx.send("To use Urban Dictionary, please enter a word in this format: `*urban [word]`")
-        else:
-            resp = await self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}')
-            r = await resp.json()
-            color = discord.Color(value=0x00ff00)
-            em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
-            lol = []
-            for x in r['list']:
-                lol.append(f"{x['definition']} \n\n*{x['example']}* \n\n**Votes**\n:thumbsup: {x['thumbs_up']}  :thumbsdown: {x['thumbs_down']} \n\nDefinition written by {x['author']}")
-            ud = Pages(ctx, entries=lol, per_page=1)
-            await ud.paginate()
+        resp = await self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}')
+        r = await resp.json()
+        color = discord.Color(value=0x00ff00)
+        em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
+        lol = []
+        for x in r['list']:
+            lol.append(f"{x['definition']} \n\n*{x['example']}* \n\n**Votes**\n:thumbsup: {x['thumbs_up']}  :thumbsdown: {x['thumbs_down']} \n\nDefinition written by {x['author']}")
+        ud = Pages(ctx, entries=lol, per_page=1)
+        await ud.paginate()
 
 
     @commands.command()
-    async def playing(self, ctx, *, game=None):
+    async def playing(self, ctx, *, game):
         '''Enter a game, and it will find users in the server that are playing it.'''
-        if game is None:
-            await ctx.send("Please enter a game to search! Usage: *playing [game]")
-        else:
-            msg = ""
-            members = [x for x in ctx.guild.members if str(x.activity) == game]
-            for x in members:
-                msg += f"{str(x)} \n"
-            if msg == "":
-                msg = 'No one in the server is currently playing this game!'
-            color = discord.Color(value=0x00ff00)
-            em = discord.Embed(color=color, title=f"Users Playing: {game}")
-            em.description = msg
-            await ctx.send(embed=em) 
-            
-
-
-
-    @commands.command()
-    async def timer(self, ctx, timer=None):
-        """Counts down till it's over! Usage: *timer [time in secs]"""
-        if timer is None:
-            return await ctx.send("Please enter a time in seconds! Usage: *timer [time in secs]")
-        try:
-            float(timer)
-        except ValueError:
-            await ctx.send("UH OH! Timer did not start. Usage: *timer [time in secs]. Make sure the time is a *whole number*.")
-        else:
-            await ctx.send("Timer started and rolling! :timer:")
-            await asyncio.sleep(float(timer))
-            await ctx.send("TIME'S UP! :clock:")
+        msg = ""
+        members = [x for x in ctx.guild.members if str(x.activity) == game]
+        for x in members:
+            msg += f"{str(x)} \n"
+        if msg == "":
+            msg = 'No one in the server is currently playing this game!'
+        color = discord.Color(value=0x00ff00)
+        em = discord.Embed(color=color, title=f"Users Playing: {game}")
+        em.description = msg
+        await ctx.send(embed=em) 
         
         
     @commands.command()
@@ -414,52 +381,46 @@ class Utility:
 
 
     @commands.command()
-    async def choose(self, ctx, *, args=None):
+    async def choose(self, ctx, *, args):
         """Can't choose. Let this bot do it for you. Seperate choices with a comma."""
-        if args is None:
-            await ctx.send("Oops! Usage: *choose choice, anotha choice, 3rd choice, etc")
-        else:
-            lol = self.bot.get_emoji(410122907373535233)
-            msg = await ctx.send(lol)
-            args = args.split(",")
-            await asyncio.sleep(3)
-            await msg.edit(content=f"I choose:\n**{random.choice(args)}**")
+        lol = self.bot.get_emoji(410122907373535233)
+        msg = await ctx.send(lol)
+        args = args.split(",")
+        await asyncio.sleep(3)
+        await msg.edit(content=f"I choose:\n**{random.choice(args)}**")
 
         
     @commands.command(aliases=['tf'])
-    async def textface(self, ctx, Type=None):
+    async def textface(self, ctx, Type):
         """Get those dank/cool faces here. Type *textface list for a list."""
-        if Type is None:
-            await ctx.send('That is NOT one of the dank textfaces in here yet. Use: *textface list to get a list of textfaces you can use.')
+        if Type.lower() == 'lenny':
+          await ctx.send('( ͡° ͜ʖ ͡°)')
+        elif Type.lower() == 'tableflip':
+          await ctx.send('(ノಠ益ಠ)ノ彡┻━┻')
+        elif Type.lower() == 'shrug':
+          await ctx.send('¯\_(ツ)_/¯')
+        elif Type.lower() == 'bignose':
+          await ctx.send('(͡ ͡° ͜ つ ͡͡°)')
+        elif Type.lower() == 'iwant':
+          await ctx.send('ლ(´ڡ`ლ)')
+        elif Type.lower() == 'musicdude':
+          await ctx.send('ヾ⌐*_*ノ♪')
+        elif Type.lower() == 'wot':
+          await ctx.send('ლ,ᔑ•ﺪ͟͠•ᔐ.ლ')
+        elif Type.lower() == 'bomb':
+          await ctx.send('(´・ω・)っ由')
+        elif Type.lower() == 'orlly':
+          await ctx.send("﴾͡๏̯͡๏﴿ O'RLY?")
+        elif Type.lower() == 'money':
+          await ctx.send('[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]')
+        elif Type.lower() == 'list':
+          color = discord.Color(value=0x00ff00)
+          em = discord.Embed(color=color, title='List of Textfaces')
+          em.description = 'Choose from the following: lenny, tableflip, shrug, bignose, iwant, musicdude, wot, bomb, orlly, money. Type *textface [face].'
+          em.set_footer(text="Don't you dare question my names for the textfaces.")
+          await ctx.send(embed=em)
         else:
-            if Type.lower() == 'lenny':
-              await ctx.send('( ͡° ͜ʖ ͡°)')
-            elif Type.lower() == 'tableflip':
-              await ctx.send('(ノಠ益ಠ)ノ彡┻━┻')
-            elif Type.lower() == 'shrug':
-              await ctx.send('¯\_(ツ)_/¯')
-            elif Type.lower() == 'bignose':
-              await ctx.send('(͡ ͡° ͜ つ ͡͡°)')
-            elif Type.lower() == 'iwant':
-              await ctx.send('ლ(´ڡ`ლ)')
-            elif Type.lower() == 'musicdude':
-              await ctx.send('ヾ⌐*_*ノ♪')
-            elif Type.lower() == 'wot':
-              await ctx.send('ლ,ᔑ•ﺪ͟͠•ᔐ.ლ')
-            elif Type.lower() == 'bomb':
-              await ctx.send('(´・ω・)っ由')
-            elif Type.lower() == 'orlly':
-              await ctx.send("﴾͡๏̯͡๏﴿ O'RLY?")
-            elif Type.lower() == 'money':
-              await ctx.send('[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]')
-            elif Type.lower() == 'list':
-              color = discord.Color(value=0x00ff00)
-              em = discord.Embed(color=color, title='List of Textfaces')
-              em.description = 'Choose from the following: lenny, tableflip, shrug, bignose, iwant, musicdude, wot, bomb, orlly, money. Type *textface [face].'
-              em.set_footer(text="Don't you dare question my names for the textfaces.")
-              await ctx.send(embed=em)
-            else:
-              await ctx.send('That is NOT one of the dank textfaces in here yet. Use *textface list to see a list of the textfaces.')
+          await ctx.send('That is NOT one of the dank textfaces in here yet. Use *textface list to see a list of the textfaces.')
             
             
     @commands.command(aliases=['av'])
@@ -541,7 +502,7 @@ class Utility:
               
 
     @commands.command()
-    async def roleinfo(self, ctx, *, rolename=None):
+    async def roleinfo(self, ctx, *, rolename):
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
         except:

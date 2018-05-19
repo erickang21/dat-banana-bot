@@ -76,7 +76,7 @@ class Idiotic:
     async def achievement(self, ctx, *, text=None):
         """Give yourself an achievement. You need one."""
         await ctx.trigger_typing()
-        text = text if text else "Not putting text when using this command."
+        text = text or "Not putting text when using this command."
         try:
             await ctx.send(f"**{ctx.author.name}** got an achievement!", file=discord.File(await self.client.achievement(ctx.author.avatar_url, text), "achievement.png"))
         except Exception as e:
@@ -120,7 +120,7 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
     @commands.command()
-    async def blame(self, ctx, *, text=None):
+    async def blame(self, ctx, *, text):
         await ctx.trigger_typing()
         try:
             await ctx.send(file=discord.File(await self.client.blame(str(text)), "blame.png"))
@@ -146,10 +146,8 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
     @commands.command()
-    async def superpunch(self, ctx, user: discord.Member = None):
+    async def superpunch(self, ctx, user: discord.Member):
         await ctx.trigger_typing()
-        if user is None:
-            return await ctx.send("Tag someone for them to be PUNCHED!")
         try:
             await ctx.send(f"OUCH. **{ctx.author.name}** punched **{user.name}**!", file=discord.File(await self.client.superpunch(ctx.author.avatar_url, user.avatar_url), "superpunch.png"))
         except Exception as e:
@@ -237,10 +235,8 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
     @commands.command()
-    async def crush(self, ctx, user: discord.Member = None):
+    async def crush(self, ctx, user: discord.Member):
         await ctx.trigger_typing()
-        if user is None:
-            return await ctx.send("I'm sorry, can you *tag the person you have a crush on?*")
         try:
             await ctx.send(f"**{ctx.author.name}** has a crush on **{user.name}**!", file=discord.File(await self.client.crush(ctx.author.avatar_url, user.avatar_url), "crush.png"))
         except Exception as e:
@@ -248,10 +244,8 @@ class Idiotic:
 
 
     @commands.command()
-    async def snapchat(self, ctx, *, text=None):
+    async def snapchat(self, ctx, *, text):
         await ctx.trigger_typing()
-        if text is None:
-            return await ctx.send("I'm sorry, *what did you want to write on the Snapchat?*")
         try:
             await ctx.send(f"**{ctx.author.name}** sent a Snapchat!", file=discord.File(await self.client.snapchat(text), "snapchat.png"))
         except Exception as e:
@@ -269,7 +263,7 @@ class Idiotic:
 
 
     @commands.command()
-    async def cursive(self, ctx, *, text=None):
+    async def cursive(self, ctx, *, text):
         """Turn your text into cursive!"""
         try:
             await ctx.message.delete()
@@ -282,11 +276,9 @@ class Idiotic:
 
 
     @commands.command()
-    async def spank(self, ctx, user: discord.Member = None):
+    async def spank(self, ctx, user: discord.Member):
         """Spank someone. Spank someone hARD!"""
         await ctx.trigger_typing()
-        if user is None:
-            return await ctx.send("I'm sorry, can you *tag the person you wanna spank*")
         try:
             await ctx.send(f"Ouch! **{ctx.author.name}** spanked **{user.name}** hard on the ass.", file=discord.File(await self.client.super_spank(ctx.author.avatar_url, user.avatar_url), "spank.png"))
         except Exception as e:
@@ -312,7 +304,7 @@ class Idiotic:
 
     
     @commands.command()
-    async def mock(self, ctx, *, text=None):
+    async def mock(self, ctx, *, text):
         """Send someone in a MoCKinG voIcE."""
         try:
             await ctx.message.delete()
@@ -322,7 +314,7 @@ class Idiotic:
 
 
     @commands.command()
-    async def tiny(self, ctx, *, text=None):
+    async def tiny(self, ctx, *, text):
         """Send your text in ᵗᶦⁿʸ ˡᵉᵗᵗᵉʳˢ."""
         try:
             await ctx.message.delete()
@@ -331,11 +323,9 @@ class Idiotic:
         await ctx.send(await self.client.tiny(text, 'superscript'))
 
     @commands.command()
-    async def tindermatch(self, ctx, user: discord.Member = None):
+    async def tindermatch(self, ctx, user: discord.Member):
         """Match yourself with someone like Tinder!"""
         await ctx.trigger_typing()
-        if user is None:
-            return await ctx.send("I'm sorry, can you *tag the person you wanna match with?*")
         try:
             await ctx.send(f"**{ctx.author.name}** got matched with **{user.name}**.", file=discord.File(await self.client.tinder_match(ctx.author.avatar_url, user.avatar_url), "tindermatch.png"))
         except Exception as e:

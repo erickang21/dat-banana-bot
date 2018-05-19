@@ -31,7 +31,7 @@ class lol:
 
 
     @commands.command()
-    async def lolprofile(self, ctx, *, name=None):
+    async def lolprofile(self, ctx, *, name):
         '''Gets a League of Legends summoner profile.'''
         try:
             summoner = await self.client.get_summoner(query=name)
@@ -47,7 +47,7 @@ class lol:
 
 
     @commands.command(aliases=['lolcm', 'lolmastery'])
-    async def lolchampmasteries(self, ctx, *, name=None):
+    async def lolchampmasteries(self, ctx, *, name):
         '''Gets champion masteries for an LoL summoner.'''
         try:
             await ctx.trigger_typing()
@@ -121,7 +121,7 @@ class lol:
                      
 
     @commands.command()
-    async def champinfo(self, ctx, *, champion=None):
+    async def champinfo(self, ctx, *, champion):
         try:
             await ctx.trigger_typing()
             champion = champion.strip("'")
