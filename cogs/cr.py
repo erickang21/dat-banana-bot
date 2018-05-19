@@ -39,11 +39,9 @@ class CR:
     
 
     @commands.command()
-    async def crsave(self, ctx, crtag=None):
+    async def crsave(self, ctx, crtag):
         """Saves your CR tag to your account. Usage: *crsave [player tag]"""
         await ctx.trigger_typing()
-        if crtag is None:
-            return await ctx.send("Please enter a tag to save. Usage: *crsave [tag]")
         if not self.check_tag(crtag):
             return await ctx.send("That must be an invalid tag. Please use a valid tag. :x:")   
         await self.bot.db.crtags.update_one({"id": str(ctx.author.id)}, {"$set": {"tag": crtag}}, upsert=True)

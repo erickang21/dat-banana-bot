@@ -116,7 +116,7 @@ class Economy:
         
 
     @commands.command()
-    async def lottery(self, ctx, numbers: str = None):
+    async def lottery(self, ctx, numbers: str):
         '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
         x = await self.db.economy.find_one({"user": ctx.author.id})
         if x is None:
@@ -190,7 +190,7 @@ class Economy:
 
     @commands.command(alises=['steal'])
     @commands.cooldown(1, 300, BucketType.user)
-    async def rob(self, ctx, user: discord.Member = None, points: int = None):
+    async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
         try:
             points = int(points)

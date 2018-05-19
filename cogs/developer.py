@@ -120,11 +120,9 @@ class Developer:
 
 
     @commands.command()
-    async def loadcog(self, ctx, cog=None):
+    async def loadcog(self, ctx, cog):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        if cog is None:
-            await ctx.send("Please enter a cog to load it!")
         else:
             msg = await ctx.send(f"Loading cog `{cog}`... :arrows_counterclockwise:")
             try:
@@ -135,38 +133,31 @@ class Developer:
 
 
     @commands.command()
-    async def unloadcog(self, ctx, cog=None):
+    async def unloadcog(self, ctx, cog):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        if cog is None:
-            await ctx.send("Please enter a cog to unload it!")
-        else:
-            msg = await ctx.send(f"Unloading cog `{cog}`... :arrows_counterclockwise:")
-            try:
-                self.bot.unload_extension(f"cogs.{cog}")
-                await msg.edit(content="Unloaded the cog! :white_check_mark:")
-            except Exception as e:
-                await msg.edit(content=f"An error occured. Details: \n{e}")
-
+        msg = await ctx.send(f"Unloading cog `{cog}`... :arrows_counterclockwise:")
+        try:
+            self.bot.unload_extension(f"cogs.{cog}")
+            await msg.edit(content="Unloaded the cog! :white_check_mark:")
+        except Exception as e:
+            await msg.edit(content=f"An error occured. Details: \n{e}")
 
     @commands.command()
     async def reloadcog(self, ctx, cog=None):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        if cog is None:
-            await ctx.send("Please enter a cog to reload it!")
-        else:
-            msg = await ctx.send(f"Reloading cog `{cog}`... :arrows_counterclockwise:")
-            try:
-                self.bot.unload_extension(f"cogs.{cog}")
-                self.bot.load_extension(f"cogs.{cog}")
-                await msg.edit(content="Reloaded the cog! :white_check_mark:")
-            except Exception as e:
-                await msg.edit(content=f"An error occured. Details: \n{e}")
+        msg = await ctx.send(f"Reloading cog `{cog}`... :arrows_counterclockwise:")
+        try:
+            self.bot.unload_extension(f"cogs.{cog}")
+            self.bot.load_extension(f"cogs.{cog}")
+            await msg.edit(content="Reloaded the cog! :white_check_mark:")
+        except Exception as e:
+            await msg.edit(content=f"An error occured. Details: \n{e}")
 
 
     @commands.command()
-    async def source(self, ctx, command=None):
+    async def source(self, ctx, command):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         cmd = self.bot.get_command(command)
@@ -176,7 +167,7 @@ class Developer:
 
 
     @commands.command(hidden=True)
-    async def sudo(self, ctx, user: discord.Member, command=None):
+    async def sudo(self, ctx, user: discord.Member, command):
         if not self.dev_check(ctx.author.id):
             return
         ctx.author = user

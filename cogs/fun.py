@@ -77,10 +77,8 @@ class fun:
 
     
     @commands.command()
-    async def emojify(self, ctx, *, text: str = None):
+    async def emojify(self, ctx, *, text: str):
         """Turns your text into emojis!"""
-        if text is None:
-            return await ctx.send("Please enter text to emojify it!")
         try:
             await ctx.message.delete()
         except discord.Forbidden:
@@ -391,9 +389,8 @@ class fun:
         await ctx.send("Base64 Encode/Decode\nCommands: encode: Encode text\ndecode: Decode text")
 
     @base64.command()
-    async def encode(self, ctx, *, msg: str = None):
+    async def encode(self, ctx, *, msg: str):
         '''Encode base64 text'''
-        if not msg: return await ctx.send("Please provide text to encode")
         try:
             x = base64.b64encode(msg.encode("ascii")).decode("ascii")
             if len(x) > 1950: return await ctx.send("Results too long")
@@ -403,9 +400,8 @@ class fun:
             print(e)
         
     @base64.command()
-    async def decode(self, ctx, *, msg: str = None):
+    async def decode(self, ctx, *, msg: str):
         '''Decode base64 text'''
-        if not msg: return await ctx.send("Please provide text to decode")
         try:
             x = base64.b64decode(msg)
             if len(x) > 1950: return await ctx.send("Results too long")

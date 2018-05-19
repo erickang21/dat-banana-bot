@@ -285,7 +285,7 @@ class COC:
 
 
     @commands.command(aliases=['coccs', 'cocclans'])
-    async def cocclansearch(self, ctx, *, clanname=None):
+    async def cocclansearch(self, ctx, *, clanname):
         '''Search for COC clans by name.'''
         try:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Searching the COC Universe...')
