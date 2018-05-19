@@ -196,6 +196,11 @@ class Economy:
             points = int(points)
         except ValueError:
             return await ctx.send("Please enter a valid number to rob.")
+        x = await self.db.economy.find_one({"user": ctx.author.id})
+        if points <= 0:
+            return await ctx.send("Trying to rob less than 0? I think not.")
+        if points > x['points']:
+            return await ctx.send("Can't rob more than you have. ¯\_(ツ)_/¯")
         your_fate = random.randint(1, 2)
         if your_fate == 1:
             await self.add_points(ctx.author, points)
