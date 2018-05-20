@@ -238,7 +238,7 @@ class Idiotic:
     async def crush(self, ctx, user: discord.Member):
         await ctx.trigger_typing()
         try:
-            await ctx.send(f"**{ctx.author.name}** has a crush on **{user.name}**!", file=discord.File(await self.client.crush(ctx.author.avatar_url, user.avatar_url), "crush.png"))
+            await ctx.send(f"**{ctx.author.name}** has a crush on **{user.name}**!", file=discord.File(await self.client.crush(user.avatar_url, ctx.author.avatar_url), "crush.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 

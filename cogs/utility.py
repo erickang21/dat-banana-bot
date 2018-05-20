@@ -504,7 +504,7 @@ class Utility:
         em.add_field(name='Bots :robot:', value=len([x for x in ctx.guild.members if x.bot]), inline=False)
         em.add_field(name='Category Count :page_facing_up:', value=len(guild.categories), inline=False)
         em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n:loud_sound: **Voice:** {voicechannels}", inline=False)
-        em.add_field(name='AFK Channel :sleeping: ', value=f"**Channel**: {str(guild.afk_channel)}\n**Timeout:** {guild.afk_timeout / 60} minutes", inline=False)
+        em.add_field(name='AFK Channel :sleeping: ', value=f"**Channel**: {str(guild.afk_channel)}\n**Timeout:** {int(guild.afk_timeout / 60)} minutes", inline=False)
         em.add_field(name='Server Region :globe_with_meridians: ', value=str(guild.region), inline=False)
         em.add_field(name=f'Emoji Count {self.bot.get_emoji(447025741700268062)}', value=f"**Regular Emojis:** {regular_emojis}\n**Animated Emojis:** {animated_emojis}", inline=False)
         em.add_field(name='Role Count :bust_in_silhouette: ', value=str(role_length), inline=False)
