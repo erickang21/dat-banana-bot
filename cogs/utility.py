@@ -484,6 +484,17 @@ class Utility:
             3: "**(╯°□°）╯︵ ┻━┻** (Registered on Discord for longer than 10 minutes)",
             4: "**(ノಠ益ಠ)ノ彡┻━┻** (Verified phone)"
         }         
+        content_filters = {
+            0: "**None** (Don't scan any messages.)",
+            1: "**Medium** (Scan messages from members without a role.)",
+            2: "**High** (Scan messages sent by all members.)"
+        }
+        mfa_levels = {
+            0: "Does not require 2FA for members with Administrator permission.",
+            1: "Requires 2FA for members with Administrator permission."
+        }
+        regular_emojis = len([x for x in guild.emojis if not x.animated])
+        animated_emojis = len([x for x in guild.emojis if x.animated])
         em = discord.Embed(title=guild.name, colour=0x00ff00)
         em.set_thumbnail(url=guild.icon_url)
         em.add_field(name='Server ID :id:', value=str(guild.id), inline=False)
@@ -491,11 +502,15 @@ class Utility:
         em.add_field(name='Total Member Count :busts_in_silhouette:', value=str(guild.member_count), inline=False)
         em.add_field(name='Humans :family:', value=len([x for x in ctx.guild.members if not x.bot]), inline=False)
         em.add_field(name='Bots :robot:', value=len([x for x in ctx.guild.members if x.bot]), inline=False)
+        em.add_field(name='Category Count :page_facing_up:', value=len(guild.categories), inline=False)
         em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n:loud_sound: **Voice:** {voicechannels}", inline=False)
-        em.add_field(name='AFK Channel :sleeping: ', value=str(guild.afk_channel), inline=False)
+        em.add_field(name='AFK Channel :sleeping: ', value=f"**Channel**: {str(guild.afk_channel)}\n**Timeout:** {guild.afk_timeout}", inline=False)
         em.add_field(name='Server Region :globe_with_meridians: ', value=str(guild.region), inline=False)
+        em.add_field(name=f'Emoji Count {self.bot.get_emoji(447025741700268062)}', value=f"**Regular Emojis:** {regular_emojis}\n**Animated Emojis:** {animated_emojis}", inline=False)
         em.add_field(name='Role Count :bust_in_silhouette: ', value=str(role_length), inline=False)
         em.add_field(name=f'Server Verification Level {self.bot.get_emoji(430851951740321793)}', value=verification_levels[guild.verification_level], inline=False)
+        em.add_field(name=f"Explicit Content Filter", value=content_filters[guild.explicit_content_filter], inline=False)
+        em.add_field(name=f"2FA Requirement {self.bot.get_emoji(447025730249949184)}", value=mfa_levels[guild.mfa_level], inline=False)
         em.add_field(name=f'Ban Count {self.bot.get_emoji(433381603020898326)}', value=ban_count, inline=False)
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
