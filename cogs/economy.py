@@ -163,7 +163,7 @@ class Economy:
                 "And the bad luck goes SKRRRRRRA!",
                 "Guess you're part of the 99.2% that didn't make it."
             ]
-            em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
+            em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nYou lost: 100 :banana:"
             await ctx.send(embed=em)
             await self.bot.get_channel(445332002942484482).send(f"The winning numbers are: {self.lottery_numbers}")
 
