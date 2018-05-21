@@ -149,7 +149,7 @@ class Economy:
             await self.add_points(ctx.author, 10000000)
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='You are the lucky winner!')
             em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
-            return await ctx.send(embed=em)
+            await ctx.send(embed=em)
             self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
         else:
             await self.add_points(ctx.author, -100)
