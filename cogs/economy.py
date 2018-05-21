@@ -21,6 +21,7 @@ class Economy:
         with open('data/apikeys.json') as f:
             x = json.loads(f.read())
         self.dbl = x['dblapi']
+        self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
 
     async def add_points(self, user, points):
         x = await self.db.economy.find_one({"user": user.id})
@@ -127,16 +128,16 @@ class Economy:
             return await ctx.send("Please enter 3 numbers seperated by commas to guess the lottery! \nExample: *lottery 1,2,3")
         numbers = numbers.replace(' ', '')
         numbers = numbers.split(',')
-        lucky = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
+        #lucky = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
         for i in numbers:
             try:
                 int(i)
             except ValueError:
                 return await ctx.send("Please enter only numbers for the lottery!")
         lol = ""
-        for x in lucky:
+        for x in self.lottery_numbers:
             lol += f"`{x}` "
-        if numbers == lucky:
+        if numbers == self.lottery_numbers:
             responses = [
                 "Bruh. Just how...",
                 "Y'know only 0.8% people can even get to see this.",
@@ -149,6 +150,7 @@ class Economy:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='You are the lucky winner!')
             em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
             return await ctx.send(embed=em)
+            self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
         else:
             await self.add_points(ctx.author, -100)
             em = discord.Embed(color=discord.Color(value=0xf44e42))
@@ -162,7 +164,8 @@ class Economy:
                 "Guess you're part of the 99.2% that didn't make it."
             ]
             em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nThe winning numbers were: \n{lol}\n\nYou lost: 100 :banana:"
-            return await ctx.send(embed=em)
+            await ctx.send(embed=em)
+            await self.bot.get_channel(445332002942484482).send(f"The winning numbers are: {self.lottery_numbers}")
 
 
     @commands.command(aliases=['bet'])
