@@ -200,10 +200,17 @@ class Economy:
         except ValueError:
             return await ctx.send("Please enter a valid number to rob.")
         x = await self.db.economy.find_one({"user": ctx.author.id})
+        if not x:
+            return await ctx.send("You don't have an account on dat banana bot yet! Time to create one with `*openaccount`.")
+        f = await self.db.economy.find_one({"user": user.id})
+        if not f:
+            return await ctx.send("Your target doesn't have an account yet! What's there to rob? :thinking:")
         if points <= 0:
             return await ctx.send("Trying to rob less than 0? I think not.")
         if points > x['points']:
-            return await ctx.send("Can't rob more than you have. ¯\_(ツ)_/¯")
+            return await ctx.send(f"Can't rob more than you have. ¯\_(ツ)_/¯ You can rob up to **{x['points']}** :banana:.")
+        if points > f['points']:
+            return await ctx.send(f"Can't rob more than **{user.name}** has. ¯\_(ツ)_/¯ You can rob up to **{f['points']}** :banana:.")
         your_fate = random.randint(1, 2)
         if your_fate == 1:
             await self.add_points(ctx.author, points)
