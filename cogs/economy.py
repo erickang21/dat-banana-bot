@@ -23,6 +23,13 @@ class Economy:
         self.dbl = x['dblapi']
         self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
 
+    def dev_check(self, id):
+        with open('data/devs.json') as f:
+            devs = json.load(f)
+            if id in devs:
+                return True
+        return False
+
     async def add_points(self, user, points):
         x = await self.db.economy.find_one({"user": user.id})
         total = int(x['points']) + points
@@ -223,9 +230,11 @@ class Economy:
 
 
     @commands.command(aliases=['give'])
-    @commands.has_permissions(manage_guild=True)
+    #@commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
         '''Reward a good person'''
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         if not self.is_registered(user):
             return await ctx.send(f"ACK! **{str(user)}** doesn't have an account yet, so they can't get the gucci money!")
         else:
@@ -241,9 +250,11 @@ class Economy:
                 print(e)
 
     @commands.command(aliases=['remove'])
-    @commands.has_permissions(manage_guild=True)
+    #@commands.has_permissions(manage_guild=True)
     async def deduct(self, ctx, user: discord.Member, points):
         '''Fines a bad boi.'''
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         if not self.is_registered(user):
             return await ctx.send(f"ACK! **{str(user)}** doesn't have an account yet, so you can't take away money from them!")
         else:
