@@ -229,6 +229,24 @@ class Economy:
             return await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
 
 
+    @commands.command(aliases=['lb'])
+    async def leaderboard(self, ctx):
+        """Get the leaderboard for economy!"""
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title="Economy Leaderboard")
+        em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        lb = list(reversed(await self.bot.db.economy.find().sort("points").to_list(None)))
+        counter = 0
+        to_add = ""
+        for x in lb:
+            counter += 1
+            to_add += f"**#{counter}**: **{str(self.bot.get_user(x['user']))}**: **{x['points']}** :banana:"
+            if counter == 10:
+                break
+        em.description = to_add
+        await ctx.send(embed=em)
+
+
+
     @commands.command(aliases=['give'])
     #@commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
