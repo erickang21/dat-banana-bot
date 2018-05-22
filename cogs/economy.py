@@ -239,7 +239,7 @@ class Economy:
         to_add = ""
         for x in lb:
             counter += 1
-            to_add += f"**#{counter}**: **{str(self.bot.get_user(x['user']))}**: **{x['points']}** :banana:"
+            to_add += f"**#{counter}**: **{str(self.bot.get_user(x['user']))}**: **{x['points']}** :banana:\n"
             if counter == 10:
                 break
         em.description = to_add
