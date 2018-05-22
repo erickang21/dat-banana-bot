@@ -31,6 +31,26 @@ class mod:
             return await ctx.send("Lockdown command:\n*lockdown [on/off]")
 
 
+    @commands.has_permissions(ban_members=True)    
+    @commands.command(aliases=['hb'], pass_context=True)     
+    async def hackban(self, ctx, user_id: int):
+        """Bans a user outside of the server."""
+        author = ctx.message.author
+        guild = author.guild
+
+        user = guild.get_member(user_id)
+        if user is not None:
+            return await ctx.invoke(self.ban, user=user)
+
+        try:
+            await self.bot.http.ban(user_id, guild.id, 0)
+            await ctx.message.edit(content=self.bot.bot_prefix + 'Banned user: %s' % user_id)
+        except discord.NotFound:
+            await ctx.message.edit(content=self.bot.bot_prefix + 'Could not find user. '
+                               'Invalid user ID was provided.')
+        except discord.errors.Forbidden:
+            await ctx.message.edit(content=self.bot.bot_prefix + 'Could not ban user. Not enough permissions.')
+        
 
     @commands.command()
     @commands.has_permissions(manage_guild = True)
