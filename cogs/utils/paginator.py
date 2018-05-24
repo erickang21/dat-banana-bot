@@ -427,7 +427,7 @@ class HelpPaginator(Pages):
         self.embed.title = self.title
 
         if hasattr(self, '_is_bot'):
-            value ='We are currently experiencing some data loss in any saved data on the bot.\nNeed help? Our support server: https://discord.gg/wvkVknA'
+            value ='**ALL BOT DATA HAS BEEN WIPED.** This includes prefixes, welcome messages, economy, etc. A hacker has reset EVERYTHING. I apologize for this.\nNeed help? Our support server: https://discord.gg/wvkVknA'
             self.embed.add_field(name='Support', value=value, inline=False)
 
         self.embed.set_footer(text=f'Use "{self.prefix}help command" for more info on a command.')
