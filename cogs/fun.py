@@ -20,7 +20,53 @@ class fun:
             self.client = lol.get("idioticapi")
         self.giphy_key = lol.get("giphyapi")
         self.guess_number = random.randint(1, 100)
+
+
+    def get_lines(self, number):
+        number = int(number)
+        if number >= 0 and number <= 10:
+            return "||||||||||"
+        elif number >= 10 and number <= 20:
+            return "**|**||||||||"
+        elif number >= 20 and number <= 30:
+            return "**||**||||||||"
+        elif number >= 30 and number <= 40:
+            return "**|||**|||||||"
+        elif number >= 40 and number <= 50:
+            return "**||||**||||||"
+        elif number >= 50 and number <= 60:
+            return "**|||||**|||||"
+        elif number >= 60 and number <= 70:
+            return "**||||||**||||"
+        elif number >= 70 and number <= 80:
+            return "**|||||||**|||"
+        elif number >= 80 and number <= 90:
+            return "**||||||||**||"
+        elif number >= 90 and number <= 99:
+            return "**|||||||||**|"
+        elif number == 100:
+            return "**||||||||||**"
         
+        
+    @commands.command()
+    async def rate(self, ctx, Type: str, user: discord.Member):
+        """
+        Rate someone based on something.
+        
+        Available commands: 
+        *rate gay [user]
+        *rate weeb [user]
+        """
+        user = user or ctx.author
+        if Type.lower() == 'gay':
+            rating = random.randint(0, 100)
+            return await ctx.send(f"**{user.name}**'s gay level:\n{self.get_lines(rating)} **{rating}%**")
+        elif Type.lower() == 'weeb':
+            rating = random.randint(0, 100)
+            return await ctx.send(f"**{user.name}**'s weeb level:\n{self.get_lines(rating)} **{rating}%**")
+        else:
+            return await ctx.send("Invalid argument. *rate [gay/weeb] [user]")
+
 
 
     @commands.command()
