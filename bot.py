@@ -101,26 +101,24 @@ async def on_ready():
         exit() # :p
     bot.session = aiohttp.ClientSession()
     presence = [
-        "*help | May the 🍌 rule all.",
-        "*help | acccccCCCCCCCCCCCK!",
-        "*help | LoL is gucci.",
+        "*help | BOIIIIIII!",
+        "*help | 🍌 are like my life: always by my side.",
+        "*help | Live and die by the 🍌.",
         "*help | Who took my 🍌?",
-        "*help | Always 🤔ing",
-        "*help | hmmm. hmmmMM?",
-        "*help | succ. coc. ack.",
+        "*help | Fortnite succ CcCcC.",
+        "*help | ur mum a trap",
+        "*help | ur universe trans",
         "*help | LoL > Fortnite",
-        "*help | Python > JS",
+        "*help | 🍌. The stuff of life.",
         "*help | Hmm. Hmm?",
-        "*help | I am not a w33b b0t.",
+        "*help | Looking for smexy weebs? See my JS sister...",
         "*help | https://discord.gg/3Nxb7yZ (where I belong)",
         "*help | REEEEEEEEEE",
-        "*help | No one deserves ma token.",
-        "*help | League of Legends FTW",
+        "*help | gib 🍌 plox",
         f"*help | in {len(bot.guilds)} servers!",
-        "*help | and the dicc goes skrrrrrra",
-        "*help | I tell her MANS NOT HOT",
-        "*help | da wae = ded meme",
-        "*help | I belong in ALL YO SERVERS BOI"
+        "*help | skrrrrrrrrra pa pa pa pa pa.",
+        "*help | asdfasdfasdfasdf.",
+        "*help | Git Gud At Leagye."
     ]
     print('Bot is online, and ready to ROLL!')
     while True:
