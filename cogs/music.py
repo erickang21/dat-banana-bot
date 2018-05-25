@@ -117,6 +117,31 @@ class Music:
 
         # This made shit way too spammy, can't think of a good way to avoid it, rather just remove it.
 
+    def get_lines(self, number):
+        number = int(number)
+        if number >= 0 and number <= 10:
+            return "||||||||||"
+        elif number >= 10 and number <= 20:
+            return "**|**||||||||"
+        elif number >= 20 and number <= 30:
+            return "**||**||||||||"
+        elif number >= 30 and number <= 40:
+            return "**|||**|||||||"
+        elif number >= 40 and number <= 50:
+            return "**||||**||||||"
+        elif number >= 50 and number <= 60:
+            return "**|||||**|||||"
+        elif number >= 60 and number <= 70:
+            return "**||||||**||||"
+        elif number >= 70 and number <= 80:
+            return "**|||||||**|||"
+        elif number >= 80 and number <= 90:
+            return "**||||||||**||"
+        elif number >= 90 and number <= 99:
+            return "**|||||||||**|"
+        elif number == 100:
+            return "**||||||||||**"
+
 
     @commands.command()
     async def connect(self, ctx):
@@ -269,6 +294,28 @@ class Music:
             songs += f"{str(count)}: **{x.title}**\n"
         em.description = songs if song_list != [] else "No songs are currently in the queue! Just queue the :banana: song, kthx."
         await ctx.send(embed=em)
+
+
+    @commands.command()
+    async def volume(self, ctx):
+        """Change or view the current volume for playing."""
+        if not ctx.voice_client:
+            return await ctx.send("Nothing is playing! Cannot detect volume or change it.")
+        vol = ctx.voice_client.source.volume * 100
+        msg = await ctx.send(f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+        await msg.add_reaction("\U00002795")
+        await msg.add_reaction("\U00002796")
+        while ctx.voice_client.is_playing():
+            reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
+            if reaction.emoji == '➕':
+                vol = vol + 5
+                ctx.voice_client.source.volume = vol / 100
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+            elif reaction.emoji == '➖':
+                vol = vol - 5
+                ctx.voice_client.source.volume = vol / 100
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+        
 
 def setup(bot):
     bot.add_cog(Music(bot))

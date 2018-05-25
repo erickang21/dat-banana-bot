@@ -111,7 +111,7 @@ class fun:
         elif rate >= 20 and rate < 40:
             text = f"**{one}** + **{two}**\n\nQuite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
         elif rate >= 40 and rate < 60:
-            text = f"**{one}** + **{two}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(434099401397633024)}\n\nRating: **{rate}**%"
+            text = f"**{one}** + **{two}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
         elif rate >= 60 and rate < 80:
             text = f"**{one}** + **{two}**\n\nPretty gucci! {self.bot.get_emoji(445271298319319049)}\n\nRating: **{rate}**%"
         elif rate >= 80 and rate <= 100:
