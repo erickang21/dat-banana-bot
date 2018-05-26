@@ -46,6 +46,8 @@ class Utility:
             c: C
             py / python: Python
             haskell: Haskell
+            ruby: Ruby
+            lua: Lua
 
             **Some things to note:**
             -Python only supports v2.7, unfortunately.
@@ -56,7 +58,9 @@ class Utility:
             'c': 'mv main.cpp main.c && gcc -std=c11 -O2 -Wall -Wextra -pedantic main.c && ./a.out',
             'py': 'python main.cpp', # coliru has no python3
             'python': 'python main.cpp',
-            'haskell': 'runhaskell main.cpp'
+            'haskell': 'runhaskell main.cpp',
+            'ruby': 'ruby main.cpp',
+            'lua': 'lua main.cpp'
         }
         try:
             lang = cmds[language]
