@@ -40,7 +40,7 @@ class Info:
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
-        em.add_field(name='Version', value='7.0.1')
+        em.add_field(name='Version', value='7.0.2')
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py {self.bot.get_emoji(418934774623764491)}') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
@@ -58,32 +58,20 @@ class Info:
     @commands.command(aliases=['updates'])
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='v7.0.1 is READY TO ROLL!')
+        em = discord.Embed(color=discord.Color(
+            value=0x00ff00), title='v7.0.2 is right there.')
         em.description = textwrap.dedent("""
-        -Completely revamped serverinfo with a load of new features, cuz that's what I'm for.
-        
-        -Mod logs now show deleted pictures, in case a ~~dirty pic~~ got deleted and you needed a reason to ban that person.
-        
-        -Userinfo now shows the user's playing status if there is one. Ez way to see if someone has a life or not.
-        
-        -Did your brain get a memory leak that caused you to forget your custom prefix? Ez, the bot mention now works as prefix too. @dat banana bot#0170 help!
-        
-        -Need to replicate the American elections? Use the *poll command to easily create a poll.
-        *poll What is the question?|This is|Nothing is
-        
-        -Need to show off your coding skills but eval ain't for everyone? Use coliru to safely evaluate code!
-        
-        -Who's the **<3**'ers? Find out with the *ship command! 
-        
-        -**Finally patched the economy system, with gucci stuff to go!**
-         -> Get ready to be addicted with the gamble command! Win it or loZE it!
-        
-        -**Starboard got a massive buff today!** The message will now edit if more/less stars are added to it. Good for your server members to see the popularity points instead of the bot sending 20 messages with the same message.
+        Completely fixed the music queue! Everything is all gucci.
 
-        **FIXED BUGS**   
-        -Fixed serverinfo so it will send even if bot doesn't have Ban Members permission.
-    
-        -Counters for COC/CR tags, starboard, modlogs etc in the *stats would show 0 because I screwed something up.
+        -> ~~Music queue didn't work.~~ Music queue works :D
+        -> Added a *queue command to see where your party at.
+        -> Rob people with the *rob command!
+        -> Serverinfo got a huge buff again. All hail `dir(ctx.guild)`
+        -> Guess random numbers! *guess 9001!
+        -> Lottery command doesn't reset numbers until you get it right. Increasing the probability :smirk: 
+        -> Removed timer. Could be spammed to blow up the memory in North Korea-style.
+        -> Rate people. With a rate command.
+        -> A joke can't stay funny, so I changed the list of bot random presences.
 
         """)
         await ctx.send(embed=em)

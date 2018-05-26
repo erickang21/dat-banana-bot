@@ -71,6 +71,7 @@ class CR:
                 return await ctx.send(embed=em)
             color = discord.Color(value=0xf1f442)
             em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
+            em.description = "Guess who else has CR stats? Our partner bot, [Statsy](https://bot.discord.io/statsy)"
             em.add_field(name='Trophies', value=f"{profile.trophies} {self.emoji('trophy')}")
             em.add_field(name='Personal Best', value=f"{profile.stats.maxTrophies} {self.emoji('trophy')}")
             em.add_field(name='XP Level', value=f"{profile.stats.level} {self.emoji('xplevel')}")
