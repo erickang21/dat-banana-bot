@@ -25,6 +25,14 @@ class COC:
         return x['tag'] if x is not None else None
 
 
+    def emoji(self, name):
+        with open('data/emojis.json') as f:
+            lol = json.loads(f.read())
+        e = lol[name]
+        emo = self.bot.get_emoji(int(e))
+        return emo if emo is not None else None
+
+
 
     @commands.command()
     async def cocsave(self, ctx, coctag):
@@ -52,7 +60,7 @@ class COC:
         resp = await resp.json()
         color = discord.Color(value=0xe5f442)
         em = discord.Embed(color=color, title=f"{resp['name']}, {resp['tag']}")
-        em.add_field(name="Home Base", value="-", inline=False)
+        em.add_field(name="Home Base", value=self.emoji(f"th{resp['townHallLevel']}"), inline=False)
         em.add_field(name='XP Level', value=resp['expLevel'])
         em.add_field(name='Trophies', value=resp['trophies'])
         try:
@@ -71,7 +79,7 @@ class COC:
             em.set_thumbnail(url=resp['league']['iconUrls']['medium'])
         except KeyError:
             em.set_thumbnail(url='http://clash-wiki.com/images/progress/leagues/no_league.png')
-        em.add_field(name="Builder Base", value="-", inline=False)
+        em.add_field(name="Builder Base", value=self.emoji(f"bh{resp['builderHallLevel']}"), inline=False)
         try:
             em.add_field(name='Builder Hall', value=resp['builderHallLevel'])
             em.add_field(name='Trophies', value=resp['versusTrophies'])
