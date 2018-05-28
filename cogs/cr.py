@@ -142,7 +142,7 @@ class CR:
             em.description = f"{e.code}: {e.error}"
             return await ctx.send(embed=em)
         color = discord.Color(value=0xf1f442)
-        em = discord.Embed(color=color, title=f'{clan.name}')
+        em = discord.Embed(color=color, title=f'{clan.name} ({clan.tag})')
         em.description = f'{clan.description}'
         em.add_field(name='Clan Trophies', value=f'{clan.score}')
         em.add_field(name='Members', value=f'{clan.memberCount}/50')
@@ -187,9 +187,8 @@ class CR:
                 war = f"Collection Day {self.emoji('deck')}"
         em.add_field(name="Clan War Status", value=war)
         em.add_field(name='Trophy Requirement', value=f'{clan.requiredScore}')
-        em.set_author(name=f'#{clan.tag}')
         em.set_thumbnail(url=f'{clan.badge.image}')
-        em.set_footer(text='cr-api.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+        em.set_footer(text='royaleapi.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         await ctx.send(embed=em)
 
 
