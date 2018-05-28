@@ -176,6 +176,7 @@ class Economy:
 
 
     @commands.command(aliases=['bet'])
+    @commands.cooldown(1, 300, BucketType.user)
     async def gamble(self, ctx, amount):
         """Choose an amount. Will you win it or will you lose it?"""
         x = await self.db.economy.find_one({"user": ctx.author.id})
