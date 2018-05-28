@@ -180,10 +180,11 @@ class CR:
         #     em.add_field(name='Clan Chest Tier', value=f'{tier}')
         if not clan.war:
             war = "Not in Progress"
-        if clan.war.state == "warDay":
-            war = "War Day :crossed_swords:"
-        elif clan.war.state == "collectionDay":
-            war = f"Collection Day {self.emoji('deck')}"
+        else:
+            if clan.war.state == "warDay":
+                war = "War Day :crossed_swords:"
+            elif clan.war.state == "collectionDay":
+                war = f"Collection Day {self.emoji('deck')}"
         em.add_field(name="Clan War Status", value=war)
         em.add_field(name='Trophy Requirement', value=f'{clan.requiredScore}')
         em.set_author(name=f'#{clan.tag}')
