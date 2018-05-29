@@ -227,7 +227,7 @@ class Music:
                         await asyncio.sleep(15)
                         await msg.edit(embed=em)    
             except discord.Forbidden:
-                return await ctx.send("I can't remove your reactions! Ouch.")
+                await ctx.send("I can't remove your reactions! Ouch.")
             # except Exception as e:
             #     return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
 
@@ -310,10 +310,18 @@ class Music:
             if reaction.emoji == '➕':
                 vol = vol + 5
                 ctx.voice_client.source.volume = vol / 100
+                try:
+                    await msg.remove_reaction("\U00002795", ctx.author)
+                except discord.Forbidden:
+                    await ctx.send("I can't remove your reactions! Ouch.")
                 await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
             elif reaction.emoji == '➖':
                 vol = vol - 5
                 ctx.voice_client.source.volume = vol / 100
+                try:
+                    await msg.remove_reaction("\U00002796", ctx.author)
+                except discord.Forbidden:
+                    await ctx.send("I can't remove your reactions! Ouch.")
                 await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
         
 
