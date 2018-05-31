@@ -12,6 +12,7 @@ import random
 import textwrap
 import wikipedia
 import urllib.parse
+import openweathermapy.core as weather
 from pygoogling.googling import GoogleSearch
 from discord.ext import commands
 from .utils.paginator import Pages
@@ -19,8 +20,11 @@ from .utils.paginator import Pages
 
 class Utility:
     def __init__(self, bot):
-       self.bot = bot
-       self.session = self.bot.session
+        self.bot = bot
+        self.session = self.bot.session
+        with open("data/apikeys.json") as f:
+           x = json.load(f)
+        self.weather_api = x['weatherapi']
 
 
     def cleanup_code(self, content):
@@ -33,8 +37,8 @@ class Utility:
     
     @commands.command()
     async def weather(self, ctx, *, city: str):
-        """Get the weather for a select city"""
-        settings = {"APPID": 'YOUR openweathermap.org api key here'}
+        """Get the weather for a select city."""
+        settings = {"APPID": self.weather_api}
         data = weather.get_current('{}'.format(city), units='metric', **settings)
         data2 = weather.get_current(city, units='standard', **settings)
         keys = ['main.temp', 'main.humidity', 'coord.lon', 'coord.lat']
