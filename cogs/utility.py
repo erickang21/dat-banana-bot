@@ -503,7 +503,7 @@ class Utility:
         
               
     @commands.command()
-    async def serverinfo(self, ctx, guild_name = None):
+    async def serverinfo(self, ctx, *, guild_name = None):
         """Are you a nerd? Here's some server info."""
         guild = None
         if not guild_name:
