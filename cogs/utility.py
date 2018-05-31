@@ -506,7 +506,7 @@ class Utility:
     async def serverinfo(self, ctx, guild_name = None):
         """Are you a nerd? Here's some server info."""
         guild = None
-        if guild_name == None:
+        if not guild_name:
             guild = ctx.guild
         else:
             for g in self.bot.guilds:
@@ -516,8 +516,8 @@ class Utility:
                 if str(g.id) == str(guild_name):
                     guild = g
                     break
-        if guild == None:
-            await ctx.send("I couldn't find that guild...")
+        if not guild:
+            await ctx.send("Oof. I couldn't find that guild...\nThe bot can only search from the servers it is in.")
             return
         roles = [x.name for x in guild.roles]
         role_length = len(roles)
