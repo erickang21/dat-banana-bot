@@ -598,8 +598,8 @@ class Utility:
         em.add_field(name=f"Explicit Content Filter", value=content_filters[guild.explicit_content_filter], inline=False)
         em.add_field(name=f"2FA Requirement {self.bot.get_emoji(430847624653045761)}", value=mfa_levels[guild.mfa_level], inline=False)
         em.add_field(name=f'Ban Count {self.bot.get_emoji(433381603020898326)}', value=ban_count, inline=False)
-        em.add_field(name="Regular Emojis", value=regular_emoji_list, inline=False)
-        em.add_field(name="animated Emojis", value=animated_emoji_list, inline=False)
+        # em.add_field(name="Regular Emojis", value=regular_emoji_list, inline=False)
+        # em.add_field(name="animated Emojis", value=animated_emoji_list, inline=False)
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
               
