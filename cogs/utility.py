@@ -490,14 +490,21 @@ class Utility:
         """Dig out that user info. Usage: *userinfo [tag user]"""
         if user is None:
             user = ctx.author
+        join_time = str(ctx.author.joined_at.strftime("%b %m, %Y, %A, %I:%M %p"))
         color = discord.Color(value=0xf2f760)
-        em = discord.Embed(color=color, title=f'User Info: {user.name}')
+        em = discord.Embed(color=color, title=f'User Info: {str(user)}')
+        em.add_field(name="User Stats", value="-", inline=False)
         em.add_field(name='Status', value=f'{user.status}')       
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
         em.add_field(name='ID', value=f'{user.id}')
         Type = 'Bot' if user.bot else 'Human'
         em.add_field(name='Profile Type', value=Type)
         em.add_field(name='Currently Playing', value=user.activity if user.activity else 'None')
+        em.add_field(name="User Stats in Server", value=user.guild.name, inline=False)
+        em.add_field(name="Total Roles", value=len(ctx.author.roles))
+        em.add_field(name="Top Role", value=user.top_role)
+        em.add_field(name="Nickname", value=user.nick or "No Nickname")
+        em.add_field(name="Join Time", value=join_time)
         em.set_thumbnail(url=user.avatar_url)
         await ctx.send(embed=em)  
         
