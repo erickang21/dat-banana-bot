@@ -503,9 +503,22 @@ class Utility:
         
               
     @commands.command()
-    async def serverinfo(self, ctx):
+    async def serverinfo(self, ctx, guild_name = None):
         """Are you a nerd? Here's some server info."""
-        guild = ctx.guild
+        guild = None
+        if guild_name == None:
+            guild = ctx.guild
+        else:
+            for g in self.bot.guilds:
+                if g.name.lower() == guild_name.lower():
+                    guild = g
+                    break
+                if str(g.id) == str(guild_name):
+                    guild = g
+                    break
+        if guild == None:
+            await ctx.send("I couldn't find that guild...")
+            return
         roles = [x.name for x in guild.roles]
         role_length = len(roles)
         roles = ', '.join(roles)
