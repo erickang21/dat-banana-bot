@@ -597,6 +597,10 @@ class Utility:
         em.add_field(name=f"Explicit Content Filter", value=content_filters[guild.explicit_content_filter], inline=False)
         em.add_field(name=f"2FA Requirement {self.bot.get_emoji(430847624653045761)}", value=mfa_levels[guild.mfa_level], inline=False)
         em.add_field(name=f'Ban Count {self.bot.get_emoji(433381603020898326)}', value=ban_count, inline=False)
+        check_item = { "ID" : guild.id, "Population" : len(guild.members) }
+        total = len(popList)
+        position = popList.index(check_item) + 1
+        em.add_field(name="Population Rank", value="{:,} of {:,}".format(position, total), inline=False)
         emojitext = ""
         emojicount = 0
         for emoji in guild.emojis:
@@ -612,7 +616,7 @@ class Utility:
                     ename = "Emojis ({:,} total)".format(len(guild.emojis))
                 else:
                     ename = "Emojis (Continued)"
-                em.add_field(name=ename, value=emojitext, inline=True)
+                em.add_field(name=ename, value=emojitext, inline=False)
                 emojitext=emojiMention
             else:
                 emojitext = emojitext + emojiMention
@@ -622,7 +626,7 @@ class Utility:
                 emojiname = "Emojis ({} total)".format(len(guild.emojis))
             else:
                 emojiname = "Emojis (Continued)"
-            em.add_field(name=emojiname, value=emojitext, inline=True)
+            em.add_field(name=emojiname, value=emojitext, inline=False)
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
               
