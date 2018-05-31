@@ -490,14 +490,21 @@ class Utility:
         """Dig out that user info. Usage: *userinfo [tag user]"""
         if user is None:
             user = ctx.author
+        join_time = str(ctx.author.joined_at.strftime("%b %m, %Y, %A, %I:%M %p"))
         color = discord.Color(value=0xf2f760)
-        em = discord.Embed(color=color, title=f'User Info: {user.name}')
+        em = discord.Embed(color=color, title=f'User Info: {str(user)}')
+        em.add_field(name="User Stats", value="-", inline=False)
         em.add_field(name='Status', value=f'{user.status}')       
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
         em.add_field(name='ID', value=f'{user.id}')
         Type = 'Bot' if user.bot else 'Human'
         em.add_field(name='Profile Type', value=Type)
-        em.add_field(name='Currently Playing', value=user.activity if user.activity else 'None')
+        em.add_field(name='Currently Playing', value=str(user.activity) or 'Not playing anything!')
+        em.add_field(name="User Stats in Server", value=user.guild.name, inline=False)
+        em.add_field(name="Total Roles", value=len(ctx.author.roles))
+        em.add_field(name="Top Role", value=user.top_role)
+        em.add_field(name="Nickname", value=user.nick or "No Nickname")
+        em.add_field(name="Join Time", value=join_time)
         em.set_thumbnail(url=user.avatar_url)
         await ctx.send(embed=em)  
         
@@ -547,13 +554,36 @@ class Utility:
         }
         regular_emojis = len([x for x in guild.emojis if not x.animated])
         animated_emojis = len([x for x in guild.emojis if x.animated])
-        em = discord.Embed(title=guild.name, colour=0x00ff00)
+        online_members = 0
+        bot_member     = 0
+        bot_online     = 0
+        for member in guild.members:
+            if member.bot:
+                bot_member += 1
+                if not member.status == discord.Status.offline:
+                        bot_online += 1
+                continue
+            if not member.status == discord.Status.offline:
+                online_members += 1
+        # bot_percent = "{:,g}%".format((bot_member/len(guild.members))*100)
+        user_string = "{:,}/{:,} online ({:,g}%)".format(
+            online_members,
+            len(guild.members) - bot_member,
+            round((online_members/(len(guild.members) - bot_member) * 100), 2)
+        )
+        b_string = "bot" if bot_member == 1 else "bots"
+        user_string += "\n{:,}/{:,} {} online ({:,g}%)".format(
+            bot_online,
+            bot_member,
+            b_string,
+            round((bot_online/bot_member)*100, 2)
+        )
+        
+        em = discord.Embed(title=guild.name, colour = ctx.author.color)
         em.set_thumbnail(url=guild.icon_url)
         em.add_field(name='Server ID :id:', value=str(guild.id), inline=False)
         em.add_field(name=f'Owner {self.bot.get_emoji(430340802879946773)}', value=str(guild.owner), inline=False)
-        em.add_field(name='Total Member Count :busts_in_silhouette:', value=str(guild.member_count), inline=False)
-        em.add_field(name='Humans :family:', value=len([x for x in ctx.guild.members if not x.bot]), inline=False)
-        em.add_field(name='Bots :robot:', value=len([x for x in ctx.guild.members if x.bot]), inline=False)
+        em.add_field(name='Members ({;,} total)'.format(len(guild.members)), value=user_string)
         em.add_field(name='Category Count :page_facing_up:', value=len(guild.categories), inline=False)
         em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n:loud_sound: **Voice:** {voicechannels}", inline=False)
         em.add_field(name='AFK Channel :sleeping: ', value=f"**Channel**: {str(guild.afk_channel)}\n**Timeout:** {int(guild.afk_timeout / 60)} minutes", inline=False)
