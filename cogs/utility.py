@@ -554,13 +554,36 @@ class Utility:
         }
         regular_emojis = len([x for x in guild.emojis if not x.animated])
         animated_emojis = len([x for x in guild.emojis if x.animated])
-        em = discord.Embed(title=guild.name, colour=0x00ff00)
+        online_members = 0
+        bot_member     = 0
+        bot_online     = 0
+        for member in guild.members:
+            if member.bot:
+                bot_member += 1
+                if not member.status == discord.Status.offline:
+                        bot_online += 1
+                continue
+            if not member.status == discord.Status.offline:
+                online_members += 1
+        # bot_percent = "{:,g}%".format((bot_member/len(guild.members))*100)
+        user_string = "{:,}/{:,} online ({:,g}%)".format(
+            online_members,
+            len(guild.members) - bot_member,
+            round((online_members/(len(guild.members) - bot_member) * 100), 2)
+        )
+        b_string = "bot" if bot_member == 1 else "bots"
+        user_string += "\n{:,}/{:,} {} online ({:,g}%)".format(
+            bot_online,
+            bot_member,
+            b_string,
+            round((bot_online/bot_member)*100, 2)
+        )
+        
+        em = discord.Embed(title=guild.name, colour = ctx.author.color)
         em.set_thumbnail(url=guild.icon_url)
         em.add_field(name='Server ID :id:', value=str(guild.id), inline=False)
         em.add_field(name=f'Owner {self.bot.get_emoji(430340802879946773)}', value=str(guild.owner), inline=False)
-        em.add_field(name='Total Member Count :busts_in_silhouette:', value=str(guild.member_count), inline=False)
-        em.add_field(name='Humans :family:', value=len([x for x in guild.members if not x.bot]), inline=False)
-        em.add_field(name='Bots :robot:', value=len([x for x in guild.members if x.bot]), inline=False)
+        em.add_field(name='Members ({;,} total)'.format(len(guild.members)), value=user_string)
         em.add_field(name='Category Count :page_facing_up:', value=len(guild.categories), inline=False)
         em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n:loud_sound: **Voice:** {voicechannels}", inline=False)
         em.add_field(name='AFK Channel :sleeping: ', value=f"**Channel**: {str(guild.afk_channel)}\n**Timeout:** {int(guild.afk_timeout / 60)} minutes", inline=False)
