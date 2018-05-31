@@ -12,6 +12,7 @@ import random
 import textwrap
 import wikipedia
 import urllib.parse
+import json
 import openweathermapy.core as weather
 from pygoogling.googling import GoogleSearch
 from discord.ext import commands
