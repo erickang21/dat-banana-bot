@@ -55,11 +55,12 @@ class Utility:
         high2 = high * 9/5 + 32
         low2 = low * 9/5 + 32
         embed = discord.Embed(title='{}, {}'.format(loc, country), color=ctx.author.color)
-        embed.add_field(name='Absolute Location', value='Longitude, Latitude\n{}, {}'.format(lon, lat))
-        embed.add_field(name='Temperature', value='{}F, {}C'.format(temp2, temp))
-        embed.add_field(name='Humidity', value='{}%'.format(data('main.humidity')))
-        embed.add_field(name='Wind Speed', value='{}m/s'.format(data('wind.speed')))       
-        embed.add_field(name='Low and High Temp', value='{}F - {}F\n{}C - {}C'.format(low2, high2, low, high))
+        embed.add_field(name='Absolute Location :map:', value='Longitude, Latitude\n{}, {}'.format(lon, lat))
+        embed.add_field(name='Temperature :thermometer:', value='{}F, {}C'.format(temp2, temp))
+        embed.add_field(name='Humidity :potable_water:', value='{}%'.format(data('main.humidity')))
+        embed.add_field(name='Wind Speed :wind_blowing_face: ', value='{}m/s'.format(data('wind.speed')))       
+        embed.add_field(name='Lowest Temperature :low_brightness: ', value='**{}**F - \n**{}**C'.format(low2, low))
+        embed.add_field(name='Highest Temperature :high_brightness: ', value='**{}**F\n**{}**C'.format(high2, high))
         embed.set_footer(text='Weather Data from OpenWeatherMap.org')
         embed.set_thumbnail(url='https://cdn2.iconfinder.com/data/icons/weather-icons-8/512/day-clear-256.png')
         await ctx.send(embed=embed)
