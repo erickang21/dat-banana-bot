@@ -597,6 +597,32 @@ class Utility:
         em.add_field(name=f"Explicit Content Filter", value=content_filters[guild.explicit_content_filter], inline=False)
         em.add_field(name=f"2FA Requirement {self.bot.get_emoji(430847624653045761)}", value=mfa_levels[guild.mfa_level], inline=False)
         em.add_field(name=f'Ban Count {self.bot.get_emoji(433381603020898326)}', value=ban_count, inline=False)
+        emojitext = ""
+        emojicount = 0
+        for emoji in guild.emojis:
+            if emoji.animated:
+                emojiMention = "<a:"+emoji.name+":"+str(emoji.id)+">"
+            else:
+                emojiMention = "<:"+emoji.name+":"+str(emoji.id)+">"
+            test = emojitext + emojiMention
+            if len(test) > 1024:
+                # TOOO BIIIIIIIIG
+                emojicount += 1
+                if emojicount == 1:
+                    ename = "Emojis ({:,} total)".format(len(guild.emojis))
+                else:
+                    ename = "Emojis (Continued)"
+                em.add_field(name=ename, value=emojitext, inline=True)
+                emojitext=emojiMention
+            else:
+                emojitext = emojitext + emojiMention
+
+        if len(emojitext):
+            if emojicount == 0:
+                emojiname = "Emojis ({} total)".format(len(guild.emojis))
+            else:
+                emojiname = "Emojis (Continued)"
+            em.add_field(name=emojiname, value=emojitext, inline=True)
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
               
