@@ -578,7 +578,8 @@ class Utility:
         #     b_string,
         #     round((bot_online/bot_member)*100, 2)
         # )
-        
+        regular_emoji_list = " ".join(str(self.bot.get_emoji(x.id)) for x in guild.emojis if not x.animated)
+        animated_emoji_list = " ".join(str(self.bot.get_emoji(x.id)) for x in guild.emojis if x.animated)
         em = discord.Embed(title=guild.name, colour = ctx.author.color)
         em.set_thumbnail(url=guild.icon_url)
         em.add_field(name='Server ID :id:', value=str(guild.id), inline=False)
@@ -597,6 +598,8 @@ class Utility:
         em.add_field(name=f"Explicit Content Filter", value=content_filters[guild.explicit_content_filter], inline=False)
         em.add_field(name=f"2FA Requirement {self.bot.get_emoji(430847624653045761)}", value=mfa_levels[guild.mfa_level], inline=False)
         em.add_field(name=f'Ban Count {self.bot.get_emoji(433381603020898326)}', value=ban_count, inline=False)
+        em.add_field(name="Regular Emojis", value=regular_emoji_list, inline=False)
+        em.add_field(name="animated Emojis", value=animated_emoji_list, inline=False)
         em.set_footer(text='Created - %s' % time)        
         await ctx.send(embed=em)
               
