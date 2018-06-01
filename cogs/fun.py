@@ -59,14 +59,14 @@ class fun:
             "key": self.cleverbot_key,
             "nick": ctx.author.name,
         }
-        await self.bot.session.post("https://cleverbot.io/1.0/create", params=instance_params)
+        await self.bot.session.post("https://cleverbot.io/1.0/create", data=instance_params)
         params = {
             "user": self.cleverbot_user,
             "key": self.cleverbot_key,
             "nick": ctx.author.name,
             "text": text
         }
-        resp = await self.bot.session.post("https://cleverbot.io/1.0/ask", params=params)
+        resp = await self.bot.session.post("https://cleverbot.io/1.0/ask", data=params)
         resp = await resp.json()
         if resp['status'] != "success":
             return await ctx.send(f"An error occurred with Cleverbot.io. More details:\n{resp['status']} ")
