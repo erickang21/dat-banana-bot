@@ -19,6 +19,8 @@ class fun:
             lol = json.load(f)
             self.client = lol.get("idioticapi")
         self.giphy_key = lol.get("giphyapi")
+        self.cleverbot_user = lol.get("cleverbot_user")
+        self.cleverbot_key = lol,get("cleverbot_key")
         self.guess_number = random.randint(1, 100)
 
 
@@ -46,7 +48,24 @@ class fun:
             return "**|||||||||**|"
         elif number == 100:
             return "**||||||||||**"
-        
+
+
+    @commands.command()
+    async def cleverbot(self, ctx, *, text):
+        """Speak to Cleverbot. A chat bot."""
+        params = {
+            "user": self.cleverbot_user,
+            "key": self.cleverbot_key,
+            "nick": ctx.author.name,
+            "text": text
+        }
+        resp = await self.bot.session.post("https://cleverbot.io/1.0/ask", params=params)
+        resp = await resp.json()
+        em = discord.Embed(color=ctx.author.color)
+        em.set_author(name="CleverBot", icon_url="https://herokuis.a-bad.host/nzJUsqTSY.png")
+        em.description = resp['response']
+        await ctx.send(embed=em)
+
         
     @commands.command()
     async def rate(self, ctx, Type: str, user: discord.Member):

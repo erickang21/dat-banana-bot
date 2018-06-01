@@ -60,6 +60,7 @@ bot.load_extension("cogs.economy")
 bot.load_extension("cogs.dbl")
 bot.load_extension("cogs.music")
 bot.load_extension("cogs.idiotic")
+bot.load_extension("cogs.nsfw")
 
 def cleanup_code(content):
     # remove ```py\n```
