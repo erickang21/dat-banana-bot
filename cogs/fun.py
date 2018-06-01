@@ -59,7 +59,7 @@ class fun:
             "key": self.cleverbot_key,
             "nick": ctx.author.name,
         }
-        await self.bot.session.post("https://cleverbot.io/1.0/create", params=params)
+        await self.bot.session.post("https://cleverbot.io/1.0/create", params=instance_params)
         params = {
             "user": self.cleverbot_user,
             "key": self.cleverbot_key,
