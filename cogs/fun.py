@@ -61,6 +61,8 @@ class fun:
         }
         resp = await self.bot.session.post("https://cleverbot.io/1.0/ask", params=params)
         resp = await resp.json()
+        if resp['status'] != "success":
+            return await ctx.send(f"An error occurred with Cleverbot.io. More details:\n{resp['status']} ")
         em = discord.Embed(color=ctx.author.color)
         em.set_author(name="CleverBot", icon_url="https://herokuis.a-bad.host/nzJUsqTSY.png")
         em.description = resp['response']
