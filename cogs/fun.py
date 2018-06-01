@@ -54,6 +54,9 @@ class fun:
     @commands.command()
     async def cleverbot(self, ctx, *, text):
         """Speak to Cleverbot. A chat bot."""
+        em = discord.Embed(color=discord.Color(value=0xe5f442), title="Please Wait...")
+        em.description = f"{self.bot.get_emoji(452194264953258014)} CleverBot is typing..."
+        msg = await ctx.send(embed=em)
         instance_params = {
             "user": self.cleverbot_user,
             "key": self.cleverbot_key,
@@ -73,7 +76,7 @@ class fun:
         em = discord.Embed(color=ctx.author.color)
         em.set_author(name="CleverBot", icon_url="https://herokuis.a-bad.host/nzJUsqTSY.png")
         em.description = resp['response']
-        await ctx.send(embed=em)
+        await msg.edit(embed=em)
 
         
     @commands.command()
