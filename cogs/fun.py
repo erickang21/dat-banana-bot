@@ -24,6 +24,7 @@ class fun:
         self.guess_number = random.randint(1, 100)
 
 
+
     def get_lines(self, number):
         number = int(number)
         if number >= 0 and number <= 10:
@@ -53,6 +54,12 @@ class fun:
     @commands.command()
     async def cleverbot(self, ctx, *, text):
         """Speak to Cleverbot. A chat bot."""
+        instance_params = {
+            "user": self.cleverbot_user,
+            "key": self.cleverbot_key,
+            "nick": ctx.author.name,
+        }
+        await self.bot.session.post("https://cleverbot.io/1.0/create", params=params)
         params = {
             "user": self.cleverbot_user,
             "key": self.cleverbot_key,

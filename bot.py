@@ -62,6 +62,8 @@ bot.load_extension("cogs.music")
 bot.load_extension("cogs.idiotic")
 bot.load_extension("cogs.nsfw")
 
+
+
 def cleanup_code(content):
     # remove ```py\n```
     if content.startswith('```') and content.endswith('```'):
