@@ -19,7 +19,7 @@ class Info:
     @commands.command(aliases=['info', 'botinfo'])
     async def stats(self, ctx):
         """Statsies for this bot. Be a nerd!"""       
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color(value=ctx.author.color)
         RAM = psutil.virtual_memory()
         used = RAM.used >> 20
         percent = RAM.percent
@@ -58,8 +58,7 @@ class Info:
     @commands.command(aliases=['updates'])
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
-        em = discord.Embed(color=discord.Color(
-            value=0x00ff00), title='v7.0.2 is right there.')
+        em = discord.Embed(color=ctx.author.color, title='v7.0.2 is right there.')
         em.description = textwrap.dedent("""
         Completely fixed the music queue! Everything is all gucci.
 
