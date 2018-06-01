@@ -20,7 +20,7 @@ class fun:
             self.client = lol.get("idioticapi")
         self.giphy_key = lol.get("giphyapi")
         self.cleverbot_user = lol.get("cleverbot_user")
-        self.cleverbot_key = lol,get("cleverbot_key")
+        self.cleverbot_key = lol.get("cleverbot_key")
         self.guess_number = random.randint(1, 100)
 
 
