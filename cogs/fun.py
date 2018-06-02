@@ -186,7 +186,41 @@ class fun:
             return await ctx.send("Emoji is too large to fit in a message!")
         await ctx.send(to_send)
         
+    @commands.command(aliases=['re'])
+    async def randomemoji(self, ctx):
+        """Get a :banana: emote from my :banana: servers"""
+        try:
+            await ctx.send(str(random.choice([emoji for emoji in ctx.bot.emojis if emoji.require_colons])))
+        except ValueError:
+            await ctx.send('00F! s0m3thin5 w3nt wr0n5!')
+     
+    @commands.command()
+    async def star(self, ctx, *, msg):
+        """Git dat star"""
+        if (len(msg) > 25):
+            return await ctx.send("String must be less than 26 characters")
+        elif (len(msg) == 0):
+            return await ctx.send("String must be at least 1 character")
 
+        str = '```\n'
+
+        mid = len(msg) - 1
+
+        for i in range(len(msg) * 2 - 1):
+            if (mid == i):
+                str += msg[::-1] + msg[1:] + "\n"
+            else:
+                let = abs(mid - i)
+                str += " " * (mid - let)
+                str += msg[let]
+                str += " " * (let - 1)
+                str += msg[let]
+                str += " " * (let - 1)
+                str += msg[let]
+                str += "\n"
+
+        str += "```"
+        await ctx.send(str)
 
     @commands.command()
     async def gif(self, ctx):
