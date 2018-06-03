@@ -40,7 +40,7 @@ class Info:
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
-        em.add_field(name='Version', value='7.0.2')
+        em.add_field(name='Version', value='7.0.3')
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py {self.bot.get_emoji(418934774623764491)}') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
@@ -59,19 +59,20 @@ class Info:
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
         em = discord.Embed(color=discord.Color(
-            value=0x00ff00), title='v7.0.2 is right there.')
+            value=0x00ff00), title='v7.0.3 > Fortnite')
         em.description = textwrap.dedent("""
-        Completely fixed the music queue! Everything is all gucci.
+        __**BIG STUFF**__
+        -> :warning: Added NSFW commands. :warning: 
+        -> CleverBot.io has been implemented! Have a siri-like thing on the bot! Talk to it today...
+        -> Music loads a LOT faster and takes up less memory because of streaming!
+        -> A **massive** buff to cocprofile. Sends in one neat message with emojis!
 
-        -> ~~Music queue didn't work.~~ Music queue works :D
-        -> Added a *queue command to see where your party at.
-        -> Rob people with the *rob command!
-        -> Serverinfo got a huge buff again. All hail `dir(ctx.guild)`
-        -> Guess random numbers! *guess 9001!
-        -> Lottery command doesn't reset numbers until you get it right. Increasing the probability :smirk: 
-        -> Removed timer. Could be spammed to blow up the memory in North Korea-style.
-        -> Rate people. With a rate command.
-        -> A joke can't stay funny, so I changed the list of bot random presences.
+        __**Little-r Things**__
+        -> Added Ruby and Lua to coliru languages. That's for you, TNT.
+        -> No more gambling super lightning fast. 5 minute cooldown to it.
+        -> Fixed a bug where: When the bot tries to remove music reactions but lacks permissions, the entire thing cuts off and stops.
+        -> Buffed serverinfo a lot. You can now search the server info of other servers just by adding the name after the command! It can only see the servers that the bot is in, unfortunately.
+        -> Buffed userinfo, now with server-specific stats for that user.
 
         """)
         await ctx.send(embed=em)
