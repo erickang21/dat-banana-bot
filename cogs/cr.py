@@ -31,8 +31,8 @@ class CR:
         with open('data/emojis.json') as f:
             lol = json.loads(f.read())
         e = lol[name]
-        emo = self.bot.get_emoji(int(e))
-        return emo or self.bot.get_emoji(407318200737595392)
+        emo = str(self.bot.get_emoji(int(e)))
+        return emo or str(self.bot.get_emoji(407318200737595392))
 
 
     async def get_tag(self, id):
