@@ -30,9 +30,12 @@ class CR:
     def emoji(self, name):
         with open('data/emojis.json') as f:
             lol = json.loads(f.read())
-        e = lol[name]
+        try:
+            e = lol[name]
+        except KeyError:
+            default = self.bot.get_emoji(407318200737595392)
         emo = str(self.bot.get_emoji(int(e)))
-        return emo or str(self.bot.get_emoji(407318200737595392))
+        return emo or str(default)
 
 
     async def get_tag(self, id):
@@ -296,7 +299,7 @@ class CR:
         found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
         found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
         found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
-        not_found_cards = [x for x in all_cards if not x in all_profile_cards]
+        not_found_cards = [x for x in all_cards if not x in all_profile_cards] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"{profile.name} (#{profile.tag})")
         em.add_field(name="Found Cards", value="-", inline=False)
         em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)
