@@ -16,6 +16,8 @@ class CR:
             lol = json.load(f)
             self.token = lol['crapi']
         self.client = clashroyale.Client(token=self.token, is_async=True)
+        self.cards = ['Ice Wizard', 'Hunter', 'Dart Goblin', 'Balloon', 'Skeleton Army', 'Royal Giant', 'Battle Ram', 'Minions', 'Bandit', 'Arrows', 'Mega Knight', 'Baby Dragon', 'Heal', 'Witch', 'Archers', 'Barbarians', 'Wizard', 'Rage', 'Guards', 'Giant Skeleton', 'Skeletons', 'Inferno Tower', 'Spear Goblins', 'Furnace', 'Cannon Cart', 'P.E.K.K.A', 'Bomber', 'Sparky', 'Ice Golem', 'Graveyard', 'Clone', 'Poison', 'Lightning', 'Cannon', 'Knight', 'Royal Ghost', 'Tesla', 'Dark Prince', 'Bomb Tower', 'Skeleton Barrel', 'Prince', 'Electro Wizard', 'Mega Minion',
+                      'Musketeer', 'Giant', 'Mirror', 'Bowler', 'Mortar', 'Lava Hound', 'Rocket', 'Tornado', 'Night Witch', 'Goblin Hut', 'Fire Spirits', 'Tombstone', 'Princess', 'Barbarian Hut', 'Goblins', 'Valkyrie', 'The Log', 'Freeze', 'Inferno Dragon', 'Goblin Barrel', 'Lumberjack', 'Three Musketeers', 'Miner', 'X-Bow', 'Ice Spirit', 'Flying Machine', 'Executioner', 'Zappies', 'Elixir Collector', 'Golem', 'Magic Archer', 'Barbarian Barrel', 'Rascals', 'Mini P.E.K.K.A', 'Hog Rider', 'Minion Horde', 'Fireball', 'Goblin Gang', 'Elite Barbarians', 'Bats', 'Zap']
 
 
     def check_tag(self, crtag):
@@ -30,7 +32,7 @@ class CR:
             lol = json.loads(f.read())
         e = lol[name]
         emo = self.bot.get_emoji(int(e))
-        return emo if emo is not None else None
+        return emo or self.bot.get_emoji(407318200737595392)
 
 
     async def get_tag(self, id):
@@ -268,6 +270,41 @@ class CR:
         em.set_footer(text="Royale API")
         await ctx.send(embed=em)
 
+
+    @commands.command()
+    async def crcards(self, ctx, crtag=None):
+        await ctx.trigger_typing()
+        if crtag is None:
+                # with open('data/crtags.json') as f:
+                #     lol = json.load(f)
+                # userid = str(ctx.author.id)
+                # crtag = lol[userid]
+            crtag = await self.get_tag(ctx.author.id)
+            if not crtag:
+                return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
+        try:
+            profile = await self.client.get_player(crtag)
+        except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
+            print(e)
+            color = discord.Color(value=0xf44e42)
+            em = discord.Embed(color=color, title='Royale API error.')
+            em.description = f"{e.code}: {e.error}"
+            return await ctx.send(embed=em)
+        all_cards = [x for x in self.cards]
+        all_profile_cards = [x for x in profile.cards]
+        found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
+        found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
+        found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
+        found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
+        not_found_cards = [x for x in all_cards if not x in all_profile_cards]
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"{profile.name} (#{profile.tag})")
+        em.add_field(name="Found Cards", value="-", inline=False)
+        em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)
+        em.add_field(name="Rare", value=" ".join([self.emoji(x) for x in found_rare_cards]), inline=False)
+        em.add_field(name="Epic", value=" ".join([self.emoji(x) for x in found_epic_cards]), inline=False)
+        em.add_field(name="Legendary", value=" ".join([self.emoji(x) for x in found_legendary_cards]), inline=False)
+        em.add_field(name="Not Found", value=" ".join([self.emoji(x) for x in not_found_cards]), inline=False)
+        await ctx.send(embed=em)
 
         
 
