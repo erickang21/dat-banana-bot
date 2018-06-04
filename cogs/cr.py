@@ -25,7 +25,7 @@ class CR:
                 return False 
             return True
     
-     def show_cards(cards):
+    def show_cards(self, cards):
         if len(cards) > 10:
             more_left = len(cards) - 10
             return "{}\n... and {} more.".format(" ".join([self.emoji(x) for x in cards]), more_left)
