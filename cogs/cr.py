@@ -19,20 +19,28 @@ class CR:
         self.cards = ['Ice Wizard', 'Hunter', 'Dart Goblin', 'Balloon', 'Skeleton Army', 'Royal Giant', 'Battle Ram', 'Minions', 'Bandit', 'Arrows', 'Mega Knight', 'Baby Dragon', 'Heal', 'Witch', 'Archers', 'Barbarians', 'Wizard', 'Rage', 'Guards', 'Giant Skeleton', 'Skeletons', 'Inferno Tower', 'Spear Goblins', 'Furnace', 'Cannon Cart', 'P.E.K.K.A', 'Bomber', 'Sparky', 'Ice Golem', 'Graveyard', 'Clone', 'Poison', 'Lightning', 'Cannon', 'Knight', 'Royal Ghost', 'Tesla', 'Dark Prince', 'Bomb Tower', 'Skeleton Barrel', 'Prince', 'Electro Wizard', 'Mega Minion',
                       'Musketeer', 'Giant', 'Mirror', 'Bowler', 'Mortar', 'Lava Hound', 'Rocket', 'Tornado', 'Night Witch', 'Goblin Hut', 'Fire Spirits', 'Tombstone', 'Princess', 'Barbarian Hut', 'Goblins', 'Valkyrie', 'The Log', 'Freeze', 'Inferno Dragon', 'Goblin Barrel', 'Lumberjack', 'Three Musketeers', 'Miner', 'X-Bow', 'Ice Spirit', 'Flying Machine', 'Executioner', 'Zappies', 'Elixir Collector', 'Golem', 'Magic Archer', 'Barbarian Barrel', 'Rascals', 'Mini P.E.K.K.A', 'Hog Rider', 'Minion Horde', 'Fireball', 'Goblin Gang', 'Elite Barbarians', 'Bats', 'Zap']
 
-
     def check_tag(self, crtag):
         for char in crtag:
             if char.upper() not in '0289PYLQGRJCUV':
                 return False 
-            return True      
-
+            return True
+    
+    def show_cards(self, cards):
+        if len(cards) > 10:
+            more_left = len(cards) - 10
+            return "{}\n... and {} more.".format(" ".join([self.emoji(x) for x in cards]), more_left)
+        else:
+            return " ".join([self.emoji(x) for x in cards])
 
     def emoji(self, name):
         with open('data/emojis.json') as f:
             lol = json.loads(f.read())
-        e = lol[name]
-        emo = self.bot.get_emoji(int(e))
-        return emo or self.bot.get_emoji(407318200737595392)
+        try:
+            e = lol[name]
+        except KeyError:
+            default = self.bot.get_emoji(407318200737595392)
+        emo = str(self.bot.get_emoji(int(e)))
+        return emo or str(default)
 
 
     async def get_tag(self, id):
@@ -291,22 +299,20 @@ class CR:
             em.description = f"{e.code}: {e.error}"
             return await ctx.send(embed=em)
         all_cards = [x for x in self.cards]
-        all_profile_cards = [x for x in profile.cards]
-        found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
-        found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
-        found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
-        found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
-        not_found_cards = [x for x in all_cards if not x in all_profile_cards]
+        all_pfp_cards = [x for x in profile.cards]
+        common = [x.name for x in all_pfp_cards if x.rarity == "Common"]
+        rare = [x.name for x in all_pfp_cards if x.rarity == "Rare"]
+        epic = [x.name for x in all_pfp_cards if x.rarity == "Epic"]
+        legendary = [x.name for x in all_pfp_cards if x.rarity == "Legendary"]
+        not_found = [x for x in all_cards if not x in all_pfp_cards] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"{profile.name} (#{profile.tag})")
         em.add_field(name="Found Cards", value="-", inline=False)
-        em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)
-        em.add_field(name="Rare", value=" ".join([self.emoji(x) for x in found_rare_cards]), inline=False)
-        em.add_field(name="Epic", value=" ".join([self.emoji(x) for x in found_epic_cards]), inline=False)
-        em.add_field(name="Legendary", value=" ".join([self.emoji(x) for x in found_legendary_cards]), inline=False)
-        em.add_field(name="Not Found", value=" ".join([self.emoji(x) for x in not_found_cards]), inline=False)
+        em.add_field(name="Common", value=self.show_cards(common), inline=False)
+        em.add_field(name="Rare", value=self.show_cards(rare), inline=False)
+        em.add_field(name="Epic", value=self.show_cards(epic), inline=False)
+        em.add_field(name="Legendary", value=self.show_cards(legendary), inline=False)
+        em.add_field(name="Not Found", value=self.show_cards(not_found), inline=False)
         await ctx.send(embed=em)
-
-        
 
 def setup(bot): 
     bot.add_cog(CR(bot)) 
