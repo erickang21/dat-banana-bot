@@ -318,12 +318,17 @@ class CR:
             all_profile_cards = [x for x in profile.cards]
             all_profile_cards_name = [x.name for x in profile.cards]
             found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
+            found_common_cards = list(map(lambda x: self.emoji(x), found_common_cards))
             found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
+            found_rare_cards = list(map(lambda x: self.emoji(x), found_rare_cards))
             found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
+            found_epic_cards = list(map(lambda x: self.emoji(x), found_epic_cards))
             found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
-            not_found_cards = [x for x in all_cards if x not in all_profile_cards_name] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
-            print(" ".join([self.emoji(x) for x in not_found_cards])
-            print(" ".join([self.emoji(x) for x in found_legendary_cards])
+            found_legendary_cards = list(map(lambda x: self.emoji(x), found_legendary_cards))
+            not_found_cards = [x for x in all_cards if x not in all_profile_cards_name]
+            not_found_cards = list(map(lambda x: self.emoji(x), not_found_cards))
+            #print(" ".join([self.emoji(x) for x in not_found_cards])
+            #print(" ".join([self.emoji(x) for x in found_legendary_cards]))
             em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)  
             em.add_field(name="Rare", value=" ".join([self.emoji(x) for x in found_rare_cards]), inline=False) 
             em.add_field(name="Epic", value=" ".join([self.emoji(x) for x in found_epic_cards]), inline=False) 
