@@ -299,34 +299,38 @@ class CR:
             em = discord.Embed(color=color, title='Royale API error.')
             em.description = f"{e.code}: {e.error}"
             return await ctx.send(embed=em)
-        # all_cards = [x for x in self.cards]
-        # all_pfp_cards = [x for x in profile.cards]
-        # common = [x.name for x in all_pfp_cards if x.rarity == "Common"]
-        # rare = [x.name for x in all_pfp_cards if x.rarity == "Rare"]
-        # epic = [x.name for x in all_pfp_cards if x.rarity == "Epic"]
-        # legendary = [x.name for x in all_pfp_cards if x.rarity == "Legendary"]
-        # not_found = [x for x in all_cards if not x in all_pfp_cards] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"{profile.name} (#{profile.tag})")
-        # em.add_field(name="Found Cards", value="-", inline=False)
-        # em.add_field(name="Common", value=self.show_cards(common), inline=False)
-        # em.add_field(name="Rare", value=self.show_cards(rare), inline=False)
-        # em.add_field(name="Epic", value=self.show_cards(epic), inline=False)
-        # em.add_field(name="Legendary", value=self.show_cards(legendary), inline=False)
-        # em.add_field(name="Not Found", value=self.show_cards(not_found), inline=False)
-        all_cards = [x for x in self.cards]
-        all_profile_cards = [x for x in profile.cards]
-        all_profile_cards_name = [x.name for x in profile.cards]
-        found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
-        found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
-        found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
-        found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
-        not_found_cards = [x.name for x in all_cards if not x in all_profile_cards_name] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
-        em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)  
-        em.add_field(name="Rare", value=" ".join([self.emoji(x) for x in found_rare_cards]), inline=False) 
-        em.add_field(name="Epic", value=" ".join([self.emoji(x) for x in found_epic_cards]), inline=False) 
-        em.add_field(name="Legendary", value=" ".join([self.emoji(x) for x in found_legendary_cards]), inline=False) 
-        em.add_field(name="Not Found", value=" ".join([self.emoji(x) for x in not_found_cards]), inline=False) 
-        await ctx.send(embed=em)
+        try:
+            # all_cards = [x for x in self.cards]
+            # all_pfp_cards = [x for x in profile.cards]
+            # common = [x.name for x in all_pfp_cards if x.rarity == "Common"]
+            # rare = [x.name for x in all_pfp_cards if x.rarity == "Rare"]
+            # epic = [x.name for x in all_pfp_cards if x.rarity == "Epic"]
+            # legendary = [x.name for x in all_pfp_cards if x.rarity == "Legendary"]
+            # not_found = [x for x in all_cards if not x in all_pfp_cards] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"{profile.name} (#{profile.tag})")
+            # em.add_field(name="Found Cards", value="-", inline=False)
+            # em.add_field(name="Common", value=self.show_cards(common), inline=False)
+            # em.add_field(name="Rare", value=self.show_cards(rare), inline=False)
+            # em.add_field(name="Epic", value=self.show_cards(epic), inline=False)
+            # em.add_field(name="Legendary", value=self.show_cards(legendary), inline=False)
+            # em.add_field(name="Not Found", value=self.show_cards(not_found), inline=False)
+            all_cards = [x for x in self.cards]
+            all_profile_cards = [x for x in profile.cards]
+            all_profile_cards_name = [x.name for x in profile.cards]
+            found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
+            found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
+            found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
+            found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
+            not_found_cards = [x.name for x in all_cards if not x in all_profile_cards_name] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
+            em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)  
+            em.add_field(name="Rare", value=" ".join([self.emoji(x) for x in found_rare_cards]), inline=False) 
+            em.add_field(name="Epic", value=" ".join([self.emoji(x) for x in found_epic_cards]), inline=False) 
+            em.add_field(name="Legendary", value=" ".join([self.emoji(x) for x in found_legendary_cards]), inline=False) 
+            em.add_field(name="Not Found", value=" ".join([self.emoji(x) for x in not_found_cards]), inline=False) 
+            await ctx.send(embed=em)
+        except Exception as e:
+            traceback_text = "\n".join(traceback.format_exception(type(e), e, e.__traceback__, 10))
+            return await ctx.send(f"An unknown error occurred:\n{traceback_text}")
 
 def setup(bot): 
     bot.add_cog(CR(bot)) 
