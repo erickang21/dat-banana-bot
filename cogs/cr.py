@@ -36,7 +36,7 @@ class CR:
         with open('data/emojis.json') as f:
             lol = json.loads(f.read())
         try:
-            e = lol[name]
+            e = lol[str(name)]
             emo = str(self.bot.get_emoji(int(e)))
             return emo
         except KeyError:
