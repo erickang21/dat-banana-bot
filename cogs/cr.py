@@ -37,10 +37,9 @@ class CR:
             lol = json.loads(f.read())
         try:
             e = lol[name]
+            emo = str(self.bot.get_emoji(int(e)))
         except KeyError:
             default = self.bot.get_emoji(407318200737595392)
-        if e:
-            emo = str(self.bot.get_emoji(int(e)))
         return emo or str(default)
 
 
