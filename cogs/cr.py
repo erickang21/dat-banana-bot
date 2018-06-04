@@ -38,9 +38,10 @@ class CR:
         try:
             e = lol[name]
             emo = str(self.bot.get_emoji(int(e)))
+            return emo
         except KeyError:
             default = self.bot.get_emoji(407318200737595392)
-        return emo or str(default)
+            return str(default)
 
 
     async def get_tag(self, id):
