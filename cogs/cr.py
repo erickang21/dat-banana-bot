@@ -322,6 +322,7 @@ class CR:
             found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
             found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
             not_found_cards = [x for x in all_cards if x not in all_profile_cards_name] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
+            print(not_found_cards)
             em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)  
             em.add_field(name="Rare", value=" ".join([self.emoji(x) for x in found_rare_cards]), inline=False) 
             em.add_field(name="Epic", value=" ".join([self.emoji(x) for x in found_epic_cards]), inline=False) 
@@ -330,7 +331,7 @@ class CR:
             await ctx.send(embed=em)
         except Exception as e:
             traceback_text = "\n".join(traceback.format_exception(type(e), e, e.__traceback__, 10))
-            return await ctx.send(f"An unknown error occurred:\n{traceback_text}")
+            return await ctx.send(f"An unknown error occurred:\n```{traceback_text}```")
 
 def setup(bot): 
     bot.add_cog(CR(bot)) 
