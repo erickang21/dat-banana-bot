@@ -327,6 +327,7 @@ class CR:
             found_legendary_cards = list(map(lambda x: self.emoji(x), found_legendary_cards))
             not_found_cards = [x for x in all_cards if x not in all_profile_cards_name]
             not_found_cards = list(map(lambda x: self.emoji(x), not_found_cards))
+            not_found_cards = not_found_cards or f"All cards found! :tada:"
             #print(" ".join([self.emoji(x) for x in not_found_cards])
             #print(" ".join([self.emoji(x) for x in found_legendary_cards]))
             em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)  
