@@ -321,7 +321,7 @@ class CR:
             found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
             found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
             found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
-            not_found_cards = [x.name for x in all_cards if not x in all_profile_cards_name] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
+            not_found_cards = [x for x in all_cards if not x in all_profile_cards_name] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
             em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)  
             em.add_field(name="Rare", value=" ".join([self.emoji(x) for x in found_rare_cards]), inline=False) 
             em.add_field(name="Epic", value=" ".join([self.emoji(x) for x in found_epic_cards]), inline=False) 
