@@ -318,7 +318,7 @@ class CR:
             all_profile_cards = [x for x in profile.cards]
             all_profile_cards_name = [x.name for x in profile.cards]
             found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
-            print(f"DEBUG: Common cards - {", " .join(found_common_cards)}")
+            print(f"DEBUG: Common cards - {", ".join(found_common_cards)}")
             found_common_cards = list(map(lambda x: self.emoji(x), found_common_cards))
             found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
             print(f"DEBUG: Rare cards - {", " .join(found_rare_cards)}")
