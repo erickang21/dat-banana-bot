@@ -318,21 +318,22 @@ class CR:
             all_profile_cards = [x for x in profile.cards]
             all_profile_cards_name = [x.name for x in profile.cards]
             found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
+            print(f"DEBUG: Common cards - {", " .join(found_common_cards)}")
             found_common_cards = list(map(lambda x: self.emoji(x), found_common_cards))
-            print(f"DEBUG: Common cards - {found_common_cards}")
             found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
+            print(f"DEBUG: Rare cards - {", " .join(found_rare_cards)}")
             found_rare_cards = list(map(lambda x: self.emoji(x), found_rare_cards))
-            print(f"DEBUG: Rare cards - {found_rare_cards}")
             found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
+            print(f"DEBUG: epic cards - {", " .join(found_epic_cards)}")
             found_epic_cards = list(map(lambda x: self.emoji(x), found_epic_cards))
-            print(f"DEBUG: epic cards - {found_epic_cards}")
             found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
+            print(f"DEBUG: legendary cards - {"," .join(found_legendary_cards)}")
             found_legendary_cards = list(map(lambda x: self.emoji(x), found_legendary_cards))
-            print(f"DEBUG: legendary cards - {found_legendary_cards}")
             not_found_cards = [x for x in all_cards if x not in all_profile_cards_name]
-            not_found_cards = list(map(lambda x: self.emoji(x), not_found_cards))
             not_found_cards = not_found_cards or f"All cards found! :tada:"
-            print(f"DEBUG: Not found cards - {not_found_cards}")
+            print(f"DEBUG: Not found cards - {", ".join(not_found_cards)}")
+            not_found_cards = list(
+                map(lambda x: self.emoji(x), not_found_cards))
             #print(" ".join([self.emoji(x) for x in not_found_cards])
             #print(" ".join([self.emoji(x) for x in found_legendary_cards]))
             em.add_field(name="Common", value=" ".join([self.emoji(x) for x in found_common_cards]), inline=False)  
