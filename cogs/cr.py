@@ -319,16 +319,16 @@ class CR:
             all_profile_cards_name = [x.name for x in profile.cards]
             found_common_cards = [x.name for x in all_profile_cards if x.rarity == "Common"]
             print(f"DEBUG: Common cards - {', '.join(found_common_cards)}")
-            found_common_cards = list(map(lambda x: self.emoji(x), found_common_cards))
+            found_common_cards = list(map(lambda x: self.emoji(str(x)), found_common_cards))
             found_rare_cards = [x.name for x in all_profile_cards if x.rarity == "Rare"]
             print(f"DEBUG: Rare cards - {', ' .join(found_rare_cards)}")
-            found_rare_cards = list(map(lambda x: self.emoji(x), found_rare_cards))
+            found_rare_cards = list(map(lambda x: self.emoji(str(x)), found_rare_cards))
             found_epic_cards = [x.name for x in all_profile_cards if x.rarity == "Epic"]
             print(f"DEBUG: epic cards - {', '.join(found_epic_cards)}")
-            found_epic_cards = list(map(lambda x: self.emoji(x), found_epic_cards))
+            found_epic_cards = list(map(lambda x: self.emoji(str(x)), found_epic_cards))
             found_legendary_cards = [x.name for x in all_profile_cards if x.rarity == "Legendary"]
             print(f"DEBUG: legendary cards - {', '.join(found_legendary_cards)}")
-            found_legendary_cards = list(map(lambda x: self.emoji(x), found_legendary_cards))
+            found_legendary_cards = list(map(lambda x: self.emoji(str(x)), found_legendary_cards))
             not_found_cards = [x for x in all_cards if x not in all_profile_cards_name]
             not_found_cards = not_found_cards or f"All cards found! :tada:"
             print(f"DEBUG: Not found cards - {', '.join(not_found_cards)}")
