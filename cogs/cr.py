@@ -308,6 +308,7 @@ class CR:
             # legendary = [x.name for x in all_pfp_cards if x.rarity == "Legendary"]
             # not_found = [x for x in all_cards if not x in all_pfp_cards] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"{profile.name} (#{profile.tag})")
+            em.description = f"**Cards found:** {len(profile.cards)}/84"
             # em.add_field(name="Found Cards", value="-", inline=False)
             # em.add_field(name="Common", value=self.show_cards(common), inline=False)
             # em.add_field(name="Rare", value=self.show_cards(rare), inline=False)
