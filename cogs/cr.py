@@ -330,17 +330,15 @@ class CR:
             print(f"DEBUG: legendary cards - {', '.join(found_legendary_cards)}")
             found_legendary_cards = list(map(lambda x: self.emoji(str(x)), found_legendary_cards))
             not_found_cards = [x for x in all_cards if x not in all_profile_cards_name]
-            not_found_cards = not_found_cards or f"All cards found! :tada:"
+            not_found_cards = " ".join(list(map(lambda x: self.emoji(x), not_found_cards))) or f"All cards found! :tada:"
             print(f"DEBUG: Not found cards - {', '.join(not_found_cards)}")
-            not_found_cards = list(
-                map(lambda x: self.emoji(x), not_found_cards))
             #print(" ".join([self.emoji(x) for x in not_found_cards])
             #print(" ".join([self.emoji(x) for x in found_legendary_cards]))
             em.add_field(name="Common", value=" ".join(found_common_cards), inline=False)  
             em.add_field(name="Rare", value=" ".join(found_rare_cards), inline=False) 
             em.add_field(name="Epic", value=" ".join(found_epic_cards), inline=False) 
             em.add_field(name="Legendary", value=" ".join(found_legendary_cards), inline=False) 
-            em.add_field(name="Not Found", value=" ".join(not_found_cards), inline=False) 
+            em.add_field(name="Not Found", value=not_found_cards, inline=False) 
             await ctx.send(embed=em)
         except Exception as e:
             traceback_text = "\n".join(traceback.format_exception(type(e), e, e.__traceback__, 10))
