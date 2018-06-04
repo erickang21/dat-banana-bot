@@ -39,7 +39,8 @@ class CR:
             e = lol[name]
         except KeyError:
             default = self.bot.get_emoji(407318200737595392)
-        emo = str(self.bot.get_emoji(int(e)))
+        if e:
+            emo = str(self.bot.get_emoji(int(e)))
         return emo or str(default)
 
 
