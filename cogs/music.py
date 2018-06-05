@@ -15,7 +15,8 @@ class Music:
         if not hasattr(bot, 'lavalink'):
             with open("data/apikeys.json") as file:
                 apikeys = json.load(file)
-                lavalink.Client(bot, loop=self.bot.loop, host=apikeys.ll_host, password=apikeys.ll_password, ws_port=apikeys.ll_port)
+                print(apikeys)
+                lavalink.Client(bot, loop=self.bot.loop, host=apikeys["ll_host"], password=apikeys["ll_password"], ws_port=apikeys["ll_port"])
                 self.bot.lavalink.register_hook(self.track_hook)
 
     async def track_hook(self, e):
