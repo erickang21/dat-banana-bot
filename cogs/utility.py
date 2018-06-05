@@ -106,7 +106,7 @@ class Utility:
             "cmd": lang,
             "src": code
         }
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Evaluated!')
+        em = discord.Embed(color=discord.Color(value=0xf9e236), title='Evaluated!')
         resp = await self.bot.session.post('http://coliru.stacked-crooked.com/compile', json=data)
         output = await resp.text(encoding='utf-8')
         if len(output) < 1992:
@@ -129,7 +129,7 @@ class Utility:
         choices = args.split("|")
         desc = ""
         counter = 0
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=choices[0])
+        em = discord.Embed(color=discord.Color(value=0xf9e236), title=choices[0])
         choices.remove(choices[0])
         if len(choices) > 9:
             return await ctx.send("You can have a maximum of 9 choices for a poll.")
@@ -157,7 +157,7 @@ class Utility:
 
     @commands.command(name='wikipedia', aliases=['wiki'])
     async def _wikipedia(self, ctx, *, query):
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Wikipedia Results for: {query}")
+        em = discord.Embed(color=discord.Color(value=0xf9e236), title=f"Wikipedia Results for: {query}")
         try:
             res = wikipedia.summary(str(query))
         except wikipedia.exceptions.PageError:
@@ -226,7 +226,7 @@ class Utility:
         resp = await self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}")
         img = await resp.read()
         try:
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"The emoji has been created in the server! Name: {e.name}")
+            em = discord.Embed(color=discord.Color(value=0xf9e236), title=f"The emoji has been created in the server! Name: {e.name}")
             await ctx.guild.create_custom_emoji(name=e.name, image=img)
             em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
             await ctx.send(embed=em)
@@ -313,7 +313,7 @@ class Utility:
         else:
             try:
                 lol = self.bot.get_channel(413814935391567882)
-                color = discord.Color(value=0x00ff00)
+                color = discord.Color(value=0xf9e236)
                 em = discord.Embed(color=color, title='Feedback')
                 em.description = feedback
                 em.set_author(name=f"Sent by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
@@ -330,10 +330,11 @@ class Utility:
 
     @commands.command()
     async def hastebin(self, ctx, *, text):
+        """Put some code in hastebin"""
         try:
             resp = await self.session.post("https://hastebin.com/documents", data=text)
             resp = await resp.json()
-            color = discord.Color(value=0x00ff00)
+            color = discord.Color(value=0xf9e236)
             em = discord.Embed(color=color, title='Hastebin-ified!')
             em.description = f"Your Hastebin link: \nhttps://hastebin.com/{resp['key']}"
             em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
@@ -348,7 +349,7 @@ class Utility:
     @commands.command()
     async def shortenurl(self, ctx, *, url):
         '''Shortens a URL through Tinyurl.'''
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color(value=0xf9e236)
         em = discord.Embed(color=color, title='TinyURL Link Shortener')
         resp = await self.session.get(f'http://tinyurl.com/api-create.php?url={url}')
         resp = await resp.text()
@@ -362,7 +363,7 @@ class Utility:
         '''Gets the definition of a word from Urban Dictionary.'''
         resp = await self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}')
         r = await resp.json()
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color(value=0xf9e236)
         em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
         lol = []
         for x in r['list']:
@@ -380,7 +381,7 @@ class Utility:
             msg += f"{str(x)} \n"
         if msg == "":
             msg = 'No one in the server is currently playing this game!'
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color(value=0xf9e236)
         em = discord.Embed(color=color, title=f"Users Playing: {game}")
         em.description = msg
         await ctx.send(embed=em) 
@@ -394,7 +395,7 @@ class Utility:
         if b is None:
             await ctx.send("Boi, are you random! Usage: *ranint [least #] [greatest #], to set the range of the randomized number. Please use integers.")
         else:
-            color = discord.Color(value=0x00ff00)
+            color = discord.Color(value=0xf9e236)
             em = discord.Embed(color=color, title='Your randomized number:')
             em.description = random.randint(a,b)
             await ctx.send(embed=em)
@@ -404,7 +405,7 @@ class Utility:
     async def rolldice(self, ctx):
         """Rolls a 6 sided die."""
         choices = ['1', '2', '3', '4', '5', '6']
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color(value=0xf9e236)
         em = discord.Embed(color=color, title='Rolled! (1 6-sided die)', description=random.choice(choices))
         await ctx.send(embed=em)
         
@@ -412,8 +413,8 @@ class Utility:
     @commands.command()
     async def flipcoin(self, ctx):
         """Flip a coin. Any coin."""
-        choices = ['Heads', 'Tails', 'Coin self-destructed.']
-        color = discord.Color(value=0x00ff00)
+        choices = ['Heads', 'Tails', 'Coin self-destructed.', '¯\_(ツ)_/¯']
+        color = discord.Color(value=0xf9e236)
         em=discord.Embed(color=color, title='Flipped a coin!')
         em.description = random.choice(choices)
         await ctx.send(embed=em)
@@ -469,7 +470,7 @@ class Utility:
             av = ctx.message.author.avatar_url
             if '.gif' in av:
                 av += "&f=.gif"
-            color = discord.Color(value=0x00ff00)
+            color = discord.Color(value=0xf9e236)
             em = discord.Embed(color=color, title=ctx.message.author.name)
             em.set_author(name='Profile Picture')
             em.set_image(url=av)
