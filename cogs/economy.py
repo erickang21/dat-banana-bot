@@ -116,7 +116,10 @@ class Economy:
             f"You can have **{number}** :banana:, if that means you can shut up.",
             f"If you take **{number}** :banana:, ur mom gay. Oh well, you did :rofl:",
             f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
-            f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
+            f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me...",
+            f"Thanks for taking my **{number}** :banana: from me.",
+            f"smh. You took away my **{number}**... Congratz"
+            
         ]
         return await ctx.send(random.choice(responses))
         
@@ -129,8 +132,8 @@ class Economy:
         x = await self.db.economy.find_one({"user": ctx.author.id})
         if x is None:
             return await ctx.send("Oof. You don't have an account yet! Time to create one with `*openaccount`.")
-        if int(x['points']) < 100:
-            return await ctx.send("Entering the lottery requires 100 :banana:. You don't have enough! Keep on earning 'em")
+        if int(x['points']) < 1:
+            return await ctx.send("Entering the lottery requires 1 :banana:. You don't have enough! Keep on earning 'em")
         if numbers is None:
             return await ctx.send("Please enter 3 numbers seperated by commas to guess the lottery! \nExample: *lottery 1,2,3")
         numbers = numbers.replace(' ', '')
@@ -159,7 +162,7 @@ class Economy:
             await ctx.send(embed=em)
             self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
         else:
-            await self.add_points(ctx.author, -100)
+            await self.add_points(ctx.author, -1)
             em = discord.Embed(color=discord.Color(value=0xf44e42))
             responses = [
                 f"OOF! Guess who didn't win the giant $$ this time!",
@@ -170,7 +173,7 @@ class Economy:
                 "And the bad luck goes SKRRRRRRA!",
                 "Guess you're part of the 99.2% that didn't make it."
             ]
-            em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nYou lost: 100 :banana:"
+            em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nYou lost: 1 :banana:"
             await ctx.send(embed=em)
             await self.bot.get_channel(445332002942484482).send(f"The winning numbers are: {self.lottery_numbers}")
 
@@ -252,8 +255,6 @@ class Economy:
     #@commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
         '''Reward a good person'''
-        if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         if not self.is_registered(user):
             return await ctx.send(f"ACK! **{str(user)}** doesn't have an account yet, so they can't get the gucci money!")
         else:
