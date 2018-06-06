@@ -91,7 +91,7 @@ class Music:
             return "**||||||||**||"
         elif number >= 90 and number <= 99:
             return "**|||||||||**|"
-        elif number == 100:
+        elif number < 100:
             return "**||||||||||**"
 
 
