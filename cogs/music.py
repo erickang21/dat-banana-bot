@@ -13,7 +13,7 @@ class Music:
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):
-            lavalink.Client(bot, loop=self.bot.loop, password="bbot", ws_port=10, rest_port=2333, shard_count=1)
+            lavalink.Client(bot, loop=self.bot.loop, password="bbot", ws_port=10)
             self.bot.lavalink.register_hook(self.track_hook)
 
     async def track_hook(self, e):
@@ -28,8 +28,8 @@ class Music:
             em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
             minutes, seconds = divmod(e.track.duration, 60)
             em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
-            em.add_field(name='Volume', value=e.player.volume)
-            em.add_field(name='Position in Queue', value=len(e.player.queue) - 1)
+            em.add_field(name='Volume', value=f"{self.show_lines(e.player.volume)} ${e.player.volume}%")
+            em.add_field(name='Position in Queue', value=len(e.player.queue))
             msg = await ctx.send(embed=em)
             try:
                 await msg.add_reaction("\U000023f8") # Pause
@@ -132,7 +132,6 @@ class Music:
         em = discord.Embed(color=discord.Color(value=0x00ff00), title="Searching...", description=f"{self.bot.get_emoji(441385713091477504)} Searching `{search}`...")
         m = await ctx.send(embed=em)
 
-
         search = search.strip("<>")
         if not search.startswith("http"):
             search = f"ytsearch:{search}"
@@ -144,10 +143,11 @@ class Music:
 
         await m.delete()
         player.add(requester=ctx.author, track=tracks[0])
-        await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks[0]["info"]["title"]))
 
         if not player.is_playing:
             await player.play()
+        else:
+            await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks[0]["info"]["title"]))
 
     @commands.command()
     async def pause(self, ctx):
@@ -212,14 +212,14 @@ class Music:
                     await msg.remove_reaction("\U00002795", ctx.author)
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
-                await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
             elif reaction.emoji == '➖':
                 await player.set_volume(player.volume - 5)
                 try:
                     await msg.remove_reaction("\U00002796", ctx.author)
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
-                await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
         
 
 def setup(bot):
