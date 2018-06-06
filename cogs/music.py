@@ -208,7 +208,7 @@ class Music:
             reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
             if reaction.emoji == '➕':
                 if player.volume > 100:
-                    return # Ignore volumes that are greater than 100
+                    break # Ignore volumes that are greater than 100
                 await player.set_volume(player.volume + 5)
                 try:
                     await msg.remove_reaction("\U00002795", ctx.author)
