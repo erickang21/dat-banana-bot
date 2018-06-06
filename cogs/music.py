@@ -13,8 +13,10 @@ class Music:
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):
-            lavalink.Client(bot, loop=self.bot.loop, password="bbot", ws_port=10)
-            self.bot.lavalink.register_hook(self.track_hook)
+            with open("") as file:
+                keys = json.load(file)
+                lavalink.Client(bot, loop=self.bot.loop, host=keys.ll.host, password=keys.ll.password, ws_port=keys.ll.port)
+                self.bot.lavalink.register_hook(self.track_hook)
 
     async def track_hook(self, e):
         if isinstance(e, lavalink.Events.QueueEndEvent):
