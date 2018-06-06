@@ -169,11 +169,21 @@ class Music:
         await ctx.send("**Carrying on!** :arrow_forward:")
 
     @commands.command()
-    async def stop(self, ctx):
-        """Stops the current song."""
+    async def skip(self, ctx):
+        """Skips the current song."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("How do I stop the music without me connected playing anything?")
+        await player.skip()
+        await ctx.send(":ok_hand: The current song was skipped.")
+       
+    @commands.command()
+    async def stop(self, ctx):
+        """Stops the player."""
+        player = self.bot.lavalink.players.get(ctx.guild.id)
+        if not player.is_playing:
+            return await ctx.send("How do I stop the music without me connected playing anything?")
+        player.queue.clear()
         await player.stop()
         await ctx.send("**HALT!** Music has been stopped. :stop_button:")
 
