@@ -178,8 +178,8 @@ class Music:
         await ctx.send("**HALT!** Music has been stopped. :stop_button:")
 
 
-    @commands.command(name="queue")
-    async def _queue(self, ctx):
+    @commands.command()
+    async def queue(self, ctx):
         """Gets the queue for the server."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.queue:
