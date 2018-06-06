@@ -24,7 +24,7 @@ class Music:
         if isinstance(e, lavalink.Events.TrackStartEvent):
             ctx = e.player.fetch("ctx")
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
-            em.description = e.track.title
+            em.description = f"**{e.track.title}**"
             em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
             minutes, seconds = divmod(e.track.duration, 60)
             em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
@@ -165,6 +165,7 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("How do I resume without me connected playing anything?")
+ 
         await player.set_pause(False)
         await ctx.send("**Carrying on!** :arrow_forward:")
 
@@ -174,8 +175,9 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("How do I stop the music without me connected playing anything?")
-        await player.skip()
+        
         await ctx.send(":ok_hand: The current song was skipped.")
+        await player.skip()
        
     @commands.command()
     async def stop(self, ctx):
@@ -183,6 +185,7 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("How do I stop the music without me connected playing anything?")
+
         player.queue.clear()
         await player.stop()
         await ctx.send("**HALT!** Music has been stopped. :stop_button:")
