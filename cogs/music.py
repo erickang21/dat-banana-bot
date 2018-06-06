@@ -13,7 +13,7 @@ class Music:
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):
-            with open("") as file:
+            with open("data/apikeys.json") as file:
                 keys = json.load(file)
                 lavalink.Client(bot, loop=self.bot.loop, host=keys.ll.host, password=keys.ll.password, ws_port=keys.ll.port)
                 self.bot.lavalink.register_hook(self.track_hook)
