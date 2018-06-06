@@ -1,4 +1,4 @@
-🍌***dat banana bot***🍌
+🍌 ***dat banana bot*** 🍌
 Yo it's me, dat banana bot. And I do everything except nothing.
 
 **My super long list of awesomely amazing features**
