@@ -201,7 +201,7 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("Nothing is playing! Cannot detect volume or change it.")
-        msg = await ctx.send(f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+        msg = await ctx.send(f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
         await msg.add_reaction("\U00002795")
         await msg.add_reaction("\U00002796")
         while player.is_playing:
