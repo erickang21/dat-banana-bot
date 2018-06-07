@@ -216,7 +216,7 @@ class CR:
                 # crtag = lol[userid]
             crtag = await self.get_tag(ctx.author.id)
             if not crtag:
-                return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
+                return await ctx.send("Uh-oh, no tag found! Use *crsave [tag] to save your tag to your Discord account. :x:")
         try:
             profile = await self.client.get_player(crtag)
         except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
@@ -254,7 +254,7 @@ class CR:
                 # crtag = lol[userid]
             crtag = await self.get_tag(ctx.author.id)
             if not crtag:
-                return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
+                return await ctx.send("Uh-oh, no tag found! Use *crsave [tag] to save your tag to your Discord account. :x:")
         try:
             profile = await self.client.get_player(crtag)
             chests = await self.client.get_player_chests(crtag)
@@ -290,7 +290,7 @@ class CR:
                 # crtag = lol[userid]
             crtag = await self.get_tag(ctx.author.id)
             if not crtag:
-                return await ctx.send("Uh-oh, no tag found! Use *cocsave [tag] to save your tag to your Discord account. :x:")
+                return await ctx.send("Uh-oh, no tag found! Use *crsave [tag] to save your tag to your Discord account. :x:")
         try:
             profile = await self.client.get_player(crtag)
         except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
