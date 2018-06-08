@@ -13,8 +13,10 @@ class Music:
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):
-            lavalink.Client(bot, loop=self.bot.loop, password="bbot", ws_port=10, rest_port=2333, shard_count=1)
-            self.bot.lavalink.register_hook(self.track_hook)
+            with open("data/apikeys.json") as file:
+                apikeys = json.load(file)
+                lavalink.Client(bot, loop=self.bot.loop, host=apikeys["ll_host"], password=apikeys["ll_password"], ws_port=apikeys["ll_port"])
+                self.bot.lavalink.register_hook(self.track_hook)
 
     async def track_hook(self, e):
         if isinstance(e, lavalink.Events.QueueEndEvent):
@@ -24,12 +26,12 @@ class Music:
         if isinstance(e, lavalink.Events.TrackStartEvent):
             ctx = e.player.fetch("ctx")
             em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
-            em.description = e.track.title
+            em.description = f"**{e.track.title}**"
             em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
             minutes, seconds = divmod(e.track.duration, 60)
             em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
-            em.add_field(name='Volume', value=e.player.volume)
-            em.add_field(name='Position in Queue', value=len(e.player.queue) - 1)
+            em.add_field(name='Volume', value=f"{self.get_lines(e.player.volume)} {e.player.volume}%")
+            em.add_field(name='Position in Queue', value=len(e.player.queue))
             msg = await ctx.send(embed=em)
             try:
                 await msg.add_reaction("\U000023f8") # Pause
@@ -132,7 +134,6 @@ class Music:
         em = discord.Embed(color=discord.Color(value=0x00ff00), title="Searching...", description=f"{self.bot.get_emoji(441385713091477504)} Searching `{search}`...")
         m = await ctx.send(embed=em)
 
-
         search = search.strip("<>")
         if not search.startswith("http"):
             search = f"ytsearch:{search}"
@@ -144,10 +145,11 @@ class Music:
 
         await m.delete()
         player.add(requester=ctx.author, track=tracks[0])
-        await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks[0]["info"]["title"]))
 
         if not player.is_playing:
             await player.play()
+        else:
+            await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks[0]["info"]["title"]))
 
     @commands.command()
     async def pause(self, ctx):
@@ -165,21 +167,23 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("How do I resume without me connected playing anything?")
+ 
         await player.set_pause(False)
         await ctx.send("**Carrying on!** :arrow_forward:")
-
+       
     @commands.command()
     async def stop(self, ctx):
-        """Stops the current song."""
+        """Stops the player."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("How do I stop the music without me connected playing anything?")
+
+        player.queue.clear()
         await player.stop()
         await ctx.send("**HALT!** Music has been stopped. :stop_button:")
 
-
-    @commands.command(name="queue")
-    async def _queue(self, ctx):
+    @commands.command()
+    async def queue(self, ctx):
         """Gets the queue for the server."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.queue:
@@ -201,27 +205,28 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("Nothing is playing! Cannot detect volume or change it.")
-        msg = await ctx.send(f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+        msg = await ctx.send(f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
         await msg.add_reaction("\U00002795")
         await msg.add_reaction("\U00002796")
         while player.is_playing:
             reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
             if reaction.emoji == '➕':
+                if player.volume > 100:
+                    break # Ignore volumes that are greater than 100
                 await player.set_volume(player.volume + 5)
                 try:
                     await msg.remove_reaction("\U00002795", ctx.author)
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
-                await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
             elif reaction.emoji == '➖':
                 await player.set_volume(player.volume - 5)
                 try:
                     await msg.remove_reaction("\U00002796", ctx.author)
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
-                await msg.edit(content=f":loud_sound: Volume for **{ctx.voice_client.channel.name}**:\n{self.get_lines(vol)} {vol}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
         
 
 def setup(bot):
     bot.add_cog(Music(bot))
-

@@ -1,15 +1,15 @@
-🍌***dat banana bot***🍌
+🍌 ***dat banana bot*** 🍌
 Yo it's me, dat banana bot. And I do everything except nothing.
 
 **My super long list of awesomely amazing features**
--Fun commands (Canvas, 8ball, etc)
--Mod commands (Kick, ban, mute, etc)
--Utility (Hastebin, info for user, role, server)
--Game Statistics
+- Fun commands (Canvas, 8ball, etc)
+- Mod commands (Kick, ban, mute, etc)
+- Utility (Hastebin, info for user, role, server)
+- Game Statistics
 -> Clash of Clans
 -> Clash Royale
 -> League of Legends
--Music (currently in beta)
+- Music
 
 **I'm made by...**
 The other "me" here. dat banana boi#1982
@@ -28,7 +28,9 @@ https://discord.gg/3Nxb7yZ
 
 **I like bananas, how can I help you?**
 1) By joining our server.
+
 2) By submitting useful comments and pull requests on GitHub.
+
 3) By having a brain (but if you didn't do 1 or 2 while having 3, then I really don't care.)
 
 **Anything else?**

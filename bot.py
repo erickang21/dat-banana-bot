@@ -121,7 +121,8 @@ async def on_ready():
         f"*help | in {len(bot.guilds)} servers!",
         "*help | skrrrrrrrrra pa pa pa pa pa.",
         "*help | asdfasdfasdfasdf.",
-        "*help | Git Gud At Leagye."
+        "*help | Git Gud At Leagye.",
+        "*help | Music officially fixed! YEET"
     ]
     print('Bot is online, and ready to ROLL!')
     while True:
@@ -372,7 +373,7 @@ async def on_message_delete(message):
                     img_url = None
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
             em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
-            em.add_field(name='Content', value=message.content)
+            em.add_field(name='Content', value=message.content if message.content else "Embed")
             em.add_field(name='Sent By', value=str(message.author))
             em.add_field(name='Channel', value=f"<#{message.channel.id}>")
             if img_url:
