@@ -10,6 +10,51 @@ import idioticapi
 from discord.ext import commands
 import base64
 
+# class Connect4:
+#     def __init__(self, bot):
+#         self.bot = bot
+#         self.ctx = None
+#         self.board = [
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False },
+#             { "taken": False }
+#         ]
+#         self.sent = None
+#         self.last = 0
+#         self.started = False
+#         self.winner = False
+#         self.tie = False
+
+#     def codify(self, text: str):
+#         return "```\n"+text+"```"
+
+#     async def initiate_game(self, ctx: commands.Context):
+#         self.ctx = ctx
+#         m = self.codify(
+#             ""
+#         )
 
 class fun:
     def __init__(self, bot):
@@ -22,8 +67,6 @@ class fun:
         self.cleverbot_user = lol.get("cleverbot_user")
         self.cleverbot_key = lol.get("cleverbot_key")
         self.guess_number = random.randint(1, 100)
-
-
 
     def get_lines(self, number):
         number = int(number)
@@ -50,6 +93,15 @@ class fun:
         elif number == 100:
             return "**||||||||||**"
 
+    # @commands.command()
+    # async def connect4(self, ctx, user: discord.Member):
+    #     """Play connect4 with someone else!"""
+    #     await ctx.send(f"Hiya {user.mention}, **{ctx.author.name}** wants to play Connect 4 with you. Reply 'accept' to join or 'decline' to reject (This times out in 30 seconds.)")
+    #     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == user, timeout=30.0)
+    #     if x.content.lower() == 'reject':
+    #         return await ctx.send(f"Oof, {ctx.author.mention}...Looks like **{user.name}** didn't want to play with you. Oh well.")
+    #     elif x.content.lower() == 'accept':
+            
 
     @commands.command()
     async def cleverbot(self, ctx, *, text):
@@ -520,10 +572,6 @@ class fun:
         except Exception as e:
             await ctx.send("Invalid Base64 Text")
             print(e)
-        
-
-
-
 
 def setup(bot):
     bot.add_cog(fun(bot))
