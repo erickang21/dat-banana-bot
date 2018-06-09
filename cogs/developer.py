@@ -167,7 +167,7 @@ class Developer:
 
 
     @commands.command(hidden=True)
-    async def sudo(self, ctx, user: discord.Member, *, command, args):
+    async def sudo(self, ctx, user: discord.Member, command, *, args):
         if not self.dev_check(ctx.author.id):
             return
         args_dict = {}
