@@ -167,14 +167,26 @@ class Developer:
 
 
     @commands.command(hidden=True)
-    async def sudo(self, ctx, user: discord.Member, *, command):
+    async def sudo(self, ctx, user: discord.Member, *, command, args):
         if not self.dev_check(ctx.author.id):
             return
+        args_dict = {}
+        if args:
+            arr = args.split(",")
+            for x in arr:
+                split = x.split(":")
+                name = split[0]
+                value = split[1]
+                args_dict[name] = value
+
         ctx.author = user
-        cmd = self.bot.get_command(command.lower())
+        cmd = self.bot.get_command(command)
         if not cmd:
-            return await ctx.send("Invalid command.")
-        await ctx.invoke(cmd)
+            return await ctx.send(f"Command {command} does not exist.")
+        if len(args_dict) > 0:
+            await ctx.invoke(cmd, **args_dict)
+        else:
+            await ctx.invoke(cmd)
 
 
 
