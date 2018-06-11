@@ -192,7 +192,13 @@ async def on_reaction_add(reaction, user):
         emoji_count = reaction.message.reactions[0].count
         if emoji_count > 1:
             em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
-            em.description = reaction.message.content
+            for_description = reaction.message.content
+            if not for_description:
+                try:
+                    for_description = reaction.message.embeds[0].description 
+                except:
+                    for_description = None
+            em.description = for_description or "No content detected."
             em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
             try:
                 img_url = reaction.message.attachments[0].url
