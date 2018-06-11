@@ -100,7 +100,7 @@ async def get_modlog_channel(guildid):
 @bot.event
 async def on_ready():
     if bot.user.id != 388476336777461770:
-        print("COPYING ALERT! COULD NOT IDENTIFY BOT USER")
+        print("COPYING ALERT! COULD NOT IDENTIFY BOT USER! EXPOSED!")
         exit() # :p
     bot.session = aiohttp.ClientSession()
     presence = [
@@ -127,7 +127,7 @@ async def on_ready():
     print('Bot is online, and ready to ROLL!')
     while True:
         await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
-        await asyncio.sleep(20)
+        await asyncio.sleep(10)
 
 
 @bot.event
@@ -148,7 +148,7 @@ async def on_message(message):
 async def on_command(ctx):
     bot.commands_run += 1
     log = bot.get_channel(445332002942484482)
-    em = discord.Embed(color=discord.Color(value=0x00ff00), title="Command Run!")
+    em = discord.Embed(color=discord.Color(value=0xf9e236), title="Command Run!")
     em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
     em.add_field(name="User ID", value=ctx.author.id)
     em.add_field(name="Server", value=ctx.guild.name)
@@ -263,7 +263,7 @@ async def on_reaction_add(reaction, user):
 @bot.event
 async def on_guild_join(guild):
     lol = bot.get_channel(392443319684300801)
-    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em = discord.Embed(color=discord.Color(value=0xf9e236))
     em.title = "dat banana bot has joined a new server!"
     em.description = f"**{guild.name}**"
     em.add_field(name="Owner", value=str(guild.owner))
@@ -437,12 +437,12 @@ async def on_command_error(ctx, error):
 
             
             
-@bot.command(name='presence')
+@bot.command()
 @commands.is_owner()
-async def _set(ctx, Type=None, *, thing=None):
+async def presence(ctx, Type=None, *, thing=None):
     """What AM I doing?!?!?!"""
     if Type is None:
-        await ctx.send('Do it right, plz! Usage: *presence [game/stream] [msg]')
+        await ctx.send('Do it right, plox! Usage: *presence [game/stream] [msg]')
     else:
       if Type.lower() == 'stream':
         await bot.change_presence(activity=discord.Game(name=thing,type=1, url='https://www.twitch.tv/a'), status='online')
@@ -472,7 +472,7 @@ async def say(ctx, *, message: commands.clean_content()):
 @bot.command()
 async def ping(ctx):
     """Premium ping pong giving you a websocket latency."""
-    color = discord.Color(value=0x00ff00)
+    color = discord.Color(value=0xf9e236)
     e = discord.Embed(color=color, title='Pinging')
     e.description = 'Please wait... :ping_pong:'
     msg = await ctx.send(embed=e)
