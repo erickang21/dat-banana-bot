@@ -19,7 +19,7 @@ class Info:
     @commands.command(aliases=['info', 'botinfo'])
     async def stats(self, ctx):
         """Statsies for this bot. Be a nerd!"""       
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color(value=0xf9e236)
         RAM = psutil.virtual_memory()
         used = RAM.used >> 20
         percent = RAM.percent
@@ -59,7 +59,7 @@ class Info:
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
         em = discord.Embed(color=discord.Color(
-            value=0x00ff00), title='v7.0.3 > Fortnite')
+            value=0xf9e236), title='v7.0.3 > Fortnite')
         em.description = textwrap.dedent("""
         __**BIG STUFF**__
         -> :warning: Added NSFW commands. :warning: 
