@@ -91,15 +91,15 @@ class Developer:
         e = discord.Embed(color=discord.Color(value=0x00ff00), title='Running code')
         e.description = f'Please wait... {self.bot.get_emoji(441385713091477504)}'
         msg = await ctx.send(embed=e)
-        lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+        lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        err = lol.stderr.decode("utf-8")
+        res = lol.stdout.decode("utf-8")
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Ran on the Command Prompt!')
-        if lol == '':
-            lol = 'The output is empty. (This is not a Command Prompt message.)'
         if len(lol) > 1850:
             em.description = f"Ran on the Command Line ```{code}``` Output: \nThe process details are too large to fit in a message."
             await msg.edit(embed=em)
         else:
-            em.description = f"Ran on the Command Line: ```{code}``` Output: \n\n```{lol}```"
+            em.description = f"Ran on the Command Line: ```{code}``` Output: \n\n```{err or res}```"
             await msg.edit(embed=em)
 
     @commands.command()
@@ -167,26 +167,13 @@ class Developer:
 
 
     @commands.command(hidden=True)
-    async def sudo(self, ctx, user: discord.Member, command, *, args=None):
+    async def sudo(self, ctx, user: discord.Member, *, command: str):
         if not self.dev_check(ctx.author.id):
             return
-        args_dict = {}
-        if args:
-            arr = args.split(",")
-            for x in arr:
-                split = x.split(":")
-                name = split[0]
-                value = split[1]
-                args_dict[name] = value
 
-        ctx.author = user
-        cmd = self.bot.get_command(command)
-        if not cmd:
-            return await ctx.send(f"Command {command} does not exist.")
-        if len(args_dict) > 0:
-            await ctx.invoke(cmd, **args_dict)
-        else:
-            await ctx.invoke(cmd)
+        ctx.message.author = user
+        ctx.message.content = f"{ctx.prefix}{command}"
+        await self.bot.process_commands(ctx.message)
 
 
 
