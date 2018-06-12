@@ -101,6 +101,21 @@ class fun:
     #     if x.content.lower() == 'reject':
     #         return await ctx.send(f"Oof, {ctx.author.mention}...Looks like **{user.name}** didn't want to play with you. Oh well.")
     #     elif x.content.lower() == 'accept':
+
+
+    @commands.command()
+    async def meme(self, ctx):
+        """Get a random meme. The stuff of life."""
+        r = await self.bot.session.get("https://api.reddit.com/u/kerdaloo/m/dankmemer/top/.json?sort=top&t=day&limit=1")
+        r = await r.json()
+        meme = r['data']['children'][random.randint(0, len(r['data']['children']) - 1)]['data']
+        meme_img = meme['preview']['images'][0]['source']['url']
+        meme_title = meme['title']
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title="Random Meme")
+        em.set_author(name=meme_title)
+        em.set_image(url=meme_img)
+        em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
             
 
     @commands.command()
