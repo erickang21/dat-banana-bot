@@ -431,7 +431,7 @@ async def on_command_error(ctx, error):
         em.description = f'ACK. The command is on cooldown! You can use it again in **{actual_time}**.'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.NoPrivateMessage):
-        em.description = "This command can only be used in a server. Get out of our DMs!~"
+        em.description = "This command can only be used in a server. Get out of our DMs! (╯°□°）╯︵ ┻━┻"
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandNotFound):
         pass
