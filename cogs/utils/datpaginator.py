@@ -33,7 +33,7 @@ class DatPaginator(object):
         if self.killed: return
         if not self.message:
             if self.show_page_count:
-                self.embed.title = f"Page {self.current_page}/{len(self.pages)}"
+                self.embed.title = f"Page {self.current_page + 1}/{len(self.pages)}"
             self.embed.description = self.pages[0]
             self.message = await self.ctx.send(embed=self.embed)
         
@@ -42,7 +42,7 @@ class DatPaginator(object):
             self.current_page = index
             self.embed.description = page
             if self.show_page_count:
-                self.embed.title = f"Page {self.current_page}/{len(self.pages)}"
+                self.embed.title = f"Page {self.current_page + 1}/{len(self.pages)}"
             await self.message.edit(embed=self.embed)
             self.current_page = index
 
