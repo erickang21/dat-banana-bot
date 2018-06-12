@@ -399,6 +399,7 @@ class Utility:
         await ctx.send(file=discord.File(resp, f"{e.name}{extension}"))
 
     @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd'])
+    @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
     async def addemoji(self, ctx, *, emoji):
         """Adds an emoji by the emoji's name."""
@@ -436,6 +437,7 @@ class Utility:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
     async def deleteallemojis(self, ctx):
         """Deletes ALL emojis from your server."""
@@ -453,6 +455,7 @@ class Utility:
 
 
     @commands.command(aliases=['addedefault', 'defaultemojis'])
+    @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
     async def adddefaultemojis(self, ctx):
         """Add emojis to your server from a list of my default ones!"""
@@ -504,6 +507,7 @@ class Utility:
        
 
     @commands.command()
+    @commands.guild_only()
     async def feedback(self, ctx, *, feedback=None):
         """How do YOU want this bot to be? Give your word here."""
         if feedback is None:
@@ -807,6 +811,7 @@ class Utility:
               
 
     @commands.command()
+    @commands.guild_only()
     async def roleinfo(self, ctx, *, rolename):
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)

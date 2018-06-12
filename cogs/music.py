@@ -98,6 +98,7 @@ class Music:
 
 
     @commands.command()
+    @commands.guild_only()
     async def connect(self, ctx):
         '''Connects the bot to your current voice channel.'''
         if ctx.author.voice is None:
@@ -111,6 +112,7 @@ class Music:
 
 
     @commands.command()
+    @commands.guild_only()
     async def disconnect(self, ctx):
         '''Disconnects the bot to your current voice channel. Cya!'''
         if ctx.voice_client is None:
@@ -120,6 +122,7 @@ class Music:
             await ctx.send(f"Successfully disconnected from the voice channel. :white_check_mark:")
 
     @commands.command()
+    @commands.guild_only()
     #@commands.cooldown(2, 15.0, BucketType.user)
     async def play(self, ctx, *, search=None):
         player = self.bot.lavalink.players.get(ctx.guild.id)
@@ -152,6 +155,7 @@ class Music:
             await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks[0]["info"]["title"]))
 
     @commands.command()
+    @commands.guild_only()
     async def pause(self, ctx):
         """Pauses whatever is playing."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
@@ -162,6 +166,7 @@ class Music:
 
 
     @commands.command()
+    @commands.guild_only()
     async def resume(self, ctx):
         """Resumes whatever isn't playing."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
@@ -172,6 +177,7 @@ class Music:
         await ctx.send("**Carrying on!** :arrow_forward:")
        
     @commands.command()
+    @commands.guild_only()
     async def stop(self, ctx):
         """Stops the player."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
@@ -183,6 +189,7 @@ class Music:
         await ctx.send("**HALT!** Music has been stopped. :stop_button:")
 
     @commands.command()
+    @commands.guild_only()
     async def queue(self, ctx):
         """Gets the queue for the server."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
@@ -200,6 +207,7 @@ class Music:
 
 
     @commands.command()
+    @commands.guild_only()
     async def volume(self, ctx):
         """Change or view the current volume for playing."""
         player = self.bot.lavalink.players.get(ctx.guild.id)

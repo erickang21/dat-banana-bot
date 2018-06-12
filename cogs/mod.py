@@ -14,6 +14,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members = True)
     async def lockdown(self, ctx, action):
         """Prevents anyone from chatting in the current channel."""
@@ -33,6 +34,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def starboard(self, ctx, action=None):
         """Turn on a starboard for the server that is for STARS!"""
@@ -81,6 +83,7 @@ class mod:
 
         
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def dm(self, ctx, user: discord.Member, *, msg: str):
         """Escort your DM to someone thru the bot. Usage: *dm [tag person] [msg]"""
@@ -97,6 +100,7 @@ class mod:
     
     
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(administrator = True)
     async def warn(self, ctx, user: discord.Member, *, reason: str):
         """It's time to stop. Sends that warning. Usage: *warn [tag person] [reason]"""
@@ -110,6 +114,7 @@ class mod:
             await ctx.send("Something happened and the DM could not make it :x:. The user could be blocking DMs from the server, or you did not use the format correctly. Usage: *warn [tag person] [reason].")    
        
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_messages = True)
     async def purge(self, ctx, num: int):
         """Deletes a # of msgs. *purge [# of msgs].""" 
@@ -126,6 +131,7 @@ class mod:
     
     
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, user: discord.Member, *, reason=None):
         """Kicks a member into the world outside your server."""
@@ -148,6 +154,7 @@ class mod:
         
     
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, user: discord.Member, *, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
@@ -168,6 +175,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def mute(self, ctx, user: discord.Member, mutetime=None):
         '''Forces someone to shut up. Usage: *mute [user] [time in mins]'''
@@ -193,6 +201,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def servermute(self, ctx, user: discord.Member = None):
         '''Forces someone to shut up through the entire server. OUCH.'''
@@ -215,6 +224,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def serverunmute(self, ctx, user: discord.Member = None):
         '''Un-shuts someone up from the entire server. YEEE.'''
@@ -231,6 +241,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def unmute(self, ctx, user: discord.Member):
         '''Allows someone to un-shut up. Usage: *unmute [user]'''
@@ -244,6 +255,7 @@ class mod:
     
 
     @commands.command(aliases=['giverole'])
+    @commands.guild_only()
     @commands.has_permissions(manage_roles = True)
     async def addrole(self, ctx, user: discord.Member, *, role):
         """Adds a role to the user."""
@@ -258,6 +270,7 @@ class mod:
 
 
     @commands.command(aliases=['welcome'])
+    @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def welcomemsg(self, ctx, action=None):
         if action is None:
@@ -297,6 +310,7 @@ class mod:
                 await ctx.send("Successfully turned off welcome messages for this guild.")
 
     @commands.command(aliases=['leave'])
+    @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def leavemsg(self, ctx, action=None):
         if action is None:
@@ -337,6 +351,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def banmsg(self, ctx, action=None):
         if action is None:
@@ -377,6 +392,7 @@ class mod:
             
     
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_roles = True)
     async def autorole(self, ctx, *, role):
         """Sets the bot to automatically give a role on a member's join."""
@@ -392,6 +408,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def modlog(self, ctx, action=None):
         if action is None:
@@ -425,6 +442,7 @@ class mod:
 
 
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def prefix(self, ctx, prefix=None):
         em = discord.Embed(color=discord.Color(value=0x00ff00), title="Bot Prefix")
@@ -442,6 +460,7 @@ class mod:
         
             
     @commands.command()
+    @commands.guild_only()
     @commands.has_permissions(ban_members = True)
     async def hackban(self, ctx, id, reason=None):
         try:
