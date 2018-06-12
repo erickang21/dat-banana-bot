@@ -112,8 +112,7 @@ class fun:
         meme = r['data']['children'][random.randint(0, len(r['data']['children']) - 1)]['data']
         meme_img = meme['preview']['images'][0]['source']['url']
         meme_title = meme['title']
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title="Random Meme")
-        em.set_author(name=meme_title)
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=meme_title)
         em.set_image(url=meme_img)
         em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
