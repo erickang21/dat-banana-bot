@@ -106,7 +106,8 @@ class fun:
     @commands.command()
     async def meme(self, ctx):
         """Get a random meme. The stuff of life."""
-        r = await self.bot.session.get("https://api.reddit.com/u/kerdaloo/m/dankmemer/top/.json?sort=top&t=day&limit=1")
+        await ctx.trigger_typing()
+        r = await self.bot.session.get("https://api.reddit.com/u/kerdaloo/m/dankmemer/top/.json?sort=top&t=day&limit=500")
         r = await r.json()
         meme = r['data']['children'][random.randint(0, len(r['data']['children']) - 1)]['data']
         meme_img = meme['preview']['images'][0]['source']['url']
