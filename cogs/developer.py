@@ -95,7 +95,7 @@ class Developer:
         err = lol.stderr.decode("utf-8")
         res = lol.stdout.decode("utf-8")
         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Ran on the Command Prompt!')
-        if len(lol) > 1850:
+        if len(res) > 1850 or len(err) > 1850:
             em.description = f"Ran on the Command Line ```{code}``` Output: \nThe process details are too large to fit in a message."
             await msg.edit(embed=em)
         else:
