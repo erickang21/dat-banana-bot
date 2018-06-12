@@ -60,7 +60,7 @@ class DatPaginator(object):
             try:
                 rec, usr = await self.ctx.bot.wait_for("reaction_add", check=self.check, timeout=self.timeout)
             except asyncio.TimeoutError:
-                await self.kill()
+                await self.kill(delete=False)
             else:
                 try:
                     await self.message.remove_reaction(rec, usr)
