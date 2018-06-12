@@ -112,7 +112,7 @@ class fun:
         meme = r['data']['children'][random.randint(0, len(r['data']['children']) - 1)]['data']
         meme_img = meme['preview']['images'][0]['source']['url']
         meme_title = meme['title']
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=meme_title)
+        em = discord.Embed(color=discord.Color(value=0xf9e236), title=meme_title)
         em.set_image(url=meme_img)
         em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
@@ -177,7 +177,7 @@ class fun:
         match = self.guess_number
         if match == number:
             self.guess_number = random.randint(1, 100)
-            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em = discord.Embed(color=discord.Color(value=0xf9e236))
             em.title = "SUCCESS!"
             em.description = "You guessed the number CORRECT-O! Awesome job."
         else:
@@ -312,7 +312,7 @@ class fun:
         """It's a REALLY REALLY bad joke. Trust me."""
         resp = await self.session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke')
         r = await resp.json()
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color(value=0xf9e236)
         em = discord.Embed(color=color, title=r['setup'])
         em.description = r['punchline']
         em.set_footer(text="Ha. Ha. Ha. Very funny, huh?")
