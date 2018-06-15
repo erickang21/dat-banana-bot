@@ -32,13 +32,17 @@ class DatPaginator(object):
     async def show_page(self, index: int):
         if self.killed: return
         if not self.message:
+            if self.show_page_count:
+                self.embed.title = f"Page {self.current_page + 1}/{len(self.pages)}"
             self.embed.description = self.pages[0]
             self.message = await self.ctx.send(embed=self.embed)
+        
         else:
             page = self.pages[index]
+            self.current_page = index
             self.embed.description = page
             if self.show_page_count:
-                self.embed.title = f"Page {self.current_page}/{len(self.pages)}"
+                self.embed.title = f"Page {self.current_page + 1}/{len(self.pages)}"
             await self.message.edit(embed=self.embed)
             self.current_page = index
 
@@ -56,7 +60,7 @@ class DatPaginator(object):
             try:
                 rec, usr = await self.ctx.bot.wait_for("reaction_add", check=self.check, timeout=self.timeout)
             except asyncio.TimeoutError:
-                await self.kill()
+                await self.kill(delete=False)
             else:
                 try:
                     await self.message.remove_reaction(rec, usr)
@@ -84,8 +88,8 @@ class DatPaginator(object):
         self.killed = True
         if self.message:
             try:
-                if delete: await self.message.delete()
                 await self.message.clear_reactions()
+                if delete: await self.message.delete()               
             except discord.Forbidden:
                 pass
             except Exception as e:
@@ -93,7 +97,7 @@ class DatPaginator(object):
 
     async def previous_page(self):
         if self.current_page == 0:
-            await self.show_page(self.pages[-1])
+            await self.show_page(len(self.pages) - 1)
         else:
             await self.show_page(self.current_page - 1)
 
