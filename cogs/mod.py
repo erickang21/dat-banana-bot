@@ -274,7 +274,7 @@ class mod:
     @commands.guild_only()
     @commands.has_permissions(manage_roles = True)
     async def addrole(self, ctx, user: discord.Member, *, role):
-        """Adds a role to the user."""
+        """Adds a role to a user."""
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
@@ -283,6 +283,24 @@ class mod:
             return await ctx.send(f"Success! **{str(user)}** has been given the role **{role}**.")
         except discord.Forbidden:
             return await ctx.send("Bot does not have enough permissions to give roles.")
+        
+        
+        
+        
+    @commands.command(aliases=['rrole'])
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles = True)
+    async def removerole(self, ctx, user: discord.Member, *, role):
+        """Removes a role from a user."""
+        r = discord.utils.get(ctx.guild.roles, name=str(role))
+        if r is None:
+            return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        try:
+            await user.remove_roles(r)
+            return await ctx.send(f"Success! **{str(user)}** has been removed from the role **{role}**.")
+        except discord.Forbidden:
+            return await ctx.send("Bot does not have enough permissions to remove role.")
+
 
 
     @commands.command(aliases=['welcome'])
