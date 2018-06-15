@@ -278,6 +278,8 @@ class mod:
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        if r.name in [x.name for x in user.roles]:
+            return await ctx.send(f"Looks like **{str(user)}** already has the role **{role}**.")
         try:
             await user.add_roles(r)
             return await ctx.send(f"Success! **{str(user)}** has been given the role **{role}**.")
@@ -295,6 +297,8 @@ class mod:
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        if r.name not in [x.name for x in user.roles]:
+            return await ctx.send(f"Looks like **{str(user)}** never had the role **{role}**.")
         try:
             await user.remove_roles(r)
             return await ctx.send(f"Success! **{str(user)}** has been removed from the role **{role}**.")
