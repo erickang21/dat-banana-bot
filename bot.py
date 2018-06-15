@@ -148,7 +148,7 @@ async def on_message(message):
         if await modlog_check(message.guild.id):
             try:
                 lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-                em = discord.Embed(color=discord.Color(value=0x00ff00), title='An invite was posted.')
+                em = discord.Embed(color=0x00ff00, title='An invite was posted.')
                 em.add_field(name='Channel', value=f"<#{message.channel.id}>")
                 em.add_field(name='Link', value=message.content)
                 em.add_field(name='Sent By', value=str(message.author))
@@ -168,7 +168,7 @@ async def on_message(message):
 async def on_command(ctx):
     bot.commands_run += 1
     log = bot.get_channel(445332002942484482)
-    em = discord.Embed(color=discord.Color(value=0xf9e236), title="Command Run!")
+    em = discord.Embed(color=0xf9e236, title="Command Run!")
     em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
     em.add_field(name="User ID", value=ctx.author.id)
     em.add_field(name="Server", value=ctx.guild.name)
@@ -188,7 +188,7 @@ async def on_message_edit(before, after):
     if await modlog_check(before.guild.id):
         try:
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
+            em = discord.Embed(color=0x00ff00, title='Message Edited')
             em.add_field(name='Channel', value=f"<#{before.channel.id}>")
             em.add_field(name='Content Before', value=before.content)
             em.add_field(name='Content After', value=after.content)
@@ -211,7 +211,7 @@ async def on_reaction_add(reaction, user):
             return
         emoji_count = reaction.message.reactions[0].count
         if emoji_count > 1:
-            em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
+            em = discord.Embed(color=0xf4bf42, title=f"Stars: {emoji_count}")
             for_description = reaction.message.content
             if not for_description:
                 try:
@@ -249,7 +249,7 @@ async def on_reaction_add(reaction, user):
                     img_url = reaction.message.embeds[0].url
                 except IndexError:
                     img_url = None
-            em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Stars: 1")
+            em = discord.Embed(color=0xf4bf42, title="Stars: 1")
             em.description = reaction.message.content
             em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
             if img_url:
@@ -268,7 +268,7 @@ async def on_reaction_add(reaction, user):
     #     except KeyError:
     #         return
     #     msg = await channel.get_message(int(sent))
-    #     em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
+    #     em = discord.Embed(color=0xf4bf42, title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
     #     em.description = reaction.message.content
     #     em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
     #     await msg.edit(embed=em)
@@ -283,7 +283,7 @@ async def on_reaction_add(reaction, user):
 @bot.event
 async def on_guild_join(guild):
     lol = bot.get_channel(392443319684300801)
-    em = discord.Embed(color=discord.Color(value=0xf9e236))
+    em = discord.Embed(color=0xf9e236)
     em.title = "dat banana bot has joined a new server!"
     em.description = f"**{guild.name}**"
     em.add_field(name="Owner", value=str(guild.owner))
@@ -296,7 +296,7 @@ async def on_guild_join(guild):
 @bot.event
 async def on_guild_remove(guild):
     logs_channel = bot.get_channel(392443319684300801)
-    em = discord.Embed(color=discord.Color(value=0xf44242))
+    em = discord.Embed(color=0xf44242)
     em.title = "dat banana bot has been removed from a server."
     em.description = f"**{guild.name}**"
     em.set_footer(text=f"ID: {guild.id}")
@@ -316,7 +316,7 @@ async def on_member_join(member):
     await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Joined')
+        em = discord.Embed(color=0x00ff00, title='Member Joined')
         em.add_field(name="Name", value=str(member))
         em.add_field(name='Joined At', value=str(member.joined_at.strftime("%b %m, %Y, %A, %I:%M %p")))
         em.add_field(name="ID", value=member.id)
@@ -344,7 +344,7 @@ async def on_member_remove(member):
     await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Left')
+        em = discord.Embed(color=0x00ff00, title='Member Left')
         em.add_field(name="Name", value=str(member))
         em.add_field(name="ID", value=member.id)
         em.set_thumbnail(url=member.avatar_url)
@@ -371,7 +371,7 @@ async def on_member_ban(guild, member):
         await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Banned')
+        em = discord.Embed(color=0x00ff00, title='Member Banned')
         em.add_field(name="Name", value=str(member))
         em.add_field(name="ID", value=member.id)
         em.add_field(name="Server", value=guild.name)
@@ -398,7 +398,7 @@ async def on_message_delete(message):
                 except IndexError:
                     img_url = None
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
+            em = discord.Embed(color=0x00ff00, title='Message Deleted')
             em.add_field(name='Content', value=message.content if message.content else "Embed")
             em.add_field(name='Sent By', value=str(message.author))
             em.add_field(name='Channel', value=f"<#{message.channel.id}>")
@@ -415,10 +415,10 @@ async def on_message_delete(message):
 
 @bot.event
 async def on_command_error(ctx, error):
-    em = discord.Embed(color=discord.Color(value=0xf44e42), title='An error occurred.')
+    em = discord.Embed(color=0xf44e42, title='An error occurred.')
     missing_param_errors = (commands.MissingRequiredArgument, commands.BadArgument, commands.TooManyArguments, commands.UserInputError)
     if isinstance(error, missing_param_errors):
-        em = discord.Embed(color=discord.Color(value=0xf44242), title="Incorrect Usage of Command!")
+        em = discord.Embed(color=0xf44242, title="Incorrect Usage of Command!")
         em.description = f"This is the correct usage:\n**{ctx.prefix}{ctx.command.signature}**"
         return await ctx.send(embed=em)
     if isinstance(error, commands.NotOwner):
@@ -495,7 +495,7 @@ async def say(ctx, *, message: commands.clean_content()):
 @bot.command()
 async def ping(ctx):
     """Premium ping pong giving you a websocket latency."""
-    color = discord.Color(value=0xf9e236)
+    color = 0xf9e236
     e = discord.Embed(color=color, title='Pinging')
     e.description = 'Please wait... :ping_pong:'
     msg = await ctx.send(embed=e)

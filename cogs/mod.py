@@ -121,7 +121,7 @@ class mod:
     async def warn(self, ctx, user: discord.Member, *, reason: str):
         """It's time to stop. Sends that warning. Usage: *warn [tag person] [reason]"""
         try:
-            color = discord.Color(value=0xf44242)
+            color = 0xf44242
             em = discord.Embed(color=color, title=f"WARNING: by {ctx.message.author.name} from **{ctx.author.guild.name}**.", description=f"{reason}")
             await user.send(embed=em)
             await ctx.message.delete()
@@ -153,7 +153,7 @@ class mod:
         """Kicks a member into the world outside your server."""
         try:
             await user.kick(reason=reason)
-            color = discord.Color(value=0x00ff00)
+            color = 0x00ff00
             em = discord.Embed(color=color, title='Kicked!')
             em.add_field(name='User', value=user.name)
             em.add_field(name='Kicked By', value=ctx.author.name)
@@ -176,7 +176,7 @@ class mod:
         """Swings the mighty Ban Hammer on that bad boy."""
         try:
             await user.ban(reason=reason)
-            color = discord.Color(value=0x00ff00)
+            color = 0x00ff00
             em = discord.Embed(color=color, title='Banned!')
             em.description = f'The ban hammer has fell down. {self.bot.get_emoji(436342184330002442)}'
             em.add_field(name='User', value=user.name)
@@ -290,7 +290,7 @@ class mod:
     @commands.has_permissions(manage_guild=True)
     async def welcomemsg(self, ctx, action=None):
         if action is None:
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Welcome Messages')
+            em = discord.Embed(color=0x00ff00, title='Welcome Messages')
             try:
                 x = await self.bot.db.welcome.find_one({"id": str(ctx.guild.id)})
                 if x['channel'] is False:
@@ -330,7 +330,7 @@ class mod:
     @commands.has_permissions(manage_guild=True)
     async def leavemsg(self, ctx, action=None):
         if action is None:
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Leave Messages')
+            em = discord.Embed(color=0x00ff00, title='Leave Messages')
             try:
                 x = await self.bot.db.leave.find_one({"id": str(ctx.guild.id)})
                 if x['channel'] is False:
@@ -371,7 +371,7 @@ class mod:
     @commands.has_permissions(manage_guild = True)
     async def banmsg(self, ctx, action=None):
         if action is None:
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Leave Messages')
+            em = discord.Embed(color=0x00ff00, title='Leave Messages')
             try:
                 x = await self.bot.db.ban.find_one({"id": str(ctx.guild.id)})
                 if x['channel'] is False:
@@ -429,7 +429,7 @@ class mod:
     async def modlog(self, ctx, action=None):
         if action is None:
             x = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title="Mod Log Status")
+            em = discord.Embed(color=0x00ff00, title="Mod Log Status")
             em.description = f"Mod logs are enabled in this server, in <#{x['channel']}>."
             if x is None:
                 em.description = 'Mod logs are turned off for this server.'
@@ -461,7 +461,7 @@ class mod:
     @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def prefix(self, ctx, prefix=None):
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title="Bot Prefix")
+        em = discord.Embed(color=0x00ff00, title="Bot Prefix")
         if prefix is None:
             em.description = f"The bot's prefix for server **{ctx.guild.name}** is set to `{ctx.prefix}`."
             return await ctx.send(embed=em)
@@ -488,7 +488,7 @@ class mod:
             await ctx.guild.ban(lol, reason=reason)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
-        color = discord.Color(value=0x00ff00)
+        color = 0x00ff00
         em = discord.Embed(color=color, title='Banned!')
         em.add_field(name='Banned By', value=ctx.author.name)
         reason = reason if reason is not None else 'No reason given.'
@@ -502,7 +502,7 @@ class mod:
     # @commands.has_permissions(administrator = True)
     # async def banword(self, ctx, word=None):
     #     '''Command group that allows you to add/delete banned words for your server.'''
-    #     em = discord.Embed(color=discord.Color(value=0x00ff00), title='Banned Words')
+    #     em = discord.Embed(color=0x00ff00, title='Banned Words')
     #     em.description = ''
     #     try:
     #         f = open("data/guildconfig.json").read()
@@ -558,7 +558,7 @@ class mod:
     # @commands.group()
     # async def welcomemsg(self, ctx):
     #     '''Enables/disables welcome messages for this guild.'''
-    #     em = discord.Embed(color=discord.Color(value=0x00ff00), title='Welcome Messages')
+    #     em = discord.Embed(color=0x00ff00, title='Welcome Messages')
     #     try:
     #         f = open(f"data/welcome/{ctx.guild.id}.json").read()
     #         x = json.loads(f)

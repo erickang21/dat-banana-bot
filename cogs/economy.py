@@ -60,7 +60,7 @@ class Economy:
         '''Check how much bananas ya got!'''
         person = "You currently have" if not user else f"**{user.name}** currently has"
         user = user or ctx.author
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Current Balance')
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
         x = await self.db.economy.find_one({"user": user.id})
         if not x:
             em.description = f"{person} don't have an account on dat banana bot yet! Open one using `*openaccount`."
@@ -84,7 +84,7 @@ class Economy:
         # async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
         #     resp = await resp.json()
         #     if resp['voted'] == 0:
-        #         em = discord.Embed(color=discord.Color(value=0x00ff00), title='Did you vote for dat banana bot today?')
+        #         em = discord.Embed(color=0x00ff00, title='Did you vote for dat banana bot today?')
         #         em.description = "You can get an extra **500** points from daily credit by simply upvoting dat banana bot. Click [here](https://discordbots.org/bot/388476336777461770/vote) to vote now.\n\nReact with :white_check_mark: to go upvote, or :x: to receive the reduced daily credit."
         #         msg = await ctx.send(embed=em)
         #         await msg.add_reaction("\U00002705")
@@ -154,13 +154,13 @@ class Economy:
                 "Could I be dreaming this?"
             ]
             await self.add_points(ctx.author, 10000000)
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='You are the lucky winner!')
+            em = discord.Embed(color=0x00ff00, title='You are the lucky winner!')
             em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
             await ctx.send(embed=em)
             self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
         else:
             await self.add_points(ctx.author, -100)
-            em = discord.Embed(color=discord.Color(value=0xf44e42))
+            em = discord.Embed(color=0xf44e42)
             responses = [
                 f"OOF! Guess who didn't win the giant $$ this time!",
                 "Aw, try again!",
@@ -233,7 +233,7 @@ class Economy:
     @commands.command(aliases=['lb'])
     async def leaderboard(self, ctx):
         """Get the leaderboard for economy!"""
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title="Economy Leaderboard")
+        em = discord.Embed(color=0x00ff00, title="Economy Leaderboard")
         em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
         lb = list(reversed(await self.bot.db.economy.find().sort("points").to_list(None)))
         counter = 0
