@@ -12,6 +12,22 @@ class mod:
     def __init__(self, bot):
         self.bot = bot
 
+    
+    @commands.command()
+    @commands.guild_only()
+    async def antilink(self, ctx, action):
+        """Prevents people from sending invite links in the channel."""
+        if action.lower() == 'on':
+            if not ctx.guild.me.guild_permissions.manage_messages:
+                return await ctx.send("I do not have the **Manage Messages** permission. This means I cannot delete links!")
+            await self.bot.db.antilink.update_one({"id": ctx.guild.id}, {"$set": {"status": True}}, upsert=True)
+            await ctx.send("Antilink is enabled. Put an end to advertising.")
+        elif action.lower() == 'off':
+            await self.bot.db.antilink.update_one({"id": ctx.guild.id}, {"$set": {"status": False}})
+            await ctx.send("Antilink disabled. Advertising continues.")
+        else:
+            return await ctx.send("Lockdown command:\n*lockdown [on/off]")
+
 
     @commands.command()
     @commands.guild_only()
