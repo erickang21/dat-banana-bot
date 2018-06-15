@@ -76,11 +76,11 @@ class CR:
                 profile = await self.client.get_player(crtag)
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 print(e)
-                color = discord.Color(value=0xf44e42)
+                color = 0xf44e42
                 em = discord.Embed(color=color, title='Royale API error.')
                 em.description = f"{e.code}: {e.error}"
                 return await ctx.send(embed=em)
-            color = discord.Color(value=0xf1f442)
+            color = 0xf1f442
             em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
             em.description = "Guess who else has CR stats? Our partner bot, [Statsy](https://bot.discord.io/statsy)"
             em.add_field(name='Trophies', value=f"{profile.trophies} {self.emoji('trophy')}")
@@ -143,16 +143,16 @@ class CR:
             profile = await self.client.get_player(crtag)
             clan = await profile.get_clan()
         except AttributeError:
-            em = discord.Embed(color=discord.Color(value=0xf44e42), title="Oof!")
+            em = discord.Embed(color=0xf44e42, title="Oof!")
             em.description = "You currently aren't in a clan."
             return await ctx.send(embed=em)
         except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
             print(e)
-            color = discord.Color(value=0xf44e42)
+            color = 0xf44e42
             em = discord.Embed(color=color, title='Royale API error.')
             em.description = f"{e.code}: {e.error}"
             return await ctx.send(embed=em)
-        color = discord.Color(value=0xf1f442)
+        color = 0xf1f442
         em = discord.Embed(color=color, title=f'{clan.name} ({clan.tag})')
         em.description = f'{clan.description}'
         em.add_field(name='Clan Trophies', value=f'{clan.score}')
@@ -221,7 +221,7 @@ class CR:
             profile = await self.client.get_player(crtag)
         except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
             print(e)
-            color = discord.Color(value=0xf44e42)
+            color = 0xf44e42
             em = discord.Embed(color=color, title='Royale API error.')
             em.description = f"{e.code}: {e.error}"
             return await ctx.send(embed=em)
@@ -234,7 +234,7 @@ class CR:
             deck += f"{getemoji} {cardname} - Level {card.level} \n"
             avgelixir += card.elixir
         avgelixir = f'{(avgelixir / 8):.1f}' 
-        color = discord.Color(value=0x00ff00)
+        color = 0x00ff00
         em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
         em.description = deck
         em.add_field(name='Average Elixir Cost', value=avgelixir)
@@ -260,11 +260,11 @@ class CR:
             chests = await self.client.get_player_chests(crtag)
         except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
             print(e)
-            color = discord.Color(value=0xf44e42)
+            color = 0xf44e42
             em = discord.Embed(color=color, title='Royale API error.')
             em.description = f"{e.code}: {e.error}"
             return await ctx.send(embed=em)
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Player Chests')
+        em = discord.Embed(color=0x00ff00, title='Player Chests')
         em.set_author(name=profile.name, icon_url=ctx.author.avatar_url)
         desc = ""
         for x in chests.upcoming:
@@ -295,7 +295,7 @@ class CR:
             profile = await self.client.get_player(crtag)
         except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
             print(e)
-            color = discord.Color(value=0xf44e42)
+            color = 0xf44e42
             em = discord.Embed(color=color, title='Royale API error.')
             em.description = f"{e.code}: {e.error}"
             return await ctx.send(embed=em)
@@ -307,7 +307,7 @@ class CR:
             # epic = [x.name for x in all_pfp_cards if x.rarity == "Epic"]
             # legendary = [x.name for x in all_pfp_cards if x.rarity == "Legendary"]
             # not_found = [x for x in all_cards if not x in all_pfp_cards] or f"All found! {str(discord.utils.get(self.bot.emojis, name='blobwave'))}"
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"{profile.name} (#{profile.tag})")
+            em = discord.Embed(color=0x00ff00, title=f"{profile.name} (#{profile.tag})")
             em.description = f"**Cards found:** {len(profile.cards)}/84"
             # em.add_field(name="Found Cards", value="-", inline=False)
             # em.add_field(name="Common", value=self.show_cards(common), inline=False)

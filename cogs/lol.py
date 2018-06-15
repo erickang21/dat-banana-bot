@@ -35,7 +35,7 @@ class lol:
         '''Gets a League of Legends summoner profile.'''
         try:
             summoner = await self.client.get_summoner(query=name)
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Profile')
+            em = discord.Embed(color=0x00ff00, title='LoL Profile')
             em.add_field(name='Summoner Level', value=summoner.summonerLevel)
             em.add_field(name='ID', value=summoner.id)
             em.set_author(name=name)
@@ -53,7 +53,7 @@ class lol:
             await ctx.trigger_typing()
             client = talon.Client(token=self.token)
             summoner = await client.get_champion_mastery(region=None, query=name)
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Champion Masteries')
+            em = discord.Embed(color=0x00ff00, title='LoL Champion Masteries')
             async with self.session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[0]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                 resp = await resp.json()
                 em.add_field(name='Champion', value=resp['name'])
@@ -74,7 +74,7 @@ class lol:
                 await ctx.send(embed=em)
                 await ctx.trigger_typing()
                 summoner = await self.client.get_champion_mastery(region=None, query=name)
-                em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Champion Masteries')
+                em = discord.Embed(color=0x00ff00, title='LoL Champion Masteries')
                 async with self.session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[1]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                     resp = await resp.json()
                     em.add_field(name='Champion', value=resp['name'])
@@ -95,7 +95,7 @@ class lol:
                     await ctx.send(embed=em)
                     await ctx.trigger_typing()
                     summoner = await self.client.get_champion_mastery(region=None, query=name)
-                    em = discord.Embed(color=discord.Color(value=0x00ff00), title='LoL Champion Masteries')
+                    em = discord.Embed(color=0x00ff00, title='LoL Champion Masteries')
                     async with self.session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{summoner[2]['championId']}?locale=en_US&champData=all&api_key={self.token}") as resp:
                         resp = await resp.json()
                         em.add_field(name='Champion', value=resp['name'])
@@ -130,7 +130,7 @@ class lol:
                 return await ctx.send("Can't find that specified champion. Note that champion names must be case-sensitive.")
             async with self.session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/champions/{lol}?locale=en_US&champData=all&tags=all&api_key={self.token}") as resp:
                 resp = await resp.json()
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title=resp['name'])
+            em = discord.Embed(color=0x00ff00, title=resp['name'])
             em.description = resp['lore']
             em.add_field(name='Type', value=resp['tags'][0])
             em.add_field(name='Health', value=f"{int(resp['stats']['hp'])} (+{int(resp['stats']['hpperlevel'])} per level)")
@@ -152,7 +152,7 @@ class lol:
             em.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/6.24.1/img/champion/{champname}.png")
             await ctx.send(embed=em)
                     # await ctx.trigger_typing()
-                    # em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Recommended set for: {resp['name']}")
+                    # em = discord.Embed(color=0x00ff00, title=f"Recommended set for: {resp['name']}")
                     # em.description = "Summoner's Rift"
                     # async with aiohttp.ClientSession() as session:
                     #     async with session.get(f"https://na1.api.riotgames.com/lol/static-data/v3/items/{resp['recommended'][0]['blocks'][0]['items'][0]['id']}locale=en_US&tags=all&itemData=all&api_key={self.token}") as r:

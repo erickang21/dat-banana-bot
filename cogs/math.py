@@ -67,25 +67,25 @@ class Math:
                 num1 = float(num1)
                 num2 = float(num2)
                 if sign == '+':
-                    color = discord.Color(value=0x00ff00)
+                    color = 0x00ff00
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}+{num2}')
                     em.add_field(name='Output:', value=f'{num1 + num2}')
                     return await ctx.send(embed=em)
                 if sign == '-':
-                    color = discord.Color(value=0x00ff00)
+                    color = 0x00ff00
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}-{num2}')
                     em.add_field(name='Output:', value=f'{num1 - num2}')
                     return await ctx.send(embed=em)
                 if sign == 'x':
-                    color = discord.Color(value=0x00ff00)
+                    color = 0x00ff00
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}x{num2}')
                     em.add_field(name='Output:', value=f'{num1 * num2}')
                     return await ctx.send(embed=em)
                 if sign == '/':
-                    color = discord.Color(value=0x00ff00)
+                    color = 0x00ff00
                     em = discord.Embed(color=color, title='Calculator')
                     em.add_field(name='Input:', value=f'{num1}+{num2}')
                     em.add_field(name='Output:', value=f'{num1 / num2}')

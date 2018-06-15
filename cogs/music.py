@@ -25,7 +25,7 @@ class Music:
             await e.player.play()
         if isinstance(e, lavalink.Events.TrackStartEvent):
             ctx = e.player.fetch("ctx")
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Playing")
+            em = discord.Embed(color=0x00ff00, title=f"Playing")
             em.description = f"**{e.track.title}**"
             em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
             minutes, seconds = divmod(e.track.duration, 60)
@@ -58,7 +58,7 @@ class Music:
                         await msg.remove_reaction("\U0001f501", ctx.author)
                     elif reaction.emoji == "❓":
                         await msg.remove_reaction("\U00002753", ctx.author)
-                        embed = discord.Embed(color=discord.Color(value=0x00ff00), title='Music Player Help')
+                        embed = discord.Embed(color=0x00ff00, title='Music Player Help')
                         embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
                         embed.set_footer(text='This will revert back in 15 seconds.')
                         await msg.edit(embed=embed)
@@ -134,7 +134,7 @@ class Music:
                 return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
             player.store("ctx", ctx)
             await player.connect(ctx.author.voice.channel.id)
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title="Searching...", description=f"{self.bot.get_emoji(441385713091477504)} Searching `{search}`...")
+        em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(441385713091477504)} Searching `{search}`...")
         m = await ctx.send(embed=em)
 
         search = search.strip("<>")
@@ -195,7 +195,7 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.queue:
             await ctx.send("No songs are currently in the queue! Just queue the :banana: song, kthx.")
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f"Music Queue")
+        em = discord.Embed(color=0x00ff00, title=f"Music Queue")
         em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         songs = ""
         count = 0

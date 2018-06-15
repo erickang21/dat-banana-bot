@@ -7,7 +7,6 @@ import json
 from discord.ext import commands
 
 
-
 class Idiotic:
     def __init__(self, bot):
         self.bot = bot

@@ -42,7 +42,7 @@ class Help:
         """HELP! Not this one, tho..."""
         try:
             if command is None:
-                color = discord.Color(value=0x00ff00)
+                color = 0x00ff00
                 em = discord.Embed(color=color, title='dat banana bot Help')
                 lol = []
                 commands = []

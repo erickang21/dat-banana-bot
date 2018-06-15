@@ -1,13 +1,5 @@
 import discord
-import os
-import io
-import traceback
-import sys
-import time
-import datetime
 import asyncio
-import random
-import aiohttp
 import random
 import textwrap
 import wikipedia
@@ -25,7 +17,7 @@ class Utility:
         self.bot = bot
         self.session = self.bot.session
         with open("data/apikeys.json") as f:
-           x = json.load(f)
+            x = json.load(f)
         self.weather_api = x['weatherapi']
         self.langs = {
             "ab": "Abkhaz",
@@ -214,58 +206,50 @@ class Utility:
             "zu": "Zulu"
         }
 
-
-
     def cleanup_code(self, content):
-    # remove ```py\n```
+        # remove ```py\n```
         if content.startswith('```') and content.endswith('```'):
             return '\n'.join(content.split('\n')[1:-1])
 
         return content.strip('` \n')
 
-
     @commands.command(name="translate", aliases=["trans"])
-    async def _translate(self, ctx, lang, *, text:str):
+    async def _translate(self, ctx, lang, *, text: str):
         em = discord.Embed(color=ctx.author.color, title="Translated!")
         em.add_field(name="Original Text", value=f"```{text}```", inline=False)
         if lang in self.langs:
             to_translate = translate(text, lang)
         else:
-            lang = dict(zip(self.langs.values(), self.langs.keys())).get(lang.lower().title()) 
+            lang = dict(zip(self.langs.values(), self.langs.keys())).get(lang.lower().title())
             to_translate = translate(text, lang)
         em.add_field(name="Translated Text", value=f"**Language:** {lang}\n\n**Text:**\n```{to_translate}```", inline=False)
         await ctx.send(embed=em)
-    
-    
+
     @commands.command()
     async def weather(self, ctx, *, city: str):
         """Get the weather for a select city."""
         settings = {"APPID": self.weather_api}
         data = weather.get_current('{}'.format(city), units='metric', **settings)
-        data2 = weather.get_current(city, units='standard', **settings)
-        keys = ['main.temp', 'main.humidity', 'coord.lon', 'coord.lat']
-        x = data.get_many(keys)
         loc = data('name')
         country = data('sys.country')
         lon = data('coord.lon')
         lat = data('coord.lat')
         temp = data('main.temp')
-        temp2 = temp * 9/5 + 32
+        temp2 = temp * 9 / 5 + 32
         high = data('main.temp_max')
         low = data('main.temp_min')
-        high2 = high * 9/5 + 32
-        low2 = low * 9/5 + 32
+        high2 = high * 9 / 5 + 32
+        low2 = low * 9 / 5 + 32
         embed = discord.Embed(title='{}, {}'.format(loc, country), color=ctx.author.color)
         embed.add_field(name='Absolute Location :map:', value='Longitude, Latitude\n{}, {}'.format(lon, lat))
         embed.add_field(name='Temperature :thermometer:', value='{}F, {}C'.format(temp2, temp))
         embed.add_field(name='Humidity :potable_water:', value='{}%'.format(data('main.humidity')))
-        embed.add_field(name='Wind Speed :wind_blowing_face: ', value='{}m/s'.format(data('wind.speed')))       
+        embed.add_field(name='Wind Speed :wind_blowing_face: ', value='{}m/s'.format(data('wind.speed')))
         embed.add_field(name='Lowest Temperature :low_brightness: ', value='**{}** F\n**{}** C'.format(low2, low))
         embed.add_field(name='Highest Temperature :high_brightness: ', value='**{}** F\n**{}** C'.format(high2, high))
         embed.set_footer(text='Weather Data from OpenWeatherMap.org')
         embed.set_thumbnail(url='https://cdn2.iconfinder.com/data/icons/weather-icons-8/512/day-clear-256.png')
         await ctx.send(embed=embed)
-
 
     @commands.command()
     async def coliru(self, ctx, language: str = None, *, code: str = None):
@@ -277,7 +261,7 @@ class Utility:
             Usage: *coliru [language] [body]
 
             Available languages:
-            
+
             cpp: C++
             c: C
             py / python: Python
@@ -292,7 +276,7 @@ class Utility:
         cmds = {
             'cpp': 'g++ -std=c++1z -O2 -Wall -Wextra -pedantic -pthread main.cpp -lstdc++fs && ./a.out',
             'c': 'mv main.cpp main.c && gcc -std=c11 -O2 -Wall -Wextra -pedantic main.c && ./a.out',
-            'py': 'python main.cpp', # coliru has no python3
+            'py': 'python main.cpp',  # coliru has no python3
             'python': 'python main.cpp',
             'haskell': 'runhaskell main.cpp',
             'ruby': 'ruby main.cpp',
@@ -307,7 +291,7 @@ class Utility:
             "cmd": lang,
             "src": code
         }
-        em = discord.Embed(color=discord.Color(value=0xf9e236), title='Evaluated!')
+        em = discord.Embed(color=0xf9e236, title='Evaluated!')
         resp = await self.bot.session.post('http://coliru.stacked-crooked.com/compile', json=data)
         output = await resp.text(encoding='utf-8')
         if len(output) < 1992:
@@ -321,7 +305,7 @@ class Utility:
     @commands.command()
     async def poll(self, ctx, *, args):
         """Creates a poll with reactions. Seperate choices with |."""
-        if not "|" in args:
+        if '|' not in args:
             return await ctx.send("Seperate the question and choices with |.\nUsage: *poll What is the question? | Idk. | You tell me.")
         try:
             await ctx.message.delete()
@@ -330,7 +314,7 @@ class Utility:
         choices = args.split("|")
         desc = ""
         counter = 0
-        em = discord.Embed(color=discord.Color(value=0xf9e236), title=choices[0])
+        em = discord.Embed(color=0xf9e236, title=choices[0])
         choices.remove(choices[0])
         if len(choices) > 9:
             return await ctx.send("You can have a maximum of 9 choices for a poll.")
@@ -355,14 +339,13 @@ class Utility:
             counter += 1
             await msg.add_reaction(f"{str(counter)}\u20e3")
 
-
     @commands.command(name='wikipedia', aliases=['wiki'])
     async def _wikipedia(self, ctx, *, query):
-        em = discord.Embed(color=discord.Color(value=0xf9e236), title=f"Wikipedia Results for: {query}")
+        em = discord.Embed(color=0xf9e236, title=f"Wikipedia Results for: {query}")
         try:
             res = wikipedia.summary(str(query))
         except wikipedia.exceptions.PageError:
-            em = discord.Embed(color=discord.Color(value=0xf44e42), title='An error occurred.')
+            em = discord.Embed(color=0xf44e42, title='An error occurred.')
             em.description = 'No results found.'
             return await ctx.send(embed=em)
         if len(res) > 2048:
@@ -372,9 +355,8 @@ class Utility:
         em.set_footer(text=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
-
-    @commands.command()
-    async def ascii(self, ctx, *, text):
+    @commands.command(name='ascii')
+    async def ascii_(self, ctx, *, text):
         """Send fancy ASCII text!"""
         resp = await self.session.get(f"http://artii.herokuapp.com/make?text={urllib.parse.quote_plus(text)}") 
         message = await resp.text()
@@ -428,7 +410,7 @@ class Utility:
         resp = await self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}")
         img = await resp.read()
         try:
-            em = discord.Embed(color=discord.Color(value=0xf9e236), title=f"The emoji has been created in the server! Name: {e.name}")
+            em = discord.Embed(color=0xf9e236, title=f"The emoji has been created in the server! Name: {e.name}")
             await ctx.guild.create_custom_emoji(name=e.name, image=img)
             em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
             await ctx.send(embed=em)
@@ -490,7 +472,7 @@ class Utility:
         search = GoogleSearch(query)
         search.start_search()
         result = search.search_result
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=f'Google Search Results for: {query}')
+        em = discord.Embed(color=0x00ff00, title=f'Google Search Results for: {query}')
         if result == []:
             em.description = "No results for this search term was found. :x:"
             return await ctx.send(embed=em)
@@ -511,14 +493,14 @@ class Utility:
     async def feedback(self, ctx, *, feedback=None):
         """How do YOU want this bot to be? Give your word here."""
         if feedback is None:
-            color = discord.Color(value=0xf44e42)
+            color = 0xf44e42
             em = discord.Embed(color=color, title='Error :x:')
             em.description = 'Please enter your feedback.'
             await ctx.send(embed=em)
         else:
             try:
                 lol = self.bot.get_channel(413814935391567882)
-                color = discord.Color(value=0xf9e236)
+                color = 0xf9e236
                 em = discord.Embed(color=color, title='Feedback')
                 em.description = feedback
                 em.set_author(name=f"Sent by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
@@ -527,7 +509,7 @@ class Utility:
                 em.description = 'Thanks for sending feedback to make this bot better! :ok_hand:'
                 await ctx.send(embed=em)
             except Exception as e:
-                color = discord.Color(value=0xf44e42)
+                color = 0xf44e42
                 em = discord.Embed(color=color, title='Error :x:')
                 em.description = f"More details: \n\n{e}"
                 await ctx.send(embed=em)
@@ -539,13 +521,13 @@ class Utility:
         try:
             resp = await self.session.post("https://hastebin.com/documents", data=text)
             resp = await resp.json()
-            color = discord.Color(value=0xf9e236)
+            color = 0xf9e236
             em = discord.Embed(color=color, title='Hastebin-ified!')
             em.description = f"Your Hastebin link: \nhttps://hastebin.com/{resp['key']}"
             em.set_footer(text=f"Created by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
             await ctx.send(embed=em)
         except Exception as e:
-            color = discord.Color(value=0xf44e42)
+            color = 0xf44e42
             em = discord.Embed(color=color, title='An error occured. :x:')
             em.description = f"More details: \n```{e}```"
             await ctx.send(embed=em)
@@ -554,7 +536,7 @@ class Utility:
     @commands.command()
     async def shortenurl(self, ctx, *, url):
         '''Shortens a URL through Tinyurl.'''
-        color = discord.Color(value=0xf9e236)
+        color = 0xf9e236
         em = discord.Embed(color=color, title='TinyURL Link Shortener')
         resp = await self.session.get(f'http://tinyurl.com/api-create.php?url={url}')
         resp = await resp.text()
@@ -568,7 +550,7 @@ class Utility:
         '''Gets the definition of a word from Urban Dictionary.'''
         resp = await self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}')
         r = await resp.json()
-        color = discord.Color(value=0xf9e236)
+        color = 0xf9e236
         em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
         lol = []
         for x in r['list']:
@@ -586,7 +568,7 @@ class Utility:
             msg += f"{str(x)} \n"
         if msg == "":
             msg = 'No one in the server is currently playing this game!'
-        color = discord.Color(value=0xf9e236)
+        color = 0xf9e236
         em = discord.Embed(color=color, title=f"Users Playing: {game}")
         em.description = msg
         await ctx.send(embed=em) 
@@ -600,7 +582,7 @@ class Utility:
         if b is None:
             await ctx.send("Boi, are you random! Usage: *ranint [least #] [greatest #], to set the range of the randomized number. Please use integers.")
         else:
-            color = discord.Color(value=0xf9e236)
+            color = 0xf9e236
             em = discord.Embed(color=color, title='Your randomized number:')
             em.description = random.randint(a,b)
             await ctx.send(embed=em)
@@ -610,7 +592,7 @@ class Utility:
     async def rolldice(self, ctx):
         """Rolls a 6 sided die."""
         choices = ['1', '2', '3', '4', '5', '6']
-        color = discord.Color(value=0xf9e236)
+        color = 0xf9e236
         em = discord.Embed(color=color, title='Rolled! (1 6-sided die)', description=random.choice(choices))
         await ctx.send(embed=em)
         
@@ -619,7 +601,7 @@ class Utility:
     async def flipcoin(self, ctx):
         """Flip a coin. Any coin."""
         choices = ['Heads', 'Tails', 'Coin self-destructed.', '¯\_(ツ)_/¯']
-        color = discord.Color(value=0xf9e236)
+        color = 0xf9e236
         em=discord.Embed(color=color, title='Flipped a coin!')
         em.description = random.choice(choices)
         await ctx.send(embed=em)
@@ -659,7 +641,7 @@ class Utility:
         elif Type.lower() == 'money':
           await ctx.send('[̲̅$̲̅(̲̅ ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]')
         elif Type.lower() == 'list':
-          color = discord.Color(value=0x00ff00)
+          color = 0x00ff00
           em = discord.Embed(color=color, title='List of Textfaces')
           em.description = 'Choose from the following: lenny, tableflip, shrug, bignose, iwant, musicdude, wot, bomb, orlly, money. Type *textface [face].'
           em.set_footer(text="Don't you dare question my names for the textfaces.")
@@ -675,7 +657,7 @@ class Utility:
             av = ctx.message.author.avatar_url
             if '.gif' in av:
                 av += "&f=.gif"
-            color = discord.Color(value=0xf9e236)
+            color = 0xf9e236
             em = discord.Embed(color=color, title=ctx.message.author.name)
             em.set_author(name='Profile Picture')
             em.set_image(url=av)
@@ -684,7 +666,7 @@ class Utility:
             av = user.avatar_url
             if '.gif' in av:
                 av += "&f=.gif"
-            color = discord.Color(value=0x00ff00)
+            color = 0x00ff00
             em = discord.Embed(color=color, title=user.name)
             em.set_author(name='Profile Picture')
             em.set_image(url=av)
@@ -697,7 +679,7 @@ class Utility:
         if user is None:
             user = ctx.author
         join_time = str(ctx.author.joined_at.strftime("%b %m, %Y, %A, %I:%M %p"))
-        color = discord.Color(value=0xf2f760)
+        color = 0xf2f760
         em = discord.Embed(color=color, title=f'User Info: {str(user)}')
         em.add_field(name="User Stats", value="-", inline=False)
         em.add_field(name='Status', value=f'{user.status}')       

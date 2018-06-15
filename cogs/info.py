@@ -19,7 +19,7 @@ class Info:
     @commands.command(aliases=['info', 'botinfo'])
     async def stats(self, ctx):
         """Statsies for this bot. Be a nerd!"""       
-        color = discord.Color(value=0x00ff00)
+        color = 0x00ff00
         RAM = psutil.virtual_memory()
         used = RAM.used >> 20
         percent = RAM.percent
