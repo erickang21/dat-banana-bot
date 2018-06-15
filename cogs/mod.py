@@ -270,7 +270,7 @@ class mod:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
     
 
-    @commands.command(aliases=['giverole'])
+    @commands.command(aliases=['arole'])
     @commands.guild_only()
     @commands.has_permissions(manage_roles = True)
     async def addrole(self, ctx, user: discord.Member, *, role):
