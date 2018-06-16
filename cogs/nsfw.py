@@ -27,7 +27,7 @@ class NSFW:
     async def feet(self, ctx, is_gif=None):
         """WARNING: NSFW command. Gets a random picture of feet."""
         if not ctx.channel.nsfw:
-            await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
+            return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
         if not is_gif:
             resp = await self.bot.session.get("https://nekos.life/api/v2/img/feet")
         else:
@@ -43,7 +43,7 @@ class NSFW:
     async def hentai(self, ctx, is_gif=None):
         """WARNING: NSFW command. Gets a hentai picture."""
         if not ctx.channel.nsfw:
-            await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
+            return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
         if not is_gif:
             resp = await self.bot.session.get("https://nekos.life/api/v2/img/hentai")
         else:
@@ -59,7 +59,7 @@ class NSFW:
     async def boobs(self, ctx):
         """WARNING: NSFW command. Gets pictures of boobs."""
         if not ctx.channel.nsfw:
-            await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
+            return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
         resp = await self.bot.session.get("https://nekos.life/api/v2/img/boobs")
         resp = await resp.json()
         em = discord.Embed(color=0xf9e236, title="Here you go! Enjoy! :wink: :eggplant: ")
