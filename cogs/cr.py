@@ -82,16 +82,19 @@ class CR:
                 return await ctx.send(embed=em)
             color = 0xf1f442
             em = discord.Embed(color=color, title=f'{profile.name} (#{profile.tag})')
+            win_percent = profile.games.winsPercent or 0
+            loss_percent = profile.games.lossesPercent or 0
+            draw_percent = profile.games.drawsPercent or 0
             em.description = "Guess who else has CR stats? Our partner bot, [Statsy](https://bot.discord.io/statsy)"
             em.add_field(name='Trophies', value=f"{profile.trophies} {self.emoji('trophy')}")
             em.add_field(name='Personal Best', value=f"{profile.stats.maxTrophies} {self.emoji('trophy')}")
             em.add_field(name='XP Level', value=f"{profile.stats.level} {self.emoji('xplevel')}")
             em.add_field(name='Arena', value=f'{profile.arena.name}')
             em.add_field(name='Total Games', value=f"{profile.games.total} {self.emoji('battle')}")
-            em.add_field(name='Wins', value=f"{profile.games.wins} ({profile.games.winsPercent * 100}% of all games) {self.emoji('battle')}")
+            em.add_field(name='Wins', value=f"{profile.games.wins} ({win_percent * 100}% of all games) {self.emoji('battle')}")
             em.add_field(name='Three Crown Wins', value=f"{profile.stats.threeCrownWins} {self.emoji('threecrown')}")
-            em.add_field(name='Losses', value=f"{profile.games.losses} ({profile.games.lossesPercent * 100}% of all games) {self.emoji('battle')}")
-            em.add_field(name='Draws', value=f"{profile.games.draws} ({profile.games.drawsPercent * 100}% of all games) {self.emoji('battle')}")
+            em.add_field(name='Losses', value=f"{profile.games.losses} ({loss_percent * 100}% of all games) {self.emoji('battle')}")
+            em.add_field(name='Draws', value=f"{profile.games.draws} ({draw_percent * 100}% of all games) {self.emoji('battle')}")
             em.add_field(name='Win Rate', value=f"{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji('sword')}")
             em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name} {self.emoji(profile.stats.favoriteCard.name)}')
             if not profile.rank:
