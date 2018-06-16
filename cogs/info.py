@@ -40,7 +40,7 @@ class Info:
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
-        em.add_field(name='Version', value='7.0.3')
+        em.add_field(name='Version', value='7.0.4')
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py {self.bot.get_emoji(418934774623764491)}') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
@@ -59,20 +59,20 @@ class Info:
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
         em = discord.Embed(color=discord.Color(
-            value=0x00ff00), title='v7.0.3 > Fortnite')
+            value=0x00ff00), title='v7.0.4: no u')
         em.description = textwrap.dedent("""
-        __**BIG STUFF**__
-        -> :warning: Added NSFW commands. :warning: 
-        -> CleverBot.io has been implemented! Have a siri-like thing on the bot! Talk to it today...
-        -> Music loads a LOT faster and takes up less memory because of streaming!
-        -> A **massive** buff to cocprofile. Sends in one neat message with emojis!
+        __***SUPER DUPER UNBELIEVEABLY GUCCI STUFF***__
+        -> MEMES! We love them, we love them, now dat banana bot HAS THEM! *meme yourself away!
 
-        __**Little-r Things**__
-        -> Added Ruby and Lua to coliru languages. That's for you, TNT.
-        -> No more gambling super lightning fast. 5 minute cooldown to it.
-        -> Fixed a bug where: When the bot tries to remove music reactions but lacks permissions, the entire thing cuts off and stops.
-        -> Buffed serverinfo a lot. You can now search the server info of other servers just by adding the name after the command! It can only see the servers that the bot is in, unfortunately.
-        -> Buffed userinfo, now with server-specific stats for that user.
+        __**Gucci Stuff**__
+        -> Added crcards! See all the cards you collected and the cards you didn't.
+        -> A star! Make your text go in a star shape! 
+        -> What does "你妈妈同性恋" mean in English? Find out with the translate command!
+        -> Some commands are now labelled as **Guild-only.** Get outta mah DMs!
+        -> Antilink! No more ~~shitty~~ advertisers in your server.
+        -> Added removerole, so you can dramatically demote someone.
+        -> Better error handling and aliases for addrole and removerole.
+        -> Fixed an issue that broke all CR commands.
 
         """)
         await ctx.send(embed=em)
