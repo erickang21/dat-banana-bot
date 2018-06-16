@@ -104,6 +104,12 @@ class fun:
 
 
     @commands.command()
+    async def reverse(self, ctx, *, text):
+        """!txeT ruoY esreveR"""
+        await ctx.send("".join(list(reversed(str(text)))))
+
+
+    @commands.command()
     async def meme(self, ctx):
         """Get a random meme. The stuff of life."""
         await ctx.trigger_typing()
