@@ -99,7 +99,7 @@ class CR:
             em.add_field(name='Losses', value=f"{profile.games.losses} ({loss_percent * 100}% of all games) {self.emoji('battle')}")
             em.add_field(name='Draws', value=f"{profile.games.draws} ({draw_percent * 100}% of all games) {self.emoji('battle')}")
             em.add_field(name='Win Rate', value=f"{win_rate} {self.emoji('sword')}")
-            em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name or "No favourite card just yet! Play a match to get one."} {self.emoji(profile.stats.favoriteCard.name or "soon")}')
+            em.add_field(name='Favorite Card', value=f'{profile.stats.favoriteCard.name or "No favourite card just yet! Play a match to get one."} {self.emoji(profile.stats.favoriteCard or "soon")}')
             if not profile.rank:
                 globalrank = 'Unranked'
             else:
