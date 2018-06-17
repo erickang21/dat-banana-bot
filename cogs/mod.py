@@ -15,6 +15,7 @@ class mod:
     
     @commands.command()
     @commands.guild_only()
+    @commands.has_permissions(manage_guild = True)
     async def antilink(self, ctx, action):
         """Prevents people from sending invite links in the channel."""
         if action.lower() == 'on':
