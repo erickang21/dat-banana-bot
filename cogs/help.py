@@ -23,7 +23,7 @@ class Help:
             if command is None:
                 p = await HelpPaginator.from_bot(ctx)
             else:
-                entity = self.bot.get_cog(command.upper()) or self.bot.get_command(command.lower())
+                entity = self.bot.get_cog(command) or self.bot.get_command(command.lower())
 
                 if entity is None:
                     clean = command.replace('@', '@\u200b')
