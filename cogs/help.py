@@ -54,7 +54,7 @@ class Help:
                     if x == lol[pgnumber]:
                         commands.append(cmdlist)
                 for x in commands:
-                    em.description += f"**{x.callback.__name__}**\n{x.short_doc}"
+                    em.description += f"**{x.name}**\n{x.short_doc}"
             em.set_footer(
                 text="Pulling your hair out? Use the '?' to GET HELP!")
             msg = await ctx.send(embed=em)
