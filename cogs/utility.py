@@ -280,7 +280,8 @@ class Utility:
             'python': 'python main.cpp',
             'haskell': 'runhaskell main.cpp',
             'ruby': 'ruby main.cpp',
-            'lua': 'lua main.cpp'
+            'lua': 'lua main.cpp',
+            'flex': 'mv main.cpp main.c && flex main.c && gcc main.c -lfl && ./a.out'
         }
         try:
             lang = cmds[language]
