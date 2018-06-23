@@ -5,6 +5,7 @@ import io
 import asyncio
 import json
 import ezjson
+import textwrap
 from discord.ext import commands
 
 
@@ -12,6 +13,71 @@ class mod:
     def __init__(self, bot):
         self.bot = bot
 
+
+    # @commands.command()
+    # @commands.guild_only()
+    # @commands.has_permissions(manage_guild = True)
+    # async def reactionrole(self, ctx, action):
+    #     if action.lower() == 'on':
+    #         data = []
+    #         roles = []
+    #         for x in range(20):
+    #             await ctx.send("Let's get started! First off, which role would you like to give?")
+    #             try:
+    #                 x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+    #             except asyncio.TimeoutError:
+    #                 return await ctx.send("Timed out. Oof.")
+    #             role = discord.utils.get(ctx.guild.roles, name=x.content)
+    #             if not role:
+    #                 return await ctx.send("Invalid role name. Must be case-sensitive!")
+    #             roles.append(str(role))
+    #             await ctx.send("Which emoji would you like to assign it with? (Enter the **custom emoji's ID**, and make sure I have access to it.)")  
+    #             try:
+    #                 x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+    #             except asyncio.TimeoutError:
+    #                 return await ctx.send("Timed out. Oof.")
+    #             emoji = self.bot.get_emoji(int(x.content))
+    #             if not emoji:
+    #                 return await ctx.send("Invalid emoji.")
+    #             await ctx.send("Mention the channel to send the reaction messages in.")
+    #             try:
+    #                 x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+    #             except asyncio.TimeoutError:
+    #                 return await ctx.send("Timed out. Oof.")
+    #             if not x.content.startswith("<#") and not x.content.endswith(">"):
+    #                 return await ctx.send("Invalid channel mention.")
+    #             channel = x.content.strip("<#").strip(">")
+    #             try:
+    #                 channel = int(channel)
+    #             except ValueError:
+    #                 return await ctx.send("Invalid channel mention.")
+    #             await ctx.send("Done! Now, you can reply 'continue' to add another role to the list or 'stop' to end it. You can also do 'cancel' to forget all that we did before.")
+    #             try:
+    #                 x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+    #             except asyncio.TimeoutError:
+    #                 return await ctx.send("Timed out. Oof.")
+    #             if x.content.lower() == 'continue':
+    #                 await ctx.send("Carrying on! :ok_hand:")
+    #                 continue
+    #             elif x.content.lower() == 'stop':
+    #                 stuff = {
+    #                     "role": role,
+    #                     "emoji": emoji,
+    #                     "channel": channel
+    #                 }
+    #                 msg = ""
+    #                 a = [x['role']]
+                    
+    #                 data.append(stuff)
+                    
+                    
+    #                 await self.bot.db.reactionrole.update_one({"id": ctx.guild.id}, {"$set": {"data": data}})
+    #                 await ctx.send("Saved, locked and loaded, and ready to ROLL!")
+    #     elif action.lower() == 'off':
+    #         await self.bot.db.antilink.update_one({"id": ctx.guild.id}, {"$set": {"status": False}})
+    #         await ctx.send("Antilink disabled. Advertising continues.")
+    #     else:
+    #         return await ctx.send("Reactionrole command:\n*reactionrole [on/off]")
     
     @commands.command()
     @commands.guild_only()
