@@ -61,6 +61,7 @@ bot.load_extension("cogs.dbl")
 bot.load_extension("cogs.music")
 bot.load_extension("cogs.idiotic")
 bot.load_extension("cogs.nsfw")
+bot.load_extension("cogs.fortnite")
 
 
 
