@@ -12,7 +12,7 @@ class Fortnite:
         self.apikey = x['fnapi']
 
     @commands.command()
-    async def fnsave(self, ctx, platform: str, *, username: str):
+    async def fnsave(self, ctx, platform: str = None, *, username: str = None):
         """Save your Fortnite platform+name to the bot."""
         platform = platform.lower()
         if not platform in ("xbl", "psn", "pc"):
