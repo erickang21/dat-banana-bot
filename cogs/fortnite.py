@@ -26,7 +26,7 @@ class Fortnite:
             "username": username
         }
         await self.bot.db.fortnite.update_one({"id": ctx.author.id}, {"$set": to_save}, upsert=True)
-        await ctx.send()
+        await ctx.send("Successfully saved your Fortnite name and platform to your Discord account. :white_check_mark:")
 
     @commands.command(aliases=["fn", "fnprofile", "fucknite"])
     async def fortnite(self, ctx, platform: str = None, *, username: str = None):
