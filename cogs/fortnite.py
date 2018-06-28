@@ -16,7 +16,7 @@ class Fortnite:
         """Save your Fortnite platform+name to the bot."""
         platform = platform.lower()
         if not platform in ("xbl", "psn", "pc"):
-            return await ctx.send("Invalid platform!\n\n++**Platforms**__\n-`xbl` (Xbox Live)\n`psn` (Playstation)\n`PC` (Computer)")
+            return await ctx.send("Invalid platform!\n\n__**Platforms**__\n`xbl` (Xbox Live)\n`psn` (Playstation)\n`PC` (Computer)")
         res = await self.bot.session.get(f"https://api.fortnitetracker.com/v1/profile/{platform.lower()}/{username}", headers={"TRN-Api-Key": self.apikey})
         data = await res.json()
         if data.get("error", "") == "Player Not Found":
@@ -38,7 +38,7 @@ class Fortnite:
             platform = stuff['platform']
             username = stuff['username']
         if not platform.lower() in ("xbl", "psn", "pc"):
-            return await ctx.send("Invalid platform!\n\n++**Platforms**__\n-`xbl` (Xbox Live)\n`psn` (Playstation)\n`PC` (Computer)")
+            return await ctx.send("Invalid platform!\n\n__**Platforms**__\n`xbl` (Xbox Live)\n`psn` (Playstation)\n`PC` (Computer)")
         async with ctx.typing():
             try:
                 res = await self.bot.session.get(f"https://api.fortnitetracker.com/v1/profile/{platform.lower()}/{username}", headers={"TRN-Api-Key": self.apikey})
