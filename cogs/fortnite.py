@@ -12,7 +12,7 @@ class Fortnite:
         self.apikey = x['fnapi']
 
     @commands.command()
-    async def fnsave(self, ctx, platform: str = None, *, username: str = None):
+    async def fnsave(self, ctx, platform: str, *, username: str):
         """Save your Fortnite platform+name to the bot."""
         platform = platform.lower()
         if not platform in ("xbl", "psn", "pc"):
@@ -29,7 +29,7 @@ class Fortnite:
         await ctx.send()
 
     @commands.command(aliases=["fn", "fnprofile", "fucknite"])
-    async def fortnite(self, ctx, platform: str, *, username: str):
+    async def fortnite(self, ctx, platform: str = None, *, username: str = None):
         """Gets your fortnite stats"""
         if not platform and not username:
             stuff = await self.bot.db.fortnite.find_one({"id": ctx.author.id})
