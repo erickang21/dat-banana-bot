@@ -239,7 +239,10 @@ class Utility:
     #@commands.has_permissions(manage_guild=True)
     async def create(self, ctx, name, *, content):
         """Create a tag in the server."""
+        if await self.get_tag(ctx.guild.id, name):
+            return await ctx.send("Nope. A tag already exists with this name.")
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
+
         if not stuff:
             stuff = await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": {"data": []}}, upsert=True)
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
