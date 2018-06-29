@@ -330,6 +330,15 @@ class Idiotic:
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
+    @commands.command()
+    async def ignore(self, ctx, user: discord.Member):
+        await ctx.trigger_typing()
+        user = user or ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is ignored.", file=discord.File(await self.client.ignore(user.avatar_url), "ignore.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
 
 
 def setup(bot):
