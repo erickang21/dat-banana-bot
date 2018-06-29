@@ -344,7 +344,7 @@ class Idiotic:
         await ctx.trigger_typing()
         user = user or ctx.author
         try:
-            await ctx.send(file=discord.File(await self.client.time(user.avatar_url), "time.png"))
+            await ctx.send(f"Apparently, **{user.name}** is the time.", file=discord.File(await self.client.time(user.avatar_url), "time.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
