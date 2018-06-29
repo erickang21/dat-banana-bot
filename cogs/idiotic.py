@@ -331,11 +331,20 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
     @commands.command()
-    async def ignore(self, ctx, user: discord.Member):
+    async def ignore(self, ctx, user: discord.Member=None):
         await ctx.trigger_typing()
         user = user or ctx.author
         try:
-            await ctx.send(f"**{user.name}** is ignored.", file=discord.File(await self.client.ignore(user.avatar_url), "ignore.png"))
+            await ctx.send(f"**{user.name}** just ignored a burning house...", file=discord.File(await self.client.ignore(user.avatar_url), "ignore.png"))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
+
+    @commands.command()
+    async def hide(self, ctx, user: discord.Member=None):
+        await ctx.trigger_typing()
+        user = user or ctx.author
+        try:
+            await ctx.send(f"**{user.name}** is in hiding.", file=discord.File(await self.client.hide(user.avatar_url), "hide.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
