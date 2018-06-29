@@ -213,6 +213,52 @@ class Utility:
 
         return content.strip('` \n')
 
+    async def get_tag(self, guild_id, name):
+        data = await self.bot.db.tags.find_one({"id": guild_id})
+        if not data:
+            return None
+        try:
+            match = [x for x in data if x['name'] == name][0]
+        except IndexError:
+            return None
+        else:
+            return match
+
+
+    @commands.group(invoke_without_command=True)
+    async def tag(self, ctx, *, name: str):
+        stuff = await self.get_tag(ctx.guild.id, name)
+        if not stuff:
+            return await ctx.send("No tag was found with this name! Maybe be the first to create one... :thinking:")
+        em = discord.Embed(color=ctx.author.color, title=stuff['name'])
+        em.description = stuff['content']
+        await ctx.send(embed=em)
+
+    @tag.command(aliases=['add', 'make'])
+    @commands.has_permissions(manage_guild=True)
+    async def create(self, ctx, name, *, content):
+        stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
+        if not stuff:
+            stuff = await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"data": []}, upsert=True)
+        data = {
+            "name": name,
+            "content": content
+        }
+        stuff['data'].append(data)
+        await self.bot.db.tags.update_one({"id": ctx.guild.id}, stuff, upsert=True)
+        await ctx.send(f"Successfully created the tag **{name}** for this server. :white_check_mark:")
+
+    @tag.command(aliases=['remove'])
+    @commands.has_permissions(manage_guild=True)
+    async def delete(self, ctx, name, *, content):
+        stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
+        to_remove = await self.get_tag(ctx.guild.id, name)
+        if not to_remove:
+            return await ctx.send("No tag with the given name was found for this server. :x:")
+        stuff['data'].remove(to_remove)
+        await self.bot.db.tags.update_one({"id": ctx.guild.id}, stuff, upsert=True)
+        await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
+
     @commands.command(name="translate", aliases=["trans"])
     async def _translate(self, ctx, lang, *, text: str):
         em = discord.Embed(color=ctx.author.color, title="Translated!")
