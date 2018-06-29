@@ -218,7 +218,7 @@ class Utility:
         if not data:
             return None
         try:
-            match = [x for x in data if x['name'] == name][0]
+            match = [x for x in data['data'] if x['name'] == name][0]
         except IndexError:
             return None
         else:
