@@ -340,11 +340,11 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
     @commands.command()
-    async def hide(self, ctx, user: discord.Member=None):
+    async def time(self, ctx, user: discord.Member=None):
         await ctx.trigger_typing()
         user = user or ctx.author
         try:
-            await ctx.send(f"**{user.name}** is in hiding.", file=discord.File(await self.client.hide(user.avatar_url), "hide.png"))
+            await ctx.send(file=discord.File(await self.client.time(user.avatar_url), "time.png"))
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
