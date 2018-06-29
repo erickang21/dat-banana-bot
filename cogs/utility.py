@@ -236,7 +236,7 @@ class Utility:
         await ctx.send(embed=em)
 
     @tag.command(aliases=['add', 'make'])
-    @commands.has_permissions(manage_guild=True)
+    #@commands.has_permissions(manage_guild=True)
     async def create(self, ctx, name, *, content):
         """Create a tag in the server."""
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
@@ -245,24 +245,35 @@ class Utility:
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         data = {
             "name": name,
-            "content": content
+            "content": content,
+            "author": ctx.author.id
         }
         stuff['data'].append(data)
         await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
         await ctx.send(f"Successfully created the tag **{name}** for this server. :white_check_mark:")
 
     @tag.command(aliases=['remove'])
-    @commands.has_permissions(manage_guild=True)
+    #@commands.has_permissions(manage_guild=True)
     async def delete(self, ctx, name):
         """Remove an existing tag in the server."""
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         to_remove = await self.get_tag(ctx.guild.id, name)
-        if not to_remove:
-            return await ctx.send("No tag with the given name was found for this server. :x:")
-        stuff['data'].remove(to_remove)
-        await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
-        await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
-
+        if ctx.author.guild_permissions.manage_guild:
+            if not to_remove:
+                return await ctx.send("No tag with the given name was found for this server. :x:")
+            stuff['data'].remove(to_remove)
+            await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
+            await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
+        else:
+            if to_remove['author'] == ctx.author.id:
+                if not to_remove:
+                    return await ctx.send("No tag with the given name was found for this server. :x:")
+                stuff['data'].remove(to_remove)
+                await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
+                await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
+        
+            else:
+                return await ctx.send("You need **Manage Server** permissions to remove other people's tags.")
 
     @tag.command(aliases=['show', 'showall'])
     async def all(self, ctx):
