@@ -240,6 +240,7 @@ class Utility:
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         if not stuff:
             stuff = await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": {"data": []}}, upsert=True)
+        stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         data = {
             "name": name,
             "content": content
