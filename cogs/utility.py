@@ -227,6 +227,7 @@ class Utility:
 
     @commands.group(invoke_without_command=True)
     async def tag(self, ctx, *, name: str):
+        """Get a tag by its name."""
         stuff = await self.get_tag(ctx.guild.id, name)
         if not stuff:
             return await ctx.send("No tag was found with this name! Maybe be the first to create one... :thinking:")
@@ -237,6 +238,7 @@ class Utility:
     @tag.command(aliases=['add', 'make'])
     @commands.has_permissions(manage_guild=True)
     async def create(self, ctx, name, *, content):
+        """Create a tag in the server."""
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         if not stuff:
             stuff = await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": {"data": []}}, upsert=True)
@@ -251,7 +253,8 @@ class Utility:
 
     @tag.command(aliases=['remove'])
     @commands.has_permissions(manage_guild=True)
-    async def delete(self, ctx, name, *, content):
+    async def delete(self, ctx, name):
+        """Remove an existing tag in the server."""
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         to_remove = await self.get_tag(ctx.guild.id, name)
         if not to_remove:
@@ -259,6 +262,15 @@ class Utility:
         stuff['data'].remove(to_remove)
         await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
         await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
+
+
+    @tag.command(aliases=['show', 'showall'])
+    async def all(self, ctx):
+        stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
+        data = stuff['data']
+        em = discord.Embed(color=ctx.author.color, title=f"Tags for: {ctx.guild.name}")
+        em.description = "\n".join([x['name'] for x in data])
+        await ctx.send(embed=em)
 
     @commands.command(name="translate", aliases=["trans"])
     async def _translate(self, ctx, lang, *, text: str):
