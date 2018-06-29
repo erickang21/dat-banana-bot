@@ -239,13 +239,13 @@ class Utility:
     async def create(self, ctx, name, *, content):
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         if not stuff:
-            stuff = await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"data": []}, upsert=True)
+            stuff = await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": {"data": []}}, upsert=True)
         data = {
             "name": name,
             "content": content
         }
         stuff['data'].append(data)
-        await self.bot.db.tags.update_one({"id": ctx.guild.id}, stuff, upsert=True)
+        await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
         await ctx.send(f"Successfully created the tag **{name}** for this server. :white_check_mark:")
 
     @tag.command(aliases=['remove'])
@@ -256,7 +256,7 @@ class Utility:
         if not to_remove:
             return await ctx.send("No tag with the given name was found for this server. :x:")
         stuff['data'].remove(to_remove)
-        await self.bot.db.tags.update_one({"id": ctx.guild.id}, stuff, upsert=True)
+        await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
         await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
 
     @commands.command(name="translate", aliases=["trans"])
