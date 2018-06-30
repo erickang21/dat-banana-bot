@@ -30,39 +30,29 @@ db = AsyncIOMotorClient(x['mongodb'])
 
 async def getprefix(bot, message):
     if isinstance(message.channel, discord.DMChannel): return "*"
-    x = await db.datbananabot.prefix.find_one({"id": str(message.guild.id)})
+    x = await db.datbananabot.prefix.find_one({ "id": str(message.guild.id) })
     pre = x['prefix'] if x is not None else '*'
-    match = re.match(f"<@!?{bot.user.id}> ", message.content)
-    return match.group() if match else pre
+    return commands.when_mentioned_or(pre)(bot, message)
 
 
-bot = commands.Bot(command_prefix=getprefix,description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands",owner_id=277981712989028353)
+bot = commands.Bot(command_prefix=getprefix, description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands", owner_id=277981712989028353)
 bot._last_result = None
-bot.session = aiohttp.ClientSession()
+bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.starttime = time.time()
 bot.commands_run = 0
 bot.logger = logger
+
 with open("data/apikeys.json") as f:
     x = json.load(f)
 bot.db = db.datbananabot
+cogs = [ "cogs." + x.replace(".py", "") for x in os.listdir("cogs") if x.endswith(".py") ]
 bot.remove_command("help")
-bot.load_extension("cogs.math")
-bot.load_extension("cogs.mod")
-bot.load_extension("cogs.utility")
-bot.load_extension("cogs.fun")
-bot.load_extension("cogs.info")
-bot.load_extension("cogs.developer")
-bot.load_extension("cogs.cr")
-bot.load_extension("cogs.help")
-bot.load_extension("cogs.coc")
-bot.load_extension("cogs.lol")
-bot.load_extension("cogs.economy")
-bot.load_extension("cogs.dbl")
-bot.load_extension("cogs.music")
-bot.load_extension("cogs.idiotic")
-bot.load_extension("cogs.nsfw")
-bot.load_extension("cogs.fortnite")
 
+for cog in cogs:
+    try:
+        bot.load_extension(cog)
+    except Exception as e:
+        bot.logger.error(e)
 
 
 def cleanup_code(content):
@@ -103,7 +93,6 @@ async def on_ready():
     if bot.user.id != 388476336777461770:
         print("COPYING ALERT! COULD NOT IDENTIFY BOT USER! EXPOSED!")
         exit() # :p
-    bot.session = aiohttp.ClientSession()
     presence = [
         "*help | BOIIIIIII!",
         "*help | 🍌 are like my life: always by my side.",
@@ -128,53 +117,26 @@ async def on_ready():
     print('Bot is online, and ready to ROLL!')
     while True:
         await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
-        await asyncio.sleep(10)
+        await asyncio.sleep(15)
 
 
 @bot.event
 async def on_message(message):
     if re.match(f"^<@!?{bot.user.id}>$", message.content):
         await message.channel.send(f"{bot.get_emoji(430853515217469451)} BAH! Why you :regional_indicator_p:ing me? Anyway, I'm dat banana bot, so nice to meet you. I do a LOT of kewl stuff, like music, starboard, welcome/leave messages, Canvas, and so much more! All it takes is `*help` to see the powers I got! {bot.get_emoji(430853629570711562)}")
-    if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discord\.|discordapp\.com/invite)\S+", message.content):
-        x = await bot.db.antilink.find_one({"id": message.guild.id})
-        if not x:
-            return
-        if not x['status']:
-            return
-        try:
-            await message.delete()
-        except discord.Forbidden:
-            pass
-        await message.channel.send(f"Hey, {message.author.mention}! No advertising allowed in this server. Get that invite link out of here!")
-        if await modlog_check(message.guild.id):
-            try:
-                lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-                em = discord.Embed(color=0x00ff00, title='An invite was posted.')
-                em.add_field(name='Channel', value=f"<#{message.channel.id}>")
-                em.add_field(name='Link', value=message.content)
-                em.add_field(name='Sent By', value=str(message.author))
-                await lol.send(embed=em)
-            except KeyError:
-                pass
-
     if not message.author.bot:
-        # await bot.process_commands(message)
-        # be ready to revert :p
         await bot.process_commands(message)
-    else:
-        return
 
 
 @bot.event
 async def on_command(ctx):
     bot.commands_run += 1
     log = bot.get_channel(445332002942484482)
-    em = discord.Embed(color=0xf9e236, title="Command Run!")
+    em = discord.Embed(color=discord.Color(value=0xf9e236), title="Command Run!")
     em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
     em.add_field(name="User ID", value=ctx.author.id)
     em.add_field(name="Server", value=ctx.guild.name)
     em.add_field(name="Server ID", value=ctx.guild.id)
-    em.add_field(name="User Status",value=ctx.author.status)
     em.add_field(name="Channel", value=ctx.channel.name)
     em.add_field(name="Command Content", value=f"```{ctx.message.content}```")
     em.set_thumbnail(url=ctx.guild.icon_url)
@@ -189,7 +151,7 @@ async def on_message_edit(before, after):
     if await modlog_check(before.guild.id):
         try:
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
-            em = discord.Embed(color=0x00ff00, title='Message Edited')
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
             em.add_field(name='Channel', value=f"<#{before.channel.id}>")
             em.add_field(name='Content Before', value=before.content)
             em.add_field(name='Content After', value=after.content)
@@ -212,14 +174,8 @@ async def on_reaction_add(reaction, user):
             return
         emoji_count = reaction.message.reactions[0].count
         if emoji_count > 1:
-            em = discord.Embed(color=0xf4bf42, title=f"Stars: {emoji_count}")
-            for_description = reaction.message.content
-            if not for_description:
-                try:
-                    for_description = reaction.message.embeds[0].description 
-                except:
-                    for_description = None
-            em.description = for_description or "No content detected."
+            em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
+            em.description = reaction.message.content
             em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
             try:
                 img_url = reaction.message.attachments[0].url
@@ -250,7 +206,7 @@ async def on_reaction_add(reaction, user):
                     img_url = reaction.message.embeds[0].url
                 except IndexError:
                     img_url = None
-            em = discord.Embed(color=0xf4bf42, title="Stars: 1")
+            em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Stars: 1")
             em.description = reaction.message.content
             em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
             if img_url:
@@ -269,7 +225,7 @@ async def on_reaction_add(reaction, user):
     #     except KeyError:
     #         return
     #     msg = await channel.get_message(int(sent))
-    #     em = discord.Embed(color=0xf4bf42, title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
+    #     em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
     #     em.description = reaction.message.content
     #     em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
     #     await msg.edit(embed=em)
@@ -284,7 +240,7 @@ async def on_reaction_add(reaction, user):
 @bot.event
 async def on_guild_join(guild):
     lol = bot.get_channel(392443319684300801)
-    em = discord.Embed(color=0xf9e236)
+    em = discord.Embed(color=discord.Color(value=0xf9e236))
     em.title = "dat banana bot has joined a new server!"
     em.description = f"**{guild.name}**"
     em.add_field(name="Owner", value=str(guild.owner))
@@ -292,12 +248,15 @@ async def on_guild_join(guild):
     em.set_footer(text=f"ID: {guild.id}")
     em.set_thumbnail(url=guild.icon_url)
     await lol.send(embed=em)
-    await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help! Here's a rundown of what I can do:\n-Music\n-Starboard\n-Custom Prefix\n-Welcome/Leave/Ban Messages\n-A stack of canvas commands.\n-Statistics for CR, COC and LoL\n\nTo get the most out of me, I do recommend giving me **Administrator** permissions.\n\nHave a nice day! :blush:")
+    try:
+        await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help! Here's a rundown of what I can do:\n-Music\n-Starboard\n-Custom Prefix\n-Welcome/Leave/Ban Messages\n-A stack of canvas commands.\n-Statistics for CR, COC and LoL\n\nTo get the most out of me, I do recommend giving me **Administrator** permissions.\n\nHave a nice day! :blush:")
+    except:
+        pass
 
 @bot.event
 async def on_guild_remove(guild):
     logs_channel = bot.get_channel(392443319684300801)
-    em = discord.Embed(color=0xf44242)
+    em = discord.Embed(color=discord.Color(value=0xf44242))
     em.title = "dat banana bot has been removed from a server."
     em.description = f"**{guild.name}**"
     em.set_footer(text=f"ID: {guild.id}")
@@ -307,7 +266,7 @@ async def on_guild_remove(guild):
     
 @bot.event
 async def on_member_join(member):
-    x = await bot.db.welcome.find_one({"id": str(member.guild.id)})
+    x = await bot.db.welcome.find_one({ "id": str(member.guild.id) })
     if not x:
         return
     channel = int(x['channel'])
@@ -317,7 +276,7 @@ async def on_member_join(member):
     await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=0x00ff00, title='Member Joined')
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Joined')
         em.add_field(name="Name", value=str(member))
         em.add_field(name='Joined At', value=str(member.joined_at.strftime("%b %m, %Y, %A, %I:%M %p")))
         em.add_field(name="ID", value=member.id)
@@ -325,17 +284,18 @@ async def on_member_join(member):
         await lol.send(embed=em)
     else:
         pass
-    x = await bot.db.autorole.find_one({"id": str(member.guild.id)})
+    x = await bot.db.autorole.find_one({ "id": str(member.guild.id) })
     if x is None:
         return
     rolename = x['role']
     r = discord.utils.get(member.guild.roles, name=rolename)
-    await member.add_roles(r)
+    if r: # role could possibily be deleted.
+        await member.add_roles(r)
 
 
 @bot.event
 async def on_member_remove(member):
-    x = await bot.db.leave.find_one({"id": str(member.guild.id)})
+    x = await bot.db.leave.find_one({ "id": str(member.guild.id) })
     if not x:
         return
     channel = int(x['channel'])
@@ -345,18 +305,16 @@ async def on_member_remove(member):
     await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=0x00ff00, title='Member Left')
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Left')
         em.add_field(name="Name", value=str(member))
         em.add_field(name="ID", value=member.id)
         em.set_thumbnail(url=member.avatar_url)
         await lol.send(embed=em)
-    else:
-        pass
 
 
 @bot.event
 async def on_member_ban(guild, member):
-    x = await bot.db.ban.find_one({"id": str(member.guild.id)})
+    x = await bot.db.ban.find_one({ "id": str(member.guild.id) })
     if not x:
         return
     try:
@@ -367,20 +325,17 @@ async def on_member_ban(guild, member):
         pass
     else:
         lol = bot.get_channel(channel)
-        if lol is None:
+        if not lol:
             return
         await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=0x00ff00, title='Member Banned')
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Banned')
         em.add_field(name="Name", value=str(member))
         em.add_field(name="ID", value=member.id)
         em.add_field(name="Server", value=guild.name)
         em.set_thumbnail(url=member.avatar_url)
         await lol.send(embed=em)
-    else:
-        pass
-
 
 
 @bot.event
@@ -399,7 +354,7 @@ async def on_message_delete(message):
                 except IndexError:
                     img_url = None
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-            em = discord.Embed(color=0x00ff00, title='Message Deleted')
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
             em.add_field(name='Content', value=message.content if message.content else "Embed")
             em.add_field(name='Sent By', value=str(message.author))
             em.add_field(name='Channel', value=f"<#{message.channel.id}>")
@@ -408,18 +363,14 @@ async def on_message_delete(message):
             await lol.send(embed=em)
         except KeyError:
             pass
-    else:
-        pass
-
-
 
 
 @bot.event
 async def on_command_error(ctx, error):
-    em = discord.Embed(color=0xf44e42, title='An error occurred.')
+    em = discord.Embed(color=discord.Color(value=0xf44e42), title='An error occurred.')
     missing_param_errors = (commands.MissingRequiredArgument, commands.BadArgument, commands.TooManyArguments, commands.UserInputError)
     if isinstance(error, missing_param_errors):
-        em = discord.Embed(color=0xf44242, title="Incorrect Usage of Command!")
+        em = discord.Embed(color=discord.Color(value=0xf44242), title="Incorrect Usage of Command!")
         em.description = f"This is the correct usage:\n**{ctx.prefix}{ctx.command.signature}**"
         return await ctx.send(embed=em)
     if isinstance(error, commands.NotOwner):
@@ -450,9 +401,6 @@ async def on_command_error(ctx, error):
         elif retry_time >= 86400:
             actual_time = f"{int(retry_time / 86400)} days"
         em.description = f'ACK. The command is on cooldown! You can use it again in **{actual_time}**.'
-        return await ctx.send(embed=em)
-    elif isinstance(error, commands.NoPrivateMessage):
-        em.description = "This command can only be used in a server. Get out of our DMs! \n(╯°□°）╯︵ ┻━┻"
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandNotFound):
         pass
@@ -496,7 +444,7 @@ async def say(ctx, *, message: commands.clean_content()):
 @bot.command()
 async def ping(ctx):
     """Premium ping pong giving you a websocket latency."""
-    color = 0xf9e236
+    color = discord.Color(value=0xf9e236)
     e = discord.Embed(color=color, title='Pinging')
     e.description = 'Please wait... :ping_pong:'
     msg = await ctx.send(embed=e)
@@ -602,10 +550,6 @@ async def _eval(ctx, *, body):
         await ctx.message.add_reaction('\u2705')
                        
                        
-#if __name__ != "__main__": 
-#    print("Bot did not start with the main file (bot.py).")
-#if bot.user.id != 388476336777461770:
-#    print("The bot files are not being hosted on the bot user: dat banana bot#0170. Please do not host other instances of the bot.")
 with open("data/apikeys.json") as f:
     x = json.loads(f.read())
 try:
