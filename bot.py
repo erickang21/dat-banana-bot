@@ -124,9 +124,29 @@ async def on_ready():
 async def on_message(message):
     if re.match(f"^<@!?{bot.user.id}>$", message.content):
         await message.channel.send(f"{bot.get_emoji(430853515217469451)} BAH! Why you :regional_indicator_p:ing me? Anyway, I'm dat banana bot, so nice to meet you. I do a LOT of kewl stuff, like music, starboard, welcome/leave messages, Canvas, and so much more! All it takes is `*help` to see the powers I got! {bot.get_emoji(430853629570711562)}")
+    if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discord\.|discordapp\.com/invite)\S+", message.content):
+        x = await bot.db.antilink.find_one({"id": message.guild.id})
+        if not x:
+            return
+        if not x['status']:
+            return
+        try:
+            await message.delete()
+        except discord.Forbidden:
+            pass
+        await message.channel.send(f"Hey, {message.author.mention}! No advertising allowed in this server. Get that invite link out of here!")
+        if await modlog_check(message.guild.id):
+            try:
+                lol = bot.get_channel(await get_modlog_channel(message.guild.id))
+                em = discord.Embed(color=0x00ff00, title='An invite was posted.')
+                em.add_field(name='Channel', value=f"<#{message.channel.id}>")
+                em.add_field(name='Link', value=message.content)
+                em.add_field(name='Sent By', value=str(message.author))
+                await lol.send(embed=em)
+            except KeyError:
+                pass
     if not message.author.bot:
         await bot.process_commands(message)
-
 
 @bot.event
 async def on_command(ctx):
