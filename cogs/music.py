@@ -7,7 +7,8 @@ import os
 import json
 import lavalink
 import logging
-from discord.ext.commands.cooldowns import BucketType    
+from discord.ext.commands.cooldowns import BucketType  
+from bs4 import BeautifulSoup
 
 class Music:
     def __init__(self, bot):
@@ -234,7 +235,33 @@ class Music:
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
                 await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
-        
+
+
+
+    @commands.command(aliases=["songlyrics", "lyric"])
+    async def lyrics(self, ctx, *, song: str):
+        """Gets lyrics for a song."""
+        async with ctx.typing():
+            resp = await (await self.bot.session.get(f"https://api.genius.com/search?q={song}", headers={"Authorization": f"Bearer {self.bot.config['genius']}"})).json()
+
+        if not resp["response"]["hits"]:
+            return await ctx.send(f"No results found for **{song}**. Try looking for a different song.")
+
+        resp1 = await (await self.bot.session.get(resp["response"]["hits"][0]["result"]["url"])).text()
+        scraped = BeautifulSoup(resp1, "lxml")
+
+        if not scraped.find_all("p"):
+            return await ctx.send(f"No results found for. Try looking for a different song.")
+
+        description = scraped.find_all("p")[0].text
+        if len(description) > 2045:
+            description = f"{description[:2045]}..."
+
+        embed = discord.Embed(title=resp["response"]["hits"][0]["result"]["full_title"], color=ctx.author.color)
+        embed.description = description
+        embed.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
+        embed.set_thumbnail(url=resp["response"]["hits"][0]["result"]["header_image_thumbnail_url"])
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Music(bot))

@@ -260,20 +260,25 @@ class mod:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def mute(self, ctx, user: discord.Member, mutetime=None):
+    async def mute(self, ctx, user: discord.Member, mutetime=None, *, reason=None):
         '''Forces someone to shut up. Usage: *mute [user] [time in mins]'''
+        modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+        if modlog:
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member was muted.")
+            em.add_field(name="User", value=str(user))
+            em.add_field(name="User ID", value=user.id)
+            em.add_field(name="Muted by", value=str(ctx.author))
+            em.add_field(name="Time", value=f"{str(mutetime)} minutes" if mutetime else "No time limit.")
+            await modlog['channel'].send(embed=em)
         try:
-            if mutetime is None:
-                await ctx.channel.set_permissions(user, send_messages=False)
-                await ctx.send(f"{user.mention} is now forced to shut up. :zipper_mouth: ")
-            else:
+            await ctx.channel.set_permissions(user, send_messages=False)
+            await ctx.channel.send(f"{user.mention} is now forced to shut up. :zipper_mouth: ")
+            if mutetime:
                 try:
                     mutetime =int(mutetime)
                     mutetime = mutetime * 60
                 except ValueError:
-                    return await ctx.send("Your time is an invalid number. Make sure...it is a number.")
-                await ctx.channel.set_permissions(user, send_messages=False)
-                await ctx.channel.send(f"{user.mention} is now forced to shut up. :zipper_mouth: ")
+                    return await ctx.send("Your time is an invalid number. Make sure...it is a number.")               
                 await asyncio.sleep(mutetime)
                 await ctx.channel.set_permissions(user, send_messages=True)
                 await ctx.channel.send(f"{user.mention} is now un-shutted up.")
