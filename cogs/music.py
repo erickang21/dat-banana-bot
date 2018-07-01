@@ -242,7 +242,7 @@ class Music:
     async def lyrics(self, ctx, *, song: str):
         """Gets lyrics for a song."""
         async with ctx.typing():
-            resp = await (await self.bot.session.get(f"https://api.genius.com/search?q={song}", headers={"Authorization": f"Bearer {self.bot.config['genius']}"})).json()
+            resp = await (await self.bot.session.get(f"https://api.genius.com/search?q={song}", headers={"Authorization": f"Bearer {self.bot.config.geniusapi}"})).json()
 
         if not resp["response"]["hits"]:
             return await ctx.send(f"No results found for **{song}**. Try looking for a different song.")

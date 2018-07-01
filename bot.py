@@ -17,6 +17,7 @@ from discord.ext import commands
 import json
 import ezjson
 import colorama
+from box import Box
 from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
 from ext.logger import Logger as logger
@@ -25,6 +26,7 @@ colorama.init()
 
 with open("data/apikeys.json") as f:
     x = json.load(f)
+
 db = AsyncIOMotorClient(x['mongodb'])
 
 
@@ -41,6 +43,7 @@ bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.starttime = time.time()
 bot.commands_run = 0
 bot.logger = logger
+bot.config = Box(x)
 
 with open("data/apikeys.json") as f:
     x = json.load(f)
