@@ -80,11 +80,11 @@ async def get_prefix_as_str(message):
     pre = x['prefix'] if x is not None else '*'
     return pre
 
-# async def process_commands(message):
-#     ctx = await bot.get_context(message, cls=DatContext)
-#     if not ctx.command:
-#         return
-#     await bot.invoke(ctx)
+async def process_commands(message):
+    ctx = await bot.get_context(message, cls=DatContext)
+    if not ctx.command:
+        return
+    await bot.invoke(ctx)
 
 async def modlog_check(guildid):
     x = await bot.db.modlog.find_one({'id': str(guildid)})

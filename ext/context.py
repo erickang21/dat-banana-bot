@@ -1,4 +1,6 @@
+import asyncio
 from discord.ext import commands
+from cogs.utils.paginator import Pages
 
 class DatContext(commands.Context):
     def __init__(self, *args, **kwargs):
@@ -16,9 +18,9 @@ class DatContext(commands.Context):
     @property
     def db(self):
         '''Another shorter access to the database.'''
-        return self.bot.db.datbananabot
+        return self.bot.db
         
-    def paginate(text: str):
+    def page(self, text: str):
         '''Simple generator that paginates text.'''
         last = 0
         pages = []
@@ -30,7 +32,22 @@ class DatContext(commands.Context):
         if appd_index != len(text) - 1:
             pages.append(text[last:curr])
         return list(filter(lambda a: a != '', pages))
-        
+
+    def paginate(self, entries, per_page=5):
+        Pages(self, entries=entries, per_page=per_page)
+
+    async def set_permissions(self, user, **permissions):
+        await self.channel.set_permissions(user, **permissions)
+
+    async def mute(self, user, time: int = None):
+        await self.channel.set_permissions(user, send_messages=False)
+        if time:
+            await asyncio.sleep(time)
+            await self.channel.set_permissions(user, send_messages=True)
+
+    async def unmute(self, user):
+        await self.channel.set_permissions(user, send_messages=True)
+
     async def send(self, content=None, *, tts=False, embed=None, file=None, files=None, delete_after=None, nonce=None, code=None, split=False):
         '''Custom send with extra functionality.'''
         if code and content:
@@ -45,10 +62,15 @@ class DatContext(commands.Context):
                     return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
                     break
                 else:
-                    return super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+                    return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
         else:
             return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
             
+
+    async def send_codeblock(self, content, lang=None):
+        to_send = f"```{content}```" if not lang else f"```{lang}\n{content}```"
+        return await super().send(to_send)
+
     async def get(self, url, headers={}, params={}, json=False):
         '''Easy method to request APIs etc.
         This method is for GET.
