@@ -74,6 +74,12 @@ def dev_check(id):
         return False  
 
 
+async def get_prefix_as_str(message):
+    if isinstance(message.channel, discord.DMChannel): return "*"
+    x = await bot.db.prefix.find_one({ "id": str(message.guild.id) })
+    pre = x['prefix'] if x is not None else '*'
+    return pre
+
 # async def process_commands(message):
 #     ctx = await bot.get_context(message, cls=DatContext)
 #     if not ctx.command:
@@ -169,6 +175,9 @@ async def on_command(ctx):
 async def on_message_edit(before, after):
     if before is None or after is None:
         return
+    pre = get_prefix_as_str(after)
+    if after.content.startswith(pre):
+        await bot.process_commands(after)
     if before.content == after.content:
         return
     if await modlog_check(before.guild.id):
