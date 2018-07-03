@@ -269,7 +269,9 @@ class mod:
             em.add_field(name="User ID", value=user.id)
             em.add_field(name="Muted by", value=str(ctx.author))
             em.add_field(name="Time", value=f"{str(mutetime)} minutes" if mutetime else "No time limit.")
-            await modlog['channel'].send(embed=em)
+            channel = bot.get_channel(int(modlog['channel']))
+            if channel:
+                await channel.send(embed=em)
         try:
             await ctx.channel.set_permissions(user, send_messages=False)
             await ctx.channel.send(f"{user.mention} is now forced to shut up. :zipper_mouth: ")
