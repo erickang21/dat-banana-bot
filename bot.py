@@ -175,7 +175,7 @@ async def on_command(ctx):
 async def on_message_edit(before, after):
     if before is None or after is None:
         return
-    pre = get_prefix_as_str(after)
+    pre = await get_prefix_as_str(after)
     if after.content.startswith(pre):
         await bot.process_commands(after)
     if before.content == after.content:
