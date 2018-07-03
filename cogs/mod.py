@@ -265,10 +265,10 @@ class mod:
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
         if modlog:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member was muted.")
-            em.add_field(name="User", value=str(user))
-            em.add_field(name="User ID", value=user.id)
-            em.add_field(name="Muted by", value=str(ctx.author))
-            em.add_field(name="Time", value=f"{str(mutetime)} minutes" if mutetime else "No time limit.")
+            em.add_field(name="User", value=str(user), inline=False)
+            em.add_field(name="User ID", value=user.id, inline=False)
+            em.add_field(name="Muted by", value=str(ctx.author), inline=False)
+            em.add_field(name="Time", value=f"{str(mutetime)} minutes" if mutetime else "No time limit.", inline=False)
             channel = self.bot.get_channel(int(modlog['channel']))
             if channel:
                 await channel.send(embed=em)
@@ -338,9 +338,9 @@ class mod:
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
         if modlog:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member was unmuted.")
-            em.add_field(name="User", value=str(user))
-            em.add_field(name="User ID", value=user.id)
-            em.add_field(name="Unmuted by", value=str(ctx.author))
+            em.add_field(name="User", value=str(user), inline=False)
+            em.add_field(name="User ID", value=user.id, inline=False)
+            em.add_field(name="Unmuted by", value=str(ctx.author), inline=False)
             channel = self.bot.get_channel(int(modlog['channel']))
             if channel:
                 await channel.send(embed=em)
