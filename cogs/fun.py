@@ -167,10 +167,10 @@ class fun:
             to_rate = str(thing)
         if Type.lower() == 'gay':
             rating = random.randint(0, 100)
-            return await ctx.send(f"**{to_rate}**'s gay level:\n{self.get_lines(rating)} **{rating}%**")
+            return await ctx.send(f"**{to_rate}**'s gay level: :gay_pride_flag: \n{self.get_lines(rating)} **{rating}%**")
         elif Type.lower() == 'weeb':
             rating = random.randint(0, 100)
-            return await ctx.send(f"**{to_rate}**'s weeb level:\n{self.get_lines(rating)} **{rating}%**")
+            return await ctx.send(f"**{to_rate}**'s weeb level: {self.bot.get_emoji(449682671862546443)}\n{self.get_lines(rating)} **{rating}%**")
         else:
             return await ctx.send("Invalid argument. *rate [gay/weeb] [user]")
 
