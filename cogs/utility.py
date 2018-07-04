@@ -688,10 +688,10 @@ class Utility:
     @commands.command()
     async def choose(self, ctx, *, args):
         """Can't choose. Let this bot do it for you. Seperate choices with a comma."""
-        lol = self.bot.get_emoji(410122907373535233)
+        lol = self.bot.get_emoji(453323541639725079)
         msg = await ctx.send(lol)
         args = args.split(",")
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
         await msg.edit(content=f"I choose:\n**{random.choice(args)}**")
 
         
