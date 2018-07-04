@@ -104,6 +104,15 @@ class fun:
 
 
     @commands.command()
+    async def weeb(self, ctx):
+        """Get a random pic for weebs."""
+        resp = await (await self.bot.session.get("https://nekos.life/api/v2/img/avatar")).json()
+        em = discord.Embed(color=ctx.author.color, title="Weeb Pic")
+        em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.set_image(url=resp['url'])
+        await ctx.send(embed=em)
+
+    @commands.command()
     async def reverse(self, ctx, *, text):
         """!txeT ruoY esreveR"""
         await ctx.send("".join(list(reversed(str(text)))))
