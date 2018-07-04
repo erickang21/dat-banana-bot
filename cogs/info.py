@@ -63,7 +63,7 @@ class Info:
         """Read the latest notes on the latest update!"""    
         content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
         title = content.split("\n")[0].replace("*", "")
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=title)
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.description = content
         await ctx.send(embed=em)
 
