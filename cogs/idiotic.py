@@ -348,7 +348,13 @@ class Idiotic:
         except Exception as e:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
-
+    @commands.command()
+    async def owoify(self, ctx, *, text: str):
+        await ctx.trigger_typing()
+        try:
+            await ctx.send(await self.client.owoify(text))
+        except Exception as e:
+            await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
 def setup(bot):
     bot.add_cog(Idiotic(bot))
