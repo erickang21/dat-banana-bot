@@ -153,7 +153,7 @@ class fun:
 
         
     @commands.command()
-    async def rate(self, ctx, Type: str, thing):
+    async def rate(self, ctx, Type: str, *, thing):
         """
         Rate someone based on something.
         
