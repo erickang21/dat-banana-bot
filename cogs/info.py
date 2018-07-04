@@ -40,7 +40,7 @@ class Info:
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
-        em.add_field(name='Version', value='7.0.4')
+        em.add_field(name='Version', value='7.0.5')
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py {self.bot.get_emoji(418934774623764491)}') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
@@ -59,20 +59,16 @@ class Info:
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
         em = discord.Embed(color=discord.Color(
-            value=0x00ff00), title='v7.0.4: no u')
+            value=0x00ff00), title='v7.0.5 is gucci. Again.')
         em.description = textwrap.dedent("""
-        __***SUPER DUPER UNBELIEVEABLY GUCCI STUFF***__
-        -> MEMES! We love them, we love them, now dat banana bot HAS THEM! *meme yourself away!
-
-        __**Gucci Stuff**__
-        -> Added crcards! See all the cards you collected and the cards you didn't.
-        -> A star! Make your text go in a star shape! 
-        -> What does "你妈妈同性恋" mean in English? Find out with the translate command!
-        -> Some commands are now labelled as **Guild-only.** Get outta mah DMs!
-        -> Antilink! No more ~~shitty~~ advertisers in your server.
-        -> Added removerole, so you can dramatically demote someone.
-        -> Better error handling and aliases for addrole and removerole.
-        -> Fixed an issue that broke all CR commands.
+-> Memory loss won't bother you. Save tags on the bot so it can remember the stuff you can't.
+-> WOO-HOO! ~~Fuck~~Fortnite stats now supported, thanks to @Free TNT#5796.
+-> !txeT ruoY esreveR
+-> More OP modlogs! Shows when a user got muted/unmuted and when they posted a link when antilink is on.
+-> Typos when trying to trigger a command? No more worrying. Just edit the message and the command will trigger anyway.
+-> Mute now works properly.
+-> Rate anything. Ship anything. Not just mentions now, anything!
+-> Be random. As random as possible. With randomemoji, get a random emoji.
 
         """)
         await ctx.send(embed=em)
