@@ -5,6 +5,7 @@ import io
 import asyncio
 import psutil
 import time
+import re
 import textwrap
 from discord.ext import commands
 
@@ -13,7 +14,7 @@ class Info:
     def __init__(self, bot):
         self.bot = bot
         self.starttime = self.bot.starttime
-
+        
 
 
     @commands.command(aliases=['info', 'botinfo'])
@@ -31,6 +32,8 @@ class Info:
         minute, second = divmod(second, 60)
         hour, minute = divmod(minute, 60)
         day, hour = divmod(hour, 24)
+        content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
+        version = re.findall(r"v(\d.\d.\d)", content)
         em = discord.Embed(color=color, title='Bot Stats')
         em.description = "These are some stats for the lovely dat banana bot#0170."
         em.set_thumbnail(url="https://c1.staticflickr.com/6/5611/15804684456_0c2d30237d_z.jpg")        
@@ -40,7 +43,7 @@ class Info:
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
-        em.add_field(name='Version', value='7.0.5')
+        em.add_field(name='Version', value=version)
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py {self.bot.get_emoji(418934774623764491)}') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
@@ -58,19 +61,10 @@ class Info:
     @commands.command(aliases=['updates'])
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
-        em = discord.Embed(color=discord.Color(
-            value=0x00ff00), title='v7.0.5 is gucci. Again.')
-        em.description = textwrap.dedent("""
--> Memory loss won't bother you. Save tags on the bot so it can remember the stuff you can't.
--> WOO-HOO! ~~Fuck~~Fortnite stats now supported, thanks to @Free TNT#5796.
--> !txeT ruoY esreveR
--> More OP modlogs! Shows when a user got muted/unmuted and when they posted a link when antilink is on.
--> Typos when trying to trigger a command? No more worrying. Just edit the message and the command will trigger anyway.
--> Mute now works properly.
--> Rate anything. Ship anything. Not just mentions now, anything!
--> Be random. As random as possible. With randomemoji, get a random emoji.
-
-        """)
+        content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
+        title = content.split("\n")[0].replace("*", "")
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=title)
+        em.description = content
         await ctx.send(embed=em)
 
 def setup(bot): 
