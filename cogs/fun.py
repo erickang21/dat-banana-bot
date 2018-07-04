@@ -153,7 +153,7 @@ class fun:
 
         
     @commands.command()
-    async def rate(self, ctx, Type: str, user: discord.Member):
+    async def rate(self, ctx, Type: str, thing):
         """
         Rate someone based on something.
         
@@ -161,13 +161,16 @@ class fun:
         *rate gay [user]
         *rate weeb [user]
         """
-        user = user or ctx.author
+        try:
+            to_rate = ctx.message.mentions[0].name
+        except IndexError:
+            to_rate = str(thing)
         if Type.lower() == 'gay':
             rating = random.randint(0, 100)
-            return await ctx.send(f"**{user.name}**'s gay level:\n{self.get_lines(rating)} **{rating}%**")
+            return await ctx.send(f"**{to_rate}**'s gay level:\n{self.get_lines(rating)} **{rating}%**")
         elif Type.lower() == 'weeb':
             rating = random.randint(0, 100)
-            return await ctx.send(f"**{user.name}**'s weeb level:\n{self.get_lines(rating)} **{rating}%**")
+            return await ctx.send(f"**{to_rate}**'s weeb level:\n{self.get_lines(rating)} **{rating}%**")
         else:
             return await ctx.send("Invalid argument. *rate [gay/weeb] [user]")
 
@@ -195,10 +198,16 @@ class fun:
 
 
     @commands.command()
-    async def ship(self, ctx, one: discord.Member or str, two: discord.Member or str):
+    async def ship(self, ctx, one: str, two: str):
         """Who's your true love? Or enemy..."""
-        if not two:
-            two = ctx.author
+        try:
+            first = ctx.message.mentions[0].name
+        except IndexError:
+            first = one
+        try:
+            second = ctx.message.mentions[1].name
+        except IndexError:
+            second = two
         em = discord.Embed(color=discord.Color(value=0xebf442), title='Please wait...')
         responses = [
             "*What's on your mind?*",
@@ -211,15 +220,15 @@ class fun:
         await asyncio.sleep(3)
         rate = random.randint(0, 100)
         if rate < 20:
-            text = f"**{one}** + **{two}**\n\nComplete CRAP! :unamused:\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nComplete CRAP! :unamused:\n\nRating: **{rate}**%"
         elif rate >= 20 and rate < 40:
-            text = f"**{one}** + **{two}**\n\nQuite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nQuite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
         elif rate >= 40 and rate < 60:
-            text = f"**{one}** + **{two}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
         elif rate >= 60 and rate < 80:
-            text = f"**{one}** + **{two}**\n\nPretty gucci! {self.bot.get_emoji(430851871872253983)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nPretty gucci! {self.bot.get_emoji(430851871872253983)}\n\nRating: **{rate}**%"
         elif rate >= 80 and rate <= 100:
-            text = f"**{one}** + **{two}**\n\nOne True Pair! {self.bot.get_emoji(430848132667146251)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nOne True Pair! {self.bot.get_emoji(430848132667146251)}\n\nRating: **{rate}**%"
         e = discord.Embed(color=discord.Color(value=0x00ff00), title="Matchmaking")
         e.description = text
         await msg.edit(embed=e)
