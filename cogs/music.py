@@ -178,6 +178,7 @@ class Music:
         await ctx.send("**Carrying on!** :arrow_forward:")
        
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     @commands.guild_only()
     async def stop(self, ctx):
         """Stops the player."""
