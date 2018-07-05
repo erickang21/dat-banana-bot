@@ -93,7 +93,7 @@ class mod:
             await self.bot.db.antilink.update_one({"id": ctx.guild.id}, {"$set": {"status": False}})
             await ctx.send("Antilink disabled. Advertising continues.")
         else:
-            return await ctx.send("Lockdown command:\n*lockdown [on/off]")
+            return await ctx.send("Antilink command:\n*antilink [on/off]")
 
 
     @commands.command()
