@@ -396,6 +396,7 @@ class Utility:
             counter += 1
             desc += f"{str(counter)} - {x}\n"
         em.description = desc
+        em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
         msg = await ctx.send(embed=em)
         # emojis = {
         #     "1": ":one:",
