@@ -246,27 +246,40 @@ async def on_reaction_add(reaction, user):
             await chan.send(embed=em)
     else:
         pass
-    # with open('data/starmsgs.json') as f:
-    #     x = json.loads(f.read())
-    # try:
-    #     sent = x[str(reaction.message.id)]
-    #     with open('data/starboard.json') as f:
-    #         a = json.loads(f.read())
-    #     try:
-    #         channel = bot.get_channel(int(a[str(user.guild.id)]))
-    #     except KeyError:
-    #         return
-    #     msg = await channel.get_message(int(sent))
-    #     em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {len([x for x in reaction.message.reactions if x.emoji == '⭐' or x.emoji == '🌟'])}")
-    #     em.description = reaction.message.content
-    #     em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
-    #     await msg.edit(embed=em)
-    # except KeyError:
 
-    
 
-        
-
+@bot.event
+async def on_reaction_remove(reaction, user):
+    if reaction.emoji == '⭐' or reaction.emoji == '🌟':
+        x = await bot.db.starboard.find_one({"id": str(user.guild.id)})
+        chan = bot.get_channel(x['channel'])
+        if not chan:
+            return
+        emoji_count = reaction.message.reactions[0].count
+        if emoji_count >= 1:
+            em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
+            em.description = reaction.message.content
+            em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+            try:
+                img_url = reaction.message.attachments[0].url
+            except IndexError:
+                img_url = None
+            if not img_url:
+                try:
+                    img_url = reaction.message.embeds[0].url
+                except IndexError:
+                    img_url = None
+            if img_url:
+                em.set_image(url=str(img_url))
+            async for x in chan.history(limit=50):
+                if x.embeds[0].description == reaction.message.content:
+                    await x.edit(embed=em)
+                    break
+        elif emoji_count == 0:
+            async for x in chan.history(limit=50):
+                if x.embeds[0].description == reaction.message.content:
+                    await x.delete()
+                    break
 
 
 @bot.event
