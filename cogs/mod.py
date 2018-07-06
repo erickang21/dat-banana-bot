@@ -218,6 +218,8 @@ class mod:
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, user: discord.Member, *, reason=None):
         """Kicks a member into the world outside your server."""
+        if user.id == ctx.author.id:
+            return await ctx.send("I don't understand your logic. Kicking yourself?")
         try:
             await user.kick(reason=reason)
             color = 0x00ff00
@@ -241,6 +243,8 @@ class mod:
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, user: discord.Member, *, reason=None):
         """Swings the mighty Ban Hammer on that bad boy."""
+        if user.id == ctx.author.id:
+            return await ctx.send("I don't understand your logic. Using the ban hammer on yourself?")
         try:
             await user.ban(reason=reason)
             color = 0x00ff00
