@@ -767,7 +767,7 @@ class Utility:
         em.add_field(name='ID', value=f'{user.id}')
         Type = 'Bot' if user.bot else 'Human'
         em.add_field(name='Profile Type', value=Type)
-        em.add_field(name='Currently Playing', value=str(user.activity) or 'Not playing anything!')
+        em.add_field(name='Currently Playing', value=user.activity.name or 'Not playing anything!')
         em.add_field(name="User Stats in Server", value=user.guild.name, inline=False)
         em.add_field(name="Total Roles", value=len(ctx.author.roles))
         em.add_field(name="Top Role", value=user.top_role)
