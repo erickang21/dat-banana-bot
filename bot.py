@@ -154,18 +154,18 @@ async def on_message(message):
                 await lol.send(embed=em)
             except KeyError:
                 pass
-    levelup = await bot.db.level.find_one({"id": message.guild.id})
-    if levelup:
-        try:
-            match = levelup['data'][str(message.author.id)]
-            if match is False: # match could be 0 which returns false, and i don't want that
-                pass 
-        except KeyError:
-            pass 
-        match += 1
-        await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"data": match}}, upsert = True)
-        if match % 20 == 0:
-            await message.channel.send(f"Woo-hoo, {message.author.mention}! You hit level {match / 20}! Keep talkin' for more!")
+    # levelup = await bot.db.level.find_one({"id": message.guild.id})
+    # if levelup:
+    #     try:
+    #         match = levelup['data'][str(message.author.id)]
+    #         if match is False: # match could be 0 which returns false, and i don't want that
+    #             pass 
+    #     except KeyError:
+    #         pass 
+    #     match += 1
+    #     await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"data": match}}, upsert = True)
+    #     if match % 20 == 0:
+    #         await message.channel.send(f"Woo-hoo, {message.author.mention}! You hit level {match / 20}! Keep talkin' for more!")
     if not message.author.bot:
         await bot.process_commands(message)
 
