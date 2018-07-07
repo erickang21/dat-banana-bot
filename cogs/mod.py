@@ -199,14 +199,17 @@ class mod:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_messages = True)
-    async def purge(self, ctx, num: int):
+    async def purge(self, ctx, num: int, from_user: discord.Member = None):
         """Deletes a # of msgs. *purge [# of msgs].""" 
         try:
             float(num)
         except ValueError:
             return await ctx.send("The number is invalid. Make sure it is valid! Usage: *purge [number of msgs]")
         try:
-            await ctx.channel.purge(limit=num+1)
+            if not from_user:
+                await ctx.channel.purge(limit=num+1, bulk=True)
+            else:
+                await ctx.channel.purge(limit=num+1, bulk=True, check=lambda x: x.author.id == from_user.id)
             msg = await ctx.send("Purged successfully :white_check_mark:", delete_after=3)
         except discord.Forbidden:
             await ctx.send("Purge unsuccessful. The bot does not have Manage Msgs permission.")
