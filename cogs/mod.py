@@ -310,6 +310,7 @@ class mod:
             if not role:
                 try:
                     role = await ctx.guild.create_role(name="Muted", permissions=discord.Permissions(permissions=1024)) 
+                    await role.edit(position=ctx.guild.me.roles[-1].position - 1)
                 except discord.Forbidden:
                     return await msg.edit(content="Don't have enough permissions. For flawless bot functions, give the Administrator permission to the bot.")
             await user.add_roles(role)
