@@ -50,3 +50,7 @@ __**Leveling Up**__
         except KeyError:
             return await ctx.send("This server doesn't have the level-up system enabled!")
         await ctx.send(f"**{user.name}** has **{match}** points. Keep it up!")
+        
+
+def setup(bot):
+    bot.add_cog(Level(bot))
