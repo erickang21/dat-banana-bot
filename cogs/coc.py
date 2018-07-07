@@ -37,7 +37,7 @@ class COC:
     @commands.command()
     async def cocsave(self, ctx, coctag):
         '''Saves a Clash of Clans tag to your Discord account.'''
-        coctag = coctag.strip('#')
+        coctag = coctag.strip('#').replace("O", "0")
         coctag = coctag.upper()
         for char in coctag:
             if char.upper() not in '0289PYLQGRJCUV':
@@ -54,7 +54,10 @@ class COC:
             coctag = await self.get_tag(ctx.author.id)
             if not coctag:
                 return await ctx.send("Oops, looks like you don't have a saved tag yet! Use `*cocsave [tag]` to save your tag to your Discord profile.")              
-            coctag = coctag.strip('#')
+            coctag = coctag.strip('#').replace("O", "0")
+            coctag = coctag.upper()
+        else:
+            coctag = coctag.strip('#').replace("O", "0")
             coctag = coctag.upper()
         resp = await self.session.get(f'https://api.clashofclans.com/v1/players/%23{coctag}', headers=self.client)
         resp = await resp.json()
