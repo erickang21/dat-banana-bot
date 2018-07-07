@@ -159,9 +159,9 @@ async def on_message(message):
         try:
             match = levelup['data'][str(message.author.id)]
             if match is False: # match could be 0 which returns false, and i don't want that
-                return 
+                pass 
         except KeyError:
-            return 
+            pass 
         match += 1
         await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"data": match}}, upsert = True)
         if match % 20 == 0:
