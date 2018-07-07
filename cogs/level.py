@@ -9,7 +9,7 @@ class Level:
     
     @commands.group(invoke_without_subcommand=True)
     async def level(self, ctx):
-        await ctx.send("""
+        return await ctx.send("""
 __**Leveling Up**__
 **on**: Enable level-ups in this server.
 **off**: Disable level-ups in this server.
@@ -24,7 +24,7 @@ __**Leveling Up**__
         for x in users:
             data[x] = 0
         self.bot.db.level.update_one({"id": ctx.guild.id}, {"$set": {"data": data}}, upsert=True)
-        await ctx.send("Successfully enabled the level-up system for **{}**.".format(ctx.guild.name))
+        return await ctx.send("Successfully enabled the level-up system for **{}**.".format(ctx.guild.name))
 
 
     @level.command()
@@ -34,7 +34,7 @@ __**Leveling Up**__
         for x in users:
             data[x] = False
         self.bot.db.level.update_one({"id": ctx.guild.id}, {"$set": {"data": data}}, upsert=True)
-        await ctx.send("Successfully enabled the level-up system for **{}**.".format(ctx.guild.name))
+        return await ctx.send("Successfully disabled the level-up system for **{}**.".format(ctx.guild.name))
 
 
     @level.command()
@@ -49,7 +49,7 @@ __**Leveling Up**__
                 return await ctx.send("This server doesn't have the level-up system enabled!")
         except KeyError:
             return await ctx.send("This server doesn't have the level-up system enabled!")
-        await ctx.send(f"**{user.name}** has **{match}** points. Keep it up!")
+        return await ctx.send(f"**{user.name}** has **{match}** points. Keep it up!")
         
 
 def setup(bot):
