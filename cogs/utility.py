@@ -630,11 +630,11 @@ class Utility:
             return await ctx.send(embed=em)
         resp = await self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}')
         r = await resp.json()
-        color = 0xf9e236
-        em = discord.Embed(color=color, title=f'Urban Dictionary: {word}')
         lol = []
         for x in r['list']:
             lol.append(f"{x['definition']} \n\n*{x['example']}* \n\n**Votes**\n:thumbsup: {x['thumbs_up']}  :thumbsdown: {x['thumbs_down']} \n\nDefinition written by {x['author']}")
+        if not lol:
+            return await ctx.send("Nope. No definitions found with this word.")
         ud = Pages(ctx, entries=lol, per_page=1)
         await ud.paginate()
 
