@@ -33,7 +33,7 @@ class Info:
         hour, minute = divmod(minute, 60)
         day, hour = divmod(hour, 24)
         content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
-        version = re.findall(r"v(\d.\d.\d)", content)
+        version = re.findall(r"v(\d.\d.\d)", content)[0]
         em = discord.Embed(color=color, title='Bot Stats')
         em.description = "These are some stats for the lovely dat banana bot#0170."
         em.set_thumbnail(url="https://c1.staticflickr.com/6/5611/15804684456_0c2d30237d_z.jpg")        
