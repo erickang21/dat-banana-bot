@@ -477,7 +477,7 @@ async def on_command_error(ctx, error):
 
             
             
-@bot.command()
+@bot.command(hidden=True) # because no one uses this xd
 @commands.is_owner()
 async def presence(ctx, Type=None, *, thing=None):
     """What AM I doing?!?!?!"""
