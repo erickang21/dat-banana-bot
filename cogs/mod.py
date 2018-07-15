@@ -297,7 +297,7 @@ class mod:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")
 
 
-    @commands.command()
+    @commands.command(aliases=['sm'])
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def servermute(self, ctx, user: discord.Member = None):
@@ -319,7 +319,7 @@ class mod:
             await msg.edit(content="The user has been muted for this server. :zipper_mouth:")
 
 
-    @commands.command()
+    @commands.command(aliases=['sum'])
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def serverunmute(self, ctx, user: discord.Member = None):
@@ -393,10 +393,10 @@ class mod:
             return await ctx.send(f"Success! **{str(user)}** has been removed from the role **{role}**.")
         except discord.Forbidden:
             return await ctx.send("Bot does not have enough permissions to remove role.")
+        
 
 
-
-    @commands.command(aliases=['welcome'])
+    @commands.command(aliases=['welcome', 'wm'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def welcomemsg(self, ctx, action=None):
