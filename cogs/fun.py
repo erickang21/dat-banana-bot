@@ -134,6 +134,7 @@ class fun:
             
 
     @commands.command()
+    @commands.guild_only()
     async def cleverbot(self, ctx, *, text):
         """Speak to Cleverbot. A chat bot."""
         em = discord.Embed(color=discord.Color(value=0xe5f442), title="Please Wait...")
@@ -162,6 +163,7 @@ class fun:
 
         
     @commands.command()
+    @commands.guild_only()
     async def rate(self, ctx, Type: str, *, thing):
         """
         Rate someone based on something.
@@ -207,6 +209,7 @@ class fun:
 
 
     @commands.command()
+    @commands.guild_only()
     async def ship(self, ctx, one: str, two: str):
         """Who's your true love? Or enemy..."""
         try:
@@ -286,6 +289,7 @@ class fun:
             await ctx.send('00F! s0m3thin5 w3nt wr0n5!')
      
     @commands.command()
+    @commands.guild_only()
     async def star(self, ctx, *, msg):
         """Git dat star"""
         if (len(msg) > 25):
@@ -331,7 +335,7 @@ class fun:
 
 
 
-    @commands.command(aliases=['joke', 'badjoke', 'shitjoke'])
+    @commands.command(aliases=['joke', 'badjoke', 'shitjoke', 'hjoke'])
     async def horriblejoke(self, ctx):
         """It's a REALLY REALLY bad joke. Trust me."""
         resp = await self.session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke')
@@ -345,6 +349,7 @@ class fun:
        
        
     @commands.command()
+    @commands.guild_only()
     async def hack(self, ctx, user: discord.Member):
         """Hack someone's account! Try it!"""
         msg = await ctx.send(f"Hacking! Target: {user}")
@@ -367,6 +372,7 @@ class fun:
    
     
     @commands.command()
+    @commands.guild_only()
     async def roast(self, ctx, user: discord.Member = None):
         '''Roast someone! If you suck at roasting them yourself.'''
         msg = f"Hey, {user.mention}! " if user is not None else ""
