@@ -58,7 +58,7 @@ class Info:
 
 
 
-    @commands.command(aliases=['updates'])
+    @commands.command(aliases=['updates', 'bu', 'botu'])
     async def botupdates(self, ctx):
         """Read the latest notes on the latest update!"""    
         content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
