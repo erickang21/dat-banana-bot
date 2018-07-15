@@ -440,7 +440,7 @@ class Utility:
         await ctx.send(f"```{message}```")
 
 
-    @commands.command()
+    @commands.command(aliases=['semoji', 'searchem'])
     async def searchemoji(self, ctx, *, emoji):
         """Searches an emoji from the bot's servers."""
         await ctx.message.delete()
@@ -455,7 +455,7 @@ class Utility:
             extension = '.png'
         await ctx.send(file=discord.File(resp, f"{e.name}{extension}"))
 
-    @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd'])
+    @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd', 'cemoji'])
     @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
     async def addemoji(self, ctx, *, emoji):
@@ -494,7 +494,7 @@ class Utility:
             return await ctx.send("The bot does not have Manage Emojis permission.")
 
 
-    @commands.command()
+    @commands.command(aliases=['daemojis', 'demojis'])
     @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
     async def deleteallemojis(self, ctx):
@@ -512,7 +512,7 @@ class Utility:
             return await ctx.send("Invalid response.")
 
 
-    @commands.command(aliases=['addedefault', 'defaultemojis'])
+    @commands.command(aliases=['addedefault', 'defaultemojis', 'ademojis'])
     @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
     async def adddefaultemojis(self, ctx):
@@ -564,7 +564,7 @@ class Utility:
     
        
 
-    @commands.command()
+    @commands.command(aliases=['fb'])
     @commands.guild_only()
     async def feedback(self, ctx, *, feedback=None):
         """How do YOU want this bot to be? Give your word here."""
@@ -609,7 +609,7 @@ class Utility:
             await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(aliases=['surl'])
     async def shortenurl(self, ctx, *, url):
         '''Shortens a URL through Tinyurl.'''
         color = 0xf9e236
@@ -753,7 +753,7 @@ class Utility:
             await ctx.send(embed=em)
             
             
-    @commands.command()
+    @commands.command(aliases=['ui'])
     async def userinfo(self, ctx, user: discord.Member = None):
         """Dig out that user info. Usage: *userinfo [tag user]"""
         if user is None:
@@ -777,7 +777,7 @@ class Utility:
         await ctx.send(embed=em)  
         
               
-    @commands.command()
+    @commands.command(aliases=['si'])
     async def serverinfo(self, ctx, *, guild_name = None):
         """Are you a nerd? Here's some server info."""
         guild = None
@@ -872,7 +872,7 @@ class Utility:
         await ctx.send(embed=em)
               
 
-    @commands.command()
+    @commands.command(aliases=['rinfo'])
     @commands.guild_only()
     async def roleinfo(self, ctx, *, rolename):
         try:
