@@ -496,7 +496,9 @@ async def presence(ctx, Type=None, *, thing=None):
       else:
         await ctx.send('Want me to do something? YOU do it right first. Usage: *presence [game/stream] [msg]')
                     
- 
+#@bot.command()
+#async def sevrers(ctx):
+
                 
 @bot.command()
 async def say(ctx, *, message: commands.clean_content()):
