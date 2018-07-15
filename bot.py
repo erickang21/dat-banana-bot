@@ -37,7 +37,7 @@ async def getprefix(bot, message):
     return commands.when_mentioned_or(pre)(bot, message)
 
 
-bot = commands.Bot(command_prefix=getprefix, description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands", owner_id=277981712989028353)
+bot = commands.Bot(command_prefix=getprefix, description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands", owner_id=277981712989028353, case_insensitive=True)
 bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.starttime = time.time()
