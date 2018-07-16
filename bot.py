@@ -147,7 +147,7 @@ async def on_message(message):
         if await modlog_check(message.guild.id):
             try:
                 lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-                em = discord.Embed(color=0x00ff00, title='An invite was posted.')
+                em = discord.Embed(color=0xf9e236, title='An invite was posted.')
                 em.add_field(name='Channel', value=f"<#{message.channel.id}>")
                 em.add_field(name='Link', value=message.content)
                 em.add_field(name='Sent By', value=str(message.author))
@@ -333,7 +333,7 @@ async def on_member_join(member):
     await lol.send(x['message'].replace('{name}', member.name).replace('{mention}', member.mention).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Joined')
+        em = discord.Embed(color=discord.Color(value=0xf9e236), title='Member Joined')
         em.add_field(name="Name", value=str(member))
         em.add_field(name='Joined At', value=str(member.joined_at.strftime("%b %m, %Y, %A, %I:%M %p")))
         em.add_field(name="ID", value=member.id)
@@ -352,7 +352,7 @@ async def on_member_join(member):
     if levelup:
         try:
             match = levelup['data']
-            if match is False:  # match could be 0 which returns false, and i don't want that
+            if match is False:  # match could be 0 which returns false, and I don't want that
                 return
         except KeyError:
             return
@@ -373,7 +373,7 @@ async def on_member_remove(member):
     await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Left')
+        em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Left')
         em.add_field(name="Name", value=str(member))
         em.add_field(name="ID", value=member.id)
         em.set_thumbnail(url=member.avatar_url)
@@ -398,7 +398,7 @@ async def on_member_ban(guild, member):
         await lol.send(x['message'].replace('{name}', member.name).replace('{members}', str(len(member.guild.members))).replace('{server}', member.guild.name))
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title='Member Banned')
+        em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Banned')
         em.add_field(name="Name", value=str(member))
         em.add_field(name="ID", value=member.id)
         em.add_field(name="Server", value=guild.name)
@@ -422,7 +422,7 @@ async def on_message_delete(message):
                 except IndexError:
                     img_url = None
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Deleted')
+            em = discord.Embed(color=discord.Color(value=0xf9e236), title='Message Deleted')
             em.add_field(name='Content', value=message.content if message.content else "Embed")
             em.add_field(name='Sent By', value=str(message.author))
             em.add_field(name='Channel', value=f"<#{message.channel.id}>")
