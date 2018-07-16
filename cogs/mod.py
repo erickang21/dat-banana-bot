@@ -241,7 +241,7 @@ class mod:
         
         
     
-    @commands.command(aliases=["bean"])
+    @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, user: discord.Member, *, reason=None):
