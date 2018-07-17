@@ -498,7 +498,7 @@ async def presence(ctx, Type=None, *, thing=None):
                     
 #@bot.command()
 #async def github(banana):
-#await banana.send("https://github.com/")
+#await banana.send("```https://github.com/dat-banana-bot```\nGood luck and take as much code as you want. ")
 
                 
 @bot.command()
