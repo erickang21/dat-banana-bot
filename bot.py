@@ -497,7 +497,7 @@ async def presence(ctx, Type=None, *, thing=None):
         await ctx.send('Want me to do something? YOU do it right first. Usage: *presence [game/stream] [msg]')
                     
 #@bot.command()
-#async def sevrers(ctx):
+#async def github(ctx):
 
                 
 @bot.command()
