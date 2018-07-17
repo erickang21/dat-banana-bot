@@ -498,7 +498,7 @@ async def presence(ctx, Type=None, *, thing=None):
                     
 #@bot.command()
 #async def github(banana):
-#await banana.send
+#await banana.send("")
 
                 
 @bot.command()
