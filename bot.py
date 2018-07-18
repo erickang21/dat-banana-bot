@@ -121,7 +121,8 @@ async def on_ready():
         "*help | skrrrrrrrrra pa pa pa pa pa.",
         "*help | asdfasdfasdfasdf.",
         "*help | Git Gud At Leagye.",
-        "*help | Music officially fixed! YEET"
+        "*help | Music officially fixed! YEET",
+        "*help | Bananaes < Leagye"
     ]
     print('Bot is online, and ready to ROLL!')
     while True:
