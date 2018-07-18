@@ -225,7 +225,7 @@ class mod:
             return await ctx.send("I don't understand your logic. Kicking yourself?")
         try:
             await user.kick(reason=reason)
-            color = 0x00ff00
+            color = 0xf9e236
             em = discord.Embed(color=color, title='Kicked!')
             em.add_field(name='User', value=user.name)
             em.add_field(name='Kicked By', value=ctx.author.name)
@@ -241,7 +241,7 @@ class mod:
         
         
     
-    @commands.command(aliases=["bean"])
+    @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, user: discord.Member, *, reason=None):
@@ -250,7 +250,7 @@ class mod:
             return await ctx.send("I don't understand your logic. Using the ban hammer on yourself?")
         try:
             await user.ban(reason=reason)
-            color = 0x00ff00
+            color = 0xf9e236
             em = discord.Embed(color=color, title='Banned!')
             em.description = f'The ban hammer has fell down. {self.bot.get_emoji(436342184330002442)}'
             em.add_field(name='User', value=user.name)
@@ -297,7 +297,7 @@ class mod:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")
 
 
-    @commands.command()
+    @commands.command(aliases=['sm'])
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def servermute(self, ctx, user: discord.Member = None):
@@ -319,7 +319,7 @@ class mod:
             await msg.edit(content="The user has been muted for this server. :zipper_mouth:")
 
 
-    @commands.command()
+    @commands.command(aliases=['sum'])
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def serverunmute(self, ctx, user: discord.Member = None):
@@ -393,10 +393,10 @@ class mod:
             return await ctx.send(f"Success! **{str(user)}** has been removed from the role **{role}**.")
         except discord.Forbidden:
             return await ctx.send("Bot does not have enough permissions to remove role.")
+        
 
 
-
-    @commands.command(aliases=['welcome'])
+    @commands.command(aliases=['welcome', 'wm'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def welcomemsg(self, ctx, action=None):
@@ -572,7 +572,7 @@ class mod:
     @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def prefix(self, ctx, prefix=None):
-        em = discord.Embed(color=0x00ff00, title="Bot Prefix")
+        em = discord.Embed(color=0xf9e236, title="Bot Prefix")
         if prefix is None:
             em.description = f"The bot's prefix for server **{ctx.guild.name}** is set to `{ctx.prefix}`."
             return await ctx.send(embed=em)
@@ -599,7 +599,7 @@ class mod:
             await ctx.guild.ban(lol, reason=reason)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
-        color = 0x00ff00
+        color = 0xf9e236
         em = discord.Embed(color=color, title='Banned!')
         em.add_field(name='Banned By', value=ctx.author.name)
         reason = reason if reason is not None else 'No reason given.'
@@ -613,7 +613,7 @@ class mod:
     # @commands.has_permissions(administrator = True)
     # async def banword(self, ctx, word=None):
     #     '''Command group that allows you to add/delete banned words for your server.'''
-    #     em = discord.Embed(color=0x00ff00, title='Banned Words')
+    #     em = discord.Embed(color=0xf9e236, title='Banned Words')
     #     em.description = ''
     #     try:
     #         f = open("data/guildconfig.json").read()
@@ -712,4 +712,4 @@ class mod:
 
 
 def setup(bot): 
-    bot.add_cog(mod(bot))        
+    bot.add_cog(Mod(bot))        
