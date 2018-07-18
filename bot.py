@@ -196,7 +196,7 @@ async def on_message_edit(before, after):
     if await modlog_check(before.guild.id):
         try:
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title='Message Edited')
+            em = discord.Embed(color=discord.Color(value=0xf9e236), title='Message Edited')
             em.add_field(name='Channel', value=f"<#{before.channel.id}>")
             em.add_field(name='Content Before', value=before.content)
             em.add_field(name='Content After', value=after.content)
@@ -497,9 +497,9 @@ async def presence(ctx, Type=None, *, thing=None):
       else:
         await ctx.send('Want me to do something? YOU do it right first. Usage: *presence [game/stream] [msg]')
                     
-#@bot.command()
-#async def github(banana):
-#await banana.send("```https://github.com/dat-banana-bot```\nGood luck and take as much code as you want. ")
+@bot.command()
+async def github(ctx):
+await ctx.send("```https://bit.ly/2LuYUca```\nGood luck and take as much code as you want :) ")
 
                 
 @bot.command()
