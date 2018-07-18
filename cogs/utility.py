@@ -5,7 +5,9 @@ import textwrap
 import wikipedia
 import urllib.parse
 import json
+import re
 import openweathermapy.core as weather
+from bs4 import BeautifulSoup
 from pygoogling.googling import GoogleSearch
 from discord.ext import commands
 from mtranslate import translate
@@ -223,6 +225,72 @@ class Utility:
             return None
         else:
             return match
+    
+    def slice_text(self, text:str, count: int):
+        if len(text) < count:
+            return text
+        return text[0:count - 3] + "..."
+
+    @commands.command(aliases=['g', 'gg'])
+    async def google(self, ctx, *, query: str):
+        """Searches google for a query"""
+        safe = "on"
+        if not isinstance(ctx.channel, discord.DMChannel) and ctx.channel.nsfw:
+            safe = "off"
+        params = {"q": query, "safe": safe}
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36"}
+        try:
+            async with ctx.typing():
+                res = await self.bot.session.get("https://google.com/search", params=params, headers=headers)
+                if res.status != 200:
+                    return await ctx.send("Google has failed to respond.")
+                html = await res.text()
+                data = BeautifulSoup(html, "lxml")
+                a = data.find_all("h3", {"class": "r"})
+                if len(a) < 1:
+                    return await ctx.send(f"Oops! Looks like no results were found with your search term **{query}**.")
+                res = ""
+                counter = 0
+                for elem in a:
+                    if counter >= 5:
+                       break
+                    url = elem.find("a")
+                    if not url:
+                        continue
+                    url = url.get("href")
+                    if not url:
+                        continue
+                    regex = r".*(&sa=.*)"
+                    m = re.match(regex, url)
+                    if m:
+                        url = url.replace(m.group(1), "")
+                    url = url.replace("/url?q=", "")
+                    res += "**{}** \n{}\n\n".format(elem.text, url)
+                    counter += 1
+                if not res:
+                    return await ctx.send("No results found.")
+                em = discord.Embed(color=0xff0000)
+                em.title = f"Google Search: {self.slice_text(query, 100)}"
+                em.description = self.slice_text(res, 2000)
+                await ctx.send(embed=em)
+        except:
+            await ctx.send("Something went wrong, please try again later.")
+        # search = GoogleSearch(query)
+        # search.start_search()
+        # result = search.search_result
+        # em = discord.Embed(color=0x00ff00, title=f'Google Search Results for: {query}')
+        # if result == []:
+        #     em.description = "No results for this search term was found. :x:"
+        #     return await ctx.send(embed=em)
+        # else:
+        #     em.description = f"**Top Result:**\n{result[0]}\n\n**Other Results:**\n{result[1]}\n{result[2]}\n{result[3]}\n{result[4]}\n{result[5]}"
+        # em.set_author(name=f"Searched by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+        # lol = []
+        # for x in result:
+        #     lol.append(f"{x}\n")
+        # page = Pages(ctx, entries=lol, per_page=5)
+        # await page.paginate()
 
 
     @commands.group(invoke_without_command=True)
@@ -543,23 +611,7 @@ class Utility:
             return await msg.edit(content="Bot does not have Manage Emojis permission. :x:")
 
 
-    @commands.command(aliases=['g', 'gg'])
-    async def google(self, ctx, *, query: str):
-        search = GoogleSearch(query)
-        search.start_search()
-        result = search.search_result
-        em = discord.Embed(color=0x00ff00, title=f'Google Search Results for: {query}')
-        if result == []:
-            em.description = "No results for this search term was found. :x:"
-            return await ctx.send(embed=em)
-        else:
-            em.description = f"**Top Result:**\n{result[0]}\n\n**Other Results:**\n{result[1]}\n{result[2]}\n{result[3]}\n{result[4]}\n{result[5]}"
-        em.set_author(name=f"Searched by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
-        lol = []
-        for x in result:
-            lol.append(f"{x}\n")
-        page = Pages(ctx, entries=lol, per_page=5)
-        await page.paginate()
+
 
     
        
