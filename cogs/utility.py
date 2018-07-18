@@ -234,6 +234,7 @@ class Utility:
     @commands.command(aliases=['g', 'gg'])
     async def google(self, ctx, *, query: str):
         """Searches google for a query"""
+        # Shoutout to Free TNT#5796 for this code. Thanks!
         safe = "on"
         if not isinstance(ctx.channel, discord.DMChannel) and ctx.channel.nsfw:
             safe = "off"
@@ -270,8 +271,9 @@ class Utility:
                     counter += 1
                 if not res:
                     return await ctx.send("No results found.")
-                em = discord.Embed(color=0xff0000)
+                em = discord.Embed(color=ctx.author.color)
                 em.title = f"Google Search: {self.slice_text(query, 100)}"
+                em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
                 em.description = self.slice_text(res, 2000)
                 await ctx.send(embed=em)
         except:

@@ -3,7 +3,7 @@ import discord
 
 class CannotPaginate(Exception):
     pass
-
+# This code was taken from R. Danny's help paginator. Credits go to him.
 class Pages:
     """Implements a paginator that queries the user for the
     pagination interface.

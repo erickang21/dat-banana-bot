@@ -31,6 +31,7 @@ class Fortnite:
     @commands.command(aliases=["fn", "fnprofile", "fucknite"])
     async def fortnite(self, ctx, platform: str = None, *, username: str = None):
         """Gets your fortnite stats"""
+        # Shoutout to Free TNT#5796 for this code. Thanks!
         if not platform and not username:
             stuff = await self.bot.db.fortnite.find_one({"id": ctx.author.id})
             if not stuff:
