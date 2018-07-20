@@ -9,7 +9,7 @@ import textwrap
 from discord.ext import commands
 
 
-class mod:
+class Mod:
     def __init__(self, bot):
         self.bot = bot
 
