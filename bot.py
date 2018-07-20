@@ -497,9 +497,7 @@ async def presence(ctx, Type=None, *, thing=None):
       else:
         await ctx.send('Want me to do something? YOU do it right first. Usage: *presence [game/stream] [msg]')
                     
-@bot.command()
-async def github(ctx):
-await ctx.send("```https://bit.ly/2LuYUca```\nGood luck and take as much code as you want :) ")
+
 
                 
 @bot.command()
