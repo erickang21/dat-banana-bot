@@ -226,10 +226,11 @@ class Utility:
         else:
             return match
     
-    def slice_text(self, text:str, count: int):
+    def slice_text(self, text:str, count: int, end = None):
+        suffix = end or "..."
         if len(text) < count:
             return text
-        return text[0:count - 3] + "..."
+        return text[0:count - 3] + suffix
 
     @commands.command(aliases=['g', 'gg'])
     async def google(self, ctx, *, query: str):
@@ -494,7 +495,8 @@ class Utility:
             em.description = 'No results found.'
             return await ctx.send(embed=em)
         if len(res) > 2048:
-            em.description = f"Result too long to fit in a message. View the result: https://wikipedia.org/wiki/{query.replace(' ', '_')}"
+            desc = self.slice_text(res, 1900, f"...\n\nToo much! Read the rest at https://wikipedia.org/wiki/{query.replace(' ', '_')}")
+            em.description = desc
         else:
             em.description = res
         em.set_footer(text=f"Requested by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
