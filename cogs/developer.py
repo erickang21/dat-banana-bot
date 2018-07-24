@@ -96,7 +96,7 @@ class Developer:
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         e = discord.Embed(color=0x00ff00, title='Running code')
-        e.description = f'Please wait... {self.bot.get_emoji(441385713091477504)}'
+        e.description = f'Please wait... {self.bot.get_emoji(471279983197814806)}'
         msg = await ctx.send(embed=e)
         lol = subprocess.run(f"{code}", cwd='/Users/dat-banana-bot', stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         err = lol.stderr.decode("utf-8")
@@ -114,7 +114,7 @@ class Developer:
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        msg = await ctx.send(f"Updating... {self.bot.get_emoji(442864634987413506)}")
+        msg = await ctx.send(f"Updating... {self.bot.get_emoji(471279983197814806)}")
         try:
             lol = subprocess.run("git pull", cwd='/Users/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
             for cog in self.bot.cogs:

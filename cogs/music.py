@@ -135,7 +135,7 @@ class Music:
                 return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
             player.store("ctx", ctx)
             await player.connect(ctx.author.voice.channel.id)
-        em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(441385713091477504)} Searching `{search}`...")
+        em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(471279983197814806)} Searching `{search}`...")
         m = await ctx.send(embed=em)
 
         search = search.strip("<>")

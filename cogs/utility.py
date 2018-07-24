@@ -275,7 +275,7 @@ class Utility:
                 em = discord.Embed(color=ctx.author.color)
                 em.title = f"Google Search: {self.slice_text(query, 100)}"
                 em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
-                em.description = self.slice_text(res, 2000)
+                em.description = self.slice_text(res, 2000) + f"\n\nSafeSearch is **{safe}**.\nIt is disabled in NSFW channels and enabled for regular channels and DMs."
                 await ctx.send(embed=em)
         except:
             await ctx.send("Something went wrong, please try again later.")
