@@ -171,7 +171,11 @@ class mod:
     async def dm(self, ctx, user: discord.Member, *, msg: str):
         """Escort your DM to someone thru the bot. Usage: *dm [tag person] [msg]"""
         try:
-            await user.send(msg)
+            em = discord.Embed(color=ctx.author.color, title="New Message")
+            em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
+            em.description = msg
+            em.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
+            await user.send(embed=em)
             await ctx.message.delete()            
             await ctx.send("SuccESS! Your DM has made it! :white_check_mark: ")
         except commands.MissingPermissions:
