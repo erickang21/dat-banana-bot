@@ -71,7 +71,14 @@ class Developer:
         await msg.edit(content="BRB! :wave:")
         os.execv(sys.executable, ['python'] + ['bot.py'])
         
-        
+    #@command.commands(hidden=True)
+    #async def token(self, ctx):
+        #if not self.dev_check(ctx.author.id):
+            #return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+        #await ctx.send(f"{bot.ws.token}"
+       
+       
+    
     @commands.command()
     async def changename(self, ctx, name=None):
         """Changes my name. Please make it good!"""
