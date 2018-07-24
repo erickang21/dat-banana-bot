@@ -66,7 +66,7 @@ class Developer:
         """Restarts the bot. Be Back S00N"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        msg = await ctx.send(f"Restarting... {self.bot.get_emoji(441385713091477504)}")
+        msg = await ctx.send(f"Restarting... {self.bot.get_emoji(471279983197814806)}")
         await asyncio.sleep(1)
         await msg.edit(content="BRB! :wave:")
         os.execv(sys.executable, ['python'] + ['bot.py'])
