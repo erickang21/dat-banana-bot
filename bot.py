@@ -475,7 +475,7 @@ async def on_command_error(ctx, error):
         pass
     else:
         log = bot.get_channel(445332002942484482)
-        traceback_text = "\n".join(traceback.format_exception(type(e), e, e.__traceback__, 10))
+        traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
         emb = discord.Embed(color=discord.Color(value=0xf44e42), title="Welp. This is awkward...")
         emb.description = "It shouldn't end this way. :cry:\n\nAn unknown issue has occurred. I have reported the error to the devs, who will check it out. Hang in there!"
         await ctx.send(embed=emb)
