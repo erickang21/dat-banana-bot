@@ -33,8 +33,10 @@ class Utils:
 
 
     async def edit_msg(self, ctx, *msgs, wait_time=3):
+        msgs = list(msgs)
         m = await ctx.send(msgs[0])
         await asyncio.sleep(wait_time)
-        for x in msgs[1:-1]:
+        msgs.remove(msgs[0])
+        for x in msgs:
             await m.edit(content=x)
             await asyncio.sleep(wait_time)
