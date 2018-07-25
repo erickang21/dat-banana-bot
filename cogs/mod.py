@@ -165,23 +165,23 @@ class mod:
             return await ctx.send("Unknown action. Either leave blank, use *starboard reset to re-create a deleted channel, or *starboard delete to remove the server's starboard.")
 
         
-    @commands.command()
-    @commands.guild_only()
-    @commands.has_permissions(administrator = True)
-    async def dm(self, ctx, user: discord.Member, *, msg: str):
-        """Escort your DM to someone thru the bot. Usage: *dm [tag person] [msg]"""
-        try:
-            em = discord.Embed(color=ctx.author.color, title="New Message")
-            em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
-            em.description = msg
-            em.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
-            await user.send(embed=em)
-            await ctx.message.delete()            
-            await ctx.send("SuccESS! Your DM has made it! :white_check_mark: ")
-        except commands.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with DM'ing people without permissions.")
-        except:
-            await ctx.send("Error :x:. Make sure your message is shaped in this way: *dm [tag person] [msg]")
+    # @commands.command()
+    # @commands.guild_only()
+    # @commands.has_permissions(administrator = True)
+    # async def dm(self, ctx, user: discord.Member, *, msg: str):
+    #     """Escort your DM to someone thru the bot. Usage: *dm [tag person] [msg]"""
+    #     try:
+    #         em = discord.Embed(color=ctx.author.color, title="New Message")
+    #         em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
+    #         em.description = msg
+    #         em.set_footer(text=ctx.guild.name, icon_url=ctx.guild.icon_url)
+    #         await user.send(embed=em)
+    #         await ctx.message.delete()            
+    #         await ctx.send("SuccESS! Your DM has made it! :white_check_mark: ")
+    #     except commands.MissingPermissions:
+    #         await ctx.send("Aw, come on! You thought you could get away with DM'ing people without permissions.")
+    #     except:
+    #         await ctx.send("Error :x:. Make sure your message is shaped in this way: *dm [tag person] [msg]")
 
 
     
