@@ -148,12 +148,12 @@ class Music:
             await ctx.send("OOF, No results found. Looks like that search returned zero results! Right?")
 
         await m.delete()
-        player.add(requester=ctx.author, track=tracks[0])
+        player.add(requester=ctx.author, track=tracks['tracks'][0])
 
         if not player.is_playing:
             await player.play()
         else:
-            await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks[0]["info"]["title"]))
+            await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks['tracks'][0]["info"]["title"]))
 
     @commands.command()
     @commands.guild_only()
