@@ -12,7 +12,7 @@ from pygoogling.googling import GoogleSearch
 from discord.ext import commands
 from mtranslate import translate
 from .utils.paginator import Pages
-
+from .utils.utils import Utils
 
 class Utility:
     def __init__(self, bot):
@@ -207,6 +207,7 @@ class Utility:
             "za": "Zhuang",
             "zu": "Zulu"
         }
+        self.utils = Utils(self.bot)
 
     def cleanup_code(self, content):
         # remove ```py\n```
@@ -226,11 +227,7 @@ class Utility:
         else:
             return match
     
-    def slice_text(self, text:str, count: int, end = None):
-        suffix = end or "..."
-        if len(text) < count:
-            return text
-        return text[0:count - 3] + suffix
+
 
     @commands.command(aliases=['g', 'gg'])
     async def google(self, ctx, *, query: str):
@@ -273,9 +270,9 @@ class Utility:
                 if not res:
                     return await ctx.send("No results found.")
                 em = discord.Embed(color=ctx.author.color)
-                em.title = f"Google Search: {self.slice_text(query, 100)}"
+                em.title = f"Google Search: {self.utils.slice_text(query, 100)}"
                 em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
-                em.description = self.slice_text(res, 2000) + f"\n\nSafeSearch is **{safe}**.\nIt is disabled in NSFW channels and enabled for regular channels and DMs."
+                em.description = self.utils.slice_text(res, 2000) + f"\n\nSafeSearch is **{safe}**.\nIt is disabled in NSFW channels and enabled for regular channels and DMs."
                 await ctx.send(embed=em)
         except:
             await ctx.send("Something went wrong, please try again later.")
@@ -495,7 +492,7 @@ class Utility:
             em.description = 'No results found.'
             return await ctx.send(embed=em)
         if len(res) > 2048:
-            desc = self.slice_text(res, 1900, f"...\n\nToo much! Read the rest at https://wikipedia.org/wiki/{query.replace(' ', '_')}")
+            desc = self.utils.slice_text(res, 1900, f"...\n\nToo much! Read the rest at https://wikipedia.org/wiki/{query.replace(' ', '_')}")
             em.description = desc
         else:
             em.description = res

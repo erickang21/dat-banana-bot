@@ -110,7 +110,7 @@ class Economy:
             return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
         responses = [
             f"Be proud. You just got **{number}** :banana:.",
-            f"*Why u ask me for da MONEY? Anyways, you got **{number}** :banana:.",
+            f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
             f"Ugh fine, take my money. But only **{number}** :banana:.",
             f"Why would you ever rob a poor man? Fine, take **{number}** :banana:.",
             f"You can have **{number}** :banana:, if that means you can shut up.",
