@@ -104,7 +104,7 @@ class mod:
                 return await ctx.send("That command doesn't exist.")
             blacklist = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
             if not blacklist or not blacklist['cmds']:
-                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": [cmd]}}
+                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": [cmd]}})
             else:
                 new_cmds = blacklist['cmds'].append(cmd)
                 await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": new_cmds}})
