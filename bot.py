@@ -172,7 +172,8 @@ async def on_message(message):
         if not blacklistcmds:
             await bot.process_commands(message)
         else:
-            if message.content.strip(get_prefix_as_str(message)).split(" ")[0] in blacklistcmds['cmds']:
+            prefix = get_prefix_as_str(message)
+            if message.content.strip(prefix).split(" ")[0] in blacklistcmds['cmds']:
                 return
             else:
                 await bot.process_commands(message)
