@@ -170,7 +170,7 @@ async def on_message(message):
     if not message.author.bot:
         blacklistcmds = await bot.db.blacklistcmd.find_one({"id": message.guild.id})
         if not blacklistcmds:
-            pass
+            await bot.process_commands(message)
         else:
             if message.content.strip(get_prefix_as_str(message)).split(" ")[0] in blacklistcmds['cmds']:
                 return
