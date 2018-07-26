@@ -104,10 +104,10 @@ class mod:
                 return await ctx.send("That command doesn't exist.")
             blacklist = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
             if not blacklist or not blacklist['cmds']:
-                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": [cmd]}}, upsert=True)
+                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": [cmd]}}
             else:
-                new_cmds = list(blacklist['cmds']).append(cmd)
-                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": new_cmds}}, upsert=True)
+                new_cmds = blacklist['cmds'].append(cmd)
+                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": new_cmds}})
             return await ctx.send(f"The command **{cmd}** was added to the blacklist. :white_check_mark:")
         elif action == "remove" and cmd:
             if cmd == "blacklistcmd":
