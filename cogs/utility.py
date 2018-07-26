@@ -812,10 +812,16 @@ class Utility:
         if user is None:
             user = ctx.author
         join_time = str(ctx.author.joined_at.strftime("%b %m, %Y, %A, %I:%M %p"))
+        status = {
+            "online": f"{self.bot.get_emoji(472188358576308227)} Online",
+            "idle": f"{self.bot.get_emoji(472188357036867585)} Idle",
+            "dnd": f"{self.bot.get_emoji(472188357045256225)} Do Not Disturb",
+            "offline": f"{self.bot.get_emoji(472188358261473281)} Offline"
+        }
         color = 0xf2f760
         em = discord.Embed(color=color, title=f'User Info: {str(user)}')
         em.add_field(name="User Stats", value="-", inline=False)
-        em.add_field(name='Status', value=f'{user.status}')       
+        em.add_field(name='Status', value=status[user.status])       
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
         em.add_field(name='ID', value=f'{user.id}')
         Type = 'Bot' if user.bot else 'Human'
