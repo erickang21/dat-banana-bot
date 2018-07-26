@@ -87,7 +87,7 @@ class mod:
         """Blacklist a command for the server."""
         if not cmd and not action:
             blacklist = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
-            if not blacklist:
+            if not blacklist or not blacklist['cmds']:
                 await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": []}}, upsert=True)
                 the_cmds = "No commands blacklisted!"
             else:
