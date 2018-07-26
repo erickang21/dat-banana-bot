@@ -169,7 +169,7 @@ async def on_message(message):
     #         await message.channel.send(f"Woo-hoo, {message.author.mention}! You hit level {match / 20}! Keep talkin' for more!")
     if not message.author.bot:
         blacklistcmds = await bot.db.blacklistcmd.find_one({"id": message.guild.id})
-        if not blacklistcmds:
+        if not blacklistcmds or not blacklistcmds['cmds']:
             await bot.process_commands(message)
         else:
             prefix = await get_prefix_as_str(message)
