@@ -168,7 +168,14 @@ async def on_message(message):
     #     if match % 20 == 0:
     #         await message.channel.send(f"Woo-hoo, {message.author.mention}! You hit level {match / 20}! Keep talkin' for more!")
     if not message.author.bot:
-        await bot.process_commands(message)
+        blacklistcmds = await bot.db.blacklistcmd.find_one({"id": message.guild.id})
+        if not blacklistcmds:
+            pass
+        else:
+            if message.content.strip(get_prefix_as_str(message)).split(" ")[0] in blacklistcmds['cmds']:
+                return
+            else:
+                await bot.process_commands(message)
 
 @bot.event
 async def on_command(ctx):

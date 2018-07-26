@@ -78,7 +78,54 @@ class mod:
     #         await ctx.send("Antilink disabled. Advertising continues.")
     #     else:
     #         return await ctx.send("Reactionrole command:\n*reactionrole [on/off]")
-    
+   
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_guild = True)
+    async def blacklistcmd(self, ctx, action=None, cmd=None):
+        """Blacklist a command for the server."""
+        if not cmd and not action:
+            blacklist = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
+            if not blacklist:
+                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": []}}, upsert=True)
+                the_cmds = "No commands blacklisted!"
+            else:
+                the_cmds = "\n".join(blacklist["cmds"])
+            the_cmds += "\n\nTo add a command to the blacklist, use *blacklistcmd add [cmd name].\nTo remove a command from the blacklist, use *blacklist remove [cmd name]."
+            em = discord.Embed(color=ctx.author.color, title="Blacklisted Commands")
+            em.description = the_cmds
+            return await ctx.send(embed=em)
+        elif action == "add" and cmd:
+            if cmd == "blacklistcmd":
+                return await ctx.send("You can't blacklist this command!")
+            c = self.bot.get_command(cmd)
+            if not c:
+                return await ctx.send("That command doesn't exist.")
+            blacklist = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
+            if not blacklist:
+                await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": []}}, upsert=True)
+                blacklist = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
+            new_cmds = blacklist['cmds'].append(cmd)
+            await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": new_cmds}}, upsert=True)
+            return await ctx.send(f"The command **{cmd}** was added to the blacklist. :white_check_mark:")
+        elif action == "remove" and cmd:
+            if cmd == "blacklistcmd":
+                return await ctx.send("You can't blacklist this command!")
+            c = self.bot.get_command(cmd)
+            if not c:
+                return await ctx.send("That command doesn't exist.")
+            blacklist = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
+            if not blacklist:
+                return await ctx.send("You haven't blacklisted any commands!")
+            if cmd not in blacklist['cmds']:
+                return await ctx.send("This command isn't blacklisted! Why remove it... :thinking:")
+            new_cmds = blacklist['cmds'].remove(cmd)
+            await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": new_cmds}}, upsert=True)
+            return await ctx.send(f"The command **{cmd}** was removed from the blacklist. :white_check_mark:")
+
+
+
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
