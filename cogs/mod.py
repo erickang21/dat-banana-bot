@@ -106,7 +106,7 @@ class mod:
             if not blacklist or not blacklist['cmds']:
                 await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": [cmd]}}, upsert=True)
             else:
-                new_cmds = blacklist['cmds'].append(cmd)
+                new_cmds = list(blacklist['cmds']).append(cmd)
                 await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": new_cmds}}, upsert=True)
             return await ctx.send(f"The command **{cmd}** was added to the blacklist. :white_check_mark:")
         elif action == "remove" and cmd:
