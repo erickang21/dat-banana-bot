@@ -121,7 +121,8 @@ class mod:
                 return await ctx.send("You haven't blacklisted any commands!")
             if cmd not in blacklist['cmds']:
                 return await ctx.send("This command isn't blacklisted! Why remove it... :thinking:")
-            new_cmds = blacklist['cmds'].remove(cmd)
+            new_cmds = blacklist['cmds']
+            new_cmds.remove(cmd)
             await self.bot.db.blacklistcmd.update_one({"id": ctx.guild.id}, {"$set": {"cmds": new_cmds}}, upsert=True)
             return await ctx.send(f"The command **{cmd}** was removed from the blacklist. :white_check_mark:")
 
