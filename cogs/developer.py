@@ -79,7 +79,7 @@ class Developer:
        
        
     
-    @commands.command()
+    @commands.command(hidden=True)
     async def changename(self, ctx, name=None):
         """Changes my name. Please make it good!"""
         if not self.dev_check(ctx.author.id):
