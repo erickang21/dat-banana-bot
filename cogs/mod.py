@@ -80,7 +80,7 @@ class mod:
     #         return await ctx.send("Reactionrole command:\n*reactionrole [on/off]")
    
 
-    @commands.command()
+    @commands.command(aliases=['blacklist'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def blacklistcmd(self, ctx, action=None, cmd=None):
@@ -249,7 +249,8 @@ class mod:
         except:
             await ctx.send("Something happened and the DM could not make it :x:. The user could be blocking DMs from the server, or you did not use the format correctly. Usage: *warn [tag person] [reason].")    
        
-    @commands.command()
+    
+    @commands.command(aliases=['clean'])
     @commands.guild_only()
     @commands.has_permissions(manage_messages = True)
     async def purge(self, ctx, num: int, from_user: discord.Member = None):
@@ -489,6 +490,7 @@ class mod:
                 await self.bot.db.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off welcome messages for this guild.")
 
+                
     @commands.command(aliases=['leave'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
