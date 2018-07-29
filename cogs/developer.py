@@ -61,7 +61,7 @@ class Developer:
         await self.bot.logout()
 
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def restart(self, ctx):
         """Restarts the bot. Be Back S00N"""
         if not self.dev_check(ctx.author.id):
@@ -109,7 +109,7 @@ class Developer:
             em.description = f"Ran on the Command Line: ```{code}``` Output: \n\n```{err or res}```"
             await msg.edit(embed=em)
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def update(self, ctx):
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
