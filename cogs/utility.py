@@ -444,7 +444,7 @@ class Utility:
             em.description = f"The result was too large to fit in a message. View the result here:\nhttp://coliru.stacked-crooked.com/a/{share_id}"
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command() # i would make it so that you seperate with a , so its easier for some
     async def poll(self, ctx, *, args):
         """Creates a poll with reactions. Seperate choices with |."""
         if '|' not in args:
