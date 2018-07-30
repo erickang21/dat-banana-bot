@@ -550,9 +550,9 @@ class mod:
                     {x.content}
                     """)
             
-            channel = self.bot.get_channel(int(modlog['channel']))
-            if channel:
-                await channel.send(embed=em)
+                    channel = self.bot.get_channel(int(modlog['channel']))
+                    if channel:
+                        await channel.send(embed=em)
             elif action.lower() == 'off':
                 await self.bot.db.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off welcome messages for this guild.")
@@ -564,9 +564,9 @@ class mod:
 
                     :house_with_garden: Server: {ctx.guild.name} 
                     """)
-                channel = self.bot.get_channel(int(modlog['channel']))
-                if channel:
-                    await channel.send(embed=em)
+                    channel = self.bot.get_channel(int(modlog['channel']))
+                    if channel:
+                        await channel.send(embed=em)
     @commands.command(aliases=['leave'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
