@@ -148,10 +148,18 @@ async def on_message(message):
         if await modlog_check(message.guild.id):
             try:
                 lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-                em = discord.Embed(color=0xf9e236, title='An invite was posted.')
-                em.add_field(name='Channel', value=f"<#{message.channel.id}>")
-                em.add_field(name='Link', value=message.content)
-                em.add_field(name='Sent By', value=str(message.author))
+                em = discord.Embed(color=0xf9e236)
+                em.description = textwrap.dedent(f"""
+                :link: Invite Posted
+
+                {bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
+
+                :hash: In channel {message.channel.mention}
+
+                :page_facing_up: Link:
+                {message.content}
+
+                """)
                 await lol.send(embed=em)
             except KeyError:
                 pass
@@ -204,11 +212,20 @@ async def on_message_edit(before, after):
     if await modlog_check(before.guild.id):
         try:
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
-            em = discord.Embed(color=discord.Color(value=0xf9e236), title='Message Edited')
-            em.add_field(name='Channel', value=f"<#{before.channel.id}>")
-            em.add_field(name='Content Before', value=before.content)
-            em.add_field(name='Content After', value=after.content)
-            em.add_field(name='Sent By', value=str(before.author))
+            em = discord.Embed(color=discord.Color(value=0xf9e236))
+            em.description = textwrap.dedent(f"""
+            :pencil: **Message Edited**
+
+            {bot.get_emoji(430340802879946773)} Sent by **{str(before.author)}**
+
+            :hash: In channel {before.channel.mention}
+
+            :page_facing_up: **Before:**
+            {before.content}
+
+            :page_with_curl: **After:**
+            {after.content}
+            """)
             await lol.send(embed=em)
         except KeyError:
             pass
@@ -431,10 +448,19 @@ async def on_message_delete(message):
                 except IndexError:
                     img_url = None
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-            em = discord.Embed(color=discord.Color(value=0xf9e236), title='Message Deleted')
-            em.add_field(name='Content', value=message.content if message.content else "Embed")
-            em.add_field(name='Sent By', value=str(message.author))
-            em.add_field(name='Channel', value=f"<#{message.channel.id}>")
+            em = discord.Embed(color=discord.Color(value=0xf9e236))
+            em.description = textwrap.dedent(f"""
+            :wastebasket: **Message Deleted**
+
+            {bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
+
+            :hash: In channel {message.channel.mention}
+
+            :page_facing_up: **Content:**
+            {message.content}
+
+            """)
+            
             if img_url:
                 em.set_image(url=img_url)
             await lol.send(embed=em)
