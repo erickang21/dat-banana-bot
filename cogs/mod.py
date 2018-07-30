@@ -700,11 +700,6 @@ class mod:
                     {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
 
                     :house_with_garden: Server: {ctx.guild.name} 
-
-                    :hash: Channel: <#{channel}>
-
-                    :speech_balloon: Message:
-                    {x.content}
                     """)
                     channel = self.bot.get_channel(int(modlog['channel']))
                     if channel:

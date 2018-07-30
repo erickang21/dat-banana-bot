@@ -223,7 +223,7 @@ async def on_message_edit(before, after):
             :page_with_curl: **After:**
             {after.content}
             """)
-            em.timestamp = before.content.created_at
+            em.timestamp = before.created_at
             await lol.send(embed=em)
         except KeyError:
             pass
@@ -474,7 +474,7 @@ async def on_message_delete(message):
             {message.content}
 
             """)
-            em.timestamp = message.content.created_at
+            em.timestamp = message.created_at
             if img_url:
                 em.set_image(url=img_url)
             await lol.send(embed=em)
