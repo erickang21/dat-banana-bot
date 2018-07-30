@@ -564,7 +564,9 @@ class mod:
 
                     :house_with_garden: Server: {ctx.guild.name} 
                     """)
-                
+                channel = self.bot.get_channel(int(modlog['channel']))
+                if channel:
+                    await channel.send(embed=em)
     @commands.command(aliases=['leave'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
@@ -615,6 +617,9 @@ class mod:
                     :speech_balloon: Message:
                     {x.content}
                     """)
+                    channel = self.bot.get_channel(int(modlog['channel']))
+                    if channel:
+                        await channel.send(embed=em)
             elif action.lower() == 'off':
                 await self.bot.db.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off leave messages for this guild.")
@@ -627,6 +632,9 @@ class mod:
 
                     :house_with_garden: Server: {ctx.guild.name} 
                     """)
+                    channel = self.bot.get_channel(int(modlog['channel']))
+                    if channel:
+                        await channel.send(embed=em)
 
     @commands.command()
     @commands.guild_only()
@@ -678,6 +686,9 @@ class mod:
                     :speech_balloon: Message:
                     {x.content}
                     """)
+                    channel = self.bot.get_channel(int(modlog['channel']))
+                    if channel:
+                        await channel.send(embed=em)
             elif action.lower() == 'off':
                 await self.bot.db.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off ban messages for this guild.")
@@ -695,7 +706,9 @@ class mod:
                     :speech_balloon: Message:
                     {x.content}
                     """)
-    
+                    channel = self.bot.get_channel(int(modlog['channel']))
+                    if channel:
+                        await channel.send(embed=em)
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_roles = True)
@@ -712,6 +725,9 @@ class mod:
                 
                 :house_with_garden: Server: {ctx.guild.name}   
                 """)
+                channel = self.bot.get_channel(int(modlog['channel']))
+                if channel:
+                    await channel.send(embed=em)
         else:
             r = discord.utils.get(ctx.guild.roles, name=str(role))
             if r is None:
@@ -729,6 +745,9 @@ class mod:
 
                 :bust_in_silhouette: Role: {str(r)}
                 """)
+                channel = self.bot.get_channel(int(modlog['channel']))
+                if channel:
+                    await channel.send(embed=em)
 
     @commands.command()
     @commands.guild_only()
