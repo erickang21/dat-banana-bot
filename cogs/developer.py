@@ -61,7 +61,7 @@ class Developer:
         await self.bot.logout()
 
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def restart(self, ctx):
         """Restarts the bot. Be Back S00N"""
         if not self.dev_check(ctx.author.id):
@@ -79,7 +79,7 @@ class Developer:
        
        
     
-    @commands.command()
+    @commands.command(hidden=True)
     async def changename(self, ctx, name=None):
         """Changes my name. Please make it good!"""
         if not self.dev_check(ctx.author.id):
@@ -90,7 +90,7 @@ class Developer:
             await self.bot.user.edit(username=f'{name}')
 
 
-    @commands.command(name='exec')
+    @commands.command(name='exec', hidden=True)
     async def _exec(self, ctx, *, code):
         """Executes code like the Command Line."""
         if not self.dev_check(ctx.author.id):
@@ -109,7 +109,7 @@ class Developer:
             em.description = f"Ran on the Command Line: ```{code}``` Output: \n\n```{err or res}```"
             await msg.edit(embed=em)
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def update(self, ctx):
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
@@ -126,7 +126,7 @@ class Developer:
             await msg.edit(content=f"An error occured. :x: \n\nDetails: \n{e}")
 
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def loadcog(self, ctx, cog):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
@@ -139,7 +139,7 @@ class Developer:
                 await msg.edit(content=f"An error occured. Details: \n{e}")
 
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def unloadcog(self, ctx, cog):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
@@ -150,7 +150,7 @@ class Developer:
         except Exception as e:
             await msg.edit(content=f"An error occured. Details: \n{e}")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def reloadcog(self, ctx, cog=None):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
@@ -163,8 +163,9 @@ class Developer:
             await msg.edit(content=f"An error occured. Details: \n{e}")
 
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def source(self, ctx, command):
+        """Get the source to any command"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         cmd = self.bot.get_command(command)

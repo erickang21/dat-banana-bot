@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 
-
+  # wtf a secret place
+    
 class Level:
     def __init__(self, bot):
         self.bot = bot

@@ -444,7 +444,7 @@ class Utility:
             em.description = f"The result was too large to fit in a message. View the result here:\nhttp://coliru.stacked-crooked.com/a/{share_id}"
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command() # i would make it so that you seperate with a , so its easier for some
     async def poll(self, ctx, *, args):
         """Creates a poll with reactions. Seperate choices with |."""
         if '|' not in args:
@@ -581,7 +581,7 @@ class Utility:
             return await ctx.send("Invalid response.")
 
 
-    @commands.command(aliases=['addedefault', 'defaultemojis', 'ademojis'])
+    @commands.command(aliases=['addedefault', 'defaultemojis', 'default'])
     @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
     async def adddefaultemojis(self, ctx):
@@ -617,7 +617,7 @@ class Utility:
     
        
 
-    @commands.command(aliases=['fb'])
+    @commands.command(aliases=['fb']) # lol fb
     @commands.guild_only()
     async def feedback(self, ctx, *, feedback=None):
         """How do YOU want this bot to be? Give your word here."""
@@ -644,7 +644,7 @@ class Utility:
                 await ctx.send(embed=em)
 
 
-    @commands.command()
+    @commands.command(aliases=['hb'])
     async def hastebin(self, ctx, *, text):
         """Put some code in hastebin"""
         try:

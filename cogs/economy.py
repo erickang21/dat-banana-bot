@@ -248,7 +248,7 @@ class Economy:
 
 
 
-    @commands.command(aliases=['give'])
+    @commands.command(aliases=['give', hidden=True])
     #@commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
         '''Reward a good person'''
@@ -268,7 +268,7 @@ class Economy:
                 await ctx.send(f"Oops, something went wrong. ```{e}```Please report to the developers!")
                 print(e)
 
-    @commands.command(aliases=['remove'])
+    @commands.command(aliases=['remove'],hidden=True)
     #@commands.has_permissions(manage_guild=True)
     async def deduct(self, ctx, user: discord.Member, points):
         '''Fines a bad boi.'''
