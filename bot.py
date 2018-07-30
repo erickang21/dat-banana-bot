@@ -158,7 +158,7 @@ async def on_message(message):
                 {message.content}
 
                 """)
-                em.timestamp = message.content.created_at
+                em.timestamp = message.created_at
                 await lol.send(embed=em)
             except KeyError:
                 pass
