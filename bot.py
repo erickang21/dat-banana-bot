@@ -158,6 +158,7 @@ async def on_message(message):
                 {message.content}
 
                 """)
+                em.timestamp = message.content.created_at
                 await lol.send(embed=em)
             except KeyError:
                 pass
@@ -222,6 +223,7 @@ async def on_message_edit(before, after):
             :page_with_curl: **After:**
             {after.content}
             """)
+            em.timestamp = before.content.created_at
             await lol.send(embed=em)
         except KeyError:
             pass
@@ -356,10 +358,17 @@ async def on_member_join(member):
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf9e236), title='Member Joined')
-        em.add_field(name="Name", value=str(member))
-        em.add_field(name='Joined At', value=str(member.joined_at.strftime("%b %m, %Y, %A, %I:%M %p")))
-        em.add_field(name="ID", value=member.id)
+        em.description = textwrap.dedent(f"""
+        {bot.get_emoji(430340802879946773)} User: {str(member)}
+
+        :1234: User ID: {member.id}
+
+        :house_with_garden: Server: {member.guild.name}    
+
+        :clock10: Joined at: {str(member.joined_at.strftime("%A, %b %m, %Y at %I:%M %p"))}    
+        """)
         em.set_thumbnail(url=member.avatar_url)
+        em.timestamp = datetime.datetime.utcnow()
         await lol.send(embed=em)
     else:
         pass
@@ -396,8 +405,14 @@ async def on_member_remove(member):
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Left')
-        em.add_field(name="Name", value=str(member))
-        em.add_field(name="ID", value=member.id)
+        em.description = textwrap.dedent(f"""
+        {bot.get_emoji(430340802879946773)} User: {str(member)}
+
+        :1234: User ID: {member.id}
+
+        :house_with_garden: Server: {member.guild.name}        
+        """)
+        em.timestamp = datetime.datetime.utcnow()
         em.set_thumbnail(url=member.avatar_url)
         await lol.send(embed=em)
 
@@ -421,9 +436,14 @@ async def on_member_ban(guild, member):
     if await modlog_check(member.guild.id):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Banned')
-        em.add_field(name="Name", value=str(member))
-        em.add_field(name="ID", value=member.id)
-        em.add_field(name="Server", value=guild.name)
+        em.description = textwrap.dedent(f"""
+        {bot.get_emoji(430340802879946773)} Banned User: {str(member)}
+
+        :1234: Banned User ID: {member.id}
+
+        :house_with_garden: Server: {guild.name}        
+        """)
+        em.timestamp = datetime.datetime.utcnow()
         em.set_thumbnail(url=member.avatar_url)
         await lol.send(embed=em)
 
@@ -454,7 +474,7 @@ async def on_message_delete(message):
             {message.content}
 
             """)
-            
+            em.timestamp = message.content.created_at
             if img_url:
                 em.set_image(url=img_url)
             await lol.send(embed=em)

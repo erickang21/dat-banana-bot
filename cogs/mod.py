@@ -326,10 +326,18 @@ class mod:
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
         if modlog:
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member was muted.")
-            em.add_field(name="User", value=str(user), inline=False)
-            em.add_field(name="User ID", value=user.id, inline=False)
-            em.add_field(name="Muted by", value=str(ctx.author), inline=False)
-            em.add_field(name="Time", value=f"{str(mutetime)} minutes" if mutetime else "No time limit.", inline=False)
+            em.description = textwrap.dedent(f"""
+            :zipper_mouth: User: {str(user)}
+
+            {self.bot.get_emoji(430340802879946773)} Muted by: {str(ctx.author)}
+
+            :1234: User ID: {user.id}
+
+            :timer: Timer: {f"{str(mutetime)} minutes" if mutetime else "No time limit."}
+
+            :hash: Type: Channel
+            """)
+            
             channel = self.bot.get_channel(int(modlog['channel']))
             if channel:
                 await channel.send(embed=em)
@@ -359,6 +367,23 @@ class mod:
         if user is None:
             await ctx.send("Bruh. Tag a user to mute them...")
         else:
+                    modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+        if modlog:
+            em = discord.Embed(color=discord.Color(
+                value=0x00ff00), title="Member was muted.")
+            em.description = textwrap.dedent(f"""
+            :zipper_mouth: User: {str(user)}
+
+            {self.bot.get_emoji(430340802879946773)} Muted by: {str(ctx.author)}
+
+            :1234: User ID: {user.id}
+
+            :hash: Type: Server
+            """)
+
+            channel = self.bot.get_channel(int(modlog['channel']))
+            if channel:
+                await channel.send(embed=em)
             msg = await ctx.send("Muting user...")
             role = discord.utils.get(ctx.guild.roles, name='Muted')
             if not role:
@@ -381,6 +406,23 @@ class mod:
         if user is None:
             await ctx.send("Bruh. Tag a user to unmute them...")
         else:
+                    modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+        if modlog:
+            em = discord.Embed(color=discord.Color(
+                value=0x00ff00), title="Member was unmuted.")
+            em.description = textwrap.dedent(f"""
+            :zipper_mouth: User: {str(user)}
+
+            {self.bot.get_emoji(430340802879946773)} Unmuted by: {str(ctx.author)}
+
+            :1234: User ID: {user.id}
+
+            :house_with_garden: Type: Server
+            """)
+
+            channel = self.bot.get_channel(int(modlog['channel']))
+            if channel:
+                await channel.send(embed=em)
             msg = await ctx.send("Unmuting user...")
             try:
                 await user.remove_roles("Muted")
@@ -397,10 +439,18 @@ class mod:
         '''Allows someone to un-shut up. Usage: *unmute [user]'''
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
         if modlog:
-            em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member was unmuted.")
-            em.add_field(name="User", value=str(user), inline=False)
-            em.add_field(name="User ID", value=user.id, inline=False)
-            em.add_field(name="Unmuted by", value=str(ctx.author), inline=False)
+            em = discord.Embed(color=discord.Color(
+                value=0x00ff00), title="Member was unmuted.")
+            em.description = textwrap.dedent(f"""
+            :zipper_mouth: User: {str(user)}
+
+            {self.bot.get_emoji(430340802879946773)} Unuted by: {str(ctx.author)}
+
+            :1234: User ID: {user.id}
+
+            :hash: Type: Channel
+            """)
+
             channel = self.bot.get_channel(int(modlog['channel']))
             if channel:
                 await channel.send(embed=em)
@@ -486,10 +536,34 @@ class mod:
                     return await ctx.send("Request timed out. Please try again.")
                 await self.bot.db.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
                 await ctx.send("Successfully turned on welcome messages for this guild.")
+                modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+                if modlog:
+                    em = discord.Embed(color=discord.Color(value=0x00ff00), title="Welcome Messages Enabled")
+                    em.description = textwrap.dedent(f"""
+                    {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
+
+                    :house_with_garden: Server: {ctx.guild.name} 
+
+                    :hash: Channel: <#{channel}>
+
+                    :speech_balloon: Message:
+                    {x.content}
+                    """)
+            
+            channel = self.bot.get_channel(int(modlog['channel']))
+            if channel:
+                await channel.send(embed=em)
             elif action.lower() == 'off':
                 await self.bot.db.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off welcome messages for this guild.")
+                modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+                if modlog:
+                    em = discord.Embed(color=discord.Color(value=0x00ff00), title="Welcome Messages Disabled")
+                    em.description = textwrap.dedent(f"""
+                    {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
 
+                    :house_with_garden: Server: {ctx.guild.name} 
+                    """)
                 
     @commands.command(aliases=['leave'])
     @commands.guild_only()
@@ -508,6 +582,7 @@ class mod:
             await ctx.send(embed=em)
         else:
             if action.lower() == 'on':
+                
                 await ctx.send("Please mention the channel to set leave messages in.")
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
@@ -527,10 +602,31 @@ class mod:
                     return await ctx.send("Request timed out. Please try again.")
                 await self.bot.db.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
                 await ctx.send("Successfully turned on leave messages for this guild.")
+                modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+                if modlog:
+                    em = discord.Embed(color=discord.Color(value=0x00ff00), title="Leave Messages Enabled")
+                    em.description = textwrap.dedent(f"""
+                    {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
+
+                    :house_with_garden: Server: {ctx.guild.name} 
+
+                    :hash: Channel: <#{channel}>
+
+                    :speech_balloon: Message:
+                    {x.content}
+                    """)
             elif action.lower() == 'off':
                 await self.bot.db.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off leave messages for this guild.")
+                modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+                if modlog:
+                    em = discord.Embed(color=discord.Color(
+                        value=0x00ff00), title="Leave Messages Disabled")
+                    em.description = textwrap.dedent(f"""
+                    {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
 
+                    :house_with_garden: Server: {ctx.guild.name} 
+                    """)
 
     @commands.command()
     @commands.guild_only()
@@ -568,10 +664,37 @@ class mod:
                     return await ctx.send("Request timed out. Please try again.")
                 await self.bot.db.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
                 await ctx.send("Successfully turned on ban messages for this guild.")
+                modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+                if modlog:
+                    em = discord.Embed(color=discord.Color(
+                        value=0x00ff00), title="Ban Messages Enabled")
+                    em.description = textwrap.dedent(f"""
+                    {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
+
+                    :house_with_garden: Server: {ctx.guild.name} 
+
+                    :hash: Channel: <#{channel}>
+
+                    :speech_balloon: Message:
+                    {x.content}
+                    """)
             elif action.lower() == 'off':
                 await self.bot.db.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off ban messages for this guild.")
-            
+                modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+                if modlog:
+                    em = discord.Embed(color=discord.Color(
+                        value=0x00ff00), title="Ban Messages Disabled")
+                    em.description = textwrap.dedent(f"""
+                    {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
+
+                    :house_with_garden: Server: {ctx.guild.name} 
+
+                    :hash: Channel: <#{channel}>
+
+                    :speech_balloon: Message:
+                    {x.content}
+                    """)
     
     @commands.command()
     @commands.guild_only()
@@ -581,13 +704,31 @@ class mod:
         if role.lower() == 'off':
             await self.bot.db.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": False}}, upsert=True)
             await ctx.send(f"Disabled autoroles for this server.")
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            if modlog:
+                em = discord.Embed(color=discord.Color(value=0x00ff00), title="Autorole Disabled")
+                em.description = textwrap.dedent(f"""
+                {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**  
+                
+                :house_with_garden: Server: {ctx.guild.name}   
+                """)
         else:
             r = discord.utils.get(ctx.guild.roles, name=str(role))
             if r is None:
                 return await ctx.send("Role not found in the server. Note that roles muts be entered case sensitive.")
             await self.bot.db.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": str(r)}}, upsert=True)
             await ctx.send(f"Successfully enabled an autorole for the role: **{str(r)}**.")
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            if modlog:
+                em = discord.Embed(color=discord.Color(
+                    value=0x00ff00), title="Autorole Enabled")
+                em.description = textwrap.dedent(f"""
+                {self.bot.get_emoji(430340802879946773)} By **{str(ctx.author)}**
+                
+                :house_with_garden: Server: {ctx.guild.name} 
 
+                :bust_in_silhouette: Role: {str(r)}
+                """)
 
     @commands.command()
     @commands.guild_only()
@@ -650,12 +791,15 @@ class mod:
         except ValueError:
             return await ctx.send("Did you enter a valid user ID?")
         lol = discord.Object(id)
+        if not lol:
+            return await ctx.send("Invalid ID provided.")
         try:
             await ctx.guild.ban(lol, reason=reason)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
         color = 0xf9e236
         em = discord.Embed(color=color, title='Banned!')
+        em.add_field(name="ID", value=id)
         em.add_field(name='Banned By', value=ctx.author.name)
         reason = reason if reason is not None else 'No reason given.'
         em.add_field(name='Reason', value=reason)
