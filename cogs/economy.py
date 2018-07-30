@@ -248,7 +248,7 @@ class Economy:
 
 
 
-    @commands.command(aliases=['give', hidden=True])
+    @commands.command(aliases=['give'], hidden=True)
     #@commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
         '''Reward a good person'''
