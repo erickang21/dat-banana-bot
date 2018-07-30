@@ -148,15 +148,13 @@ async def on_message(message):
         if await modlog_check(message.guild.id):
             try:
                 lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-                em = discord.Embed(color=0xf9e236)
+                em = discord.Embed(color=0xf9e236, title="Invite Posted")
                 em.description = textwrap.dedent(f"""
-                :link: Invite Posted
-
                 {bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
 
                 :hash: In channel {message.channel.mention}
 
-                :page_facing_up: Link:
+                :link: Link:
                 {message.content}
 
                 """)
@@ -212,10 +210,8 @@ async def on_message_edit(before, after):
     if await modlog_check(before.guild.id):
         try:
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
-            em = discord.Embed(color=discord.Color(value=0xf9e236))
+            em = discord.Embed(color=discord.Color(value=0xf9e236), title="Message Edited")
             em.description = textwrap.dedent(f"""
-            :pencil: **Message Edited**
-
             {bot.get_emoji(430340802879946773)} Sent by **{str(before.author)}**
 
             :hash: In channel {before.channel.mention}
@@ -448,10 +444,8 @@ async def on_message_delete(message):
                 except IndexError:
                     img_url = None
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
-            em = discord.Embed(color=discord.Color(value=0xf9e236))
+            em = discord.Embed(color=discord.Color(value=0xf9e236), title="Message Deleted")
             em.description = textwrap.dedent(f"""
-            :wastebasket: **Message Deleted**
-
             {bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
 
             :hash: In channel {message.channel.mention}
