@@ -290,6 +290,20 @@ class mod:
             em.add_field(name='Reason', value=reason)
             em.set_thumbnail(url=user.avatar_url)
             await ctx.send(embed=em)
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            if modlog:
+                em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member Kicked")
+                em.description = textwrap.dedent(f"""
+                :zipper_mouth: User: {str(user)}
+
+                {self.bot.get_emoji(430340802879946773)} Kicked by: {str(ctx.author)}
+
+                :1234: User ID: {user.id}
+                """)
+            
+                channel = self.bot.get_channel(int(modlog['channel']))
+                if channel:
+                    await channel.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to use the boot.")
         
@@ -769,9 +783,27 @@ class mod:
             except ValueError:
                 return await ctx.send("Did you properly mention a channel? Probably not.")
             await self.bot.db.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel}}, upsert=True)
-            ezjson.dump("data/modlog.json", ctx.guild.id, channel)
-            return await ctx.send(f"Successfully turned on Mod Logs in <#{channel}>. Enjoy! :white_check_mark:")
+            await ctx.send(f"Successfully turned on Mod Logs in <#{channel}>. Enjoy! :white_check_mark:")
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            channel = self.bot.get_channel(int(modlog['channel']))
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title="Modlogs Enabled")
+            em.description = textwrap.dedent(f"""
+            {self.bot.get_emoji(468607258440237066)} Enabled by: {str(ctx.author)}
+            :zipper_mouth: User: {str(ctx.author)}
+
+            :hash: Channel: {channel.mention}
+            """)
+            if channel:
+                await channel.send(embed=em)
         if action.lower() == 'off':
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            channel = self.bot.get_channel(int(modlog['channel']))
+            em = discord.Embed(color=discord.Color(value=0x00ff00), title="Modlogs Disabled")
+            em.description = textwrap.dedent(f"""
+            {self.bot.get_emoji(468607258440237066)} Disabled by: {str(ctx.author)}
+            """)
+            if channel:
+                await channel.send(embed=em)
             await self.bot.db.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
             return await ctx.send("Turned off Mod Logs. Whew...")
         else:
@@ -789,11 +821,34 @@ class mod:
         if prefix.lower() == 'clear':
             await self.bot.db.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": "*"}}, upsert=True)
             em.description = f"The bot's prefix is now set to the default: `*`."
-            return await ctx.send(embed=em)
+            await ctx.send(embed=em)
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            if modlog:
+                channel = self.bot.get_channel(int(modlog['channel']))
+                em = discord.Embed(color=discord.Color(value=0x00ff00), title="Prefix Changed")
+                em.description = textwrap.dedent(f"""
+                {self.bot.get_emoji(430340802879946773)} Changed by: {str(ctx.author)}
+                
+                :symbols: New Prefix: `*`
+                """)
+                if channel:
+                    await channel.send(embed=em)
         else:
             await self.bot.db.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": prefix}}, upsert=True)
             em.description = f"The bot's prefix for this server is set to: `{prefix}`."
-            return await ctx.send(embed=em)
+            await ctx.send(embed=em)
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            if modlog:
+                channel = self.bot.get_channel(int(modlog['channel']))
+                em = discord.Embed(color=discord.Color(
+                    value=0x00ff00), title="Prefix Changed")
+                em.description = textwrap.dedent(f"""
+                {self.bot.get_emoji(430340802879946773)} Changed by: {str(ctx.author)}
+                
+                :symbols: New Prefix: `{prefix}`
+                """)
+                if channel:
+                    await channel.send(embed=em)
         
             
     @commands.command()
