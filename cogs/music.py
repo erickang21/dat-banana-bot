@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import datetime
 import sys
+import textwrap
 import asyncio
 import os
 import json
@@ -29,7 +30,7 @@ class Music:
         if isinstance(e, lavalink.Events.TrackStartEvent):
             ctx = e.player.fetch("ctx")
             em = discord.Embed(color=0x00ff00, title=f"Playing")
-            em.description = f"**{e.track.title}**"
+            #em.description = f"**{e.track.title}**"
             em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
             second = e.track.duration / 1000
             minute, second = divmod(second, 60)
@@ -40,9 +41,26 @@ class Music:
                 length = f"{int(hour)}:{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
             else:
                 length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
-            em.add_field(name='Length', value=length)
-            em.add_field(name='Volume', value=f"{self.utils.get_lines(e.player.volume)} {e.player.volume}%")
-            em.add_field(name='Position in Queue', value=len(e.player.queue))
+            playing_panel = textwrap.dedent(f"""
+            :musical_note: **Song**
+            {e.track.title}
+
+            {self.bot.get_emoji(430340802879946773)} **Requested By**
+            {str(ctx.author)}
+
+            :timer: **Length**
+            {length}
+
+            :loud_sound: **Volume**
+            {self.utils.get_lines(e.player.volume)} {e.player.volume}%
+
+            :1234: **Queue Position**
+            {len(e.player.queue)}
+            """)
+            #em.add_field(name='Length', value=length)
+            #em.add_field(name='Volume', value=f"{self.utils.get_lines(e.player.volume)} {e.player.volume}%")
+            em.description = playing_panel
+            #em.add_field(name='Position in Queue', value=len(e.player.queue))
             msg = await ctx.send(embed=em)
             try:
                 await msg.add_reaction("\U000023f8") # Pause
