@@ -30,7 +30,8 @@ class Music:
             em.description = f"**{e.track.title}**"
             em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
             minutes, seconds = divmod(e.track.duration, 60)
-            em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
+            #em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
+            em.add_field(name='Length', value=e.track.duration)
             em.add_field(name='Volume', value=f"{self.get_lines(e.player.volume)} {e.player.volume}%")
             em.add_field(name='Position in Queue', value=len(e.player.queue))
             msg = await ctx.send(embed=em)
