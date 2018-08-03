@@ -202,7 +202,7 @@ class Music:
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.is_playing:
             return await ctx.send("Nothing is playing! Cannot detect volume or change it.")
-        msg = await ctx.send(f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+        msg = await ctx.send(f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.utils.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
         await msg.add_reaction("\U00002795")
         await msg.add_reaction("\U00002796")
         while player.is_playing:
@@ -215,14 +215,14 @@ class Music:
                     await msg.remove_reaction("\U00002795", ctx.author)
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
-                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.utils.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
             elif reaction.emoji == '➖':
                 await player.set_volume(player.volume - 5)
                 try:
                     await msg.remove_reaction("\U00002796", ctx.author)
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
-                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
+                await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.utils.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
 
 
 
