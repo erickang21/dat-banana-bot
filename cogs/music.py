@@ -37,7 +37,7 @@ class Music:
             #minutes, seconds = divmod(e.track.duration, 60)
             #em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
             if hour:
-                length = f"{hour}:{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
+                length = f"{int(hour)}:{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
             else:
                 length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
             em.add_field(name='Length', value=length)
