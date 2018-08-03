@@ -9,10 +9,12 @@ import lavalink
 import logging
 from discord.ext.commands.cooldowns import BucketType  
 from bs4 import BeautifulSoup
+from .utils.utils import Utils
 
 class Music:
     def __init__(self, bot):
         self.bot = bot
+        self.utils = Utils(bot)
         if not hasattr(bot, 'lavalink'):
             with open("data/apikeys.json") as file:
                 apikeys = json.load(file)
@@ -29,10 +31,17 @@ class Music:
             em = discord.Embed(color=0x00ff00, title=f"Playing")
             em.description = f"**{e.track.title}**"
             em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
-            minutes, seconds = divmod(e.track.duration, 60)
+            second = e.track.duration / 1000
+            minute, second = divmod(second, 60)
+            hour, minute = divmod(minute, 60)
+            #minutes, seconds = divmod(e.track.duration, 60)
             #em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
-            em.add_field(name='Length', value=e.track.duration)
-            em.add_field(name='Volume', value=f"{self.get_lines(e.player.volume)} {e.player.volume}%")
+            if hour:
+                length = f"{hour}:{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
+            else:
+                length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
+            em.add_field(name='Length', value=length)
+            em.add_field(name='Volume', value=f"{self.utils.get_lines(e.player.volume)} {e.player.volume}%")
             em.add_field(name='Position in Queue', value=len(e.player.queue))
             msg = await ctx.send(embed=em)
             try:
@@ -73,30 +82,7 @@ class Music:
 
             # This made shit way too spammy, can't think of a good way to avoid it, rather just remove it.
 
-    def get_lines(self, number):
-        number = int(number)
-        if number >= 0 and number <= 10:
-            return "||||||||||"
-        elif number >= 10 and number <= 20:
-            return "**|**||||||||"
-        elif number >= 20 and number <= 30:
-            return "**||**||||||||"
-        elif number >= 30 and number <= 40:
-            return "**|||**|||||||"
-        elif number >= 40 and number <= 50:
-            return "**||||**||||||"
-        elif number >= 50 and number <= 60:
-            return "**|||||**|||||"
-        elif number >= 60 and number <= 70:
-            return "**||||||**||||"
-        elif number >= 70 and number <= 80:
-            return "**|||||||**|||"
-        elif number >= 80 and number <= 90:
-            return "**||||||||**||"
-        elif number >= 90 and number <= 99:
-            return "**|||||||||**|"
-        elif number == 100:
-            return "**||||||||||**"
+
 
 
     @commands.command()

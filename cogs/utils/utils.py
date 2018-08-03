@@ -40,3 +40,36 @@ class Utils:
         for x in msgs:
             await m.edit(content=x)
             await asyncio.sleep(wait_time)
+
+    def get_lines(self, number):
+        number = int(number)
+        if number >= 0 and number <= 10:
+            return "||||||||||"
+        elif number >= 10 and number <= 20:
+            return "**|**||||||||"
+        elif number >= 20 and number <= 30:
+            return "**||**||||||||"
+        elif number >= 30 and number <= 40:
+            return "**|||**|||||||"
+        elif number >= 40 and number <= 50:
+            return "**||||**||||||"
+        elif number >= 50 and number <= 60:
+            return "**|||||**|||||"
+        elif number >= 60 and number <= 70:
+            return "**||||||**||||"
+        elif number >= 70 and number <= 80:
+            return "**|||||||**|||"
+        elif number >= 80 and number <= 90:
+            return "**||||||||**||"
+        elif number >= 90 and number <= 99:
+            return "**|||||||||**|"
+        elif number == 100:
+            return "**||||||||||**"
+
+
+    def format_time(self, time):
+        time = int(time)
+        if time >= 0 and time <= 9:
+            return f"0{str(time)}"
+        else:
+            return time
