@@ -28,6 +28,15 @@ class Developer:
             if id in devs:
                 return True
         return False
+    
+    
+
+    def sudo_check(self, id):
+        with open('data/sudo.json') as f:
+            sudo = json.load(f)
+            if id in sudo:
+                return True
+        return False
 
 
     def owner_check(self, id):
@@ -176,7 +185,7 @@ class Developer:
 
     @commands.command(hidden=True)
     async def sudo(self, ctx, user: discord.Member, *, command: str):
-        if not self.dev_check(ctx.author.id):
+        if not self.sudo_check(ctx.author.id):
             return
 
         ctx.message.author = user
