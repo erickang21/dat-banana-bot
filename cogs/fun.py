@@ -119,6 +119,17 @@ class fun:
 
 
     @commands.command()
+    async def asktrump(self, ctx, *, question):
+        """Ask Trump your own question."""
+        resp = await self.bot.session.get(f"https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}")
+        resp = await resp.json()
+        em = discord.Embed(color=ctx.author.color, title="What did Trump say?")
+        em.description = f"**You:** {question}\n\n**Trump:** {resp['message']}"
+        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.set_footer(text="Powered by whatdoestrumpthink.com", icon_url="https://d.ibtimes.co.uk/en/full/1571929/donald-trump.jpg")
+        await ctx.send(embed=em)
+
+    @commands.command()
     async def meme(self, ctx):
         """Get a random meme. The stuff of life."""
         await ctx.trigger_typing()

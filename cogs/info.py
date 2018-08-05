@@ -45,7 +45,7 @@ class Info:
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
         em.add_field(name='Version', value=version)
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
-        em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py {self.bot.get_emoji(418934774623764491)}') 
+        em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
         em.add_field(name='Memory Usage', value=f"{used} MB ({percent}%)")
         em.add_field(name='Bot Uptime :clock:', value="%d days, %d hours, %d minutes, %d seconds" % (day, hour, minute, second)) 
