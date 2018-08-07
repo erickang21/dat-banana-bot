@@ -119,6 +119,17 @@ class fun:
 
 
     @commands.command()
+    async def zalgo(self, ctx, *, text):
+        zalgo_chars = [chr(x) for x in range(768, 879)]
+        await ctx.send("".join(
+            c + "".join(
+                random.choice(zalgo_chars) for _ 
+                in range(random.randint(2, 7)) * c.isalnum()))
+
+                for c in text)
+
+
+    @commands.command()
     async def asktrump(self, ctx, *, question):
         """Ask Trump your own question."""
         resp = await self.bot.session.get(f"https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}")
