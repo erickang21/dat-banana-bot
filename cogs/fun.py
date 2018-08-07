@@ -124,9 +124,9 @@ class fun:
         await ctx.send("".join(
             c + "".join(
                 random.choice(zalgo_chars) for _ 
-                in range(random.randint(2, 7)) * c.isalnum()))
+                in range(random.randint(2, 7) * c.isalnum()))
 
-                for c in text)
+                for c in text))
 
 
     @commands.command()
