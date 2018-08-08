@@ -242,10 +242,37 @@ class mod:
         """It's time to stop. Sends that warning. Usage: *warn [tag person] [reason]"""
         try:
             color = 0xf44242
-            em = discord.Embed(color=color, title=f"WARNING: by {ctx.message.author.name} from **{ctx.author.guild.name}**.", description=f"{reason}")
+            em = discord.Embed(color=color, title=f"You have been warned.")
+            em.description = textwrap.dedent(f"""
+            {self.bot.get_emoji(430340802879946773)} **Warned By**
+            {str(ctx.author)}
+
+            :house: **Server**
+            {ctx.guild.name}
+
+            :speech_balloon: **Reason**
+            {reason}
+            """)
             await user.send(embed=em)
             await ctx.message.delete()
-            await ctx.send("User has been DM'd :white_check_mark:. Pray that the user is a gud boi now. :pray:")
+            await ctx.send("User has been DM'd :white_check_mark:. Pray that the user is a gud boi now. :pray:", delete_after=3)
+            modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+            if modlog:
+                em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member Warned")
+                em.description = textwrap.dedent(f"""
+                {self.bot.get_emoji(430340802879946773)} **Warned By**
+                {str(ctx.author)}
+
+                :house: **Server**
+                {ctx.guild.name}
+
+                :speech_balloon: **Reason**
+                {reason}
+                """)
+            
+                channel = self.bot.get_channel(int(modlog['channel']))
+                if channel:
+                    await channel.send(embed=em)
         except:
             await ctx.send("Something happened and the DM could not make it :x:. The user could be blocking DMs from the server, or you did not use the format correctly. Usage: *warn [tag person] [reason].")    
        
