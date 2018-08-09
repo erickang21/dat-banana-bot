@@ -184,7 +184,7 @@ async def on_message(message):
         for x in message.mentions:
             data = await bot.db.afk.find_one({"id": x.id})
             if data:
-                await message.channel.send(f"Hush, don't ping **{x.name}**. He's AFK right now, doing this: **{x['status']}**.")
+                await message.channel.send(f"Hush, don't ping **{x.name}**. He's AFK right now, doing this: **{data['status']}**.")
             else:
                 continue
     if not message.author.bot:
