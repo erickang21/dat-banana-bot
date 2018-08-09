@@ -228,7 +228,7 @@ class Utility:
             return match
     
     @commands.command()
-    async def afk(self, ctx, action, *, status):
+    async def afk(self, ctx, action=None, *, status=None):
         """View your AFK status."""
         if not action and not status:
             em = discord.Embed(color=ctx.author.color, title="AFK Status")
