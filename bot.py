@@ -180,6 +180,13 @@ async def on_message(message):
     #     await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"data": match}}, upsert = True)
     #     if match % 20 == 0:
     #         await message.channel.send(f"Woo-hoo, {message.author.mention}! You hit level {match / 20}! Keep talkin' for more!")
+    if message.mentions:
+        for x in message.mentions:
+            data = await bot.db.afk.find_one({"id": x.id})
+            if data:
+                await message.channel.send(f"Hush, don't ping **{x.name}**. He's AFK right now, doing this: **{x['status']}**.")
+            else:
+                continue
     if not message.author.bot:
         blacklistcmds = await bot.db.blacklistcmd.find_one({"id": message.guild.id})
         if not blacklistcmds or not blacklistcmds['cmds']:
