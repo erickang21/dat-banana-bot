@@ -102,6 +102,12 @@ async def on_ready():
     if bot.user.id != 388476336777461770:
         print("COPYING ALERT! COULD NOT IDENTIFY BOT USER! EXPOSED!")
         exit() # :p
+    with open("restart.txt") as f:
+        x = f.read()
+    stuff = [f.strip("\n") for f in x.readlines()]
+
+    msg = await bot.get_channel(int(stuff[0])).get_message(int(stuff[1]))
+    await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
     presence = [
         "*help | BOIIIIIII!",
         "*help | 🍌 are like my life: always by my side.",

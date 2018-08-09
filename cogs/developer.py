@@ -67,8 +67,8 @@ class Developer:
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         msg = await ctx.send(f"Restarting... {self.bot.get_emoji(471279983197814806)}")
-        await asyncio.sleep(1)
-        await msg.edit(content="BRB! :wave:")
+        with open("restart.txt", "w") as f:
+            f.write(f"{ctx.channel.id}\n{msg.id}")
         os.execv(sys.executable, ['python'] + ['bot.py'])
         
     #@command.commands(hidden=True)
