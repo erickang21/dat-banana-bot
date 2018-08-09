@@ -227,31 +227,38 @@ class Utility:
         else:
             return match
     
-    @commands.group(invoke_without_subcommand=True)
-    async def afk(self, ctx):
+    @commands.command()
+    async def afk(self, ctx, action, *, status):
         """View your AFK status."""
-        em = discord.Embed(color=ctx.author.color, title="AFK Status")
-        data = await self.bot.db.afk.find_one({"id": ctx.author.id})
-        if not data:
-            em.description = "You aren't AFK at the moment!"
-        else:
-            if not data['status']:
+        if not action and not status:
+            em = discord.Embed(color=ctx.author.color, title="AFK Status")
+            data = await self.bot.db.afk.find_one({"id": ctx.author.id})
+            if not data:
                 em.description = "You aren't AFK at the moment!"
             else:
-                em.description = data['status']
-        return await ctx.send(embed=em)
+                if not data['status']:
+                    em.description = "You aren't AFK at the moment!"
+                else:
+                    em.description = data['status']
+            return await ctx.send(embed=em)
+        elif action.lower() == "set":
+            await self.bot.db.afk.update_one({"id": ctx.author.id}, {"$set": {"status": status}}, upsert=True)
+            return await ctx.send(f":sleeping: Your AFK status has been set to **{status}**.\n\nAnyone who pings you while I'm there will get notified about what you're doing!")
+        elif action.lower() == "reset" or action.lower() == "clear":
+            await self.bot.db.afk.update_one({"id": ctx.author.id}, {"$set": {"status": False}}, upsert=True)
+            return await ctx.send(":smiley: You are no longer AFK!")
+        else:
+            return await ctx.send("""
+**AFK Command**
+
+*afk -> Check your AFK status.
+
+*afk set [status] -> Turn on AFK and set your status.
+
+*afk reset -> Turn off AFK.
+            """)
 
 
-    @afk.command(name="set")
-    async def _set(self, ctx, *, status):
-        await self.bot.db.afk.update_one({"id": ctx.author.id}, {"$set": {"status": status}}, upsert=True)
-        return await ctx.send(f":sleeping: Your AFK status has been set to **{status}**.\n\nAnyone who pings you while I'm there will get notified about what you're doing!")
-
-
-    @afk.command(aliases=["clear"])
-    async def reset(self, ctx):
-        await self.bot.db.afk.update_one({"id": ctx.author.id}, {"$set": {"status": False}}, upsert=True)
-        return await ctx.send(":smiley: You are no longer AFK!")
 
 
     @commands.command(aliases=['g', 'gg'])
