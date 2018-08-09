@@ -94,7 +94,7 @@ class Music:
                         await asyncio.sleep(15)
                         await msg.edit(embed=em)    
             except discord.Forbidden:
-                return await ctx.send("I can't remove your reactions! Ouch.")
+                pass # No need to send 
             # except Exception as e:
             #     return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
 
@@ -212,6 +212,34 @@ class Music:
         em.description = songs
         await ctx.send(embed=em)
 
+    @commands.command()
+    async def lyrics(self, ctx, *, song: str = None):
+        """Get lyrics for a song or finds lyrics for the current playing song."""
+        player = self.bot.lavalink.players.get(ctx.guild.id)
+        if player and song == None:
+            song = player.queue[0].title
+
+        async with ctx.typing():
+            res = await (await self.bot.session.get(f"https://api.genius.com/search?q={song}", headers={"Authorization": f"Bearer {self.bot.config.geniusapi}"})).json()
+
+        if not res["response"]["hits"]:
+            return await ctx.send("No lyrics found. Try looking for something different!")
+        
+        res1 = await (await self.bot.session.get(res["response"]["hits"][0]["result"]["url"])).text()
+        scraped = BeautifulSoup(res1, "lxml")
+
+        if not scraped.find_all("p"):
+            return await ctx.send("No lyrics found. Try looking for something different!")
+
+        description = scraped.find_all("p")[0].text
+        if len(description) > 2045:
+            description = f"{description[:2045]}..."
+        
+        embed = discord.Embed(title=res["response"]["hits"][0]["result"]["full_title"], color=0xFF00FF)
+        embed.description = description
+        embed.set_footer(text="Powered by: https://genius.com", icon_url=ctx.author.avatar_url)
+        embed.set_thumbnail(url=res["response"]["hits"][0]["result"]["header_image_thumbnail_url"])
+        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.guild_only()
