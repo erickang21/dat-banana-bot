@@ -239,19 +239,19 @@ class Utility:
                 em.description = "You aren't AFK at the moment!"
             else:
                 em.description = data['status']
-        await ctx.send(embed=em)
+        return await ctx.send(embed=em)
 
 
     @afk.command(name="set")
     async def _set(self, ctx, *, status):
         await self.bot.db.afk.update_one({"id": ctx.author.id}, {"$set": {"status": status}}, upsert=True)
-        await ctx.send(f":sleeping: Your AFK status has been set to **{status}**.\n\nAnyone who pings you while I'm there will get notified about what you're doing!")
+        return await ctx.send(f":sleeping: Your AFK status has been set to **{status}**.\n\nAnyone who pings you while I'm there will get notified about what you're doing!")
 
 
     @afk.command(aliases=["clear"])
     async def reset(self, ctx):
         await self.bot.db.afk.update_one({"id": ctx.author.id}, {"$set": {"status": False}}, upsert=True)
-        await ctx.send(":smiley: You are no longer AFK!")
+        return await ctx.send(":smiley: You are no longer AFK!")
 
 
     @commands.command(aliases=['g', 'gg'])
