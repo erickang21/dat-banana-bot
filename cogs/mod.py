@@ -152,13 +152,11 @@ class mod:
         """Prevents anyone from chatting in the current channel."""
         if action.lower() == 'on':
             msg = await ctx.send("Locking down the channel...")
-            for x in ctx.guild.members:
-                await ctx.channel.set_permissions(x, send_messages=False)
+            await ctx.channel.set_permissions(discord.utils.get(ctx.guild.roles, id=ctx.guild.id), send_messages=False)
             return await msg.edit(content="The channel has been successfully locked down. :lock: ")
         elif action.lower() == 'off':
             msg = await ctx.send("Unlocking the channel...")
-            for x in ctx.guild.members:
-                await ctx.channel.set_permissions(x, send_messages=True)
+            await ctx.channel.set_permissions(discord.utils.get(ctx.guild.roles, id=ctx.guild.id), send_messages=True)
             return await msg.edit(content="The channel has been successfully unlocked. :unlock: ")
         else:
             return await ctx.send("Lockdown command:\n*lockdown [on/off]")
@@ -478,6 +476,11 @@ class mod:
     @commands.has_permissions(ban_members=True)
     async def unmute(self, ctx, user: discord.Member):
         '''Allows someone to un-shut up. Usage: *unmute [user]'''
+        try:
+            await ctx.channel.set_permissions(user, send_messages=True)
+            await ctx.channel.send(f"{user.mention} is now un-shutted up.")
+        except discord.Forbidden:
+            await ctx.send("Couldn't unmute the user. Uh-oh...")
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
         if modlog:
             em = discord.Embed(color=discord.Color(
@@ -495,13 +498,8 @@ class mod:
             channel = self.bot.get_channel(int(modlog['channel']))
             if channel:
                 await channel.send(embed=em)
-        try:
-            await ctx.channel.set_permissions(user, send_messages=True)
-            await ctx.channel.send(f"{user.mention} is now un-shutted up.")
-        except discord.Forbidden:
-            await ctx.send("Couldn't unmute the user. Uh-oh...")
-        except commands.errors.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")              
+
+       
     
 
     @commands.command(aliases=['arole'])
