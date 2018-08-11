@@ -183,7 +183,9 @@ async def on_message(message):
     if message.mentions:
         for x in message.mentions:
             data = await bot.db.afk.find_one({"id": x.id})
-            if not data['status']:
+            if not data:
+                pass
+            elif not data['status']:
                 pass
             elif data:
                 await message.channel.send(f"Hush, don't ping **{x.name}**. He's AFK right now, doing this: **{data['status']}**.")
@@ -460,6 +462,20 @@ async def on_member_ban(guild, member):
         """)
         em.timestamp = datetime.datetime.utcnow()
         em.set_thumbnail(url=member.avatar_url)
+        await lol.send(embed=em)
+
+
+@bot.event
+async def on_raw_bulk_message_delete(payload):
+    if await modlog_check(payload.guild_id):
+        lol = bot.get_channel(await get_modlog_channel(payload.guild_id))
+        em = discord.Embed(color=discord.Color(value=0xf44e42), title='Messages Purged')
+        em.description = textwrap.dedent(f"""
+        :hash: Channel: {bot.get_channel(payload.channel_id).mention}
+
+        :newspaper: Messages Deleted: {len(payload.message_ids)}      
+        """)
+        em.timestamp = datetime.datetime.utcnow()
         await lol.send(embed=em)
 
 

@@ -155,7 +155,7 @@ class mod:
             await ctx.channel.set_permissions(discord.utils.get(ctx.guild.roles, id=ctx.guild.id), send_messages=False)
             return await msg.edit(content="The channel has been successfully locked down. :lock: ")
         elif action.lower() == 'off':
-            msg = await ctx.send("Unlocking the channel...")
+            msg = await ctx.send("Unlocking the channel...")        
             await ctx.channel.set_permissions(discord.utils.get(ctx.guild.roles, id=ctx.guild.id), send_messages=True)
             return await msg.edit(content="The channel has been successfully unlocked. :unlock: ")
         else:
