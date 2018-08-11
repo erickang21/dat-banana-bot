@@ -891,12 +891,15 @@ class mod:
             await ctx.guild.ban(lol, reason=reason)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
+        data = await self.bot.get_user_info(id)
         color = 0xf9e236
         em = discord.Embed(color=color, title='Banned!')
+        em.add_field(name="User", value=str(data))
         em.add_field(name="ID", value=id)
         em.add_field(name='Banned By', value=ctx.author.name)
         reason = reason if reason is not None else 'No reason given.'
         em.add_field(name='Reason', value=reason)
+        em.set_thumbnail(url=data.avatar_url)
         await ctx.send(embed=em)
         
 
