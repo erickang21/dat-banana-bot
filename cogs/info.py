@@ -20,7 +20,7 @@ class Info:
     @commands.command(aliases=['info', 'botinfo'])
     async def stats(self, ctx):
         """Statsies for this bot. Be a nerd!"""       
-        color = 0x00ff00
+        color = 0xf9e236
         RAM = psutil.virtual_memory()
         used = RAM.used >> 20
         percent = RAM.percent
@@ -63,7 +63,7 @@ class Info:
         """Read the latest notes on the latest update!"""    
         content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
         title = content.split("\n")[0].replace("*", "")
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color(value=0xf9e236))
         em.description = content
         await ctx.send(embed=em)
 
