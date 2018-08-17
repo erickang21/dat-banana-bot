@@ -235,7 +235,7 @@ class Utility:
             "app_id": self.bot.config.dictionaryapi_id,
             "app_key": self.bot.config.dictionaryapi_key
         }
-        resp = await self.bot.session.get("https://od-api.oxforddictionaries.com/api/v1/entries/en/banana",headers=headers)
+        resp = await self.bot.session.get(f"https://od-api.oxforddictionaries.com/api/v1/entries/en/{word}",headers=headers)
         resp = box.Box(await resp.json())
         definitions = []
         for x in range(len(resp.results[0].lexicalEntries)):
