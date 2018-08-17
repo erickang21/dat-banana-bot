@@ -236,7 +236,10 @@ class Utility:
             "app_key": self.bot.config.dictionaryapi_key
         }
         resp = await self.bot.session.get(f"https://od-api.oxforddictionaries.com/api/v1/entries/en/{word}",headers=headers)
-        resp = box.Box(await resp.json())
+        try:
+            resp = box.Box(await resp.json())
+        except:
+            return await ctx.send("No definitions with this word exist.")
         definitions = []
         for x in range(len(resp.results[0].lexicalEntries)):
             definitions.append(f"""
