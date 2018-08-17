@@ -6,6 +6,7 @@ import wikipedia
 import urllib.parse
 import json
 import re
+import box
 import openweathermapy.core as weather
 from bs4 import BeautifulSoup
 from pygoogling.googling import GoogleSearch
@@ -226,6 +227,29 @@ class Utility:
             return None
         else:
             return match
+
+    @commands.command(aliases=['dict'])
+    async def dictionary(self, ctx, *, word):
+        """Search a word on Oxford Dictionary."""
+        headers = {
+            "app_id": self.bot.config.dictionaryapi_id,
+            "app_key": self.bot.config.dictionaryapi_key
+        }
+        resp = await self.bot.session.get("https://od-api.oxforddictionaries.com/api/v1/entries/en/banana",headers=headers)
+        resp = box.Box(await resp.json())
+        definitions = []
+        for x in range(len(resp.results[0].lexicalEntries)):
+            definitions.append(f"""
+**{resp.results[0].word}** ({resp.results[0].lexicalEntries[x].pronunciations[0].phoneticSpelling})
+
+*{resp.results[0].lexicalEntries[x].lexicalCategory}*
+{resp.results[0].lexicalEntries[x].entries[0].senses[0].definitions[0]}
+""")
+
+        d = Pages(ctx, entries=definitions, per_page=1)
+        await d.paginate()
+
+
     
     @commands.command()
     async def afk(self, ctx, action=None, *, status=None):
