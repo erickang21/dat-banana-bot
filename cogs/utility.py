@@ -14,7 +14,7 @@ from discord.ext import commands
 from mtranslate import translate
 from .utils.paginator import Pages
 from .utils.utils import Utils
-
+from discord.ext.commands.cooldowns import BucketType
 class Utility:
     def __init__(self, bot):
         self.bot = bot
@@ -229,6 +229,7 @@ class Utility:
             return match
 
     @commands.command(aliases=['dict'])
+    @commands.cooldown(1, 5.0, BucketType.user)
     async def dictionary(self, ctx, *, word):
         """Search a word on Oxford Dictionary."""
         headers = {
