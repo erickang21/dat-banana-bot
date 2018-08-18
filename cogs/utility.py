@@ -7,6 +7,7 @@ import urllib.parse
 import json
 import re
 import box
+import math
 import openweathermapy.core as weather
 from bs4 import BeautifulSoup
 from pygoogling.googling import GoogleSearch
@@ -15,6 +16,8 @@ from mtranslate import translate
 from .utils.paginator import Pages
 from .utils.utils import Utils
 from discord.ext.commands.cooldowns import BucketType
+from py_expression_eval import Parser
+
 class Utility:
     def __init__(self, bot):
         self.bot = bot
@@ -227,6 +230,46 @@ class Utility:
             return None
         else:
             return match
+
+
+    @commands.command()
+    async def calc(self, ctx, *, expression):
+        """Do regular math like a regular normie."""
+        parser = Parser()
+        variables = {
+            "pi": math.pi,
+            "e": math.e
+        }
+        try:
+            res = parser.parse(expression).evaluate(variables)
+        except OverflowError:
+            emb = discord.Embed(color=0xf44242, title="Math Error")
+            emb.description = f"""
+:inbox_tray: **Input**
+```{expression}```
+
+:outbox_tray: **Output**
+The calculated number is too large to be represented."""
+            return await ctx.send(embed=emb)
+        except:
+            embe = discord.Embed(color=0xf44242, title="Math Error")
+            embe.description = f"""
+:inbox_tray: **Input**
+```{expression}```
+
+:outbox_tray: **Output**
+Invalid math expression."""
+            return await ctx.send(embed=embe)
+        em = discord.Embed(color=0x00ff00, title="Math Evaluated")
+        em.description = f"""
+:inbox_tray: **Input**
+```{expression}```
+
+:outbox_tray: **Output**
+{res}"""
+        return await ctx.send(embed=em)
+
+
 
     @commands.command(aliases=['dict'])
     @commands.cooldown(1, 5.0, BucketType.user)
