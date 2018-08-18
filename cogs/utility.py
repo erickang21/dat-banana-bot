@@ -266,7 +266,7 @@ Invalid math expression."""
 ```{expression}```
 
 :outbox_tray: **Output**
-{res}"""
+```{res}```"""
         return await ctx.send(embed=em)
 
 
