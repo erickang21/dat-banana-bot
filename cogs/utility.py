@@ -232,7 +232,7 @@ class Utility:
             return match
 
 
-    @commands.command()
+    @commands.command(aliases=['math', 'calculate'])
     async def calc(self, ctx, *, expression):
         """Do regular math like a regular normie."""
         parser = Parser()
