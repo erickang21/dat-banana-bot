@@ -202,7 +202,7 @@ async def on_message(message):
             else:
                 await bot.process_commands(message)
 
-@bot.event
+@bot.event #stalker
 async def on_command(ctx):
     bot.commands_run += 1
     log = bot.get_channel(445332002942484482)
@@ -357,6 +357,7 @@ async def on_guild_remove(guild):
     em = discord.Embed(color=discord.Color(value=0xf44242))
     em.title = "dat banana bot has been removed from a server."
     em.description = f"**{guild.name}**"
+    em.add_field(name="Owner", value=str(guild.owner))                                       
     em.set_footer(text=f"ID: {guild.id}")
     em.set_thumbnail(url=guild.icon_url)
     await logs_channel.send(embed=em)
