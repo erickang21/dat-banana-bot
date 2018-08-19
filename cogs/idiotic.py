@@ -21,6 +21,22 @@ class Idiotic:
         return avatar_url.replace("webp", "png")
 
 
+    @commands.command()
+    async def clyde(self, ctx, *, text):
+        """See a message in Clyde-style."""
+        params = {
+            "type": "clyde",
+            "text": text
+        }
+        resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
+        if not resp['success']:
+            return await ctx.send("An error occurred with the API.")
+        em = discord.Embed(color=ctx.author.color, title="Clyde Message")
+        em.set_image(url=resp['message'])
+        em.set_footer(text="Powered by nekobot.xyz")
+        await ctx.send(embed=em)
+
+
     @commands.command(aliases=['triggered'])
     async def triggeredpic(self, ctx, user: discord.Member = None):
         """TRI GER RED!!!"""
