@@ -30,6 +30,7 @@ class Idiotic:
         resp = await resp.json()
         em = discord.Embed(color=ctx.author.color, title=f"Trump made {word} illegal.")
         em.set_image(url=resp['url'])
+        em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
         
 
