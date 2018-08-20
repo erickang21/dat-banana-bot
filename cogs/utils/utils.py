@@ -10,6 +10,7 @@ class Utils:
 
 
     async def handle_exception(self, ctx, error):
+        """Handle an uncaught error in general and report to the devs. Should not be called for the most part, since it is used in `on_command_error`.
         log = self.bot.get_channel(445332002942484482)
         traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
         emb = discord.Embed(color=discord.Color(value=0xf44e42), title="Welp. This is awkward...")
@@ -27,12 +28,14 @@ class Utils:
         logger.error(error)
 
     def slice_text(self, text: str, count: int, end="..."):
+        """Slices text to a maximum count. Does nothing if text is lower than the count. If more, cuts off and uses the ending given."""
         if len(text) < count:
             return text
         return text[0:count - 3] + end
 
 
     async def edit_msg(self, ctx, *msgs, wait_time=3):
+        """Loop through all `msgs`. Sends the first message, then edits to all other messages."""
         msgs = list(msgs)
         m = await ctx.send(msgs[0])
         await asyncio.sleep(wait_time)
@@ -42,6 +45,7 @@ class Utils:
             await asyncio.sleep(wait_time)
 
     def get_lines(self, number):
+        """Get lines equal to a number."""
         number = int(number)
         if number >= 0 and number <= 10:
             return "||||||||||"
@@ -68,8 +72,14 @@ class Utils:
 
 
     def format_time(self, time):
+        """Format a duration into human-friendly time."""
         time = int(time)
         if time >= 0 and time <= 9:
             return f"0{str(time)}"
         else:
             return time
+
+
+    def mix(self, word1, word2):
+        """Mix two words together."""
+        return word1[:int(len(word1) / 2)] + word2[int(len(word2) / 2):]

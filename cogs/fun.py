@@ -9,6 +9,7 @@ import json
 import idioticapi
 from discord.ext import commands
 import base64
+from .utils.utils import Utils
 
 # class Connect4:
 #     def __init__(self, bot):
@@ -67,6 +68,7 @@ class fun:
         self.cleverbot_user = lol.get("cleverbot_user")
         self.cleverbot_key = lol.get("cleverbot_key")
         self.guess_number = random.randint(1, 100)
+        self.utils = Utils(bot)
 
     def get_lines(self, number):
         number = int(number)
@@ -242,16 +244,16 @@ class fun:
             second = ctx.message.mentions[1].name
         except IndexError:
             second = two
-        em = discord.Embed(color=discord.Color(value=0xebf442), title='Please wait...')
-        responses = [
-            "*What's on your mind?*",
-            "Is she the one?",
-            "Calculating how much they love each other...",
-            "Could it be?"
-        ]
-        em.description = random.choice(responses)
-        msg = await ctx.send(embed=em)
-        await asyncio.sleep(3)
+        #em = discord.Embed(color=discord.Color(value=0xebf442), title='Please wait...')
+        #responses = [
+        #    "*What's on your mind?*",
+        #    "Is she the one?",
+        #    "Calculating how much they love each other...",
+        #    "Could it be?"
+        #]
+        #em.description = random.choice(responses)
+        #msg = await ctx.send(embed=em)
+        #await asyncio.sleep(3)
         rate = random.randint(0, 100)
         if rate < 20:
             text = f"**{first}** + **{second}**\n\nComplete CRAP! :unamused:\n\nRating: **{rate}**%"
@@ -264,8 +266,8 @@ class fun:
         elif rate >= 80 and rate <= 100:
             text = f"**{first}** + **{second}**\n\nOne True Pair! {self.bot.get_emoji(430848132667146251)}\n\nRating: **{rate}**%"
         e = discord.Embed(color=discord.Color(value=0x00ff00), title="Matchmaking")
-        e.description = text
-        await msg.edit(embed=e)
+        e.description = text + f"\n\n__Ship Name__\n{self.utils.mix(first, second)}"
+        await ctx.send(embed=e)
 
 
     
