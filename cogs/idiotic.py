@@ -20,6 +20,25 @@ class Idiotic:
             return avatar_url + "?size=2048"
         return avatar_url.replace("webp", "png")
 
+    @commands.command()
+    async def captcha(self, ctx, user: discord.Member = None):
+        """Turn yourself into a CAPTCHA challenge."""
+        user = user or ctx.author
+        params = {
+            "type": "captcha",
+            "url": user.avatar_url,
+            "username": user.name
+        }
+        resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
+        resp = await resp.json()
+        if not resp['success']:
+            return await ctx.send("An error occurred with the API.")
+        em = discord.Embed(color=ctx.author.color, title="CAPTCHA")
+        em.set_image(url=resp['message'])
+        em.set_footer(text="Powered by nekobot.xyz")
+        await ctx.send(embed=em)
+
+
 
     @commands.command()
     async def clyde(self, ctx, *, text):
