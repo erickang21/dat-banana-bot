@@ -21,6 +21,22 @@ class Idiotic:
         return avatar_url.replace("webp", "png")
 
     @commands.command()
+    async def trump(self, ctx, *, text):
+        """Tweet as Trump."""
+        params = {
+            "type": "trumptweet",
+            "text": text
+        }
+        resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
+        resp = await resp.json()
+        if not resp['success']:
+            return await ctx.send("An error occurred with the API.")
+        em = discord.Embed(color=ctx.author.color, title="Trump Tweet")
+        em.set_image(url=resp['message'])
+        em.set_footer(text="Powered by nekobot.xyz")
+        await ctx.send(embed=em)
+
+    @commands.command()
     async def kanna(self, ctx, *, text):
         """Show a message as Kanna."""
         params = {
