@@ -21,6 +21,23 @@ class Idiotic:
         return avatar_url.replace("webp", "png")
 
     @commands.command()
+    async def magik(self, ctx, user: discord.Member = None):
+        """I'll do some gucci magik."""
+        user = user or ctx.author
+        params = {
+            "type": "magik",
+            "image": self.format_avatar(user.avatar_url)
+        }
+        resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
+        resp = await resp.json()
+        if not resp['success']:
+            return await ctx.send("An error occurred with the API.")
+        em = discord.Embed(color=ctx.author.color, title="MAGIK!")
+        em.set_image(url=resp['message'])
+        em.set_footer(text="Powered by nekobot.xyz")
+        await ctx.send(embed=em)
+
+    @commands.command()
     async def blurple(self, ctx, user: discord.Member = None):
         """Turn your profile pic into blurple!"""
         user = user or ctx.author
