@@ -21,16 +21,13 @@ class Idiotic:
         return avatar_url.replace("webp", "png")
 
     @commands.command()
-    async def illegal(self, ctx, word):
+    async def illegal(self, ctx, text):
         """Make something illegal by Trump."""
-        if len(word) > 10:
+        if len(text) > 10:
             return await ctx.send("Nope! Gotta be less than 10 characters.")
-        await self.bot.session.post("https://is-now-illegal.firebaseio.com/queue/tasks.json", json={"task": "gif", "word": word.upper()})
-        resp = await self.bot.session.get(f"https://is-now-illegal.firebaseio.com/gifs/{word.upper()}.json")
-        resp = await resp.json()
-        em = discord.Embed(color=ctx.author.color, title=f"Trump made {word} illegal.")
-        em.set_image(url=resp['url'])
-        await ctx.send(embed=em)
+        await bot.session.post("https://is-now-illegal.firebaseio.com/queue/tasks.json", json={ "task": "gif", "word": word.upper() })
+resp = await bot.session.get(f"https://is-now-illegal.firebaseio.com/gifs/{word.upper()}.json")
+resp = await resp.json()
         
 
     @commands.command()
