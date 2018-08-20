@@ -10,7 +10,7 @@ class Utils:
 
 
     async def handle_exception(self, ctx, error):
-        """Handle an uncaught error in general and report to the devs. Should not be called for the most part, since it is used in `on_command_error`.
+        """Handle an uncaught error in general and report to the devs. Should not be called for the most part, since it is used in `on_command_error`."""
         log = self.bot.get_channel(445332002942484482)
         traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
         emb = discord.Embed(color=discord.Color(value=0xf44e42), title="Welp. This is awkward...")
