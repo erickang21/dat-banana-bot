@@ -25,7 +25,7 @@ class Idiotic:
         """Turn your profile pic into blurple!"""
         user = user or ctx.author
         params = {
-            "type": "captcha",
+            "type": "blurplify",
             "image": user.avatar_url
         }
         resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
