@@ -21,6 +21,23 @@ class Idiotic:
         return avatar_url.replace("webp", "png")
 
     @commands.command()
+    async def blurple(self, ctx, user: discord.Member = None):
+        """Turn your profile pic into blurple!"""
+        user = user or ctx.author
+        params = {
+            "type": "captcha",
+            "image": user.avatar_url
+        }
+        resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
+        resp = await resp.json()
+        if not resp['success']:
+            return await ctx.send("An error occurred with the API.")
+        em = discord.Embed(color=ctx.author.color, title="Blurple!")
+        em.set_image(url=resp['message'])
+        em.set_footer(text="Powered by nekobot.xyz")
+        await ctx.send(embed=em)
+
+    @commands.command()
     async def trump(self, ctx, *, text):
         """Tweet as Trump."""
         params = {
