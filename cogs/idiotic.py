@@ -23,6 +23,7 @@ class Idiotic:
     @commands.command()
     async def magik(self, ctx, user: discord.Member = None):
         """I'll do some gucci magik."""
+        await ctx.trigger_typing()
         user = user or ctx.author
         params = {
             "type": "magik",
@@ -40,6 +41,7 @@ class Idiotic:
     @commands.command()
     async def blurple(self, ctx, user: discord.Member = None):
         """Turn your profile pic into blurple!"""
+        await ctx.trigger_typing()
         user = user or ctx.author
         params = {
             "type": "blurpify",
@@ -57,6 +59,7 @@ class Idiotic:
     @commands.command()
     async def trump(self, ctx, *, text):
         """Tweet as Trump."""
+        await ctx.trigger_typing()
         params = {
             "type": "trumptweet",
             "text": text
@@ -73,6 +76,7 @@ class Idiotic:
     @commands.command()
     async def kanna(self, ctx, *, text):
         """Show a message as Kanna."""
+        await ctx.trigger_typing()
         params = {
             "type": "kannagen",
             "text": text
@@ -90,6 +94,7 @@ class Idiotic:
     @commands.command()
     async def captcha(self, ctx, user: discord.Member = None):
         """Turn yourself into a CAPTCHA challenge."""
+        await ctx.trigger_typing()
         user = user or ctx.author
         params = {
             "type": "captcha",
@@ -110,6 +115,7 @@ class Idiotic:
     @commands.command()
     async def clyde(self, ctx, *, text):
         """See a message in Clyde-style."""
+        await ctx.trigger_typing()
         params = {
             "type": "clyde",
             "text": text
