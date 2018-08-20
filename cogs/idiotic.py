@@ -29,6 +29,7 @@ class Idiotic:
             "text": text
         }
         resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
+        resp = await resp.json()
         if not resp['success']:
             return await ctx.send("An error occurred with the API.")
         em = discord.Embed(color=ctx.author.color, title="Clyde Message")
