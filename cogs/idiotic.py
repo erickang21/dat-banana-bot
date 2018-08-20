@@ -21,6 +21,23 @@ class Idiotic:
         return avatar_url.replace("webp", "png")
 
     @commands.command()
+    async def kanna(self, ctx, *, text):
+        """Show a message as Kanna."""
+        params = {
+            "type": "kannagen",
+            "text": text
+        }
+        resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
+        resp = await resp.json()
+        if not resp['success']:
+            return await ctx.send("An error occurred with the API.")
+        em = discord.Embed(color=ctx.author.color, title="Kanna")
+        em.set_image(url=resp['message'])
+        em.set_footer(text="Powered by nekobot.xyz")
+        await ctx.send(embed=em)
+
+
+    @commands.command()
     async def captcha(self, ctx, user: discord.Member = None):
         """Turn yourself into a CAPTCHA challenge."""
         user = user or ctx.author
