@@ -206,7 +206,7 @@ class Music:
                 count = self.skip_count[str(ctx.guild.id)] 
                 self.skip_count[str(ctx.guild.id)] += 1
                 await ctx.send("**Are we skipping this song?**\n\n(You don't have Manage Server, so I'm waiting for 2 votes to skip this song.\n\n**Votes:** 1/2")
-            except:
+            except KeyError:
                 count = self.skip_count[str(ctx.guild.id)] = 1  
                 await ctx.send("**Are we skipping this song?**\n\n(You don't have Manage Server, so I'm waiting for 2 votes to skip this song.\n\n**Votes:** 1/2")   
             if count == 2:
