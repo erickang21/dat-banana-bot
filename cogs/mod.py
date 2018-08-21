@@ -305,7 +305,7 @@ class mod:
         if user.id == ctx.author.id:
             return await ctx.send("I don't understand your logic. Kicking yourself?")
         try:
-            await user.kick(reason=reason)
+            await user.kick(reason=f"{str(user)}: {reason}")
             color = 0xf9e236
             em = discord.Embed(color=color, title='Kicked!')
             em.add_field(name='User', value=user.name)
@@ -351,7 +351,7 @@ class mod:
             em.add_field(name='User', value=user.name)
             em.add_field(name='Banned By', value=ctx.author.name)
             reason = reason if reason is not None else 'No reason given.'
-            em.add_field(name='Reason', value=reason)
+            em.add_field(name='Reason', value=f"{str(user)}: {reason}")
             em.set_thumbnail(url=user.avatar_url)
             await ctx.send(embed=em)
         except discord.Forbidden:
