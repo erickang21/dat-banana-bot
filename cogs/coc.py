@@ -62,6 +62,10 @@ class COC:
         resp = await self.session.get(f'https://api.clashofclans.com/v1/players/%23{coctag}', headers=self.client)
         resp = await resp.json()
         color = discord.Color(value=0xe5f442)
+        try:
+            resp['name']
+        except KeyError:
+            return await ctx.send("Invalid COC tag. Please check your tag!")
         em = discord.Embed(color=color, title=f"{resp['name']}, {resp['tag']}")
         em.add_field(name="Home Base", value=self.emoji(f"th{resp['townHallLevel']}"), inline=False)
         em.add_field(name='XP Level', value=resp['expLevel'])
@@ -82,8 +86,9 @@ class COC:
             em.set_thumbnail(url=resp['league']['iconUrls']['medium'])
         except KeyError:
             em.set_thumbnail(url='http://clash-wiki.com/images/progress/leagues/no_league.png')
-        em.add_field(name="Builder Base", value=self.emoji(f"bh{resp['builderHallLevel']}"), inline=False)
+        
         try:
+            em.add_field(name="Builder Base", value=self.emoji(f"bh{resp['builderHallLevel']}"), inline=False)
             em.add_field(name='Builder Hall', value=resp['builderHallLevel'])
             em.add_field(name='Trophies', value=resp['versusTrophies'])
             em.add_field(name='Personal Best', value=resp['bestVersusTrophies'])
@@ -101,7 +106,7 @@ class COC:
             }
             em.add_field(name='Clan Role', value=types[resp['role']])
             em.set_author(name='Clan Info')
-            em.set_thumbnail(url=resp['clan']['badgeUrls']['medium'])
+            #em.set_thumbnail(url=resp['clan']['badgeUrls']['medium'])
         except KeyError:
             em.add_field(name="Clan", value=f"No Clan", inline=False)
         await ctx.send(embed=em)
