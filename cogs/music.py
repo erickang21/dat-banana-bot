@@ -21,6 +21,7 @@ class Music:
                 apikeys = json.load(file)
                 lavalink.Client(bot, loop=self.bot.loop, host=apikeys["ll_host"], password=apikeys["ll_password"], ws_port=apikeys["ll_port"])
                 self.bot.lavalink.register_hook(self.track_hook)
+        self.skip_count = {}
 
     async def track_hook(self, e):
         if isinstance(e, lavalink.Events.QueueEndEvent):
@@ -194,6 +195,29 @@ class Music:
         player.queue.clear()
         await player.stop()
         await ctx.send("**HALT!** Music has been stopped. :stop_button:")
+
+    @commands.command()
+    @commands.guild_only()
+    async def skip(self, ctx):
+        """Skip the currently playing song."""
+        if not ctx.author.guild_permissions.manage_guild:
+            
+            try:
+                count = self.skip_count[str(ctx.guild.id)] 
+                self.skip_count[str(ctx.guild.id)] += 1
+                await ctx.send("**Are we skipping this song?**\n\n(You don't have Manage Server, so I'm waiting for 2 votes to skip this song.\n\n**Votes:** 1/2")
+            except:
+                count = self.skip_count[str(ctx.guild.id)] = 1  
+                await ctx.send("**Are we skipping this song?**\n\n(You don't have Manage Server, so I'm waiting for 2 votes to skip this song.\n\n**Votes:** 1/2")   
+            if count == 2:
+                self.skip_count = 0
+                await self.bot.lavalink.players.get(ctx.guild.id).skip()
+                await ctx.author.voice.channel.connect()
+                return await ctx.send("Alright! We skipped the song. :fast_forward:")
+        else:
+            await self.bot.lavalink.players.get(ctx.guild.id).skip()
+            await ctx.author.voice.channel.connect()
+            return await ctx.send("Alright! We skipped the song. :fast_forward:\n\n(You have Manage Server, so I went full steam ahead.)")
 
     @commands.command()
     @commands.guild_only()
