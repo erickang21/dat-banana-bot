@@ -225,7 +225,7 @@ class Music:
         """Gets the queue for the server."""
         player = self.bot.lavalink.players.get(ctx.guild.id)
         if not player.queue:
-            await ctx.send("No songs are currently in the queue! Just queue the :banana: song, kthx.")
+            return await ctx.send("No songs are currently in the queue! Just queue the :banana: song, kthx.")
         em = discord.Embed(color=0x00ff00, title=f"Music Queue")
         em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         songs = ""
