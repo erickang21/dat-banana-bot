@@ -216,7 +216,10 @@ class Music:
                 return await ctx.send("Alright! We skipped the song. :fast_forward:")
         else:
             await self.bot.lavalink.players.get(ctx.guild.id).skip()
-            await ctx.author.voice.channel.connect()
+            try:
+                await ctx.author.voice.channel.connect()
+            except:
+                pass
             player = self.bot.lavalink.players.get(ctx.guild.id)
             await player.play()
             return await ctx.send("Alright! We skipped the song. :fast_forward:\n\n(You have Manage Server, so I went full steam ahead.)")
