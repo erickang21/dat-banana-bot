@@ -210,7 +210,7 @@ class Music:
                 count = self.skip_count[str(ctx.guild.id)] = 1  
                 await ctx.send("**Are we skipping this song?**\n\n(You don't have Manage Server, so I'm waiting for 2 votes to skip this song.\n\n**Votes:** 1/2")   
             if count == 2:
-                self.skip_count = 0
+                self.skip_count[str(ctx.guild.id)] = 0
                 await self.bot.lavalink.players.get(ctx.guild.id).skip()
                 await ctx.author.voice.channel.connect()
                 return await ctx.send("Alright! We skipped the song. :fast_forward:")
