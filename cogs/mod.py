@@ -821,7 +821,7 @@ class mod:
             :hash: Channel: {channel.mention}
             """)
             if channel:
-                await channel.send(embed=em)
+                return await channel.send(embed=em)
         if action.lower() == 'off':
             modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
             channel = self.bot.get_channel(int(modlog['channel']))
