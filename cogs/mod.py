@@ -214,11 +214,11 @@ class mod:
         
     @commands.command(hidden=True)
     @commands.guild_only()
-    # @commands.has_permissions(administrator = True)
+    @commands.has_permissions(administrator = True)
     async def dm(self, ctx, user: discord.Member, *, msg: str):
         """Escort your DM to someone thru the bot. Usage: *dm [tag person] [msg]"""
-        if not self.dev_check(ctx.author.id):
-            return await ctx.send("You cannot use this command because you are not a developer.")
+        #if not self.dev_check(ctx.author.id):
+        #    return await ctx.send("You cannot use this command because you are not a developer.")
         try:
             em = discord.Embed(color=ctx.author.color, title="New Message")
             em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
