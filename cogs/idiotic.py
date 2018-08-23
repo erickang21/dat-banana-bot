@@ -59,7 +59,7 @@ class Idiotic:
         user = user or ctx.author
         params = {
             "type": "blurpify",
-            "image": user.avatar_url
+            "image": self.format_avatar(user.avatar_url)
         }
         resp = await self.bot.session.get("https://nekobot.xyz/api/imagegen", params=params)
         resp = await resp.json()
