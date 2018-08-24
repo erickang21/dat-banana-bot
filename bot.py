@@ -21,7 +21,7 @@ from box import Box
 from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
 from ext.logger import Logger as logger
-
+from cogs.utils.utils import Utils
 colorama.init()
 
 with open("data/apikeys.json") as f:
@@ -44,7 +44,7 @@ bot.starttime = time.time()
 bot.commands_run = 0
 bot.logger = logger
 bot.config = Box(x)
-
+utils = Utils(bot)
 with open("data/apikeys.json") as f:
     x = json.load(f)
 bot.db = db.datbananabot
@@ -526,17 +526,8 @@ async def on_command_error(ctx, error):
         em.description = 'Not my daddy! This command is for the owner only.'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.MissingPermissions):
-        missing = ""
-        perms = {
-            "ban_members": "Ban Members",
-            "kick_members": "Kick Members",
-            "manage_messages": "Manage Messages",
-            "manage_emojis": "Manage Emojis",
-            "administrator": "Administrator",
-            "manage_guild": "Manage Server"
-        }
-        for x in error.missing_perms:
-            missing += f"{perms[x]} \n"
+        missing = "\n".join(utils.capitalize(error.missing_perms))
+        
         em.description = f'{bot.get_emoji(430853687754358788)} Uh-oh, not enough permissions! You are missing the following permissions required to run this command:\n\n{missing}'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.CommandOnCooldown):

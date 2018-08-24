@@ -83,3 +83,10 @@ class Utils:
     def mix(self, word1, word2):
         """Mix two words together."""
         return word1[:int(len(word1) / 2)] + word2[int(len(word2) / 2):]
+
+    def capitalize(self, msg: str):
+        res = []
+        snakes = msg.split("_")
+        for x in snakes:
+            res.append(x.title())
+        return " ".join(res)
