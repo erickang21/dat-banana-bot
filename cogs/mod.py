@@ -353,7 +353,7 @@ class mod:
             em.add_field(name='Banned By', value=ctx.author.name)
             reason = reason if reason is not None else 'No reason given.'
             em.add_field(name='Reason', value=f"{str(ctx.author)}: {reason}")
-            em.set_thumbnail(url=user.avatar_url)
+            #em.set_thumbnail(url=user.avatar_url)
             await ctx.send(embed=em)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
