@@ -205,15 +205,15 @@ async def on_message(message):
 @bot.event #stalker
 async def on_command(ctx):
     bot.commands_run += 1
-    log = bot.get_channel(445332002942484482)
-    em = discord.Embed(color=discord.Color(value=0xf9e236), title="Command Run!")
-    em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
-    em.add_field(name="User ID", value=ctx.author.id)
-    em.add_field(name="Server", value=ctx.guild.name)#    em.add_field(name="Server ID", value=ctx.guild.id)
-    em.add_field(name="Channel", value=ctx.channel.name)
-    em.add_field(name="Command Content", value=f"```{ctx.message.content}```")
-    em.set_thumbnail(url=ctx.guild.icon_url)
-    await log.send(embed=em)
+    #log = bot.get_channel(445332002942484482)
+    #em = discord.Embed(color=discord.Color(value=0xf9e236), title="Command Run!")
+    #em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
+    #em.add_field(name="User ID", value=ctx.author.id)
+    #em.add_field(name="Server", value=ctx.guild.name)#    em.add_field(name="Server ID", value=ctx.guild.id)
+    #em.add_field(name="Channel", value=ctx.channel.name)
+    #em.add_field(name="Command Content", value=f"```{ctx.message.content}```")
+    #em.set_thumbnail(url=ctx.guild.icon_url)
+    #await log.send(embed=em)
 
                                            
 @bot.event
