@@ -521,6 +521,10 @@ class mod:
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:   
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        if ctx.author.roles[0].position < r.position:
+            return await ctx.send(f"Sorry, but the position of **{str(r)}** is higher than yours. No can do!")
+        elif ctx.author.roles[0].position == r.position:
+            return await ctx.send(f"Sorry, but the position of **{str(r)}** is equal to yours. No can do!")
         role = await Utils.clean_text(ctx, role)
         if r.name in [x.name for x in user.roles]:
             return await ctx.send(f"Looks like **{str(user)}** already has the role **{role}**.")
@@ -541,6 +545,10 @@ class mod:
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        if ctx.author.roles[0].position < r.position:
+            return await ctx.send(f"Sorry, but the position of **{str(r)}** is higher than yours. No can do!")
+        elif ctx.author.roles[0].position == r.position:
+            return await ctx.send(f"Sorry, but the position of **{str(r)}** is equal to yours. No can do!")
         role = await Utils.clean_text(ctx, role)
         if r.name not in [x.name for x in user.roles]:
             return await ctx.send(f"Looks like **{str(user)}** never had the role **{role}**.")
