@@ -205,7 +205,9 @@ async def on_message(message):
             if message.content.strip(prefix).split(" ")[0] in blacklistcmds['cmds']:
                 return
             else:
-                await bot.process_commands(message)
+                ctx = await bot.get_context(message, cls=DatContext)
+                await bot.invoke(ctx)
+                #await bot.process_commands(message)
 
 @bot.event #stalker
 async def on_command(ctx):

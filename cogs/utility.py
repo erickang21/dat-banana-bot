@@ -850,7 +850,7 @@ Invalid math expression."""
         msg = await ctx.send(lol)
         args = args.split(",")
         await asyncio.sleep(2)
-        await msg.edit(content=f"I choose:\n**{random.choice(args)}**")
+        await msg.edit(content=f"I choose:\n**{await commands.clean_content().convert(ctx, random.choice(args))}**")
 
         
     @commands.command(aliases=['tf'])
