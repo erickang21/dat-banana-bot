@@ -166,14 +166,14 @@ class Developer:
     async def blacklist(self, ctx, user: discord.Member):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        await self.bot.db.blacklist.update_one({"id": user.id}, {"status": True}, upsert=True)
+        await self.bot.db.blacklist.update_one({"id": user.id}, {"$set": {"status": True}}, upsert=True)
         await ctx.send(f"Successfully blacklisted **{str(user)}** from the bot.")
 
     @commands.command()
     async def unblacklist(self, ctx, user: discord.Member):
         if not self.dev_check(ctx.author.id):
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        await self.bot.db.blacklist.update_one({"id": user.id}, {"status": False}, upsert=True)
+        await self.bot.db.blacklist.update_one({"id": user.id}, {"$set": {"status": False}}, upsert=True)
         await ctx.send(f"Successfully removed **{str(user)}** from the blacklist.")
 
     @commands.command(hidden=True)
