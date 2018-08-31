@@ -159,7 +159,7 @@ class Music:
         if not player.is_playing:
             await player.play()
         else:
-            await ctx.send(":ok_hand: **{}** was enqueued!".format(tracks['tracks'][0]["info"]["title"]))
+            await ctx.send(":ok_hand: **{}** was enqueued!".format(await Utils.clean_text(ctx, tracks['tracks'][0]["info"]["title"])))
 
     @commands.command()
     @commands.guild_only()

@@ -7,7 +7,7 @@ import json
 import ezjson
 import textwrap
 from discord.ext import commands
-
+from .utils.utils import Utils
 
 class mod:
     def __init__(self, bot):
@@ -511,8 +511,9 @@ class mod:
     async def addrole(self, ctx, user: discord.Member, *, role):
         """Adds a role to a user."""
         r = discord.utils.get(ctx.guild.roles, name=str(role))
-        if r is None:
+        if r is None:   
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        role = await Utils.clean_text(ctx, role)
         if r.name in [x.name for x in user.roles]:
             return await ctx.send(f"Looks like **{str(user)}** already has the role **{role}**.")
         try:
@@ -532,6 +533,7 @@ class mod:
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
+        role = await Utils.clean_text(ctx, role)
         if r.name not in [x.name for x in user.roles]:
             return await ctx.send(f"Looks like **{str(user)}** never had the role **{role}**.")
         try:
@@ -769,6 +771,7 @@ class mod:
             r = discord.utils.get(ctx.guild.roles, name=str(role))
             if r is None:
                 return await ctx.send("Role not found in the server. Note that roles muts be entered case sensitive.")
+            r = await Utils.clean_text(ctx, r)
             await self.bot.db.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": str(r)}}, upsert=True)
             await ctx.send(f"Successfully enabled an autorole for the role: **{str(r)}**.")
             modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})

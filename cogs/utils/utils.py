@@ -2,11 +2,17 @@ import discord
 import traceback
 import asyncio
 from ext.logger import Logger as logger
+from discord.ext import commands
 
 class Utils:
     """dat banana bot's custom utility functions for use throughout the code."""
     def __init__(self, bot):
         self.bot = bot
+
+    @staticmethod
+    async def clean_text(ctx, text):
+        """Removes any mentions from the text."""
+        return await commands.clean_content().convert(ctx, text)
 
 
     async def handle_exception(self, ctx, error):
