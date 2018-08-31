@@ -304,8 +304,10 @@ class mod:
         """Kicks a member into the world outside your server."""
         if user.id == ctx.author.id:
             return await ctx.send("I don't understand your logic. Kicking yourself?")
-        if ctx.author.roles[0].position <= user.roles[0].position:
+        if ctx.author.roles[0].position < user.roles[0].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is higher than yours. No can do!")
+        elif ctx.author.roles[0].position == user.roles[0].position:
+            return await ctx.send(f"Sorry, but **{str(user)}**'s top role is equal to yours. No can do!")
         try:
             await user.kick(reason=f"{str(ctx.author)}: {reason}")
             color = 0xf9e236
@@ -345,8 +347,10 @@ class mod:
         """Swings the mighty Ban Hammer on that bad boy."""
         if user.id == ctx.author.id:
             return await ctx.send("I don't understand your logic. Using the ban hammer on yourself?")
-        if ctx.author.roles[0].position <= user.roles[0].position:
+        if ctx.author.roles[0].position < user.roles[0].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is higher than yours. No can do!")
+        elif ctx.author.roles[0].position == user.roles[0].position:
+            return await ctx.send(f"Sorry, but **{str(user)}**'s top role is equal to yours. No can do!")
         try:
             await user.ban(reason=reason)
             color = 0xf9e236
