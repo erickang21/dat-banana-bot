@@ -433,6 +433,7 @@ Invalid math expression."""
         """Remove an existing tag in the server."""
         stuff = await self.bot.db.tags.find_one({"id": ctx.guild.id})
         to_remove = await self.get_tag(ctx.guild.id, name)
+        name = await commands.clean_content().convert(ctx, name)
         if ctx.author.guild_permissions.manage_guild:
             if not to_remove:
                 return await ctx.send("No tag with the given name was found for this server. :x:")
@@ -444,7 +445,7 @@ Invalid math expression."""
                     return await ctx.send("No tag with the given name was found for this server. :x:")
             if to_remove['author'] == ctx.author.id:
                 stuff['data'].remove(to_remove)
-                name = await commands.clean_content().convert(ctx, name)
+                
                 await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
                 await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
         
