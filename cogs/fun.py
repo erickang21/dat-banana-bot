@@ -117,18 +117,19 @@ class fun:
     @commands.command()
     async def reverse(self, ctx, *, text):
         """!txeT ruoY esreveR"""
-        await ctx.send("".join(list(reversed(str(text)))))
+        text = await Utils.clean_text(ctx, "".join(list(reversed(str(text)))))
+        await ctx.send(text)
 
 
-    @commands.command()
-    async def zalgo(self, ctx, *, text):
-        zalgo_chars = [chr(x) for x in range(768, 879)]
-        await ctx.send("".join(
-            c + "".join(
-                random.choice(zalgo_chars) for _ 
-                in range(random.randint(2, 7) * c.isalnum()))
+    # @commands.command()
+    # async def zalgo(self, ctx, *, text):
+    #     zalgo_chars = [chr(x) for x in range(768, 879)]
+    #     await ctx.send("".join(
+    #         c + "".join(
+    #             random.choice(zalgo_chars) for _ 
+    #             in range(random.randint(2, 7) * c.isalnum()))
 
-                for c in text))
+    #             for c in text))
 
 
     @commands.command()
@@ -200,6 +201,7 @@ class fun:
             to_rate = ctx.message.mentions[0].name
         except IndexError:
             to_rate = str(thing)
+        to_rate = await Utils.clean_text(ctx, to_rate)
         if Type.lower() == 'gay':
             rating = random.randint(0, 100)
             return await ctx.send(f"**{to_rate}**'s gay level: :gay_pride_flag: \n{self.get_lines(rating)} **{rating}%**")
@@ -208,8 +210,6 @@ class fun:
             return await ctx.send(f"**{to_rate}**'s weeb level: {self.bot.get_emoji(449682671862546443)}\n{self.get_lines(rating)} **{rating}%**")
         else:
             return await ctx.send("Invalid argument. *rate [gay/weeb] [user]")
-
-
 
     @commands.command()
     async def guess(self, ctx, number):
@@ -376,7 +376,8 @@ class fun:
     @commands.guild_only()
     async def hack(self, ctx, user: discord.Member):
         """Hack someone's account! Try it!"""
-        msg = await ctx.send(f"Hacking! Target: {user}")
+        text = await Utils.clean_text(ctx, str(user))
+        msg = await ctx.send(f"Hacking! Target: {text}")
         await asyncio.sleep(2)
         await msg.edit(content="Accessing Discord Files... [▓▓    ]")
         await asyncio.sleep(2)
@@ -392,7 +393,7 @@ class fun:
         await asyncio.sleep(3)
         await msg.edit(content="Retrieving Login Info... [▓▓▓▓▓▓ ]")
         await asyncio.sleep(4)
-        await msg.edit(content=f"An error has occurred hacking {user}'s account. Please try again later. ❌")   
+        await msg.edit(content=f"An error has occurred hacking {text}'s account. Please try again later. ❌")   
    
     
     @commands.command()
@@ -625,8 +626,9 @@ class fun:
         '''Encode base64 text'''
         try:
             x = base64.b64encode(msg.encode("ascii")).decode("ascii")
-            if len(x) > 1950: return await ctx.send("Results too long")
-            await ctx.send(f"```{x}```")
+            if len(x) > 1950: return await ctx.send("Results too long.")
+            res = await Utils.clean_text(ctx, x)
+            await ctx.send(f"```{res}```") 
         except Exception as e:
             await ctx.send("Something went wrong.")
             print(e)
@@ -636,8 +638,9 @@ class fun:
         '''Decode base64 text'''
         try:
             x = base64.b64decode(msg)
-            if len(x) > 1950: return await ctx.send("Results too long")
-            await ctx.send(f"```{x.decode('ascii')}```")
+            if len(x) > 1950: return await ctx.send("Results too long.")
+            res = await Utils.clean_text(ctx, x.decode('ascii'))
+            await ctx.send(f"```{res}```")
         except Exception as e:
             await ctx.send("Invalid Base64 Text")
             print(e)
