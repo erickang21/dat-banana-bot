@@ -80,7 +80,7 @@ class mod:
     #         return await ctx.send("Reactionrole command:\n*reactionrole [on/off]")
    
 
-    @commands.command(aliases=['blacklist', 'bl'])
+    @commands.command(aliases=['bl'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
     async def blacklistcmd(self, ctx, action=None, cmd=None):
