@@ -299,7 +299,7 @@ Invalid math expression."""
 
     
     @commands.command()
-    async def afk(self, ctx, action=None, *, status=None):
+    async def afk(self, ctx, action=None, *, status: commands.clean_content()):
         """View your AFK status."""
         if not action and not status:
             em = discord.Embed(color=ctx.author.color, title="AFK Status")

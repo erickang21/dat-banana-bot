@@ -138,6 +138,11 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    x = await bot.db.blacklist.find_one({"id": message.author.id})
+    if not x or not x.get("status", False):
+        pass
+    else:
+        return
     if re.match(f"^<@!?{bot.user.id}>$", message.content):
         await message.channel.send(f"{bot.get_emoji(430853515217469451)} BAH! Why you :regional_indicator_p:ing me? Anyway, I'm dat banana bot, so nice to meet you. I do a LOT of kewl stuff, like music, starboard, welcome/leave messages, Canvas, and so much more! All it takes is `*help` to see the powers I got! {bot.get_emoji(430853629570711562)}")
     if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discordapp\.com/invite)\S+", message.content):

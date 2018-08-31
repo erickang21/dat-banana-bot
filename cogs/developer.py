@@ -162,6 +162,19 @@ class Developer:
         except Exception as e:
             await msg.edit(content=f"An error occured. Details: \n{e}")
 
+    @commands.command()
+    async def blacklist(self, ctx, user: discord.Member):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+        await self.bot.db.blacklist.update_one({"id": user.id}, {"status": True}, upsert=True)
+        await ctx.send(f"Successfully blacklisted **{str(user)}** from the bot.")
+
+    @commands.command()
+    async def unblacklist(self, ctx, user: discord.Member):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+        await self.bot.db.blacklist.update_one({"id": user.id}, {"status": False}, upsert=True)
+        await ctx.send(f"Successfully removed **{str(user)}** from the blacklist.")
 
     @commands.command(hidden=True)
     async def source(self, ctx, command):
