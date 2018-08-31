@@ -771,7 +771,7 @@ class mod:
             r = discord.utils.get(ctx.guild.roles, name=str(role))
             if r is None:
                 return await ctx.send("Role not found in the server. Note that roles muts be entered case sensitive.")
-            r = await Utils.clean_text(ctx, r)
+            r = await Utils.clean_text(ctx, str(r))
             await self.bot.db.autorole.update_one({"id": str(ctx.guild.id)}, {"$set": {"role": str(r)}}, upsert=True)
             await ctx.send(f"Successfully enabled an autorole for the role: **{str(r)}**.")
             modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
