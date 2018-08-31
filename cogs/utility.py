@@ -299,7 +299,7 @@ Invalid math expression."""
 
     
     @commands.command()
-    async def afk(self, ctx, action=None, *, status: commands.clean_content()):
+    async def afk(self, ctx, action=None, *, status: commands.clean_content() = None):
         """View your AFK status."""
         if not action and not status:
             em = discord.Embed(color=ctx.author.color, title="AFK Status")
@@ -424,6 +424,7 @@ Invalid math expression."""
         }
         stuff['data'].append(data)
         await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
+        name = await commands.clean_content().convert(ctx, name)
         await ctx.send(f"Successfully created the tag **{name}** for this server. :white_check_mark:")
 
     @tag.command(aliases=['remove'])
@@ -439,10 +440,11 @@ Invalid math expression."""
             await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
             await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
         else:
-            if to_remove['author'] == ctx.author.id:
-                if not to_remove:
+            if not to_remove:
                     return await ctx.send("No tag with the given name was found for this server. :x:")
+            if to_remove['author'] == ctx.author.id:
                 stuff['data'].remove(to_remove)
+                name = await commands.clean_content().convert(ctx, name)
                 await self.bot.db.tags.update_one({"id": ctx.guild.id}, {"$set": stuff}, upsert=True)
                 await ctx.send(f"Successfully removed the tag **{name}** for this server. :white_check_mark:")
         
