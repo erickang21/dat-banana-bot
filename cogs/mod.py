@@ -304,9 +304,9 @@ class mod:
         """Kicks a member into the world outside your server."""
         if user.id == ctx.author.id:
             return await ctx.send("I don't understand your logic. Kicking yourself?")
-        if ctx.author.roles[0].position < user.roles[0].position:
+        if ctx.author.roles[-1].position < user.roles[-1].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is higher than yours. No can do!")
-        elif ctx.author.roles[0].position == user.roles[0].position:
+        elif ctx.author.roles[-1].position == user.roles[-1].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is equal to yours. No can do!")
         try:
             await user.kick(reason=f"{str(ctx.author)}: {reason}")
@@ -347,9 +347,9 @@ class mod:
         """Swings the mighty Ban Hammer on that bad boy."""
         if user.id == ctx.author.id:
             return await ctx.send("I don't understand your logic. Using the ban hammer on yourself?")
-        if ctx.author.roles[0].position < user.roles[0].position:
+        if ctx.author.roles[-1].position < user.roles[-1].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is higher than yours. No can do!")
-        elif ctx.author.roles[0].position == user.roles[0].position:
+        elif ctx.author.roles[-1].position == user.roles[-1].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is equal to yours. No can do!")
         try:
             await user.ban(reason=reason)
@@ -521,9 +521,9 @@ class mod:
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:   
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
-        if ctx.author.roles[0].position < r.position:
+        if ctx.author.roles[-1].position < r.position:
             return await ctx.send(f"Sorry, but the position of **{str(r)}** is higher than yours. No can do!")
-        elif ctx.author.roles[0].position == r.position:
+        elif ctx.author.roles[-1].position == r.position:
             return await ctx.send(f"Sorry, but the position of **{str(r)}** is equal to yours. No can do!")
         role = await Utils.clean_text(ctx, role)
         if r.name in [x.name for x in user.roles]:
@@ -545,9 +545,9 @@ class mod:
         r = discord.utils.get(ctx.guild.roles, name=str(role))
         if r is None:
             return await ctx.send("Role not found. Please note that roles are case sensitive!")
-        if ctx.author.roles[0].position < r.position:
+        if ctx.author.roles[-1].position < r.position:
             return await ctx.send(f"Sorry, but the position of **{str(r)}** is higher than yours. No can do!")
-        elif ctx.author.roles[0].position == r.position:
+        elif ctx.author.roles[-1].position == r.position:
             return await ctx.send(f"Sorry, but the position of **{str(r)}** is equal to yours. No can do!")
         role = await Utils.clean_text(ctx, role)
         if r.name not in [x.name for x in user.roles]:
