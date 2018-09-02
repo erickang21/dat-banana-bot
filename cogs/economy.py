@@ -31,10 +31,17 @@ class Economy:
                 return True
         return False
 
-    async def add_points(self, user, points):
-        x = await self.db.economy.find_one({"user": user.id})
-        total = int(x['points']) + points
-        await self.db.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
+    async def add_points(self, guild, user, points):
+        x = await self.db.economy.find_one({"id": guild.id})
+
+        #total = int(x['points']) + points
+        #await self.db.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
+        guild_user_data = x.get("users")
+        match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
+        match['points'] += points 
+        guild_user_data.remove(match)
+        guild_user_data.append(match)
+        await self.db.economy.update_one({"id": guild.id}, {"$set": {"users": guild_user_data}}, upsert=True)
         
 
     async def is_registered(self, user):
@@ -93,25 +100,29 @@ class Economy:
     @commands.command(aliases=['bal'])
     async def balance(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
+        guild_name = Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
             await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
         if not x.get("registered"):
             return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
         person = "You currently have" if not user else f"**{user.name}** currently has"
         user = user or ctx.author
         em = discord.Embed(color=0x00ff00, title='Current Balance')
-        
-        if not x:
-            em.description = f"{person} don't have an account on dat banana bot yet! Open one using `*openaccount`."
+        try:
+            match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            em.description = f"{person} don't have an account in **{guild_name}** yet! Open one using `*openaccount`."
         else:
             responses = [
-                f"{person} **{x['points']}** :banana:. Kinda sad.",
-                f"Idk how {person} **{x['points']}** :banana:?!",
-                f"REEEEEE! {person} **{x['points']}** :banana:.",
-                f"{person} **{x['points']}** :banana:. Man, hella rich.",
-                f"{person} **{x['points']}** :banana:. Deal with it.",
-                f"{person} **{x['points']}** :banana:. I wonder where this dood's money comes from?!"
+                f"{person} **{match['points']}** :banana:. Kinda sad.",
+                f"Idk how {person} **{match['points']}** :banana:?!",
+                f"REEEEEE! {person} **{match['points']}** :banana:.",
+                f"{person} **{match['points']}** :banana:. Man, hella rich.",
+                f"{person} **{match['points']}** :banana:. Deal with it.",
+                f"{person} **{match['points']}** :banana:. I wonder where this dood's money comes from?!"
             ]
             em.description = random.choice(responses)
         await ctx.send(embed=em)
@@ -145,7 +156,7 @@ class Economy:
             return await ctx.send("You don't have an account on dat banana bot yet! Time to open one with `*openaccount.`")
         number = random.randint(300, 500)
         try:
-            await self.add_points(ctx.author, number)
+            await self.add_points(ctx.guild, ctx.author, number)
         except Exception as e:
             return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
         responses = [
@@ -193,13 +204,13 @@ class Economy:
                 "You just...WON?",
                 "Could I be dreaming this?"
             ]
-            await self.add_points(ctx.author, 10000000)
+            await self.add_points(ctx.guild, ctx.author, 10000000)
             em = discord.Embed(color=0x00ff00, title='You are the lucky winner!')
             em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
             await ctx.send(embed=em)
             self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
         else:
-            await self.add_points(ctx.author, -100)
+            await self.add_points(ctx.guild, ctx.author, -100)
             em = discord.Embed(color=0xf44e42)
             responses = [
                 f"OOF! Guess who didn't win the giant $$ this time!",
@@ -232,10 +243,10 @@ class Economy:
             return await ctx.send(f"You gambled WAY TOO MUCH! You currently can gamble up to **{x['points']}** :banana:.")
         choose = random.randint(1, 2)
         if choose == 1:
-            await self.add_points(ctx.author, amount)
+            await self.add_points(ctx.guild, ctx.author, amount)
             return await ctx.send(f"HOORAY! You won **{amount}** :banana:. YEET!")
         elif choose == 2:
-            await self.add_points(ctx.author, -amount)
+            await self.add_points(ctx.guild, ctx.author, -amount)
             return await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
 
 
@@ -261,12 +272,12 @@ class Economy:
             return await ctx.send(f"Can't rob more than **{user.name}** has. ¯\_(ツ)_/¯ You can rob up to **{f['points']}** :banana:.")
         your_fate = random.randint(1, 2)
         if your_fate == 1:
-            await self.add_points(ctx.author, points)
-            await self.add_points(user, -points)
+            await self.add_points(ctx.guild, ctx.author, points)
+            await self.add_points(ctx.guild, user, -points)
             return await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
         elif your_fate == 2:
-            await self.add_points(ctx.author, -points)
-            await self.add_points(user, points)
+            await self.add_points(ctx.guild, ctx.author, -points)
+            await self.add_points(ctx.guild, user, points)
             return await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
 
 
@@ -302,7 +313,7 @@ class Economy:
             except ValueError:
                 return await ctx.send("ACK! Please enter a valid number for points.")
             try:
-                await self.add_points(user, points)
+                await self.add_points(ctx.guild, user, points)
                 await ctx.send(f"YEET! Added **{points}** :banana: to **{str(user)}**!")
             except Exception as e:
                 await ctx.send(f"Oops, something went wrong. ```{e}```Please report to the developers!")
@@ -322,7 +333,7 @@ class Economy:
             except ValueError:
                 return await ctx.send("ACK! Please enter a valid number for points.")
             try:
-                await self.add_points(user, -points)
+                await self.add_points(ctx.guild, user, -points)
                 await ctx.send(f"OOF! Removed **{points}** :banana: to **{str(user)}**!")
             except Exception as e:
                 await ctx.send(f"Oops, something went wrong. ```{e}```Please report to the developers!")
