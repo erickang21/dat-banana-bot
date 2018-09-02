@@ -252,24 +252,35 @@ class Economy:
     @commands.cooldown(1, 300, BucketType.user)
     async def gamble(self, ctx, amount):
         """Choose an amount. Will you win it or will you lose it?"""
-        x = await self.db.economy.find_one({"user": ctx.author.id})
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x:
-            return await ctx.send("You haven't created an account on dat banana bot yet! Time to create one with `*openaccount`")
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
         try:
-            amount = int(amount)
-        except ValueError:
-            return await ctx.send("Please enter a valid number for the amount.")
-        if amount <= 0:
-            return await ctx.send("Gamble more. Not less. Enter a number more than 0.")
-        if amount > x['points']:
-            return await ctx.send(f"You gambled WAY TOO MUCH! You currently can gamble up to **{x['points']}** :banana:.")
-        choose = random.randint(1, 2)
-        if choose == 1:
-            await self.add_points(ctx.guild, ctx.author, amount)
-            return await ctx.send(f"HOORAY! You won **{amount}** :banana:. YEET!")
-        elif choose == 2:
-            await self.add_points(ctx.guild, ctx.author, -amount)
-            return await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        else:
+            try:
+                amount = int(amount)
+            except ValueError:
+                return await ctx.send("Please enter a valid number for the amount.")
+            if amount <= 0:
+                return await ctx.send("Gamble more. Not less. Enter a number more than 0.")
+            if amount > match['points']:
+                return await ctx.send(f"You gambled WAY TOO MUCH! You currently can gamble up to **{x['points']}** :banana:.")
+            choose = random.randint(1, 2)
+            if choose == 1:
+                await self.add_points(ctx.guild, ctx.author, amount)
+                return await ctx.send(f"HOORAY! You won **{amount}** :banana:. YEET!")
+            elif choose == 2:
+                await self.add_points(ctx.guild, ctx.author, -amount)
+                return await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
 
 
     @commands.command(alises=['steal'])
