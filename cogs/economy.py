@@ -7,6 +7,7 @@ import ezjson
 import random
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
+from .utils.utils import Utils
 
 
 class Error(Exception):
@@ -43,25 +44,64 @@ class Economy:
         else:
             return True
 
+    @commands.command()
+    @commands.has_permissions(manage_guild = True)
+    async def register(self, ctx):
+        """Register your server for economy."""
+        data = await self.db.economy.find_one({"id": ctx.guild.id})
+        if data:
+            if data.get("registered", None):
+                return await ctx.send("This server is already registered for economy.")
+        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+        await ctx.send(f"Alright! I registered this server for economy. Start earning that money!")
 
-    @commands.command(aliases=['register', 'openbank'])
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def deregister(self, ctx):
+        """Disable economy for your server."""
+        data = await self.db.economy.find_one({"id": ctx.guild.id})
+        if data:
+            if not data.get("registered", None):
+                return await ctx.send("This server's economy is already disabled.")
+        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": False, "users": []}})
+        await ctx.send(f"Okay, I disabled economy for this server. :cry:")
+
+
+    @commands.command(aliases=['openbank'])
     async def openaccount(self, ctx):
         '''Opens a bank account for the economy!'''
-        registered = await self.is_registered(ctx.author)
-        if registered:
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+        if not x.get("registered", True):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        if ctx.author.id in user_ids:
             return await ctx.send(f"You already have a bank account!")
-        await self.db.economy.update_one({"user": ctx.author.id}, {"$set": {"points": 0}}, upsert=True)
-        await ctx.send("Your bank account is now open! GLHF!")
+        user_data = {
+            "id": ctx.author.id,
+            "points": 0
+        }
+        guild_user_data.append(user_data)
+        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": guild_user_data}}, upsert=True)
+        guild_name = Utils.clean_text(ctx, ctx.guild.name)
+        await ctx.send(f"Your bank account is now open for **{guild_name}**.")
 
 
         
     @commands.command(aliases=['bal'])
     async def balance(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x: 
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
         person = "You currently have" if not user else f"**{user.name}** currently has"
         user = user or ctx.author
         em = discord.Embed(color=0x00ff00, title='Current Balance')
-        x = await self.db.economy.find_one({"user": user.id})
+        
         if not x:
             em.description = f"{person} don't have an account on dat banana bot yet! Open one using `*openaccount`."
         else:
