@@ -152,25 +152,33 @@ class Economy:
         #                 return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
         #             return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
         #     else:
-        x = await self.db.economy.find_one({"user": ctx.author.id})
-        if not x:
-            return await ctx.send("You don't have an account on dat banana bot yet! Time to open one with `*openaccount.`")
-        number = random.randint(300, 500)
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x: 
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
         try:
+            match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        else:
+            number = random.randint(300, 500)
             await self.add_points(ctx.guild, ctx.author, number)
-        except Exception as e:
-            return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
-        responses = [
-            f"Be proud. You just got **{number}** :banana:.",
-            f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
-            f"Ugh fine, take my money. But only **{number}** :banana:.",
-            f"Why would you ever rob a poor man? Fine, take **{number}** :banana:.",
-            f"You can have **{number}** :banana:, if that means you can shut up.",
-            f"If you take **{number}** :banana:, ur mom gay. Oh well, you did :rofl:",
-            f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
-            f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
-        ]
-        return await ctx.send(random.choice(responses))
+            responses = [
+                f"Be proud. You just got **{number}** :banana:.",
+                f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
+                f"Ugh fine, take my money. But only **{number}** :banana:.",
+                f"Why would you ever rob a poor man? Fine, take **{number}** :banana:.",
+                f"You can have **{number}** :banana:, if that means you can shut up.",
+                f"If you take **{number}** :banana:, ur mom gay. Oh well, you did :rofl:",
+                f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
+                f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
+            ]
+            return await ctx.send(random.choice(responses))
         
 
         
