@@ -101,7 +101,7 @@ class Economy:
     @commands.command(aliases=['bal'])
     async def balance(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
-        guild_name = Utils.clean_text(ctx, ctx.guild.name)
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
             await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
