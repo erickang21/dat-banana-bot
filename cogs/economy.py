@@ -77,6 +77,7 @@ class Economy:
     @commands.command(aliases=['openbank'])
     async def openaccount(self, ctx):
         '''Opens a bank account for the economy!'''
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x:
             await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
@@ -85,14 +86,14 @@ class Economy:
         guild_user_data = x.get("users")
         user_ids = list(map(lambda a: a['id'], guild_user_data))
         if ctx.author.id in user_ids:
-            return await ctx.send(f"You already have a bank account!")
+            return await ctx.send(f"You already have a bank account in **{guild_name}**.")
         user_data = {
             "id": ctx.author.id,
             "points": 0
         }
         guild_user_data.append(user_data)
         await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": guild_user_data}}, upsert=True)
-        guild_name = Utils.clean_text(ctx, ctx.guild.name)
+        
         await ctx.send(f"Your bank account is now open for **{guild_name}**.")
 
 
