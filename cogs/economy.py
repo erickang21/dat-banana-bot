@@ -354,12 +354,18 @@ class Economy:
 
 
     @commands.command(aliases=['give'], hidden=True)
-    #@commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
     async def reward(self, ctx, user: discord.Member, points):
         '''Reward a good person'''
-        if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        if not self.is_registered(user):
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        if user.id not in user_ids:
             return await ctx.send(f"ACK! **{str(user)}** doesn't have an account yet, so they can't get the gucci money!")
         else:
             try:
@@ -374,12 +380,18 @@ class Economy:
                 print(e)
 
     @commands.command(aliases=['remove'],hidden=True)
-    #@commands.has_permissions(manage_guild=True)
+    @commands.has_permissions(manage_guild=True)
     async def deduct(self, ctx, user: discord.Member, points):
         '''Fines a bad boi.'''
-        if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
-        if not self.is_registered(user):
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        if user.id not in user_ids:
             return await ctx.send(f"ACK! **{str(user)}** doesn't have an account yet, so you can't take away money from them!")
         else:
             try:
