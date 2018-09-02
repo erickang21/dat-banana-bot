@@ -12,6 +12,8 @@ import aiohttp
 import random
 import textwrap
 import inspect
+from utils.stopwatch import Stopwatch
+from utils.type import Type
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
@@ -641,90 +643,94 @@ async def _discord(ctx):
     """We have an awesome hood to join, join now!"""
     await ctx.send("Your turn to join the hood -> https://discord.gg/wvkVknA")
 
-                      
-@bot.command(name='eval')
-async def _eval(ctx, *, body):
-    """Evaluates python code"""
+def paginate(text: str):
+    """Simple generator that paginates text."""
+    last = 0
+    pages = []
+    for curr in range(0, len(text)):
+        if curr % 1970 == 0:
+            pages.append(text[last:curr])
+            last = curr
+            appd_index = curr
+    if appd_index != len(text) - 1:
+        pages.append(text[last:curr])
+    return list(filter(lambda a: a != "", pages))
+
+@bot.command(name="eval", aliases=["ev"])
+async def _eval(ctx, *, code: str):
     if not dev_check(ctx.author.id):
-        return await ctx.send("You cannot use this because you are not a developer.")
+        return await ctx.send("This command is for the developers only!")
     env = {
-        'ctx': ctx,
-        'channel': ctx.channel,
-        'author': ctx.author,
-        'guild': ctx.guild,
-        'message': ctx.message,
-        '_': bot._last_result,
-        'src': inspect.getsource,
-        'session': bot.session
+        "bot": bot,
+        "ctx": ctx,
+        "channel": ctx.channel,
+        "author": ctx.author,
+        "guild": ctx.guild,
+        "message": ctx.message,
+        "msg": ctx.message,
+        "_": bot._last_result,
+        "source": inspect.getsource,
+        "src": inspect.getsource,
+        "session": bot.session,
+        "docs": lambda x: print(x.__doc__)
     }
 
     env.update(globals())
-
-    body = cleanup_code(body)
+    body = cleanup_code(code)
     stdout = io.StringIO()
     err = out = None
-
-    to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
-
-    def paginate(text: str):
-        '''Simple generator that paginates text.'''
-        last = 0
-        pages = []
-        for curr in range(0, len(text)):
-            if curr % 1980 == 0:
-                pages.append(text[last:curr])
-                last = curr
-                appd_index = curr
-        if appd_index != len(text) - 1:
-            pages.append(text[last:curr])
-        return list(filter(lambda a: a != '', pages))
+    to_compile = f"async def func():\n{textwrap.indent(body, '  ')}"
+    stopwatch = Stopwatch().start()
 
     try:
         exec(to_compile, env)
     except Exception as e:
-        err = await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
-        return await ctx.message.add_reaction('\u2049')
+        stopwatch.stop()
+        err = await ctx.send(f"**Error**```py\n{e.__class__.__name__}: {e}\n```\n**Type**```ts\n{Type(e)}```\n⏱ {stopwatch}")
+        return await ctx.message.add_reaction("\u2049")
 
-    func = env['func']
+    func = env["func"]
+    stopwatch.restart()
     try:
         with redirect_stdout(stdout):
             ret = await func()
+            stopwatch.stop()
     except Exception as e:
+        stopwatch.stop()
         value = stdout.getvalue()
-        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+        err = await ctx.send(f"**Error**```py\n{value}{traceback.format_exc()}\n```\n**Type**```ts\n{Type(err)}```\n⏱ {stopwatch}")
     else:
         value = stdout.getvalue()
         if ret is None:
             if value:
                 try:
-
-                    out = await ctx.send(f'```py\n{value}\n```')
+                    out = await ctx.send(f"**Output**```py\n{value}```\n⏱ {stopwatch}")
                 except:
                     paginated_text = paginate(value)
                     for page in paginated_text:
                         if page == paginated_text[-1]:
-                            out = await ctx.send(f'```py\n{page}\n```')
+                            out = await ctx.send(f"```py\n{page}\n```")
                             break
-                        await ctx.send(f'```py\n{page}\n```')
+                        await ctx.send(f"```py\n{page}\n```")
+                    await ctx.send(f"⏱ {stopwatch}")
         else:
             bot._last_result = ret
             try:
-                out = await ctx.send(f'```py\n{value}{ret}\n```')
+                out = await ctx.send(f"**Output**```py\n{value}{ret}```\n**Type**```ts\n{Type(ret)}```\n⏱ {stopwatch}")
             except:
                 paginated_text = paginate(f"{value}{ret}")
                 for page in paginated_text:
                     if page == paginated_text[-1]:
-                        out = await ctx.send(f'```py\n{page}\n```')
+                        out = await ctx.send(f"```py\n{page}```")
                         break
-                    await ctx.send(f'```py\n{page}\n```')
-
-    if out:
-        await ctx.message.add_reaction('\u2705')  # tick
-    elif err:
-        await ctx.message.add_reaction('\u2049')  # x
-    else:
-        await ctx.message.add_reaction('\u2705')
-                       
+                    await ctx.send(f"```py\n{page}```")
+                await ctx.send(f"**Type**```ts\n{Type(ret)}```\n⏱ {stopwatch}")
+        if out:
+            await ctx.message.add_reaction("\u2705")
+        elif err:
+            await ctx.message.add_reaction("\u2049")
+        else:
+            await ctx.message.add_reaction("\u2705")                  
                        
 with open("data/apikeys.json") as f:
     x = json.loads(f.read())
