@@ -3,6 +3,7 @@ import sys
 import os
 import io
 import json
+import time
 import ezjson
 import random
 from discord.ext import commands
@@ -50,6 +51,47 @@ class Economy:
             return False
         else:
             return True
+
+    async def place_on_cooldown(self, guild, user, cmd):
+        """Places the given command on cooldown."""
+        data = await self.db.economy.find_one({"id": guild.id})
+        guild_user_data = data.get("users")
+        match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
+        match[cmd] = int(time.time())
+        guild_user_data.remove(match)
+        guild_user_data.append(match)
+        await self.db.economy.update_one({"id": guild.id}, {"$set": {"users": guild_user_data}}, upsert=True)
+
+    async def is_on_cooldown(self, guild, user, cmd):
+        """Check if the command is on cooldown."""
+        data = await self.db.economy.find_one({"id": guild.id})
+        guild_user_data = data.get("users")
+        match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
+        try:
+            cooldown = match[cmd]
+        except KeyError:
+            return False
+        diff = int(time.time()) - cooldown
+        if cmd == "daily_cooldown":
+            if diff < 86400:
+                return diff
+            else:
+                return False
+        elif cmd == "lottery_cooldown":
+            if diff < 60:
+                return diff
+            else:
+                return False
+        elif cmd == "gamble_cooldown":
+            if diff < 180:
+                return diff
+            else:
+                return False
+        elif cmd == "rob_cooldown":
+            if diff < 300:
+                return diff
+            else:
+                return False
 
     @commands.command()
     @commands.has_permissions(manage_guild = True)
@@ -131,9 +173,18 @@ class Economy:
 
 
     @commands.command(aliases=['daily', 'dailyshit'])
-    @commands.cooldown(1, 86400.0, BucketType.user)
+    #@commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
+        check = await self.is_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
+        if check:
+            minute, second = divmod(check, 60)
+            hour, minute = divmod(minute, 60)
+            if hour:
+                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
+            else:
+                time_left = f"{minute}:{Utils.format_time(second)}"
+            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
         # async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
         #     resp = await resp.json()
         #     if resp['voted'] == 0:
@@ -179,6 +230,7 @@ class Economy:
                 f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
                 f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
             ]
+            await self.place_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
             return await ctx.send(random.choice(responses))
         
 

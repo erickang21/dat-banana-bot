@@ -76,7 +76,7 @@ class Utils:
         elif number == 100:
             return "**||||||||||**"
 
-
+    @staticmethod
     def format_time(self, time):
         """Format a duration into human-friendly time."""
         time = int(time)
