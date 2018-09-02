@@ -287,31 +287,44 @@ class Economy:
     @commands.cooldown(1, 300, BucketType.user)
     async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x: 
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
         try:
-            points = int(points)
-        except ValueError:
-            return await ctx.send("Please enter a valid number to rob.")
-        x = await self.db.economy.find_one({"user": ctx.author.id})
-        if not x:
-            return await ctx.send("You don't have an account on dat banana bot yet! Time to create one with `*openaccount`.")
-        f = await self.db.economy.find_one({"user": user.id})
-        if not f:
-            return await ctx.send("Your target doesn't have an account yet! What's there to rob? :thinking:")
-        if points <= 0:
-            return await ctx.send("Trying to rob less than 0? I think not.")
-        if points > x['points']:
-            return await ctx.send(f"Can't rob more than you have. ¯\_(ツ)_/¯ You can rob up to **{x['points']}** :banana:.")
-        if points > f['points']:
-            return await ctx.send(f"Can't rob more than **{user.name}** has. ¯\_(ツ)_/¯ You can rob up to **{f['points']}** :banana:.")
-        your_fate = random.randint(1, 2)
-        if your_fate == 1:
-            await self.add_points(ctx.guild, ctx.author, points)
-            await self.add_points(ctx.guild, user, -points)
-            return await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
-        elif your_fate == 2:
-            await self.add_points(ctx.guild, ctx.author, -points)
-            await self.add_points(ctx.guild, user, points)
-            return await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
+            you = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        try:
+            other = list(
+                filter(lambda x: x['id'] == user.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"**{user.name}** doesn't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        else:      
+            try:
+                points = int(points)
+            except ValueError:
+                return await ctx.send("Please enter a valid number to rob.")
+            if points <= 0:
+                return await ctx.send("Trying to rob less than 0? I think not.")
+            if points > you['points']:
+                return await ctx.send(f"Can't rob more than you have. ¯\_(ツ)_/¯ You can rob up to **{you['points']}** :banana:.")
+            if points > other['points']:
+                return await ctx.send(f"Can't rob more than **{user.name}** has. ¯\_(ツ)_/¯ You can rob up to **{other['points']}** :banana:.")
+            your_fate = random.randint(1, 2)
+            if your_fate == 1:
+                await self.add_points(ctx.guild, ctx.author, points)
+                await self.add_points(ctx.guild, user, -points)
+                return await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
+            elif your_fate == 2:
+                await self.add_points(ctx.guild, ctx.author, -points)
+                await self.add_points(ctx.guild, user, points)
+                return await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
 
 
     @commands.command(aliases=['lb'])
