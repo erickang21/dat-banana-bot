@@ -330,17 +330,25 @@ class Economy:
     @commands.command(aliases=['lb'])
     async def leaderboard(self, ctx):
         """Get the leaderboard for economy!"""
-        em = discord.Embed(color=0x00ff00, title="Economy Leaderboard")
-        em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-        lb = list(reversed(await self.bot.db.economy.find().sort("points").to_list(None)))
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        users = x.get("users")
+        lb = ""
         counter = 0
-        to_add = ""
-        for x in lb:
+        points = sorted(list(map(lambda x: x['points'], users)), reverse=True)
+        for point in points:
             counter += 1
-            to_add += f"**#{counter}**. **{str(self.bot.get_user(x['user']))}**: **{x['points']}** :banana:\n"
+            lb += f"**{str(self.bot.get_user(list(filter(lambda a: a['points'] == point, users))))[0]['id']}:** {point}\n"
             if counter == 10:
                 break
-        em.description = to_add
+        em = discord.Embed(color=0x00ff00, title="Economy Leaderboard")
+        em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        em.description = lb
+
         await ctx.send(embed=em)
 
 
