@@ -101,6 +101,7 @@ class Economy:
     @commands.command(aliases=['bal'])
     async def balance(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
+        user = user or ctx.author
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
@@ -110,10 +111,10 @@ class Economy:
         guild_user_data = x.get("users")
         user_ids = list(map(lambda a: a['id'], guild_user_data))
         person = "You currently have" if not user else f"**{user.name}** currently has"
-        user = user or ctx.author
+        
         em = discord.Embed(color=0x00ff00, title='Current Balance')
         try:
-            match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+            match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
         except IndexError:
             em.description = f"{person} don't have an account in **{guild_name}** yet! Open one using `*openaccount`."
         else:
