@@ -153,6 +153,8 @@ async def on_message(message):
     if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discordapp\.com/invite)\S+", message.content):
         if message.author.guild_permissions.manage_guild:
             pass
+        if message.author.id == bot.user.id:
+            pass
         else:           
             x = await bot.db.antilink.find_one({"id": message.guild.id})
             if not x:
