@@ -73,7 +73,7 @@ class Economy:
             return False
         diff = int(time.time()) - cooldown
         if cmd == "daily_cooldown":
-            if diff < 86400:
+            if diff < 86400000:
                 return diff
             else:
                 return False
