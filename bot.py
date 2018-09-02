@@ -146,9 +146,8 @@ async def on_message(message):
     data = await bot.db.afk.find_one({"id": message.author.id})
     if data:
         if data.get("status", None):
-            data = await bot.db.afk.update_one({"id": message.author.id}, {"$set": {"status": False}})
-            if data.get("status", None):
-                await message.channel.send(f"Oh hey {message.author.mention}, welcome back! For your convenience I cleared your AFK status.")
+            await bot.db.afk.update_one({"id": message.author.id}, {"$set": {"status": False}})
+            await message.channel.send(f"Oh hey {message.author.mention}, welcome back! For your convenience I cleared your AFK status.")
     if re.match(f"^<@!?{bot.user.id}>$", message.content):
         await message.channel.send(f"{bot.get_emoji(430853515217469451)} BAH! Why you :regional_indicator_p:ing me? Anyway, I'm dat banana bot, so nice to meet you. I do a LOT of kewl stuff, like music, starboard, welcome/leave messages, Canvas, and so much more! All it takes is `*help` to see the powers I got! {bot.get_emoji(430853629570711562)}")
     if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discordapp\.com/invite)\S+", message.content):
