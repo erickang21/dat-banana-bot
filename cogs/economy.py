@@ -187,53 +187,65 @@ class Economy:
     @commands.command()
     async def lottery(self, ctx, numbers: str):
         '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
-        x = await self.db.economy.find_one({"user": ctx.author.id})
-        if x is None:
-            return await ctx.send("Oof. You don't have an account yet! Time to create one with `*openaccount`.")
-        if int(x['points']) < 100:
-            return await ctx.send("Entering the lottery requires 100 :banana:. You don't have enough! Keep on earning 'em")
-        if numbers is None:
-            return await ctx.send("Please enter 3 numbers seperated by commas to guess the lottery! \nExample: *lottery 1,2,3")
-        numbers = numbers.replace(' ', '')
-        numbers = numbers.split(',')
-        #lucky = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
-        for i in numbers:
-            try:
-                int(i)
-            except ValueError:
-                return await ctx.send("Please enter only numbers for the lottery!")
-        lol = ""
-        for x in self.lottery_numbers:
-            lol += f"`{x}` "
-        if numbers == self.lottery_numbers:
-            responses = [
-                "Bruh. Just how...",
-                "Y'know only 0.8% people can even get to see this.",
-                "I'm gonna be SO BROKE!",
-                "Take it. Don't even look at me...",
-                "You just...WON?",
-                "Could I be dreaming this?"
-            ]
-            await self.add_points(ctx.guild, ctx.author, 10000000)
-            em = discord.Embed(color=0x00ff00, title='You are the lucky winner!')
-            em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
-            await ctx.send(embed=em)
-            self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x: 
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         else:
-            await self.add_points(ctx.guild, ctx.author, -100)
-            em = discord.Embed(color=0xf44e42)
-            responses = [
-                f"OOF! Guess who didn't win the giant $$ this time!",
-                "Aw, try again!",
-                "Yo luck really succs...",
-                "Cry all you want, but you ain't gonna get that 10,000,000 :banana:.",
-                "Well, I ain't gonna stick around and waste time on someone who didn't win...",
-                "And the bad luck goes SKRRRRRRA!",
-                "Guess you're part of the 99.2% that didn't make it."
-            ]
-            em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nYou lost: 100 :banana:"
-            await ctx.send(embed=em)
-            await self.bot.get_channel(445332002942484482).send(f"The winning numbers are: {self.lottery_numbers}")
+        
+            if match['points'] < 100:
+                return await ctx.send("Entering the lottery requires 100 :banana:. You don't have enough! Keep on earning 'em")
+            if numbers is None:
+                return await ctx.send("Please enter 3 numbers seperated by commas to guess the lottery! \nExample: *lottery 1,2,3")
+            numbers = numbers.replace(' ', '')
+            numbers = numbers.split(',')
+            #lucky = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
+            for i in numbers:
+                try:
+                    int(i)
+                except ValueError:
+                    return await ctx.send("Please enter only numbers for the lottery!")
+            lol = ""
+            for x in self.lottery_numbers:
+                lol += f"`{x}` "
+            if numbers == self.lottery_numbers:
+                responses = [
+                    "Bruh. Just how...",
+                    "Y'know only 0.8% people can even get to see this.",
+                    "I'm gonna be SO BROKE!",
+                    "Take it. Don't even look at me...",
+                    "You just...WON?",
+                    "Could I be dreaming this?"
+                ]
+                await self.add_points(ctx.guild, ctx.author, 10000000)
+                em = discord.Embed(color=0x00ff00, title='You are the lucky winner!')
+                em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
+                await ctx.send(embed=em)
+                self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
+            else:
+                await self.add_points(ctx.guild, ctx.author, -100)
+                em = discord.Embed(color=0xf44e42)
+                responses = [
+                    f"OOF! Guess who didn't win the giant $$ this time!",
+                    "Aw, try again!",
+                    "Yo luck really succs...",
+                    "Cry all you want, but you ain't gonna get that 10,000,000 :banana:.",
+                    "Well, I ain't gonna stick around and waste time on someone who didn't win...",
+                    "And the bad luck goes SKRRRRRRA!",
+                    "Guess you're part of the 99.2% that didn't make it."
+                ]
+                em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nYou lost: 100 :banana:"
+                await ctx.send(embed=em)
+                await self.bot.get_channel(445332002942484482).send(f"The winning numbers are: {self.lottery_numbers}")
 
 
     @commands.command(aliases=['bet'])
