@@ -342,7 +342,7 @@ class Economy:
         points = sorted(list(map(lambda x: x['points'], users)), reverse=True)
         for point in points:
             counter += 1
-            lb += f"**{str(self.bot.get_user(list(filter(lambda a: a['points'] == point, users))))[0]['id']}:** {point}\n"
+            lb += f"**{str(self.bot.get_user(list(filter(lambda a: a['points'] == point, users))[0]['id']))}:** {point}\n"
             if counter == 10:
                 break
         em = discord.Embed(color=0x00ff00, title="Economy Leaderboard")
