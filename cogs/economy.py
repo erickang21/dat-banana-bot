@@ -21,9 +21,7 @@ class Economy:
         self.bot = bot
         self.session = self.bot.session
         self.db = self.bot.db
-        with open('data/apikeys.json') as f:
-            x = json.loads(f.read())
-        self.dbl = x['dblapi']
+        self.dbl = self.bot.config.dbl
         self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
 
     def dev_check(self, id):
