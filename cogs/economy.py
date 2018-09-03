@@ -75,23 +75,23 @@ class Economy:
         diff = current - cooldown
         print(current, cooldown)
         if cmd == "daily_cooldown":
-            if diff < 86400000:
-                return diff
+            if diff < 86400:
+                return 86400 - diff
             else:
                 return False
         elif cmd == "lottery_cooldown":
             if diff < 60:
-                return diff
+                return 60 - diff
             else:
                 return False
         elif cmd == "gamble_cooldown":
             if diff < 180:
-                return diff
+                return 180 - diff
             else:
                 return False
         elif cmd == "rob_cooldown":
             if diff < 300:
-                return diff
+                return 300 - diff
             else:
                 return False
 
