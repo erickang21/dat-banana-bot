@@ -40,7 +40,7 @@ class Stopwatch:
         return self
 
     def __str__(self):
-        time = self.duration
+        time = self.duration * 1000
         if time >= 1000:
             return f"{(time / 1000):.2f}s"
         if time >= 1:
