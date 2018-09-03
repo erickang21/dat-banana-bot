@@ -1,24 +1,5 @@
 import inspect
 
-# ugly but works
-def resolve_args(fn, method = False):
-    args = inspect.getargspec(fn)
-    if not len(args.args) and not args.varargs and args.keywords:
-        return "(**kwargs)"
-    if not len(args.args) and not args.keywords and args.varargs:
-        return "(*args)"
-    if not args.varargs and not args.keywords and len(args.args):
-        return f"({len(args.args) - 1 if method else len(args.args)}-arity)"
-    if not args.varargs and not args.keywords and not len(args.args):
-        return "()"
-    if len(args.args) and args.varargs and not args.keywords:
-        return f"({len(args.args) - 1 if method else len(args.args)}-arity, *args)"
-    if len(args.args) and args.varargs and args.keywords:
-        return f"({len(args.args) - 1 if method else len(args.args)}-arity, *args, **kwargs)"
-    if len(args.args) and args.keywords and not args.varargs:
-        return f"({len(args.args) - 1 if method else len(args.args)}-arity, **kwargs)"
-    return "(Unknown)"
-
 # Ported from https://github.com/dirigeants/klasa/blob/master/src/lib/util/Type.js
 # Works pretty fine and has better function argument typings
 # but circular checking is currently broken
@@ -89,10 +70,8 @@ class Type:
         t = type(value).__name__
         if t == "NoneType":
             return "void"
-        if t == "function":
-            return f"{value.__name__}{resolve_args(value)}"
-        if t == "method":
-            return f"{value.__name__}{resolve_args(value, True)}"
+        if t == "function" or t == "method":
+            return f"{value.__name__}{inspect.formatargspec(*inspect.getfullargspec(value))}"
         return t
 
     @staticmethod
