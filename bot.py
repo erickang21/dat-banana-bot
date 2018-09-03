@@ -333,6 +333,10 @@ async def on_reaction_remove(reaction, user):
             async for x in chan.history(limit=50):
                 if x.embeds[0].description == reaction.message.content:
                     return await x.delete()
+        if not emoji_count:
+            async for x in chan.history(limit=50):
+                if x.embeds[0].description == reaction.message.content:
+                    return await x.delete()
         if emoji_count >= 1:
             em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
             em.description = reaction.message.content
