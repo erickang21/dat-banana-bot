@@ -73,7 +73,6 @@ class Economy:
             return False
         current = int(time.time())
         diff = current - cooldown
-        print(current, cooldown)
         if cmd == "daily_cooldown":
             if diff < 86400:
                 return 86400 - diff
@@ -179,7 +178,6 @@ class Economy:
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
-        print(check)
         if check:
             minute, second = divmod(check, 60)
             hour, minute = divmod(minute, 60)
@@ -242,6 +240,15 @@ class Economy:
     @commands.command()
     async def lottery(self, ctx, numbers: str):
         '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
+        check = await self.is_on_cooldown(ctx.guild, ctx.author, "lottery_cooldown")
+        if check:
+            minute, second = divmod(check, 60)
+            hour, minute = divmod(minute, 60)
+            if hour:
+                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
+            else:
+                time_left = f"{minute}:{Utils.format_time(second)}"
+            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
@@ -286,6 +293,7 @@ class Economy:
                 em.description = f'{random.choice(responses)} :tada:\n\nYou won 10,000,000 :banana:!'
                 await ctx.send(embed=em)
                 self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
+                await self.place_on_cooldown(ctx.guild, ctx.author, "lottery_cooldown")
             else:
                 await self.add_points(ctx.guild, ctx.author, -100)
                 em = discord.Embed(color=0xf44e42)
@@ -301,12 +309,21 @@ class Economy:
                 em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nYou lost: 100 :banana:"
                 await ctx.send(embed=em)
                 await self.bot.get_channel(445332002942484482).send(f"The winning numbers are: {self.lottery_numbers}")
-
+                await self.place_on_cooldown(ctx.guild, ctx.author, "lottery_cooldown")
 
     @commands.command(aliases=['bet'])
-    @commands.cooldown(1, 300, BucketType.user)
+    #@commands.cooldown(1, 300, BucketType.user)
     async def gamble(self, ctx, amount):
         """Choose an amount. Will you win it or will you lose it?"""
+        check = await self.is_on_cooldown(ctx.guild, ctx.author, "gamble_cooldown")
+        if check:
+            minute, second = divmod(check, 60)
+            hour, minute = divmod(minute, 60)
+            if hour:
+                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
+            else:
+                time_left = f"{minute}:{Utils.format_time(second)}"
+            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x:
@@ -333,15 +350,25 @@ class Economy:
             if choose == 1:
                 await self.add_points(ctx.guild, ctx.author, amount)
                 return await ctx.send(f"HOORAY! You won **{amount}** :banana:. YEET!")
+                await self.place_on_cooldown(ctx.guild, ctx.author, "gamble_cooldown")
             elif choose == 2:
                 await self.add_points(ctx.guild, ctx.author, -amount)
                 return await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
-
+                await self.place_on_cooldown(ctx.guild, ctx.author, "gamble_cooldown")
 
     @commands.command(alises=['steal'])
-    @commands.cooldown(1, 300, BucketType.user)
+    #@commands.cooldown(1, 300, BucketType.user)
     async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
+        check = await self.is_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
+        if check:
+            minute, second = divmod(check, 60)
+            hour, minute = divmod(minute, 60)
+            if hour:
+                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
+            else:
+                time_left = f"{minute}:{Utils.format_time(second)}"
+            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
@@ -376,11 +403,12 @@ class Economy:
                 await self.add_points(ctx.guild, ctx.author, points)
                 await self.add_points(ctx.guild, user, -points)
                 return await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
+                await self.place_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
             elif your_fate == 2:
                 await self.add_points(ctx.guild, ctx.author, -points)
                 await self.add_points(ctx.guild, user, points)
                 return await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
-
+                await self.place_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
 
     @commands.command(aliases=['lb'])
     async def leaderboard(self, ctx):
