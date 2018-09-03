@@ -6,6 +6,7 @@ import json
 import time
 import ezjson
 import random
+import asyncio
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from .utils.utils import Utils
@@ -113,9 +114,26 @@ class Economy:
         if data:
             if not data.get("registered", None):
                 return await ctx.send("This server's economy is already disabled.")
-        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": False, "users": []}})
-        await ctx.send(f"Okay, I disabled economy for this server. :cry:")
+        await ctx.send("""
+:warning: **WARNING** :warning:
+This will delete ALL data for this server's economy, including everyone's balance, and then disable the commands. 
+If you choose to re-enable economy in the future, the data will not be recovered.
 
+**Continue?** (Y/N)
+
+(This automatically cancels in 30 seconds.)"""
+)       
+        try:
+            x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=30.0)
+        except asyncio.TimeoutError:
+            return await ctx.send("Timed out.")
+        if x.content.lower() == "y" or x.content.lower() == "yes":
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": False, "users": []}})
+            return await ctx.send(f"Okay, I disabled economy for this server. :cry:")
+        elif x.content.lower() == "n" or x.content.lower() == "no":
+            return await ctx.send("Nope! Economy will still stand.")
+        else:
+            return await ctx.send("INvalid response. Process was cancelled.")
 
     @commands.command(aliases=['openbank'])
     async def openaccount(self, ctx):
