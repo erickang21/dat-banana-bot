@@ -177,6 +177,7 @@ class Economy:
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
+        print(check)
         if check:
             minute, second = divmod(check, 60)
             hour, minute = divmod(minute, 60)
