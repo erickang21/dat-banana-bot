@@ -349,11 +349,11 @@ class Economy:
             choose = random.randint(1, 2)
             if choose == 1:
                 await self.add_points(ctx.guild, ctx.author, amount)
-                return await ctx.send(f"HOORAY! You won **{amount}** :banana:. YEET!")
+                await ctx.send(f"HOORAY! You won **{amount}** :banana:. YEET!")
                 await self.place_on_cooldown(ctx.guild, ctx.author, "gamble_cooldown")
             elif choose == 2:
                 await self.add_points(ctx.guild, ctx.author, -amount)
-                return await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
+                await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
                 await self.place_on_cooldown(ctx.guild, ctx.author, "gamble_cooldown")
 
     @commands.command(alises=['steal'])
@@ -402,12 +402,12 @@ class Economy:
             if your_fate == 1:
                 await self.add_points(ctx.guild, ctx.author, points)
                 await self.add_points(ctx.guild, user, -points)
-                return await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
+                await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
                 await self.place_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
             elif your_fate == 2:
                 await self.add_points(ctx.guild, ctx.author, -points)
                 await self.add_points(ctx.guild, user, points)
-                return await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
+                await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
                 await self.place_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
 
     @commands.command(aliases=['lb'])
