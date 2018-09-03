@@ -193,6 +193,19 @@ If you choose to re-enable economy in the future, the data will not be recovered
     #@commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x: 
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         await ctx.trigger_typing()
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
         if check:
@@ -288,6 +301,20 @@ __What to do now?__
     @commands.command()
     async def lottery(self, ctx, numbers: str):
         '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "lottery_cooldown")
         if check:
             minute, second = divmod(check, 60)
@@ -363,6 +390,20 @@ __What to do now?__
     #@commands.cooldown(1, 300, BucketType.user)
     async def gamble(self, ctx, amount):
         """Choose an amount. Will you win it or will you lose it?"""
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "gamble_cooldown")
         if check:
             minute, second = divmod(check, 60)
@@ -408,6 +449,20 @@ __What to do now?__
     #@commands.cooldown(1, 300, BucketType.user)
     async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
         if check:
             minute, second = divmod(check, 60)
