@@ -327,7 +327,13 @@ async def on_reaction_remove(reaction, user):
         chan = bot.get_channel(x['channel'])
         if not chan:
             return
-        emoji_count = reaction.message.reactions[0].count
+        try:
+            emoji_count = reaction.message.reactions[0].count
+        except IndexError:
+            async for x in chan.history(limit=50):
+                if x.embeds[0].description == reaction.message.content:
+                    await x.delete()
+                    break
         if emoji_count >= 1:
             em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
             em.description = reaction.message.content
