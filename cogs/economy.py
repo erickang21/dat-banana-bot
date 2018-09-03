@@ -71,7 +71,9 @@ class Economy:
             cooldown = match[cmd]
         except KeyError:
             return False
-        diff = int(time.time()) - cooldown
+        current = int(time.time())
+        diff = current - cooldown
+        print(current, cooldown)
         if cmd == "daily_cooldown":
             if diff < 86400000:
                 return diff
