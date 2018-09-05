@@ -365,7 +365,7 @@ async def on_reaction_remove(reaction, user):
 
 @bot.event
 async def on_guild_join(guild):
-    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": True, "users": []}})
+    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
     lol = bot.get_channel(392443319684300801)
     em = discord.Embed(color=discord.Color(value=0xf9e236))
     em.title = "dat banana bot has joined a new server!"
