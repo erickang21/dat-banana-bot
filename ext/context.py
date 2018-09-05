@@ -2,10 +2,27 @@ import asyncio
 from discord.ext import commands
 from cogs.utils.paginator import Pages
 
+def resolve_code(content, code):
+    """Helper to resolve codeblocks"""
+    if type(code) == bool: # normal codeblock
+        return f"```{content}```"
+    if type(code) == str: # syntax codeblock
+        return f"```{code}\n{content}```"
+    raise Exception("Expected codeblock to be a boolean or string")
+
 class DatContext(commands.Context):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+        self.edits = {}
+        self.bot.loop.create_task(self._sweeper())
+
+    async def _sweeper(self):
+        """Sweeps edit messages every hour to free up memory
+        Do not call this directly, a task is created in the event loop already
+        """
+        while True:
+            self.edits = {}
+            await asyncio.sleep(60 * 60) # 1 Hour
     async def purge(self, limit):
         '''Shortcut to ctx.channel.purge'''
         return await self.channel.purge(limit=limit)
@@ -48,23 +65,39 @@ class DatContext(commands.Context):
     async def unmute(self, user):
         await self.channel.set_permissions(user, send_messages=True)
 
-    async def send(self, content=None, *, tts=False, embed=None, file=None, files=None, delete_after=None, nonce=None, code=None, split=False):
+    async def _send(self, content=None, *, tts=False, embed=None, file=None, files=None, delete_after=None, nonce=None):
+        """Sends messages with editing support
+        don't call this directly, use Context#send
+        this is just a helper method used by send
+        """
+        if file or files: # Can't edit attachments ¯\_(ツ)_/¯
+            return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+        msg = self.edits.get(self.message.id)
+        if msg:
+            await msg.edit(content=content, embed=embed, delete_after=delete_after)
+            return msg
+        msg = await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+        if file or files: # Don't store messages with attachments
+            return msg
+        self.edits[self.message.id] = msg
+        return msg
+
+
+    async def send(self, content=None, *, tts=False, embed=None, file=None, files=None, delete_after=None, nonce=None, code=None, split=False, edit=True):
         '''Custom send with extra functionality.'''
         if code and content:
-            if type(code) == bool:
-                content = f"```{content}```"
-            else:
-                content = f"```{code}\n{content}```"
+            content = resolve_code(content, code)
         if split:
-            x = self.paginate(content)
+            x = self.page(content)
             for page in x:
                 if page == x[-1]:
-                    return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+                    return await self.send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce, edit=edit, code=code, split=split)
                     break
                 else:
-                    return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
-        else:
+                    return await self.send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce, edit=edit, code=code, split=split)
+        if not edit:
             return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
+        return await self._send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
             
 
     async def send_codeblock(self, content, lang=None):
