@@ -101,7 +101,7 @@ class Economy:
         if data:
             if data.get("registered", None):
                 return await ctx.send("This server is already registered for economy.")
-        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
         await ctx.send(f"Alright! I registered this server for economy. Start earning that money!")
 
     @commands.command()
@@ -139,7 +139,7 @@ If you choose to re-enable economy in the future, the data will not be recovered
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x:
-            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
         if not x.get("registered", True):
             return await ctx.send("Sorry, but the server's economy commands have been disabled.")
         guild_user_data = x.get("users")
@@ -164,7 +164,7 @@ If you choose to re-enable economy in the future, the data will not be recovered
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
-            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
         if not x.get("registered"):
             return await ctx.send("Sorry, but the server's economy commands have been disabled.")
         guild_user_data = x.get("users")
