@@ -140,6 +140,7 @@ If you choose to re-enable economy in the future, the data will not be recovered
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x:
             await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+            x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x.get("registered", True):
             return await ctx.send("Sorry, but the server's economy commands have been disabled.")
         guild_user_data = x.get("users")
