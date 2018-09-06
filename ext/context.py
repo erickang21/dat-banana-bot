@@ -13,16 +13,7 @@ def resolve_code(content, code):
 class DatContext(commands.Context):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.edits = {}
-        self.bot.loop.create_task(self._sweeper())
 
-    async def _sweeper(self):
-        """Sweeps edit messages every hour to free up memory
-        Do not call this directly, a task is created in the event loop already
-        """
-        while True:
-            self.edits = {}
-            await asyncio.sleep(60 * 60) # 1 Hour
     async def purge(self, limit):
         '''Shortcut to ctx.channel.purge'''
         return await self.channel.purge(limit=limit)
@@ -72,14 +63,14 @@ class DatContext(commands.Context):
         """
         if file or files: # Can't edit attachments ¯\_(ツ)_/¯
             return await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
-        msg = self.edits.get(self.message.id)
+        msg = self.bot.edits.get(self.message.id)
         if msg:
             await msg.edit(content=content, embed=embed, delete_after=delete_after)
             return msg
         msg = await super().send(content=content, tts=tts, embed=embed, file=file, files=files, delete_after=delete_after, nonce=nonce)
         if file or files: # Don't store messages with attachments
             return msg
-        self.edits[self.message.id] = msg
+        self.bot.edits[self.message.id] = msg
         return msg
 
 
