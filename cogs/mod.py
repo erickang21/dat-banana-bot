@@ -212,10 +212,9 @@ Think of it as a server-wide pins channel.
             return await msg.edit(content='Successfully disabled the starboard. :cry:')
         elif action.lower().startswith("set"):
             channel_regex = r"^\<#\d+\>$"
-            
+            print(int(action.strip("set ").strip("<#").strip(">")))
             if re.match(channel_regex, action.strip("set ")):
                 action = int(action.strip("set ").strip("<#").strip(">"))
-                print(action)
                 chan = self.bot.get_channel(action)
                 if not chan:
                     return await ctx.send("You've got an invalid channel there!")
