@@ -249,7 +249,8 @@ async def on_message_edit(before, after):
         return
     pre = await get_prefix_as_str(after)
     if after.content.startswith(pre):
-        await bot.process_commands(after)
+        ctx = await bot.get_context(after, cls=DatContext)
+        await bot.invoke(ctx)
     if before.content == after.content:
         return
     if await modlog_check(before.guild.id):
