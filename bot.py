@@ -727,10 +727,10 @@ async def _eval(ctx, *, code: str):
                     paginated_text = paginate(value)
                     for page in paginated_text:
                         if page == paginated_text[-1]:
-                            out = await ctx.send(f"```py\n{page}\n```")
+                            out = await ctx.send(f"```py\n{page}\n```", edit=False)
                             break
-                        await ctx.send(f"```py\n{page}\n```")
-                    await ctx.send(f"⏱ {stopwatch}")
+                        await ctx.send(f"```py\n{page}\n```", edit=False)
+                    await ctx.send(f"⏱ {stopwatch}", edit=False)
         else:
             bot._last_result = ret
             try:
@@ -739,10 +739,10 @@ async def _eval(ctx, *, code: str):
                 paginated_text = paginate(f"{value}{ret}")
                 for page in paginated_text:
                     if page == paginated_text[-1]:
-                        out = await ctx.send(f"```py\n{page}```")
+                        out = await ctx.send(f"```py\n{page}```", edit=False)
                         break
-                    await ctx.send(f"```py\n{page}```")
-                await ctx.send(f"**Type**```ts\n{Type(ret)}```\n⏱ {stopwatch}")
+                    await ctx.send(f"```py\n{page}```", edit=False)
+                await ctx.send(f"**Type**```ts\n{Type(ret)}```\n⏱ {stopwatch}", edit=False)
         if out:
             await ctx.message.add_reaction("\u2705")
         elif err:
