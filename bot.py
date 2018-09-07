@@ -286,21 +286,32 @@ async def on_reaction_add(reaction, user):
         if not chan:
             return
         emoji_count = reaction.message.reactions[0].count
-        if emoji_count > 1:
-            em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Stars: {emoji_count}")
-            em.description = reaction.message.content
-            em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+        em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Starred Message")
+            
+        display = f"""
+{reaction.emoji} {emoji_count}
+:1234: ID: {reaction.message.id}
+:link: Click [this]({reaction.message.jump_url}) to jump to the message (on mobile).
+:speech_left: Content:
+{reaction.message.content}
+        """
+        em.description = display
+        em.set_footer(text=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
+        em.timestamp = datetime.datetime.utcnow()
+        try:
+            img_url = reaction.message.attachments[0].url
+        except IndexError:
+            img_url = None
+        if not img_url:
             try:
-                img_url = reaction.message.attachments[0].url
+                img_url = reaction.message.embeds[0].url
             except IndexError:
                 img_url = None
-            if not img_url:
-                try:
-                    img_url = reaction.message.embeds[0].url
-                except IndexError:
-                    img_url = None
-            if img_url:
-                em.set_image(url=str(img_url))
+        if img_url:
+            em.set_image(url=str(img_url))
+        if emoji_count > 1:
+            
+            
             async for x in chan.history(limit=50):
                 if x.embeds[0].description == reaction.message.content:
                     await x.edit(embed=em)
@@ -310,20 +321,6 @@ async def on_reaction_add(reaction, user):
             chan = bot.get_channel(x['channel'])
             if not chan:
                 return
-            try:
-                img_url = reaction.message.attachments[0].url
-            except IndexError:
-                img_url = None
-            if not img_url:
-                try:
-                    img_url = reaction.message.embeds[0].url
-                except IndexError:
-                    img_url = None
-            em = discord.Embed(color=discord.Color(value=0xf4bf42), title="Stars: 1")
-            em.description = reaction.message.content
-            em.set_author(name=reaction.message.author.name, icon_url=reaction.message.author.avatar_url)
-            if img_url:
-                em.set_image(url=str(img_url))
             await chan.send(embed=em)
     else:
         pass
