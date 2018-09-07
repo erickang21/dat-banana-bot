@@ -219,7 +219,9 @@ Think of it as a server-wide pins channel.
                 if not chan:
                     return await ctx.send("You've got an invalid channel there!")
                 await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": int(action)}}, upsert=True)
-                await ctx.send(f"Alright! I set the starboard to {chan.mention}. Have fun :)")
+                return await ctx.send(f"Alright! I set the starboard to {chan.mention}. Have fun :)")
+            else:
+                return await ctx.send("Looks like that's an invalid channel. Go for *starboard help if you need help.")
         elif action.lower() == "help":
             return await ctx.send(starboard_help)
         else:
