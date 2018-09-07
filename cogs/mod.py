@@ -2,6 +2,7 @@ import discord
 import sys
 import os
 import io
+import re
 import asyncio
 import json
 import ezjson
@@ -168,6 +169,17 @@ class mod:
     @commands.has_permissions(manage_guild = True)
     async def starboard(self, ctx, action=None):
         """Turn on a starboard for the server that is for STARS!"""
+        starboard_help = """
+**__Starboard Help__**
+Starboard creates a channel (or you can set to an existing one) that basically records this server's best messages. If you see a great message, react to it with :star: or :star2: and it will send to the specified channel.
+Think of it as a server-wide pins channel.
+
+*starboard -> Creates a new channel and turns on starboard in that channel.
+*starboard reset -> In case you manually deleted the starboard channel and need to re-create a new one.
+*starboard disable -> Disable the starboard for the given channel. Note that this no longer deletes the channel.
+*starboard set [channel] -> Turn on the starboard in an existing channel by mentioning it.
+*starboard help -> Show this.
+        """
         if action is None:
             x = await self.bot.db.starboard.find_one({'id': str(ctx.guild.id)})
             if x is not None:
@@ -193,23 +205,25 @@ class mod:
             channel = await ctx.guild.create_text_channel('starboard', overwrites=overwrites)
             await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel.id}}, upsert=True)
             return await msg.edit(content=f"Woo-hoo, created {channel.mention} for you to star-t :star:-ing now!")
-        elif action.lower() == 'delete':
-            msg = await ctx.send("Deleting the :star:board of awesomeness...")
-            with open("data/starboard.json") as f:
-                x = json.loads(f.read())
-            try:
-                channel = self.bot.get_channel(x[str(ctx.guild.id)])
-            except KeyError:
-                return await ctx.send(f"A starboard for this server was never created. Why delete something that doesn't exist? {self.bot.get_emoji(430853715059277863)}")
-            try:
-                await channel.delete()
-            except:
-                await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
-                return await msg.edit(content="Starboard is disabled, but I was unable to delete the channel.")
+        elif action.lower() == 'disable':
+            msg = await ctx.send("Disabling the :star:board of awesomeness...")
+
             await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False}}, upsert=True)
-            return await msg.edit(content='Successfully removed the starboard. :cry:')
+            return await msg.edit(content='Successfully disabled the starboard. :cry:')
+        elif action.lower().startswith("set"):
+            channel_regex = r"^\<#\d+\>$"
+            
+            if re.match(channel_regex, action.strip("set ")):
+                action = int(action.strip("set ").strip("<#").strip(">"))
+                chan = self.bot.get_channel(action)
+                if not chan:
+                    return await ctx.send("You've got an invalid channel there!")
+                await self.bot.db.starboard.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": int(action)}}, upsert=True)
+                await ctx.send(f"Alright! I set the starboard to {chan.mention}. Have fun :)")
+        elif action.lower() == "help":
+            return await ctx.send(starboard_help)
         else:
-            return await ctx.send("Unknown action. Either leave blank, use *starboard reset to re-create a deleted channel, or *starboard delete to remove the server's starboard.")
+            return await ctx.send(starboard_help)
 
         
     @commands.command(hidden=True)
