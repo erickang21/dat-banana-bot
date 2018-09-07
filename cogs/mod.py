@@ -215,6 +215,7 @@ Think of it as a server-wide pins channel.
             
             if re.match(channel_regex, action.strip("set ")):
                 action = int(action.strip("set ").strip("<#").strip(">"))
+                print(action)
                 chan = self.bot.get_channel(action)
                 if not chan:
                     return await ctx.send("You've got an invalid channel there!")
