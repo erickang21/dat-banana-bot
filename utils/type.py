@@ -71,7 +71,7 @@ class Type:
         if t == "NoneType":
             return "void"
         if t == "function" or t == "method":
-            return f"{value.__name__}{inspect.formatargspec(*inspect.getfullargspec(value))}"
+            return f"{'async ' if inspect.iscoroutinefunction(value) else ''}{value.__name__}{inspect.formatargspec(*inspect.getfullargspec(value))}"
         return t
 
     @staticmethod

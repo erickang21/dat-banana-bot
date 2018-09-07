@@ -46,6 +46,7 @@ bot.starttime = time.time()
 bot.commands_run = 0
 bot.logger = logger
 bot.config = Box(x)
+bot.edits = {}
 utils = Utils(bot)
 with open("data/apikeys.json") as f:
     x = json.load(f)
@@ -99,11 +100,17 @@ async def get_modlog_channel(guildid):
     x = await bot.db.modlog.find_one({'id': str(guildid)})
     return int(x['channel'])
 
+# A task to clean edits to free memory
+async def _sweeper():
+    while True:
+        bot.edits = {}
+        await asyncio.sleep(60 * 60) # 1 Hour
 @bot.event
 async def on_ready():
     if bot.user.id != 388476336777461770:
         print("COPYING ALERT! COULD NOT IDENTIFY BOT USER! EXPOSED!")
         exit() # :p
+    bot.loop.create_task(_sweeper())
     with open("restart.txt") as f:
         x = f.readlines()
     stuff = [f.strip("\n") for f in x]
@@ -211,7 +218,8 @@ async def on_message(message):
     if not message.author.bot:
         blacklistcmds = await bot.db.blacklistcmd.find_one({"id": message.guild.id})
         if not blacklistcmds or not blacklistcmds['cmds']:
-            await bot.process_commands(message)
+            ctx = await bot.get_context(message, cls=DatContext)
+            await bot.invoke(ctx)
         else:
             prefix = await get_prefix_as_str(message)
             if message.content.strip(prefix).split(" ")[0] in blacklistcmds['cmds']:
@@ -241,7 +249,8 @@ async def on_message_edit(before, after):
         return
     pre = await get_prefix_as_str(after)
     if after.content.startswith(pre):
-        await bot.process_commands(after)
+        ctx = await bot.get_context(after, cls=DatContext)
+        await bot.invoke(ctx)
     if before.content == after.content:
         return
     if await modlog_check(before.guild.id):
@@ -718,10 +727,10 @@ async def _eval(ctx, *, code: str):
                     paginated_text = paginate(value)
                     for page in paginated_text:
                         if page == paginated_text[-1]:
-                            out = await ctx.send(f"```py\n{page}\n```")
+                            out = await ctx.send(f"```py\n{page}\n```", edit=False)
                             break
-                        await ctx.send(f"```py\n{page}\n```")
-                    await ctx.send(f"⏱ {stopwatch}")
+                        await ctx.send(f"```py\n{page}\n```", edit=False)
+                    await ctx.send(f"⏱ {stopwatch}", edit=False)
         else:
             bot._last_result = ret
             try:
@@ -730,10 +739,10 @@ async def _eval(ctx, *, code: str):
                 paginated_text = paginate(f"{value}{ret}")
                 for page in paginated_text:
                     if page == paginated_text[-1]:
-                        out = await ctx.send(f"```py\n{page}```")
+                        out = await ctx.send(f"```py\n{page}```", edit=False)
                         break
-                    await ctx.send(f"```py\n{page}```")
-                await ctx.send(f"**Type**```ts\n{Type(ret)}```\n⏱ {stopwatch}")
+                    await ctx.send(f"```py\n{page}```", edit=False)
+                await ctx.send(f"**Type**```ts\n{Type(ret)}```\n⏱ {stopwatch}", edit=False)
         if out:
             await ctx.message.add_reaction("\u2705")
         elif err:
