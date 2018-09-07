@@ -167,7 +167,7 @@ class mod:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(manage_guild = True)
-    async def starboard(self, ctx, action=None):
+    async def starboard(self, ctx, *, action=None):
         """Turn on a starboard for the server that is for STARS!"""
         starboard_help = """
 **__Starboard Help__**
