@@ -101,7 +101,7 @@ class Economy:
         if data:
             if data.get("registered", None):
                 return await ctx.send("This server is already registered for economy.")
-        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
         await ctx.send(f"Alright! I registered this server for economy. Start earning that money!")
 
     @commands.command()
@@ -139,7 +139,8 @@ If you choose to re-enable economy in the future, the data will not be recovered
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x:
-            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+            x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x.get("registered", True):
             return await ctx.send("Sorry, but the server's economy commands have been disabled.")
         guild_user_data = x.get("users")
@@ -164,7 +165,7 @@ If you choose to re-enable economy in the future, the data will not be recovered
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
-            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}})
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
         if not x.get("registered"):
             return await ctx.send("Sorry, but the server's economy commands have been disabled.")
         guild_user_data = x.get("users")
@@ -193,34 +194,6 @@ If you choose to re-enable economy in the future, the data will not be recovered
     #@commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
-        check = await self.is_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
-        if check:
-            minute, second = divmod(check, 60)
-            hour, minute = divmod(minute, 60)
-            if hour:
-                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
-            else:
-                time_left = f"{minute}:{Utils.format_time(second)}"
-            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
-        # async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
-        #     resp = await resp.json()
-        #     if resp['voted'] == 0:
-        #         em = discord.Embed(color=0x00ff00, title='Did you vote for dat banana bot today?')
-        #         em.description = "You can get an extra **500** points from daily credit by simply upvoting dat banana bot. Click [here](https://discordbots.org/bot/388476336777461770/vote) to vote now.\n\nReact with :white_check_mark: to go upvote, or :x: to receive the reduced daily credit."
-        #         msg = await ctx.send(embed=em)
-        #         await msg.add_reaction("\U00002705")
-        #         await msg.add_reaction("\U0000274c")
-        #         reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
-        #         if reaction.emoji == '✅':
-        #             return await ctx.send("Thank you! The link (for your convenience) is: https://discordbots.org/bot/388476336777461770/vote")
-        #         elif reaction.emoji == '❌':
-        #             number = random.randint(100, 300)
-        #             try:
-        #                 await self.add_points(ctx.author, number)
-        #             except Exception as e:
-        #                 return await ctx.send(f"Aw, shucks! An unexpected error occurred: \n```{e}```")
-        #             return await ctx.send(f"Hooray! Successfully added **{number}** :banana: into your account.")
-        #     else:
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
         x = await self.db.economy.find_one({"id": ctx.guild.id})
         if not x: 
@@ -234,21 +207,94 @@ If you choose to re-enable economy in the future, the data will not be recovered
             match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
         except IndexError:
             return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
-        else:
-            number = random.randint(300, 500)
-            await self.add_points(ctx.guild, ctx.author, number)
-            responses = [
-                f"Be proud. You just got **{number}** :banana:.",
-                f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
-                f"Ugh fine, take my money. But only **{number}** :banana:.",
-                f"Why would you ever rob a poor man? Fine, take **{number}** :banana:.",
-                f"You can have **{number}** :banana:, if that means you can shut up.",
-                f"If you take **{number}** :banana:, ur mom gay. Oh well, you did :rofl:",
-                f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
-                f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
-            ]
-            await self.place_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
-            return await ctx.send(random.choice(responses))
+        await ctx.trigger_typing()
+        check = await self.is_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
+        if check:
+            minute, second = divmod(check, 60)
+            hour, minute = divmod(minute, 60)
+            if hour:
+                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
+            else:
+                time_left = f"{minute}:{Utils.format_time(second)}"
+            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
+        async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
+            resp = await resp.json()
+            if resp['voted'] == 0:
+                em = discord.Embed(color=0x00ff00, title='Did you vote for dat banana bot today?')
+                em.description = """
+You can get up to an extra **500** :banana: on **each server you share with me** using daily by simply upvoting dat banana bot on Discord Bot List. 
+Click [here](https://discordbots.org/bot/388476336777461770/vote) to vote now.
+
+__What to do now?__
+:white_check_mark:: Receive your reduced daily credit and move on.
+:x:: Be a good boi and go upvote. 
+
+**Note:** DBL takes some time to process upvotes. If you upvoted, please wait a few minutes and then retry this command.
+"""
+                msg = await ctx.send(embed=em)
+                await msg.add_reaction("\U00002705")
+                await msg.add_reaction("\U0000274c")
+                reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
+                if reaction.emoji == '✅':
+                    number = random.randint(300, 500)
+                    guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+                    x = await self.db.economy.find_one({"id": ctx.guild.id})
+                    if not x: 
+                        await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+                    if not x.get("registered"):
+                        return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+                    guild_user_data = x.get("users")
+                    user_ids = list(map(lambda a: a['id'], guild_user_data))
+                    em = discord.Embed(color=0x00ff00, title='Current Balance')
+                    try:
+                        match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+                    except IndexError:
+                        return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+                    else:
+                        await self.add_points(ctx.guild, ctx.author, number)
+                        responses = [
+                            f"Be proud. You just got **{number}** :banana:.",
+                            f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
+                            f"Ugh fine, take my money. But only **{number}** :banana:.",
+                            f"Why would you ever rob a poor man? Fine, take **{number}** :banana:.",
+                            f"You can have **{number}** :banana:, if that means you can shut up.",
+                            f"If you take **{number}** :banana:, ur mom gay. Oh well, you did :rofl:",
+                            f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
+                            f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
+                        ]
+                        await self.place_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
+                        return await ctx.send(random.choice(responses))
+                elif reaction.emoji == '❌':
+                    return await ctx.send("ALRIGHT! That's what I'm talking about. The link is above, now go and show me some love! :D")
+            else:
+                number = random.randint(800, 1000)
+                guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+                x = await self.db.economy.find_one({"id": ctx.guild.id})
+                if not x: 
+                    await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+                if not x.get("registered"):
+                    return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+                guild_user_data = x.get("users")
+                user_ids = list(map(lambda a: a['id'], guild_user_data))
+                em = discord.Embed(color=0x00ff00, title='Current Balance')
+                try:
+                    match = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+                except IndexError:
+                    return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+                else:
+                    await self.add_points(ctx.guild, ctx.author, number)
+                    responses = [
+                        f"Be proud. You just got **{number}** :banana:.",
+                        f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
+                        f"Ugh fine, take my money. But only **{number}** :banana:.",
+                        f"Why would you ever rob a poor man? Fine, take **{number}** :banana:.",
+                        f"You can have **{number}** :banana:, if that means you can shut up.",
+                        f"If you take **{number}** :banana:, ur mom gay. Oh well, you did :rofl:",
+                        f"I'd hate to give away **{number}** :banana:, but it's in my programming...",
+                        f"I love all my bananas. You just *had*  to take away **{number}** :banana: from me..."
+                    ]
+                    await self.place_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
+                    return await ctx.send(random.choice(responses))
         
 
         
@@ -256,6 +302,20 @@ If you choose to re-enable economy in the future, the data will not be recovered
     @commands.command()
     async def lottery(self, ctx, numbers: str):
         '''Enter the lottery to win/lose! 3 numbers, seperate with commas. Entry is $50, winner gets $10 million!'''
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "lottery_cooldown")
         if check:
             minute, second = divmod(check, 60)
@@ -331,6 +391,20 @@ If you choose to re-enable economy in the future, the data will not be recovered
     #@commands.cooldown(1, 300, BucketType.user)
     async def gamble(self, ctx, amount):
         """Choose an amount. Will you win it or will you lose it?"""
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "gamble_cooldown")
         if check:
             minute, second = divmod(check, 60)
@@ -376,6 +450,20 @@ If you choose to re-enable economy in the future, the data will not be recovered
     #@commands.cooldown(1, 300, BucketType.user)
     async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
         check = await self.is_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
         if check:
             minute, second = divmod(check, 60)

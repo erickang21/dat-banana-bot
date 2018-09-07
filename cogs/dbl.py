@@ -10,9 +10,7 @@ class dbl:
     def __init__(self, bot):
         self.bot = bot
         self.session = self.bot.session
-        with open("data/apikeys.json") as f:
-            x = json.loads(f.read())
-        self.token = x['dblapi']
+        self.token = bot.config.dbl
 
     # def __unload(self):
     #     self.bot.loop.create_task(self.session.close())
