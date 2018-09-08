@@ -322,7 +322,7 @@ async def on_reaction_add(reaction, user):
             
             
             async for x in chan.history(limit=50):
-                if x.embeds[0].description == reaction.message.content:
+                if reaction.message.content in x.embeds[0].description:
                     await x.edit(embed=em)
                     break
         else:
