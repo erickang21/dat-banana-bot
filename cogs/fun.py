@@ -109,7 +109,10 @@ class fun:
     @commands.command()
     async def neko(self, ctx):
         """Get a random neko."""
-        img_url = (await (await self.bot.session.get("https://nekos.life/api/v2/img/neko%22")).json())["url"]
+        await ctx.trigger_typing()
+        res = await self.bot.session.get("https://nekos.life/api/v2/img/neko")
+        res = await res.json()
+        img_url = res['url']
         em = discord.Embed(color=ctx.author.color, title="Neko")
         em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.set_image(url=img_url)
@@ -118,6 +121,7 @@ class fun:
     @commands.command()
     async def weeb(self, ctx):
         """Get a random pic for weebs."""
+        await ctx.trigger_typing()
         resp = await (await self.bot.session.get("https://nekos.life/api/v2/img/avatar")).json()
         em = discord.Embed(color=ctx.author.color, title="Weeb Pic")
         em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
