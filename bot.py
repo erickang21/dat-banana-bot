@@ -289,10 +289,10 @@ async def on_reaction_add(reaction, user):
         em = discord.Embed(color=discord.Color(value=0xf4bf42), title=f"Starred Message")
             
         display = f"""
-{reaction.emoji} {emoji_count}
-:1234: ID: {reaction.message.id}
-:link: Click [this]({reaction.message.jump_url}) to jump to the message (on mobile).
-:speech_left: Content:
+{reaction.emoji} **Stars:** {emoji_count}
+:1234: **ID:** {reaction.message.id}
+:link: **Link:** Click [here]({reaction.message.jump_url}) (mobile only).
+-------------------------
 {reaction.message.content}
         """
         em.description = display
