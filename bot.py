@@ -47,6 +47,7 @@ bot.commands_run = 0
 bot.logger = logger
 bot.config = Box(x)
 bot.edits = {}
+bot.bulkDeletes = {}
 utils = Utils(bot)
 with open("data/apikeys.json") as f:
     x = json.load(f)
@@ -105,12 +106,20 @@ async def _sweeper():
     while True:
         bot.edits = {}
         await asyncio.sleep(60 * 60) # 1 Hour
+
+# A task to clean up the bots last bulk deletes
+async def _sweep_bulk_deletes():
+    while True:
+        bot.bulkDeletes = {}
+        await asyncio.sleep(60) # 1 Minute
+
 @bot.event
 async def on_ready():
     if bot.user.id != 388476336777461770:
         print("COPYING ALERT! COULD NOT IDENTIFY BOT USER! EXPOSED!")
         exit() # :p
     bot.loop.create_task(_sweeper())
+    bot.loop.create_task(_sweep_bulk_deletes())
     with open("restart.txt") as f:
         x = f.readlines()
     stuff = [f.strip("\n") for f in x]
@@ -503,6 +512,7 @@ async def on_member_ban(guild, member):
 
 @bot.event
 async def on_raw_bulk_message_delete(payload):
+    bot.bulkDeletes[bot.get_channel(payload.channel_id).guild.id] = True
     if await modlog_check(payload.guild_id):
         lol = bot.get_channel(await get_modlog_channel(payload.guild_id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Messages Purged')
@@ -514,12 +524,13 @@ async def on_raw_bulk_message_delete(payload):
         em.timestamp = datetime.datetime.utcnow()
         await lol.send(embed=em)
 
-
 @bot.event
 async def on_message_delete(message):
     if message is None:
         return
     if await modlog_check(message.guild.id):
+        if bot.bulkDeletes.get(message.guild.id):
+            return
         try:
             try:
                 img_url = message.attachments[0].url
