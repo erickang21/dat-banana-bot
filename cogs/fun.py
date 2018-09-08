@@ -105,6 +105,16 @@ class fun:
     #     elif x.content.lower() == 'accept':
 
 
+
+    @commands.command()
+    async def neko(self, ctx):
+        """Get a random neko."""
+        img_url = (await (await self.bot.session.get("https://nekos.life/api/v2/img/neko%22")).json())["url"]
+        em = discord.Embed(color=ctx.author.color, title="Neko")
+        em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.set_image(url=img_url)
+        await ctx.send(embed=em)
+
     @commands.command()
     async def weeb(self, ctx):
         """Get a random pic for weebs."""
