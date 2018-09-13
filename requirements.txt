@@ -14,8 +14,8 @@ colorama==0.3.9
 datapipelines==1.0.5
 daterangestr==0.0.3
 dblpy==0.1.5
+git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py[voice]
 decorator==4.2.1
-discord.py==1.0.0a1483+gec3435b
 ezjson==1.0.0
 google==2.0.1
 html5lib==1.0.1
