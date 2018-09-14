@@ -48,7 +48,6 @@ pyasn1==0.4.3
 pyasn1-modules==0.2.1
 pycparser==2.18
 pyee==5.0.0
-pyenchant==2.0.0
 pygoogling==0.0.2
 pylint==1.8.4
 pymongo==3.6.1
