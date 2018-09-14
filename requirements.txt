@@ -47,7 +47,6 @@ py-expression-eval==0.3.4
 pyasn1==0.4.3
 pyasn1-modules==0.2.1
 pycparser==2.18
-pycurl==7.43.0.1
 pyee==5.0.0
 pyenchant==2.0.0
 pygoogling==0.0.2
