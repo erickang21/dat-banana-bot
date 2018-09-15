@@ -15,7 +15,7 @@ class CR:
         with open('data/apikeys.json') as f:
             lol = json.load(f)
             self.token = lol['crapi']
-        self.client = clashroyale.Client(token=self.token, is_async=True)
+        self.client = clashroyale.royaleapi.Client(token=self.token, is_async=True)
         self.cards = ['Ice Wizard', 'Hunter', 'Dart Goblin', 'Balloon', 'Skeleton Army', 'Royal Giant', 'Battle Ram', 'Minions', 'Bandit', 'Arrows', 'Mega Knight', 'Baby Dragon', 'Heal', 'Witch', 'Archers', 'Barbarians', 'Wizard', 'Rage', 'Guards', 'Giant Skeleton', 'Skeletons', 'Inferno Tower', 'Spear Goblins', 'Furnace', 'Cannon Cart', 'P.E.K.K.A', 'Bomber', 'Sparky', 'Ice Golem', 'Graveyard', 'Clone', 'Poison', 'Lightning', 'Cannon', 'Knight', 'Royal Ghost', 'Tesla', 'Dark Prince', 'Bomb Tower', 'Skeleton Barrel', 'Prince', 'Electro Wizard', 'Mega Minion',
                       'Musketeer', 'Giant', 'Mirror', 'Bowler', 'Mortar', 'Lava Hound', 'Rocket', 'Tornado', 'Night Witch', 'Goblin Hut', 'Fire Spirits', 'Tombstone', 'Princess', 'Barbarian Hut', 'Goblins', 'Valkyrie', 'The Log', 'Freeze', 'Inferno Dragon', 'Goblin Barrel', 'Lumberjack', 'Three Musketeers', 'Miner', 'X-Bow', 'Ice Spirit', 'Flying Machine', 'Executioner', 'Zappies', 'Elixir Collector', 'Golem', 'Magic Archer', 'Barbarian Barrel', 'Rascals', 'Mini P.E.K.K.A', 'Hog Rider', 'Minion Horde', 'Fireball', 'Goblin Gang', 'Elite Barbarians', 'Bats', 'Zap']
 
