@@ -234,7 +234,7 @@ async def on_message(message):
             if message.content.strip(prefix).split(" ")[0] in blacklistcmds['cmds']:
                 return
             else:
-                message.content = message.content.strip("\u200b")
+                message.content = message.content.replace("\u200b", "")
                 ctx = await bot.get_context(message, cls=DatContext)
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
