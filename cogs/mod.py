@@ -593,25 +593,25 @@ Think of it as a server-wide pins channel.
             await ctx.send(embed=em)
         else:
             if action.lower() == 'on':
-                await ctx.send("Please mention the channel to set welcome messages in.")
+                await ctx.send("Please mention the channel to set welcome messages in.", edit=False)
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
-                    return await ctx.send("Request timed out. Please try again.")
+                    return await ctx.send("Request timed out. Please try again.", edit=False)
                 if not x.content.startswith("<#") and not x.content.endswith(">"):
-                    return await ctx.send("Please properly mention the channel.")
+                    return await ctx.send("Please properly mention the channel.", edit=False)
                 channel = x.content.strip("<#").strip(">")
                 try:
                     channel = int(channel)
                 except ValueError:
-                    return await ctx.send("Did you properly mention a channel? Probably not.")
-                await ctx.send("Please enter the message to send when someone joins.\n\n```Variables: \n{name}: The user's name.\n{mention}: Mention the user.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```")
+                    return await ctx.send("Did you properly mention a channel? Probably not.", edit=False)
+                await ctx.send("Please enter the message to send when someone joins.\n\n```Variables: \n{name}: The user's name.\n{mention}: Mention the user.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```", edit=False)
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
                     return await ctx.send("Request timed out. Please try again.")
                 await self.bot.db.welcome.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
-                await ctx.send("Successfully turned on welcome messages for this guild.")
+                await ctx.send("Successfully turned on welcome messages for this guild.", edit=False)
                 modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
                 if modlog:
                     em = discord.Embed(color=discord.Color(value=0x00ff00), title="Welcome Messages Enabled")
@@ -661,7 +661,7 @@ Think of it as a server-wide pins channel.
         else:
             if action.lower() == 'on':
                 
-                await ctx.send("Please mention the channel to set leave messages in.")
+                await ctx.send("Please mention the channel to set leave messages in.", edit=False)
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
@@ -673,13 +673,13 @@ Think of it as a server-wide pins channel.
                     channel = int(channel)
                 except ValueError:
                     return await ctx.send("Did you properly mention a channel? Probably not.")
-                await ctx.send("Please enter the message to send when someone leaves.\n\n```Variables: \n{name}: The user's name.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```")
+                await ctx.send("Please enter the message to send when someone leaves.\n\n```Variables: \n{name}: The user's name.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```", edit=False)
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
                     return await ctx.send("Request timed out. Please try again.")
                 await self.bot.db.leave.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
-                await ctx.send("Successfully turned on leave messages for this guild.")
+                await ctx.send("Successfully turned on leave messages for this guild.", edit=False)
                 modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
                 if modlog:
                     em = discord.Embed(color=discord.Color(value=0x00ff00), title="Leave Messages Enabled")
