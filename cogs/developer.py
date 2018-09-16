@@ -214,11 +214,11 @@ class Developer:
         }
 
         if ctx.channel.id in self.sessions:
-            await ctx.send('Already running a REPL session in this channel. Exit it with `quit`.')
+            await ctx.send('Already running a REPL session in this channel. Exit it with `quit`.', edit=False)
             return
 
         self.sessions.add(ctx.channel.id)
-        await ctx.send('Enter code to execute or evaluate. `exit()` or `quit` to exit.')
+        await ctx.send('Enter code to execute or evaluate. `exit()` or `quit` to exit.', edit=False)
 
         def check(m):
             return m.author.id == ctx.author.id and \
@@ -229,14 +229,14 @@ class Developer:
             try:
                 response = await self.bot.wait_for('message', check=check, timeout=10.0 * 60.0)
             except asyncio.TimeoutError:
-                await ctx.send('Exiting REPL session.')
+                await ctx.send('Exiting REPL session.', edit=False)
                 self.sessions.remove(ctx.channel.id)
                 break
 
             cleaned = self.cleanup_code(response.content)
 
             if cleaned in ('quit', 'exit', 'exit()'):
-                await ctx.send('Exiting.')
+                await ctx.send('Exiting.', edit=False)
                 self.sessions.remove(ctx.channel.id)
                 return
 
