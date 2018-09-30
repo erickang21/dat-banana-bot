@@ -189,12 +189,12 @@ async def on_message(message):
                     lol = bot.get_channel(await get_modlog_channel(message.guild.id))
                     em = discord.Embed(color=0xf9e236, title="Invite Posted")
                     em.description = textwrap.dedent(f"""
-                    {bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
+{bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
 
-                    :hash: In channel {message.channel.mention}
+:hash: In channel {message.channel.mention}
 
-                    :link: Link:
-                    {message.content}
+:link: Link:
+{message.content}
 
                     """)
                     em.timestamp = message.created_at
@@ -268,15 +268,15 @@ async def on_message_edit(before, after):
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
             em = discord.Embed(color=discord.Color(value=0xf9e236), title="Message Edited")
             em.description = textwrap.dedent(f"""
-            {bot.get_emoji(430340802879946773)} Sent by **{str(before.author)}**
+{bot.get_emoji(430340802879946773)} Sent by **{str(before.author)}**
 
-            :hash: In channel {before.channel.mention}
+:hash: In channel {before.channel.mention}
 
-            :page_facing_up: **Before:**
-            {before.content}
+:page_facing_up: **Before:**
+{before.content}
 
-            :page_with_curl: **After:**
-            {after.content}
+:page_with_curl: **After:**
+{after.content}
             """)
             em.timestamp = before.created_at
             await lol.send(embed=em)
@@ -422,13 +422,13 @@ async def on_member_join(member):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf9e236), title='Member Joined')
         em.description = textwrap.dedent(f"""
-        {bot.get_emoji(430340802879946773)} User: {str(member)}
+{bot.get_emoji(430340802879946773)} User: {str(member)}
 
-        :1234: User ID: {member.id}
+:1234: User ID: {member.id}
 
-        :house_with_garden: Server: {member.guild.name}    
+:house_with_garden: Server: {member.guild.name}    
 
-        :clock10: Joined at: {str(member.joined_at.strftime("%A, %b %m, %Y at %I:%M %p"))}    
+:clock10: Joined at: {str(member.joined_at.strftime("%A, %b %m, %Y at %I:%M %p"))}    
         """)
         em.set_thumbnail(url=member.avatar_url)
         em.timestamp = datetime.datetime.utcnow()
@@ -469,11 +469,11 @@ async def on_member_remove(member):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Left')
         em.description = textwrap.dedent(f"""
-        {bot.get_emoji(430340802879946773)} User: {str(member)}
+{bot.get_emoji(430340802879946773)} User: {str(member)}
 
-        :1234: User ID: {member.id}
+:1234: User ID: {member.id}
 
-        :house_with_garden: Server: {member.guild.name}        
+:house_with_garden: Server: {member.guild.name}        
         """)
         em.timestamp = datetime.datetime.utcnow()
         em.set_thumbnail(url=member.avatar_url)
@@ -500,11 +500,11 @@ async def on_member_ban(guild, member):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Banned')
         em.description = textwrap.dedent(f"""
-        {bot.get_emoji(430340802879946773)} Banned User: {str(member)}
+{bot.get_emoji(430340802879946773)} Banned User: {str(member)}
 
-        :1234: Banned User ID: {member.id}
+:1234: Banned User ID: {member.id}
 
-        :house_with_garden: Server: {guild.name}        
+:house_with_garden: Server: {guild.name}        
         """)
         em.timestamp = datetime.datetime.utcnow()
         em.set_thumbnail(url=member.avatar_url)
@@ -518,9 +518,9 @@ async def on_raw_bulk_message_delete(payload):
         lol = bot.get_channel(await get_modlog_channel(payload.guild_id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Messages Purged')
         em.description = textwrap.dedent(f"""
-        :hash: Channel: {bot.get_channel(payload.channel_id).mention}
+:hash: Channel: {bot.get_channel(payload.channel_id).mention}
 
-        :newspaper: Messages Deleted: {len(payload.message_ids)}      
+:newspaper: Messages Deleted: {len(payload.message_ids)}      
         """)
         em.timestamp = datetime.datetime.utcnow()
         await lol.send(embed=em)
@@ -545,12 +545,12 @@ async def on_message_delete(message):
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
             em = discord.Embed(color=discord.Color(value=0xf9e236), title="Message Deleted")
             em.description = textwrap.dedent(f"""
-            {bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
+{bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
 
-            :hash: In channel {message.channel.mention}
+:hash: In channel {message.channel.mention}
 
-            :page_facing_up: **Content:**
-            {message.content}
+:page_facing_up: **Content:**
+{message.content}
 
             """)
             em.timestamp = message.created_at
