@@ -29,7 +29,7 @@ colorama.init()
 with open("data/apikeys.json") as f:
     x = json.load(f)
 
-db = AsyncIOMotorClient(x['mongodb'])
+db = AsyncIOMotorClient(x["mongodb"])
 
 
 async def getprefix(bot, message):
