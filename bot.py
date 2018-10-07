@@ -39,7 +39,7 @@ async def getprefix(bot, message):
     return commands.when_mentioned_or(pre)(bot, message)
 
 
-bot = commands.Bot(command_prefix=getprefix, description="The revamped dat banana bot made by dat banana boi#1982.\n\nHelp Commands", owner_id=277981712989028353, case_insensitive=True)
+bot = commands.Bot(command_prefix=getprefix, owner_id=277981712989028353, case_insensitive=True)
 bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.starttime = time.time()
@@ -151,7 +151,7 @@ async def on_ready():
     print('Bot is online, and ready to ROLL!')
     while True:
         await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
-        await asyncio.sleep(15)
+        await asyncio.sleep(20)
 
 
 @bot.event
