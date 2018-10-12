@@ -24,6 +24,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
 from ext.logger import Logger as logger
 from cogs.utils.utils import Utils
+
 colorama.init()
 
 with open("data/apikeys.json") as f:
