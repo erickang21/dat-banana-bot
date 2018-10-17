@@ -32,8 +32,8 @@ class Info:
         minute, second = divmod(second, 60)
         hour, minute = divmod(minute, 60)
         day, hour = divmod(hour, 24)
-        content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
-        version = re.findall(r"v(\d.\d.\d)", content)[0]
+        #content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
+        #version = re.findall(r"v(\d.\d.\d)", content)[0]
         em = discord.Embed(color=color, title='Bot Stats')
         em.description = "These are some stats for the lovely dat banana bot#0170."
         em.set_thumbnail(url="https://c1.staticflickr.com/6/5611/15804684456_0c2d30237d_z.jpg")        
@@ -43,7 +43,7 @@ class Info:
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
-        em.add_field(name='Version', value=version)
+        #em.add_field(name='Version', value=version)
         em.add_field(name=f'Start Date {self.bot.get_emoji(430847593439035392)}', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=f'Python, discord.py') 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
@@ -58,14 +58,14 @@ class Info:
 
 
 
-    @commands.command(aliases=['updates', 'bu', 'botu'])
-    async def botupdates(self, ctx):
-        """Read the latest notes on the latest update!"""    
-        content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
-        title = content.split("\n")[0].replace("*", "")
-        em = discord.Embed(color=discord.Color(value=0xf9e236))
-        em.description = content
-        await ctx.send(embed=em)
+    # @commands.command(aliases=['updates', 'bu', 'botu'])
+    # async def botupdates(self, ctx):
+    #     """Read the latest notes on the latest update!"""    
+    #     content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
+    #     title = content.split("\n")[0].replace("*", "")
+    #     em = discord.Embed(color=discord.Color(value=0xf9e236))
+    #     em.description = content
+    #     await ctx.send(embed=em)
 
 def setup(bot): 
     bot.add_cog(Info(bot)) 
