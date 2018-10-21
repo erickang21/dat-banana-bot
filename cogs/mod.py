@@ -917,7 +917,7 @@ Think of it as a server-wide pins channel.
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members = True)
-    async def hackban(self, ctx, id, reason=None):
+    async def hackban(self, ctx, id, *, reason=None):
         try:
             id = int(id)
         except ValueError:
