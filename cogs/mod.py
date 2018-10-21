@@ -372,7 +372,7 @@ Think of it as a server-wide pins channel.
             color = 0xf9e236
             em = discord.Embed(color=color, title='Banned!')
             em.description = f'The ban hammer has fell down.'
-            em.set_image(url="https://i.imgur.com/1qQ13Qo.gif ")
+            em.set_image(url="https://i.kym-cdn.com/photos/images/newsfeed/001/118/143/5ec.gif")
             em.add_field(name='User', value=user.name)
             em.add_field(name='Banned By', value=ctx.author.name)
             reason = reason if reason is not None else 'No reason given.'
@@ -935,6 +935,7 @@ Think of it as a server-wide pins channel.
         em.add_field(name="User", value=str(data))
         em.add_field(name="ID", value=id)
         em.add_field(name='Banned By', value=ctx.author.name)
+        em.set_image(url="https://i.kym-cdn.com/photos/images/newsfeed/001/118/143/5ec.gif")
         reason = reason if reason is not None else 'No reason given.'
         em.add_field(name='Reason', value=reason)
         em.set_thumbnail(url=data.avatar_url)
