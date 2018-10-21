@@ -336,6 +336,7 @@ Think of it as a server-wide pins channel.
                 reason = reason
             em.add_field(name='Reason', value=reason)
             em.set_thumbnail(url=user.avatar_url)
+            em.set_image(url="https://cdn.weeb.sh/images/H16aQJFvb.gif")
             await ctx.send(embed=em)
             modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
             if modlog:
