@@ -232,8 +232,8 @@ class Utility:
             return match
 
     @commands.command()
-    async def snipe(self, ctx, channel: discord.Channel = None):
-        channel = channel or ctx.channel
+    async def snipe(self, ctx, channel: int = None):
+        channel = bot.get_channel(channel) or ctx.channel
         try:
             snipes = self.bot.snipes[str(channel.id)]
         except KeyError:
