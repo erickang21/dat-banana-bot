@@ -324,6 +324,12 @@ Think of it as a server-wide pins channel.
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is higher than yours. No can do!")
         elif ctx.author.roles[-1].position == user.roles[-1].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is equal to yours. No can do!")
+        if not ctx.guild.me.guild_permissions.kick_members:
+            return await ctx.send("Oops! I don't have enough permissions to use the boot.")
+        try:
+            await user.send(f"{self.bot.get_emoji(505723800068030464)} You have been kicked from **{ctx.guild.name}**.\n\n**Reason:** {reason}")
+        except:
+            pass
         try:
             await user.kick(reason=f"{str(ctx.author)}: {reason}")
             color = 0xf9e236
@@ -368,20 +374,27 @@ Think of it as a server-wide pins channel.
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is higher than yours. No can do!")
         elif ctx.author.roles[-1].position == user.roles[-1].position:
             return await ctx.send(f"Sorry, but **{str(user)}**'s top role is equal to yours. No can do!")
+        if not ctx.guild.me.guild_permissions.ban_members:
+            return await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
+        try:
+            await user.send(f"{self.bot.get_emoji(505723800068030464)} You have been banned from **{ctx.guild.name}**.\n\n**Reason:** {reason}")
+        except:
+            pass
         try:
             await user.ban(reason=reason)
-            color = 0xf9e236
-            em = discord.Embed(color=color, title='Banned!')
-            em.description = f'The ban hammer has fell down.'
-            em.set_image(url="https://i.kym-cdn.com/photos/images/newsfeed/001/118/143/5ec.gif")
-            em.add_field(name='User', value=user.name)
-            em.add_field(name='Banned By', value=ctx.author.name)
-            reason = reason if reason is not None else 'No reason given.'
-            em.add_field(name='Reason', value=f"{str(ctx.author)}: {reason}")
-            em.set_thumbnail(url=user.avatar_url)
-            await ctx.send(embed=em)
         except discord.Forbidden:
-            await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
+            return await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
+        color = 0xf9e236
+        em = discord.Embed(color=color, title='Banned!')
+        em.description = f'The ban hammer has fell down.'
+        em.set_image(url="https://i.kym-cdn.com/photos/images/newsfeed/001/118/143/5ec.gif")
+        em.add_field(name='User', value=user.name)
+        em.add_field(name='Banned By', value=ctx.author.name)
+        reason = reason if reason is not None else 'No reason given.'
+        em.add_field(name='Reason', value=f"{str(ctx.author)}: {reason}")
+        em.set_thumbnail(url=user.avatar_url)
+        await ctx.send(embed=em)
+        
 
 
 
