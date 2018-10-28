@@ -261,13 +261,10 @@ class Utility:
             return await ctx.send("No one deleted a message yet, since the bot was last up. Is the channel dead?")
         msgs = []
         for x in snipes:
-            msgs.append(f"""
-__**Sniped Message**__
-**Author:** {str(x['author'])}
-
-{x['content']}""")
+            msgs.append(x['content'])
         pg = Pages(ctx, entries=msgs, per_page=1)
         pg.embed.title = "Sniped Message"
+        pg.embed.set_author(name=str(x['author']), icon_url=x['author'].avatar_url)
         await pg.paginate()
 
     
@@ -285,9 +282,6 @@ __**Sniped Message**__
         msgs = []
         for x in snipes:
             msgs.append(f"""
-__**Sniped Message**__
-**Author:** {str(x['author'])}
-
 **Before**
 {x['before']}
 
@@ -296,6 +290,7 @@ __**Sniped Message**__
 """)
         pg = Pages(ctx, entries=msgs, per_page=1)
         pg.embed.title = "Sniped Edited Message"
+        pg.embed.set_author(name=str(x['author']), icon_url=x['author'].avatar_url)
         await pg.paginate()
 
 
