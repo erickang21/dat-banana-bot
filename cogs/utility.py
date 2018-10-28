@@ -300,7 +300,8 @@ class Utility:
         em = discord.Embed(color=ctx.author.color, title="Server Invites")
         uses = 0
         counter = 0
-        for x in ctx.guild.invites:
+        invites = await ctx.guild.invites()
+        for x in invites:
             counter += 1
             desc += f"""
 **{counter}) {x.code}**
