@@ -555,7 +555,7 @@ async def on_message_delete(message):
         "author": message.author,
         "message": message
     }
-    snipes.append(data)
+    snipes.insert(0, data)
     if await modlog_check(message.guild.id):
         if bot.bulkDeletes.get(message.guild.id):
             return
