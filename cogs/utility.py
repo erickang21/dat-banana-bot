@@ -296,26 +296,24 @@ class Utility:
     @commands.command(aliases=['invites', 'invitelist'])
     async def serverinvites(self, ctx):
         """Get info on all the invites in a server."""
-        desc = ""
-        em = discord.Embed(color=ctx.author.color, title="Server Invites")
+        content = []
         uses = 0
-        counter = 0
         invites = await ctx.guild.invites()
         for x in invites:
-            counter += 1
-            desc += f"""
-**{counter}) {x.code}**
+            content.append(f"""
+**{x.code}**
 **Made By:** {str(x.inviter)}
 **Channel:** #{x.channel.name}
 **Created At:** {str(x.created_at.strftime("%b %d, %Y, %A, %I:%M %p"))}
 **Max Uses:** {x.max_uses or "Unlimited"}
 **Temporary:** {"Yes" if x.temporary else "No"}
 **Total Uses:** {x.uses}\n
-"""
+""")
             uses += x.uses
-        desc += f"**Total Invite Uses: {uses}**"
-        em.description = desc
-        await ctx.send(embed=em)
+        pg = Pages(ctx, entries=content, per_page=1)
+        pg.embed.title = "Server Invites"
+        pg.embed.set_footer(text=f"Total Invite Uses: {uses}")
+        await pg.paginate()
 
     @commands.command(aliases=['finddiscrim', 'disc', 'discriminator'])
     async def discrim(self, ctx, disc: str):
