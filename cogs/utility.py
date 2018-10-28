@@ -245,7 +245,7 @@ class Utility:
         em.add_field(name="Total Uses", value=invite.uses)
         em.add_field(name="Temporary Invite", value="Yes" if invite.temporary else "No")
         em.add_field(name="Created By", value=str(invite.inviter))
-        em.add_field(name="Revoked", "Yes" if invite.revoked else "No")
+        em.add_field(name="Revoked", value="Yes" if invite.revoked else "No")
         await ctx.send(embed=em)
 
     @commands.command()
@@ -260,7 +260,7 @@ class Utility:
             msgs.append(f"""
             __**Sniped Message**__
             **Author:** {str(x["author"])}
-            
+
             {x["content"]}""")
         pg = Pages(ctx, entries=msgs, per_page=1)
         await pg.paginate()
