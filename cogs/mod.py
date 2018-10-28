@@ -931,7 +931,11 @@ Think of it as a server-wide pins channel.
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members = True)
-    async def hackban(self, ctx, id, *, reason=None):
+    async def hackban(self, ctx, id : int, *, reason=None):
+        if ctx.guild.get_member(id):
+            return await ctx.send("Senpai, hackban is to ban people **not in the server.** If you wanna ban someone in the server, run `*ban @user`.")
+        if not ctx.guild.me.guild_permissions.kick_members:
+            return await ctx.send("Oops! I don't have enough permissions to use the boot.")
         try:
             id = int(id)
         except ValueError:
