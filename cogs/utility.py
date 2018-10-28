@@ -251,7 +251,10 @@ class Utility:
     @commands.command()
     async def snipe(self, ctx, channel: str = None):
         """Gets the last deleted message in the channel."""
-        channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) or ctx.channel
+        if not channel:
+            channel = ctx.channel
+        else:
+            channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) 
         try:
             snipes = self.bot.snipes[str(channel.id)]
         except KeyError:
@@ -264,13 +267,17 @@ __**Sniped Message**__
 
 {x['content']}""")
         pg = Pages(ctx, entries=msgs, per_page=1)
+        pg.embed.title = "Sniped Message"
         await pg.paginate()
 
     
     @commands.command()
     async def editsnipe(self, ctx, channel: int = None):
         """Gets the messages that were edited since the bot's last restart."""
-        channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) or ctx.channel
+        if not channel:
+            channel = ctx.channel
+        else:
+            channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) 
         try:
             snipes = self.bot.editsnipes[str(channel.id)]
         except KeyError:
@@ -288,6 +295,7 @@ __**Sniped Message**__
 {x['after']}
 """)
         pg = Pages(ctx, entries=msgs, per_page=1)
+        pg.embed.title = "Sniped Edited Message"
         await pg.paginate()
 
 
