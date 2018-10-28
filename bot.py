@@ -593,8 +593,7 @@ async def on_command_error(ctx, error):
         for x in error.missing_perms:
             missing += f"{utils.capitalize(x)} \n"
         
-        em.description = f'{bot.get_emoji(430853687754358788)} Uh-oh, not enough permissions! You are missing the following permissions required to run this command:\n\n{missing}'
-        return await ctx.send(embed=em)
+        return await ctx.send(f"{bot.get_emoji(506168446174887956)} You don't have permission to run this command! Maybe try getting these permissions:\n\n{missing}")
     elif isinstance(error, commands.CommandOnCooldown):
         retry_time = error.retry_after
         if retry_time < 60:
@@ -605,16 +604,14 @@ async def on_command_error(ctx, error):
             actual_time = f"{int(retry_time / 3600)} hours"
         elif retry_time >= 86400:
             actual_time = f"{int(retry_time / 86400)} days"
-        em.description = f'ACK. The command is on cooldown! You can use it again in **{actual_time}**.'
-        return await ctx.send(embed=em)
+
+        return await ctx.send(f"BAKA! You're using this command too fast. Don't make me repeat myself, and wait for **{actual_time}**.")
     elif isinstance(error, commands.CommandNotFound):
         pass
     else:
         log = bot.get_channel(445332002942484482)
         traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
-        emb = discord.Embed(color=discord.Color(value=0xf44e42), title="Welp. This is awkward...")
-        emb.description = "It shouldn't end this way. :cry:\n\nAn unknown issue has occurred. I have reported the error to the devs, who will check it out. Hang in there!\n\nNeed extra help? Be sure to join our support server!\nhttps://discord.gg/3Nxb7yZ"
-        await ctx.send(embed=emb)
+        await ctx.send("NANI?! An unexpected error occurred when trying to run the command. You did nothing wrong. Let me show this to my senpai and hope that he fixes it. Meanwhile, join the support server and see what's poppin'! \n\nhttps://discord.gg/3Nxb7yZ")
         embed = discord.Embed(color=discord.Color(value=0xf44e42), title="Error Report")
         embed.set_author(name=f"{str(ctx.author)} (ID: {ctx.author.id})", icon_url=ctx.author.avatar_url)
         embed.add_field(name="Server", value=ctx.guild.name)
