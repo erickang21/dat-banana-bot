@@ -249,8 +249,9 @@ class Utility:
         await ctx.send(embed=em)
 
     @commands.command()
-    async def snipe(self, ctx, channel: int = None):
-        channel = self.bot.get_channel(channel) or ctx.channel
+    async def snipe(self, ctx, channel: str = None):
+        """Gets the last deleted message in the channel."""
+        channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) or ctx.channel
         try:
             snipes = self.bot.snipes[str(channel.id)]
         except KeyError:
@@ -268,7 +269,8 @@ __**Sniped Message**__
     
     @commands.command()
     async def editsnipe(self, ctx, channel: int = None):
-        channel = self.bot.get_channel(channel) or ctx.channel
+        """Gets the messages that were edited since the bot's last restart."""
+        channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) or ctx.channel
         try:
             snipes = self.bot.editsnipes[str(channel.id)]
         except KeyError:
@@ -288,6 +290,14 @@ __**Sniped Message**__
         pg = Pages(ctx, entries=msgs, per_page=1)
         await pg.paginate()
 
+
+    @commands.command(aliases=['finddiscrim', 'disc', 'discriminator'])
+    async def discrim(self, ctx, disc: str):
+        """Find users that have the discriminator given."""
+        users = [str(x) for x in self.bot.users if x.discriminator == disc]
+        pg = Pages(ctx, entries=users, per_page=10)
+        pg.embed.title = f"Users with Discriminator: {disc}"
+        await pg.paginate()
 
 
     @commands.command(aliases=['math', 'calculate'])
