@@ -234,7 +234,7 @@ class Utility:
     @commands.command(aliases=["iinfo"])
     async def inviteinfo(self, ctx, invite: str):
         try:
-            info = await self.bot.get_invite(invite.strip("https://").strip("http://"))
+            info = await self.bot.get_invite(invite)
         except:
             return await ctx.send("NANI? The invite you gave is invalid.")
         em = discord.Embed(color=ctx.author.color, title="Invite Information")
