@@ -168,9 +168,24 @@ async def on_message(message):
             await bot.db.afk.update_one({"id": message.author.id}, {"$set": {"status": False}})
             await message.channel.send(f"Oh hey {message.author.mention}, welcome back! For your convenience I cleared your AFK status.")
     if re.match(f"^<@!?{bot.user.id}>$", message.content):
-        await message.channel.send(f"{bot.get_emoji(430853515217469451)} BAH! Why you :regional_indicator_p:ing me? Anyway, I'm dat banana bot, so nice to meet you. I do a LOT of kewl stuff, like music, starboard, welcome/leave messages, Canvas, and so much more! All it takes is `*help` to see the powers I got! {bot.get_emoji(430853629570711562)}")
+        msg = f"""
+{bot.get_emoji(505725404695232512)} **What's poppin?**
+
+You pinged dat zero two bot, and that *should* be me, so I answered.
+
+__Features__
+:star: Starboard
+:wave: Welcome/leave/ban messages
+{bot.get_emoji(493575154241110021)} Moderation
+{bot.get_emoji(356789385875816448)} Fun
+:pencil: Image Manipulation
+:video_game: Game Stats for Clash Royale, Clash of Clans, and League of Legends
+{bot.get_emoji(469456375882448896)} Utility
+:musical_note: Music (Might be broken)
+        """
+        await message.channel.send(msg)
     if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discordapp\.com/invite)\S+", message.content):
-        if message.author.guild_permissions.manage_guild:
+        if message.author.guild_permissions.manage_guild or message.author.guild_permissions.administrator or message.author.id == message.guild.owner.id:
             pass
         if message.author.id == bot.user.id:
             pass
