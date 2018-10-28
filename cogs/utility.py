@@ -293,6 +293,28 @@ class Utility:
         pg.embed.set_author(name=str(x['author']), icon_url=x['author'].avatar_url)
         await pg.paginate()
 
+    @commands.command(aliases=['invites', 'invitelist'])
+    async def serverinvites(self, ctx):
+        """Get info on all the invites in a server."""
+        desc = ""
+        em = discord.Embed(color=ctx.author.color, title="Server Invites")
+        uses = 0
+        counter = 0
+        for x in ctx.guild.invites:
+            counter += 1
+            desc += f"""
+**{counter}) {x.code}**
+**Made By:** {str(x.inviter)}
+**Channel:** #{x.channel.name}
+**Created At:** {str(x.created_at.strftime("%b %d, %Y, %A, %I:%M %p"))}
+**Max Uses:** {x.max_uses or "Unlimited"}
+**Temporary:** {"Yes" if x.temporary else "No"}
+**Total Uses:** {x.uses}\n
+"""
+            uses += x.uses
+        desc += f"**Total Invite Uses: {uses}**"
+        em.description = desc
+        await ctx.send(embed=em)
 
     @commands.command(aliases=['finddiscrim', 'disc', 'discriminator'])
     async def discrim(self, ctx, disc: str):
@@ -1037,7 +1059,7 @@ Invalid math expression."""
         roles = ', '.join(roles)
         textchannels = len(guild.text_channels)
         voicechannels = len(guild.voice_channels)
-        time = str(guild.created_at.strftime("%b %m, %Y, %A, %I:%M %p"))
+        time = str(guild.created_at.strftime("%b %d, %Y, %A, %I:%M %p"))
         try:
             ban_count = len(await guild.bans())
         except discord.Forbidden:
