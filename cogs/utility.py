@@ -231,6 +231,25 @@ class Utility:
         else:
             return match
 
+    @commands.command()
+    async def snipe(self, ctx, channel: discord.Channel = None):
+        channel = channel or ctx.channel
+        try:
+            snipes = self.bot.snipes[str(channel.id)]
+        except KeyError:
+            return await ctx.send("No one deleted a message yet, since the bot was last up. Is the channel dead?")
+        msgs = []
+        for x in snipes:
+            msgs.append(f"""
+            __**Sniped Message**__
+            **Author:** {str(x["author"])}
+
+            {x["content"]}
+            """)
+        pg = Pages(ctx, entries=msgs, per_page=1)
+        await pg.paginate()
+
+
 
     @commands.command(aliases=['math', 'calculate'])
     async def calc(self, ctx, *, expression):

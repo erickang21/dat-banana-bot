@@ -49,6 +49,7 @@ bot.logger = logger
 bot.config = Box(x)
 bot.edits = {}
 bot.bulkDeletes = {}
+bot.snipes = {}
 utils = Utils(bot)
 with open("data/apikeys.json") as f:
     x = json.load(f)
@@ -545,6 +546,16 @@ async def on_raw_bulk_message_delete(payload):
 async def on_message_delete(message):
     if message is None:
         return
+    try:
+        snipes = bot.snipes[str(message.channel.id)]
+    except:
+        snipes = bot.snipes[str(message.channel.id)] = []
+    data = {
+        "content": message.content or message.embeds[0].description,
+        "author": message.author,
+        "message": message
+    }
+    snipes.append(data)
     if await modlog_check(message.guild.id):
         if bot.bulkDeletes.get(message.guild.id):
             return
