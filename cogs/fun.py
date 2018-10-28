@@ -172,6 +172,7 @@ class fun:
         downvotes = data.downs
         em = discord.Embed(color=ctx.author.color, title=title)
         em.set_image(url=img)
+        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.set_footer(text=f"👍{upvotes} | 👎 {downvotes}")
         await ctx.send(embed=em)
 
