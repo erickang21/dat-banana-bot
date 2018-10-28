@@ -300,6 +300,7 @@ class Utility:
         users = [str(x) for x in self.bot.users if x.discriminator == disc]
         pg = Pages(ctx, entries=users, per_page=10)
         pg.embed.title = f"Users with Discriminator: {disc}"
+        pg.embed.set_footer(text=f"Total: {len(users)} users")
         await pg.paginate()
 
 
