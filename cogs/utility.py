@@ -296,9 +296,12 @@ class Utility:
     @commands.command(aliases=['invites', 'invitelist'])
     async def serverinvites(self, ctx):
         """Get info on all the invites in a server."""
+        await ctx.trigger_typing()
         content = []
         uses = 0
         invites = await ctx.guild.invites()
+        for x in invites:
+             uses += x.uses
         for x in invites:
             content.append(f"""
 **{x.code}**
@@ -308,8 +311,10 @@ class Utility:
 **Max Uses:** {x.max_uses or "Unlimited"}
 **Temporary:** {"Yes" if x.temporary else "No"}
 **Total Uses:** {x.uses}\n
+
+**Total Uses (Of all invites): {uses}**
 """)
-            uses += x.uses
+           
         pg = Pages(ctx, entries=content, per_page=1)
         pg.embed.title = "Server Invites"
         pg.embed.set_footer(text=f"Total Invite Uses: {uses}")
