@@ -10,6 +10,7 @@ import idioticapi
 from discord.ext import commands
 import base64
 from .utils.utils import Utils
+import box
 
 # class Connect4:
 #     def __init__(self, bot):
@@ -161,15 +162,19 @@ class fun:
     async def meme(self, ctx):
         """Get a random meme. The stuff of life."""
         await ctx.trigger_typing()
-        r = await self.bot.session.get("https://api.reddit.com/u/kerdaloo/m/dankmemer/top/.json?sort=top&t=day&limit=500")
+        r = await self.bot.session.get("https://www.reddit.com/r/dankmemes/top.json?sort=top&t=day&limit=500")
         r = await r.json()
-        meme = r['data']['children'][random.randint(0, len(r['data']['children']) - 1)]['data']
-        meme_img = meme['preview']['images'][0]['source']['url']
-        meme_title = meme['title']
-        em = discord.Embed(color=discord.Color(value=0x00ff00), title=meme_title)
-        em.set_image(url=meme_img)
-        em.set_footer(text=ctx.author.name, icon_url=ctx.author.avatar_url)
+        r = box.Box(r)
+        data = random.choice(r.data.children).data
+        img = data.url
+        title = data.title
+        upvotes = data.ups
+        downvotes = data.downs
+        em = discord.Embed(color=ctx.author.color, title=title)
+        em.set_image(url=img)
+        em.set_footer(text=f"👍{upvotes} | 👎 {downvotes}")
         await ctx.send(embed=em)
+
             
 
     @commands.command()
