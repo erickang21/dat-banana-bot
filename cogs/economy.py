@@ -216,7 +216,7 @@ If you choose to re-enable economy in the future, the data will not be recovered
                 time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
             else:
                 time_left = f"{minute}:{Utils.format_time(second)}"
-            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
+            return await ctx.send(f"BAKA! You're using this command too fast. Don't make me repeat myself, and wait for **{time_left}**.")
         async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
             resp = await resp.json()
             if resp['voted'] == 0:
@@ -265,7 +265,7 @@ __What to do now?__
                         await self.place_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
                         return await ctx.send(random.choice(responses))
                 elif reaction.emoji == '❌':
-                    return await ctx.send("ALRIGHT! That's what I'm talking about. The link is above, now go and show me some love! :D")
+                    return await ctx.send("Thank you so much! Upvote me here :)\n\nhttps://discordbots.org/bot/388476336777461770/vote")
             else:
                 number = random.randint(800, 1000)
                 guild_name = await Utils.clean_text(ctx, ctx.guild.name)
