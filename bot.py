@@ -50,6 +50,7 @@ bot.config = Box(x)
 bot.edits = {}
 bot.bulkDeletes = {}
 bot.snipes = {}
+bot.editsnipes = {}
 utils = Utils(bot)
 with open("data/apikeys.json") as f:
     x = json.load(f)
@@ -274,6 +275,16 @@ async def on_command(ctx):
 async def on_message_edit(before, after):
     if before is None or after is None:
         return
+    try:
+        snipes = bot.editsnipes[str(before.channel.id)]
+    except:
+        snipes = bot.editsnipes[str(before.channel.id)] = []
+    data = {
+        "before": before.content or before.embeds[0].description,
+        "author": before.author,
+        "after": after.content or after.embeds[0].description
+    }
+    snipes.insert(0, data)
     pre = await get_prefix_as_str(after)
     if after.content.startswith(pre):
         ctx = await bot.get_context(after, cls=DatContext)

@@ -265,6 +265,29 @@ __**Sniped Message**__
         pg = Pages(ctx, entries=msgs, per_page=1)
         await pg.paginate()
 
+    
+    @commands.command()
+    async def editsnipe(self, ctx, channel: int = None):
+        channel = self.bot.get_channel(channel) or ctx.channel
+        try:
+            snipes = self.bot.editsnipes[str(channel.id)]
+        except KeyError:
+            return await ctx.send("No one deleted a message yet, since the bot was last up. Is the channel dead?")
+        msgs = []
+        for x in snipes:
+            msgs.append(f"""
+__**Sniped Message**__
+**Author:** {str(x['author'])}
+
+**Before**
+{x['before']}
+
+**After**
+{x['after']}
+""")
+        pg = Pages(ctx, entries=msgs, per_page=1)
+        await pg.paginate()
+
 
 
     @commands.command(aliases=['math', 'calculate'])
