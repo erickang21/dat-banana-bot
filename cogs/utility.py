@@ -261,7 +261,7 @@ class Utility:
             return await ctx.send("No one deleted a message yet, since the bot was last up. Is the channel dead?")
         msgs = []
         for x in snipes:
-            msgs.append(f"**Sent By:** {str(x['author'])}\n\n{x['content'}")
+            msgs.append(f"**Sent By:** {str(x['author'])}\n\n{x['content']}")
         pg = Pages(ctx, entries=msgs, per_page=1)
         pg.embed.title = "Sniped Message"
 
