@@ -159,6 +159,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    prefix = await get_prefix_as_str(message)
     x = await bot.db.blacklist.find_one({"id": message.author.id})
     if not x or not x.get("status", False):
         pass
@@ -184,6 +185,16 @@ __Features__
 :video_game: Game Stats for Clash Royale, Clash of Clans, and League of Legends
 {bot.get_emoji(469456375882448896)} Utility
 :musical_note: Music (Might be broken)
+:spy: Snipe and Editsnipe. Nowhere to hide!
+:pencil2: Customize me by disabling commands you want.
+:moneybag: Per-server economy that can be disabled/enabled according to your needs.
+:rofl: Memes. Memes. The stuff of life.
+
+And so much more. 
+
+My prefix for this server is set to `{prefix}`. Run the `{prefix}prefix` command to change it! Also, don't forget to check out all my commands using `{prefix}help`.
+
+Have a gucci day! {bot.get_emoji(485250850659500044)}
         """
         await message.channel.send(msg)
     if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discordapp\.com/invite)\S+", message.content):
@@ -422,10 +433,40 @@ async def on_guild_join(guild):
     em.set_footer(text=f"ID: {guild.id}")
     em.set_thumbnail(url=guild.icon_url)
     await lol.send(embed=em)
-    try:
-        await guild.channels[0].send(f"Hiya, guys in **{guild.name}**! Thanks for welcoming me! I am dat banana bot, a gud Discord bot. Try me out by typing *help! Here's a rundown of what I can do:\n-Music\n-Starboard\n-Custom Prefix\n-Welcome/Leave/Ban Messages\n-A stack of canvas commands.\n-Statistics for CR, COC and LoL\n\nTo get the most out of me, I do recommend giving me **Administrator** permissions.\n\nHave a nice day! :blush:")
-    except:
-        pass
+    msg = f"""
+What's poppin', lovely citizens in **{guild.name}**?
+
+I'm **dat zero two bot**, a lovely bot with everything you ever need out of a Discord bot.
+
+In fact, I'm so lovely, I'll introduce myself right now.
+
+__Features__
+:star: Starboard
+:wave: Welcome/leave/ban messages
+{bot.get_emoji(493575154241110021)} Moderation
+{bot.get_emoji(356789385875816448)} Fun
+:pencil: Image Manipulation
+:video_game: Game Stats for Clash Royale, Clash of Clans, and League of Legends
+{bot.get_emoji(469456375882448896)} Utility
+:musical_note: Music (Might be broken)
+:spy: Snipe and Editsnipe. Nowhere to hide!
+:pencil2: Customize me by disabling commands you want.
+:moneybag: Per-server economy that can be disabled/enabled according to your needs.
+:rofl: Memes. Memes. The stuff of life.
+
+Lastly, don't forget to join the bot's support server for...support, and for chilling!
+
+https://discord.gg/3Nxb7yZ
+
+Have a gucci day! {bot.get_emoji(485250850659500044)}
+    """
+
+    for x in guild.channels:
+        try:
+            await x.send(msg)
+            break
+        except:
+            continue
 
 @bot.event
 async def on_guild_remove(guild):
