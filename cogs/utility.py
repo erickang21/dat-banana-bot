@@ -285,11 +285,11 @@ class Utility:
 **Sent By:** {str(x['author'])}
 
 **Before**
-{str(x['before_message'].created_at.strftime('%A, %b %d, %Y %I:%M %p'))}
+**Sent At:** {str(x['before_message'].created_at.strftime('%A, %b %d, %Y %I:%M %p'))}
 {x['before']}
 
 **After**
-{str(x['after_message'].created_at.strftime('%A, %b %d, %Y %I:%M %p'))}
+**Sent At:** {str(x['after_message'].created_at.strftime('%A, %b %d, %Y %I:%M %p'))}
 {x['after']}
 """)
         pg = Pages(ctx, entries=msgs, per_page=1)

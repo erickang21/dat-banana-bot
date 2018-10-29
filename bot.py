@@ -286,6 +286,7 @@ async def on_message_edit(before, after):
         "before_message": before,
         "after_message": after
     }
+    if len(snipes) >= 10: snipes.remove(snipes[-1])
     snipes.insert(0, data)
     pre = await get_prefix_as_str(after)
     if after.content.startswith(pre):
@@ -568,6 +569,7 @@ async def on_message_delete(message):
         "author": message.author,
         "message": message
     }
+    if len(snipes) >= 10: snipes.remove(snipes[-1])
     snipes.insert(0, data)
     if await modlog_check(message.guild.id):
         if bot.bulkDeletes.get(message.guild.id):
