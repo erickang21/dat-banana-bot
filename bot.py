@@ -282,7 +282,9 @@ async def on_message_edit(before, after):
     data = {
         "before": before.content or before.embeds[0].description,
         "author": before.author,
-        "after": after.content or after.embeds[0].description
+        "after": after.content or after.embeds[0].description,
+        "before_message": before,
+        "after_message": after
     }
     snipes.insert(0, data)
     pre = await get_prefix_as_str(after)

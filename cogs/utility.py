@@ -261,7 +261,7 @@ class Utility:
             return await ctx.send("No one deleted a message yet, since the bot was last up. Is the channel dead?")
         msgs = []
         for x in snipes:
-            msgs.append(f"**Sent By:** {str(x['author'])}\n\n{x['content']}")
+            msgs.append(f"**Sent By:** {str(x['author'])}\n\n{x['content']}\n\n**Sent At:** {str(x['message'].created_at.strftime('%A, %b %d, %Y %I:%M %p'))}")
         pg = Pages(ctx, entries=msgs, per_page=1)
         pg.embed.title = "Sniped Message"
 
@@ -285,14 +285,15 @@ class Utility:
 **Sent By:** {str(x['author'])}
 
 **Before**
+{str(x['before_message'].created_at.strftime('%A, %b %d, %Y %I:%M %p'))}
 {x['before']}
 
 **After**
+{str(x['after_message'].created_at.strftime('%A, %b %d, %Y %I:%M %p'))}
 {x['after']}
 """)
         pg = Pages(ctx, entries=msgs, per_page=1)
         pg.embed.title = "Sniped Edited Message"
-        pg.embed.set_author(name=str(x['author']), icon_url=x['author'].avatar_url)
         await pg.paginate()
 
     @commands.command(aliases=['invites', 'invitelist'])
