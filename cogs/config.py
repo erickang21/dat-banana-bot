@@ -37,35 +37,35 @@ Note that this only shows the config, but does not support editing it.\n
         """
 
         if not antilink:
-            conf += "**Antilink**\nStatus: **Disabled**"
+            conf += "**Antilink**\nStatus: **Disabled**\n"
         elif not antilink.get("status", ""):
-            conf += "**Antilink**\nStatus: **Disabled**"
+            conf += "**Antilink**\nStatus: **Disabled**\n"
         else:
             conf += "**Antilink**\nStatus: **Enabled**\n"
 
         if not autorole:
-            conf += "**Autorole**\nStatus: **Disabled**"
+            conf += "**Autorole**\nStatus: **Disabled**\n"
         if not autorole.get("role"):
-            conf += "**Autorole**\nStatus: **Disabled**"
+            conf += "**Autorole**\nStatus: **Disabled**\n"
         else:
-            conf += f"**Autorole**\nStatus: **Enabled**\nRole: **{autorole.get('role')}**"
+            conf += f"**Autorole**\nStatus: **Enabled**\nRole: **{autorole.get('role')}**\n"
 
         if not blacklistcmd:
-            conf += "**Disabled Commands**\nCommands: **None**"
+            conf += "**Disabled Commands**\nCommands: **None**\n"
         else:
-            conf += f"**Disabled Commands**\nCommands: {', '.join(blacklistcmd.get('cmds'))}"
+            conf += f"**Disabled Commands**\nCommands: {', '.join(blacklistcmd.get('cmds'))}\n"
 
         if not economy.get("registered"):
-            conf += "**Economy**\nStatus: **Disabled**"
+            conf += "**Economy**\nStatus: **Disabled**\n"
         else:
-            conf += f"**Economy**\nStatus: **Enabled**\nRegistered Members: **{len(economy.get('users'))}**"
+            conf += f"**Economy**\nStatus: **Enabled**\nRegistered Members: **{len(economy.get('users'))}**\n"
 
         if not modlog:
-            conf += "**Mod Logs**\nStatus: **Disabled**"
+            conf += "**Mod Logs**\nStatus: **Disabled**\n"
         if not modlog.get("channel"):
-            conf += "**Mod Logs**\nStatus: **Disabled**"
+            conf += "**Mod Logs**\nStatus: **Disabled**\n"
         else:
-            conf += f"**Mod Logs**\nStatus: **Enabled**\nChannel: <#{modlog.get('channel')}>"
+            conf += f"**Mod Logs**\nStatus: **Enabled**\nChannel: <#{modlog.get('channel')}>\n"
         em = discord.Embed(color=ctx.author.color, title="Guild Configuration")
         em.description = conf
         await ctx.send(embed=em)
