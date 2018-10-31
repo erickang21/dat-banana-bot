@@ -81,7 +81,7 @@ Note that this only shows the config, but does not support editing it.\n
         else:
             conf += f"**Starboard**\nStatus: **Enabled**\nChannel: <#{starboard.get('channel')}>\n\n"
 
-        conf += "__Messages__"
+        conf += "__Messages__\n\n"
 
         if not welcome:
             conf += "**Welcome**\nStatus: **Disabled**\n\n"
