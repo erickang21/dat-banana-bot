@@ -66,6 +66,44 @@ Note that this only shows the config, but does not support editing it.\n
             conf += "**Mod Logs**\nStatus: **Disabled**\n\n"
         else:
             conf += f"**Mod Logs**\nStatus: **Enabled**\nChannel: <#{modlog.get('channel')}>\n\n"
+        
+        if not prefix:
+            conf += "**Prefix**\nPrefix: `*`\n\n"
+        if not prefix.get("prefix"):
+            conf += "**Prefix**\nPrefix: `*`\n\n"
+        else:
+            conf += f"**Prefix**\nPrefix: `{prefix.get('prefix')}`\n\n"
+
+        if not starboard:
+            conf += "**Starboard**\nStatus: **Disabled**\n\n"
+        if not starboard.get("channel"):
+            conf += "**Starboard**\nStatus: **Disabled**\n\n"
+        else:
+            conf += f"**Starboard**\nStatus: **Enabled**\nChannel: <#{starboard.get('channel')}>\n\n"
+
+        conf += "__Messages__"
+
+        if not welcome:
+            conf += "**Welcome**\nStatus: **Disabled**\n\n"
+        if not welcome.get("channel"):
+            conf += "**Welcome**\nStatus: **Disabled**\n\n"
+        else:
+            conf += f"**Welcome**\nStatus: **Enabled**\nChannel: <#{welcome.get('channel')}>\nMessage: {welcome.get('message')}\n\n"
+        
+        if not leave:
+            conf += "**Leave**\nStatus: **Disabled**\n\n"
+        if not leave.get("channel"):
+            conf += "**Leave**\nStatus: **Disabled**\n\n"
+        else:
+            conf += f"**Leave**\nStatus: **Enabled**\nChannel: <#{leave.get('channel')}>\nMessage: {leave.get('message')}\n\n"
+
+        if not ban:
+            conf += "**Ban**\nStatus: **Disabled**\n\n"
+        if not ban.get("channel"):
+            conf += "**Ban**\nStatus: **Disabled**\n\n"
+        else:
+            conf += f"**Ban**\nStatus: **Enabled**\nChannel: <#{ban.get('channel')}>\nMessage: {ban.get('message')}\n\n"
+
         em = discord.Embed(color=ctx.author.color, title="Guild Configuration")
         em.description = conf
         await ctx.send(embed=em)
