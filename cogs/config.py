@@ -53,7 +53,7 @@ Note that this only shows the config, but does not support editing it.\n
         if not blacklistcmd:
             conf += "**Disabled Commands**\nCommands: **None**\n\n"
         else:
-            conf += f"**Disabled Commands**\nCommands: {', '.join(blacklistcmd.get('cmds')) if blacklistcmd.get('cmds') else "None"}\n\n"
+            conf += f"**Disabled Commands**\nCommands: {', '.join(blacklistcmd.get('cmds')) if blacklistcmd.get('cmds') else 'None'}\n\n"
 
         if not economy.get("registered"):
             conf += "**Economy**\nStatus: **Disabled**\n\n"
