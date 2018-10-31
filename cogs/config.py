@@ -15,6 +15,62 @@ class Config:
     def __init__(self, bot):
         self.bot = bot
 
+    
+    @commands.command(aliases=['conf'])
+    async def config(self, ctx):
+        """Show my configuration on your server."""
+        antilink = await self.bot.db.antilink.find_one({"id": ctx.guild.id})
+        autorole = await self.bot.db.autorole.find_one({"id": str(ctx.guild.id)})
+        ban = await self.bot.db.ban.find_one({"id": str(ctx.guild.id)})
+        blacklistcmd = await self.bot.db.blacklistcmd.find_one({"id": ctx.guild.id})
+        economy = await self.bot.db.economy.find_one({"id": ctx.guild.id})
+        leave = await self.bot.db.leave.find_one({"id": str(ctx.guild.id)})
+        economy = await self.bot.db.economy.find_one({"id": ctx.guild.id})
+        modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
+        prefix = await self.bot.db.prefix.find_one({"id": str(ctx.guild.id)})
+        starboard = await self.bot.db.starboard.find_one({"id": str(ctx.guild.id)})
+        welcome = await self.bot.db.welcome.find_one({"id": str(ctx.guild.id)})
+        conf = ""
+        conf += f"""
+This is my configuration for this server (**{ctx.guild.name}**). 
+Note that this only shows the config, but does not support editing it.\n
+        """
+
+        if not antilink:
+            conf += "**Antilink**\nStatus: **Disabled**"
+        elif not antilink.get("status", ""):
+            conf += "**Antilink**\nStatus: **Disabled**"
+        else:
+            conf += "**Antilink**\nStatus: **Enabled**\n"
+
+        if not autorole:
+            conf += "**Autorole**\nStatus: **Disabled**"
+        if not autorole.get("role"):
+            conf += "**Autorole**\nStatus: **Disabled**"
+        else:
+            conf += f"**Autorole**\nStatus: **Enabled**\nRole: **{autorole.get('role')}**"
+
+        if not blacklistcmd:
+            conf += "**Disabled Commands**\nCommands: **None**"
+        else:
+            conf += f"**Disabled Commands**\nCommands: {', '.join(blacklistcmd.get('cmds'))}"
+
+        if not economy.get("registered"):
+            conf += "**Economy**\nStatus: **Disabled**"
+        else:
+            conf += f"**Economy**\nStatus: **Enabled**\nRegistered Members: **{len(economy.get('users'))}**"
+
+        if not modlog:
+            conf += "**Mod Logs**\nStatus: **Disabled**"
+        if not modlog.get("channel"):
+            conf += "**Mod Logs**\nStatus: **Disabled**"
+        else:
+            conf += f"**Mod Logs**\nStatus: **Enabled**\nChannel: <#{modlog.get('channel')}>"
+        em = discord.Embed(color=ctx.author.color, title="Guild Configuration")
+        em.description = conf
+        await ctx.send(embed=em)
+
+        
 
     @commands.command(aliases=['blcmd', 'disablecmd'])
     @commands.guild_only()
@@ -34,7 +90,7 @@ class Config:
             return await ctx.send(embed=em)
         if (action and not cmd) or (action and cmd == "help"):
             bcmd_help = """
-__**Blacklistcmd Help**__
+****Blacklistcmd Help**__
 
 This command disables a command for the server. It can also show disabled commands and re-enable a command.
 Note that you cannot disable this command. 
