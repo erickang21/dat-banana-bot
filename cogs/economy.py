@@ -92,6 +92,11 @@ class Economy:
                 return 300 - diff
             else:
                 return False
+        elif cmd == "pay_cooldown":
+            if diff < 600:
+                return 600 - diff
+            else:
+                return False
 
     @commands.command()
     @commands.has_permissions(manage_guild = True)
@@ -513,6 +518,58 @@ __What to do now?__
                 await self.add_points(ctx.guild, user, points)
                 await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
                 await self.place_on_cooldown(ctx.guild, ctx.author, "rob_cooldown")
+
+    @commands.command(alises=['donate'])
+    #@commands.cooldown(1, 300, BucketType.user)
+    async def pay(self, ctx, user: discord.Member, points: int):
+        """Donate credits to someone else!"""
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        check = await self.is_on_cooldown(ctx.guild, ctx.author, "pay_cooldown")
+        if check:
+            minute, second = divmod(check, 60)
+            hour, minute = divmod(minute, 60)
+            if hour:
+                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
+            else:
+                time_left = f"{minute}:{Utils.format_time(second)}"
+            return await ctx.send(f"Well, if you're rich, don't blow all your money! Wait a bit.\n\n:timer: **Time Left:**\n{time_left}")
+
+        em = discord.Embed(color=0x00ff00, title='Current Balance')
+        try:
+            you = list(filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        try:
+            other = list(
+                filter(lambda x: x['id'] == user.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"**{user.name}** doesn't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        else:      
+            try:
+                points = int(points)
+            except ValueError:
+                return await ctx.send("Please enter a valid number to rob.")
+            if points <= 0:
+                return await ctx.send("I see you trying to lowkey rob them! Nice try.")
+            if points > you['points']:
+                return await ctx.send(f"Can't donate more than you have. ¯\_(ツ)_/¯ You can donate up to **{you['points']}** :banana:.")
+            await self.add_points(ctx.guild, ctx.author, -points)
+            await self.add_points(ctx.guild, user, points)
+            await ctx.send(f"Thanks for being generous! **{user.name}** now has **{points}** :banana: more, thanks to you. :thumbsup:")
+            await self.place_on_cooldown(ctx.guild, ctx.author, "pay_cooldown")
 
     @commands.command(aliases=['lb'])
     async def leaderboard(self, ctx):
