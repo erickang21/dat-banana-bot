@@ -233,7 +233,7 @@ class fun:
 
     @commands.command()
     async def guess(self, ctx, number):
-        """Guess a number between 1 and 1000!"""
+        """Guess a number between 1 and 100!"""
         try:
             number = int(number)
         except ValueError:
