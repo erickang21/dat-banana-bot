@@ -75,8 +75,8 @@ Welcome to the interactive reaction role system.
 Setting up your roles is simple! React below to the emoji and the bot will give you the corresponding role.
 
 **__Roles__**\n\n"""
-                            for emoji, role in data:
-                                desc += f"{bot.get_emoji(int(emoji))} {role}\n"
+                            for x in data:
+                                desc += f"{self.bot.get_emoji(int(x))} {data[x]}\n"
                             em.description = desc
                             await chan.send(embed=em)
             elif x.content.lower() == "cancel":
