@@ -86,6 +86,13 @@ class Utils:
             return time
 
 
+    
+    def format_channel(self, string):
+        """Return the channel object from the channel mention string."""
+        channel = string.strip("<#").strip(">")
+        chan = int(channel)
+        return self.bot.get_channel(chan)
+
     def mix(self, word1, word2):
         """Mix two words together."""
         return word1[:int(len(word1) / 2)] + word2[int(len(word2) / 2):]

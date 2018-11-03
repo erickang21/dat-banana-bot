@@ -14,8 +14,80 @@ from .utils.utils import Utils
 class Config:
     def __init__(self, bot):
         self.bot = bot
-
+        self.utils = Utils(bot)
     
+    @commands.command(aliases=['reactrole', 'rroles'])
+    async def reactionroles(self, ctx):
+        """Set up reaction roles for your server."""
+        await ctx.send("Welcome to the interactive setup for reaction roles!\n\nLet's get started. Remember, type `cancel` at any time to exit the process.", edit=False)
+        await ctx.send("Which channel do you want me to send the reaction role messages in? Make sure I have permissions to send messages there! (Timing out in 60 seconds)", edit=False)
+        repeat1 = True
+        while repeat1:
+            x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            if x.content == "cancel": return await ctx.send("I have cancelled the process. Until next time!", edit=False)
+            chan = self.utils.format_channel(x.content)
+            if not chan:
+                await ctx.send("This channel doesn't exist.")
+            if not chan.permissions_for(ctx.guild.me).send_messages:
+                await ctx.send("I don't have permissions to send messages in that channel! Let's try that again.", edit=False)
+            else:
+                repeat1 = False
+        
+        await ctx.send("Awesome! Let's continue." , edit=False)
+        repeat2 = True
+        counter = 0
+        data = {}
+        while repeat2:
+            await ctx.send("Enter the emoji to use. This emoji will show up on the menu and will be used as the reaction emoji. **Please note, only custom emojis are supported.**")
+            x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            #default_emoji_match = r":[a-zA-Z]+:"
+            custom_emoji_match = r"<:[a-zA-Z]+:[0-9]+>"
+            if re.match(custom_emoji_match, x.content):
+                emoji_id = int(re.findall(r"[0-9]+", x.content)[0])
+                emoji = self.bot.get_emoji(emoji_id)
+                if not emoji:
+                    await ctx.send("Invalid emoji.")
+                await ctx.send(f"This has been detected as a **custom emoji.** If it appears correctly here, it should display correctly in the message: {x.content}\n\nIf you are unsatisfied, you can type `skip` **on the next prompt**, to ignore this entry.", edit=False)
+                await ctx.send("Please enter the name of the role to assign the emoji to. Enter `skip` to skip this emoji and re-enter one.", edit=False)
+                x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+                if x.content.lower() == "skip":
+                    pass
+                elif x.content.lower() == "cancel":
+                    repeat2 = False
+                    return await ctx.send("I have cancelled the process. Until next time!", edit=False)
+                else:
+                    role_name = x.content
+                    if not discord.utils.get(ctx.guild.roles, name=role_name):
+                        await ctx.send("Invalid role name. Please try again.", edit=False)
+                    else:
+                        counter += 1
+                        data[str(emoji_id)] = role_name
+                        await ctx.send(f"Alright, added that emoji + role pair! Type `next` to continue adding more roles (You are at {counter}/10 roles) or `end` to end and prepare the message.", edit=False)
+                        x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+                        if x.content.lower() == "next":
+                            pass
+                        elif x.content.lower() == "end":
+                            await ctx.send("Alright, getting things finished for you...", edit=False)
+                            em = discord.Embed(color=ctx.author.color, name="Reaction Roles")
+                            desc = """
+Welcome to the interactive reaction role system.
+
+Setting up your roles is simple! React below to the emoji and the bot will give you the corresponding role.
+
+**__Roles__**\n\n"""
+                            for emoji, role in data:
+                                desc += f"{bot.get_emoji(int(emoji))} {role}\n"
+                            em.description = desc
+                            await chan.send(embed=em)
+            elif x.content.lower() == "cancel":
+                repeat2 = False
+                return await ctx.send("I have cancelled the process. Until next time!", edit=False)
+            else:
+                await ctx.send("Invalid emoji.", edit=False)
+
+
+
+
     @commands.command(aliases=['conf'])
     async def config(self, ctx):
         """Show my configuration on your server."""
