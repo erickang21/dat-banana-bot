@@ -64,12 +64,12 @@ class Config:
                         repeat2 = False
                         return await ctx.send("I have cancelled the process. Until next time!", edit=False)
                     else:
-                        role_name = x.content
-                        if not discord.utils.get(ctx.guild.roles, name=role_name):
+                        role = discord.utils.get(ctx.guild.roles, name=x.content)
+                        if not role:
                             await ctx.send("Invalid role name. **Please enter the emoji to use again.**", edit=False)
                         else:
                             counter += 1
-                            data[str(emoji_id)] = role_name
+                            data[str(emoji_id)] = role.id
                             await ctx.send(f"Alright, added that emoji + role pair! Type `next` to continue adding more roles (You are at {counter}/10 roles) or `end` to end and prepare the message.", edit=False)
                             x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                             if x.content.lower() == "next":

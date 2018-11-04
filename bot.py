@@ -268,6 +268,70 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
 
+
+# REACTION ROLE EVENTS
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    data = await bot.db.reactionrole.find_one({"id": payload.guild_id})
+    if not data: 
+        return
+
+    # Data from the DB
+    data = Box(data)
+    # Data from event
+    guild = bot.get_guild(payload.guild_id)
+    channel = bot.get_channel(payload.channel_id)
+    message = await channel.get_message(payload.message_id)
+    member = guild.get_member(payload.user_id)
+    emoji = payload.emoji
+
+    # Check if the channel + message are equal to the one saved
+    if data.channel_id == payload.channel_id and data.message_id == payload.message_id:
+        try:
+            role_id = data.data[str(emoji.id)]
+        except KeyError:
+            return # Don't continue if the role ain't there
+        role = discord.utils.get(guild.roles, id=role_id)
+        if not role:
+            return # Don't add a role that doesn't exist
+        
+        # Add the damn role
+        await member.add_roles(role)
+
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    data = await bot.db.reactionrole.find_one({"id": payload.guild_id})
+    if not data: 
+        return
+
+    # Data from the DB
+    data = Box(data)
+    # Data from event
+    guild = bot.get_guild(payload.guild_id)
+    channel = bot.get_channel(payload.channel_id)
+    message = await channel.get_message(payload.message_id)
+    member = guild.get_member(payload.user_id)
+    emoji = payload.emoji
+
+    # Check if the channel + message are equal to the one saved
+    if data.channel_id == payload.channel_id and data.message_id == payload.message_id:
+        try:
+            role_id = data.data[str(emoji.id)]
+        except KeyError:
+            return # Don't continue if the role ain't there
+        role = discord.utils.get(guild.roles, id=role_id)
+        if not role:
+            return # Don't remove a role that doesn't exist
+        
+        # Remove the damn role
+        await member.remove_roles(role)
+
+        
+
+    
+
 @bot.event #stalker
 async def on_command(ctx):
     bot.commands_run += 1
