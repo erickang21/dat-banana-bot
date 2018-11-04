@@ -113,7 +113,7 @@ Setting up your roles is simple! React below to the emoji and the bot will give 
             await message.edit(content=message.content + "\nAll done! Reaction Roles are now ready to use. :white_check_mark:", edit=False)
         elif action == "delete" or action == "disable":
             match = await self.bot.db.reactionrole.find_one({"id": ctx.guild.id})
-            if match:
+            if not match:
                 return await ctx.send("You never had a reaction role setup for this server!", edit=False)
             await self.bot.db.reactionrole.delete_one({"id": ctx.guild.id})
             return await ctx.send("Deleted your reaction role setup for this server.", edit=False)
