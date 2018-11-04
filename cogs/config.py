@@ -46,12 +46,12 @@ class Config:
                 emoji_id = int(re.findall(r"[0-9]+", x.content)[0])
                 emoji = self.bot.get_emoji(emoji_id)
                 if not emoji:
-                    await ctx.send("Invalid emoji.")
+                    await ctx.send("Invalid emoji.", edit=False)
                 await ctx.send(f"This has been detected as a **custom emoji.** If it appears correctly here, it should display correctly in the message: {x.content}\n\nIf you are unsatisfied, you can type `skip` **on the next prompt**, to ignore this entry.", edit=False)
                 await ctx.send("Please enter the name of the role to assign the emoji to. Enter `skip` to skip this emoji and re-enter one.", edit=False)
                 x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 if x.content.lower() == "skip":
-                    await ctx.send("Skipped, let's do it again!\n\nEnter the emoji to use. This emoji will show up on the menu and will be used as the reaction emoji. **Please note, only custom emojis are supported.**")
+                    await ctx.send("Skipped, let's do it again!\n\nEnter the emoji to use. This emoji will show up on the menu and will be used as the reaction emoji. **Please note, only custom emojis are supported.**", edit=False)
                 elif x.content.lower() == "cancel":
                     repeat2 = False
                     return await ctx.send("I have cancelled the process. Until next time!", edit=False)
@@ -65,9 +65,9 @@ class Config:
                         await ctx.send(f"Alright, added that emoji + role pair! Type `next` to continue adding more roles (You are at {counter}/10 roles) or `end` to end and prepare the message.", edit=False)
                         x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                         if x.content.lower() == "next":
-                            await ctx.send("Going again!\n\nEnter the emoji to use. This emoji will show up on the menu and will be used as the reaction emoji. **Please note, only custom emojis are supported.**")
+                            await ctx.send("Going again!\n\nEnter the emoji to use. This emoji will show up on the menu and will be used as the reaction emoji. **Please note, only custom emojis are supported.**", edit=False)
                         elif x.content.lower() == "end":
-                            await ctx.send("Alright, getting things finished for you...", edit=False)
+                            await ctx.send("Awesome stuff! I'm gonna get some stuff done, and you will be ready to ROLL!", edit=False)
                             repeat2 = False
             elif x.content.lower() == "cancel":
                 repeat2 = False
