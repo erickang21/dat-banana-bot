@@ -17,6 +17,7 @@ class Config:
         self.utils = Utils(bot)
     
     @commands.command(aliases=['reactrole', 'rroles'])
+    @commands.has_permissions(manage_guild=True)
     async def reactionroles(self, ctx, action=None):
         """Set up reaction roles for your server."""
         if not action:
