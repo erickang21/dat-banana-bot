@@ -20,7 +20,7 @@ class Config:
     async def reactionroles(self, ctx, action=None):
         """Set up reaction roles for your server."""
         if not action:
-            match = await self.bot.db.reactionrole.find_one({"guild_id": ctx.guild.id})
+            match = await self.bot.db.reactionrole.find_one({"id": ctx.guild.id})
             if match:
                 return await ctx.send("You already had a reaction role setup for this server. Run `*reactionroles delete` to delete your previous setup, then run this command again.", edit=False)
             await ctx.send("Welcome to the interactive setup for reaction roles!\n\nLet's get started. Remember, type `cancel` at any time to exit the process.", edit=False)
@@ -112,10 +112,10 @@ Setting up your roles is simple! React below to the emoji and the bot will give 
             await message.edit(content=message.content + "\nSaved the information to the database.\n", edit=False)
             await message.edit(content=message.content + "\nAll done! Reaction Roles are now ready to use. :white_check_mark:", edit=False)
         elif action == "delete" or action == "disable":
-            match = await self.bot.db.reactionrole.find_one({"guild_id": ctx.guild.id})
+            match = await self.bot.db.reactionrole.find_one({"id": ctx.guild.id})
             if match:
                 return await ctx.send("You never had a reaction role setup for this server!", edit=False)
-            await self.bot.db.reactionrole.delete_one({"guild_id": ctx.guild.id})
+            await self.bot.db.reactionrole.delete_one({"id": ctx.guild.id})
             return await ctx.send("Deleted your reaction role setup for this server.", edit=False)
 
 
