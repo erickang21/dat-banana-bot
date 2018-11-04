@@ -68,23 +68,23 @@ class Config:
                             pass
                         elif x.content.lower() == "end":
                             await ctx.send("Alright, getting things finished for you...", edit=False)
-                            em = discord.Embed(color=ctx.author.color, name="Reaction Roles")
-                            desc = """
-Welcome to the interactive reaction role system.
-
-Setting up your roles is simple! React below to the emoji and the bot will give you the corresponding role.
-
-**__Roles__**\n\n"""
-                            for x in data:
-                                desc += f"{self.bot.get_emoji(int(x))} {data[x]}\n"
-                            em.description = desc
-                            await chan.send(embed=em)
+                            repeat2 = False
             elif x.content.lower() == "cancel":
                 repeat2 = False
                 return await ctx.send("I have cancelled the process. Until next time!", edit=False)
             else:
                 await ctx.send("Invalid emoji.", edit=False)
+            em = discord.Embed(color=ctx.author.color, name="Reaction Roles")
+            desc = """
+Welcome to the interactive reaction role system.
 
+Setting up your roles is simple! React below to the emoji and the bot will give you the corresponding role.
+
+**__Roles__**\n\n"""
+            for x in data:
+                desc += f"{self.bot.get_emoji(int(x))} {data[x]}\n"
+            em.description = desc
+            await chan.send(embed=em)
 
 
 
