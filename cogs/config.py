@@ -51,7 +51,7 @@ class Config:
                 await ctx.send("Please enter the name of the role to assign the emoji to. Enter `skip` to skip this emoji and re-enter one.", edit=False)
                 x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 if x.content.lower() == "skip":
-                    pass
+                    await ctx.send("Going again!\n\nEnter the emoji to use. This emoji will show up on the menu and will be used as the reaction emoji. **Please note, only custom emojis are supported.**")
                 elif x.content.lower() == "cancel":
                     repeat2 = False
                     return await ctx.send("I have cancelled the process. Until next time!", edit=False)
@@ -74,17 +74,17 @@ class Config:
                 return await ctx.send("I have cancelled the process. Until next time!", edit=False)
             else:
                 await ctx.send("Invalid emoji.", edit=False)
-            em = discord.Embed(color=ctx.author.color, name="Reaction Roles")
-            desc = """
+        em = discord.Embed(color=ctx.author.color, name="Reaction Roles")
+        desc = """
 Welcome to the interactive reaction role system.
 
 Setting up your roles is simple! React below to the emoji and the bot will give you the corresponding role.
 
 **__Roles__**\n\n"""
-            for x in data:
-                desc += f"{self.bot.get_emoji(int(x))} {data[x]}\n"
-            em.description = desc
-            await chan.send(embed=em)
+        for x in data:
+            desc += f"{self.bot.get_emoji(int(x))} {data[x]}\n"
+        em.description = desc
+        await chan.send(embed=em)
 
 
 
