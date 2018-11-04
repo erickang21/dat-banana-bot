@@ -95,12 +95,12 @@ Setting up your roles is simple! React below to the emoji and the bot will give 
                 desc += f"{self.bot.get_emoji(int(x))} {data[x]}\n"
             em.description = desc
             msg = await chan.send(embed=em)
-            await message.edit(content=message.content + "Sent the message to the channel.\n", edit=False)
+            await message.edit(content=message.content + "\nSent the message to the channel.\n", edit=False)
 
             # Add the reactions
             for x in data:
                 await msg.add_reaction(self.bot.get_emoji(int(x)))
-            await message.edit(content=message.content + "Added all reactions to the message.\n", edit=False)
+            await message.edit(content=message.content + "\nAdded all reactions to the message.\n", edit=False)
             # Collect data and save to DB
             db_data = {
                 "guild_id": ctx.guild.id,
@@ -109,7 +109,7 @@ Setting up your roles is simple! React below to the emoji and the bot will give 
                 "data": data
             }
             await self.bot.db.reactionrole.update_one({"id": ctx.guild.id}, {"$set": db_data}, upsert=True)
-            await message.edit(content=message.content + "Saved the information to the database.\n", edit=False)
+            await message.edit(content=message.content + "\nSaved the information to the database.\n", edit=False)
             await message.edit(content=message.content + "\nAll done! Reaction Roles are now ready to use. :white_check_mark:", edit=False)
         elif action == "delete" or action == "disable":
             match = await self.bot.db.reactionrole.find_one({"guild_id": ctx.guild.id})
