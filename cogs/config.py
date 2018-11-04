@@ -93,7 +93,7 @@ Setting up your roles is simple! React below to the emoji and the bot will give 
 
 **__Roles__**\n\n"""
             for x in data:
-                desc += f"{self.bot.get_emoji(int(x))} {data[x]}\n"
+                desc += f"{self.bot.get_emoji(int(x))} {discord.utils.get(ctx.guild.roles, id=data[x])}\n"
             em.description = desc
             msg = await chan.send(embed=em)
             await message.edit(content=message.content + "\nSent the message to the channel.\n", edit=False)
