@@ -21,6 +21,7 @@ class Config:
     async def membercounter(self, ctx):
         """Set up a member counter for your server using voice channels."""
         msg = await ctx.send("Setting up voice channrls...")
+        guild = ctx.guild
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(connect=False)
         }
