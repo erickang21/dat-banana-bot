@@ -158,6 +158,72 @@ class Music:
 
         if not player.is_playing:
             await player.play()
+            em = discord.Embed(color=0x00ff00, title=f"Playing")
+            #em.description = f"**{e.track.title}**"
+            em.set_author(name=player.track.requester.name, icon_url=player.track.requester.avatar_url)
+            second = player.track.duration / 1000
+            minute, second = divmod(second, 60)
+            hour, minute = divmod(minute, 60)
+            #minutes, seconds = divmod(player.track.duration, 60)
+            #em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
+            if hour:
+                length = f"{int(hour)}:{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
+            else:
+                length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
+            playing_panel = textwrap.dedent(f"""
+            :musical_note: **Song**
+            {player.track.title}
+
+            {self.bot.get_emoji(430340802879946773)} **Requested By**
+            {str(ctx.author)}
+
+            :timer: **Length**
+            {length}
+
+            :loud_sound: **Volume**
+            {self.utils.get_lines(player.player.volume)} {player.player.volume}%
+
+            :1234: **Queue Position**
+            {len(player.player.queue)}
+            """)
+            #em.add_field(name='Length', value=length)
+            #em.add_field(name='Volume', value=f"{self.utils.get_lines(player.player.volume)} {player.player.volume}%")
+            em.description = playing_panel
+            #em.add_field(name='Position in Queue', value=len(player.player.queue))
+            msg = await ctx.send(embed=em)
+            try:
+                await msg.add_reaction("\U000023f8") # Pause
+                await msg.add_reaction("\U000025b6") # Play
+                await msg.add_reaction("\U000023f9") # Stop
+                await msg.add_reaction("\U0001f501") # Repeat
+                await msg.add_reaction("\U00002753") # Help
+            except discord.Forbidden:
+                return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
+            try:    
+                while player.player.is_playing:
+                    reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
+                    if reaction.emoji == "⏸":
+                        await player.player.set_pause(True)
+                        await msg.remove_reaction("\U000023f8", ctx.author)
+                    elif reaction.emoji == "▶":
+                        await player.player.set_pause(False)
+                        await msg.remove_reaction("\U000025b6", ctx.author)
+                    elif reaction.emoji == "⏹":
+                        await player.player.stop()
+                        await msg.delete()
+                    elif reaction.emoji == "🔁":
+                        player.player.repeat = not player.player.repeat
+                        await msg.remove_reaction("\U0001f501", ctx.author)
+                    elif reaction.emoji == "❓":
+                        await msg.remove_reaction("\U00002753", ctx.author)
+                        embed = discord.Embed(color=0x00ff00, title='Music Player Help')
+                        embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
+                        embed.set_footer(text='This will revert back in 15 seconds.')
+                        await msg.edit(embed=embed)
+                        await asyncio.sleep(15)
+                        await msg.edit(embed=em)    
+            except discord.Forbidden:
+                pass
         else:
             await ctx.send(":ok_hand: **{}** was enqueued!".format(await Utils.clean_text(ctx, tracks['tracks'][0]["info"]["title"])))
 
