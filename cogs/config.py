@@ -21,7 +21,7 @@ class Config:
     async def membercounter(self, ctx, action=None):
         """Set up a member counter for your server using voice channels."""
         if not action:
-            msg = await ctx.send("Setting up voice channrls...")
+            msg = await ctx.send("Setting up voice channels...")
             guild = ctx.guild
             category = await guild.create_category_channel("😏 Member Count 😏")
             overwrites = {
