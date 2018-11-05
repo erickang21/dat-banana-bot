@@ -27,8 +27,8 @@ class Config:
         }
         try:
             await ctx.guild.create_voice_channel(f"Total: {len(ctx.guild.members)}", overwrites=overwrites)
-            await ctx.guild.create_voice_channel(f"Humans: {len([x for x in guild.members if not x.bot])}")
-            await ctx.guild.create_voice_channel(f"Bots: {len([x for x in guild.members if x.bot])}")
+            await ctx.guild.create_voice_channel(f"Humans: {len([x for x in guild.members if not x.bot])}", overwrites=overwrites)
+            await ctx.guild.create_voice_channel(f"Bots: {len([x for x in guild.members if x.bot])}", overwrites=overwrites)
         except:
             return await msg.edit(content="Uh-oh! I need the **Manage Channels** permission.")
         await msg.edit(content="Finished setting up the member counter! :white_check_mark:")
