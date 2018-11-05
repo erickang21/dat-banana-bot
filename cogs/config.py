@@ -18,20 +18,39 @@ class Config:
 
 
     @commands.command()
-    async def membercounter(self, ctx):
+    async def membercounter(self, ctx, action=None):
         """Set up a member counter for your server using voice channels."""
-        msg = await ctx.send("Setting up voice channrls...")
-        guild = ctx.guild
-        overwrites = {
-            guild.default_role: discord.PermissionOverwrite(connect=False)
-        }
-        try:
-            await ctx.guild.create_voice_channel(f"Total: {len(ctx.guild.members)}", overwrites=overwrites)
-            await ctx.guild.create_voice_channel(f"Humans: {len([x for x in guild.members if not x.bot])}", overwrites=overwrites)
-            await ctx.guild.create_voice_channel(f"Bots: {len([x for x in guild.members if x.bot])}", overwrites=overwrites)
-        except:
-            return await msg.edit(content="Uh-oh! I need the **Manage Channels** permission.")
-        await msg.edit(content="Finished setting up the member counter! :white_check_mark:")
+        if not action:
+            msg = await ctx.send("Setting up voice channrls...")
+            guild = ctx.guild
+            category = await guild.create_category_channel("😏 Member Count 😏")
+            overwrites = {
+                guild.default_role: discord.PermissionOverwrite(connect=False)
+            }
+            try:
+                total = await ctx.guild.create_voice_channel(f"Total: {len(ctx.guild.members)}", overwrites=overwrites, category=category)
+                humans = await ctx.guild.create_voice_channel(f"Humans: {len([x for x in guild.members if not x.bot])}", overwrites=overwrites, category=category)
+                bots = await ctx.guild.create_voice_channel(f"Bots: {len([x for x in guild.members if x.bot])}", overwrites=overwrites, category=category)
+            except:
+                return await msg.edit(content="Uh-oh! I need the **Manage Channels** permission.")
+            data = {
+                "category": category.id,
+                "total": total.id,
+                "humans": humans.id,
+                "bots": bots.id
+            }
+            await self.bot.db.membercounter.update_one({"id": ctx.guild.id}, {"$set": data}, upsert=True)
+            return await msg.edit(content="Finished setting up the member counter! :white_check_mark:")
+        elif action == "remove" or action == "delete" or action == "disable":
+            data = await self.bot.db.membercounter.find_one({"id": ctx.guild.id})
+            if not data: 
+                return await ctx.send("No member counter was ever set up for this server.")
+            for x in data["data"].values():
+                await self.bot.get_channel(x).delete()
+            await self.bot.db.member.counter.delete_one({"id": ctx.guild.id})
+            
+            await ctx.send("Successfully deleted the member counter for this server.")
+
     
     @commands.command(aliases=['reactrole', 'rroles'])
     @commands.has_permissions(manage_guild=True)

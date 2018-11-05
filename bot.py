@@ -546,6 +546,22 @@ async def on_guild_remove(guild):
     
 @bot.event
 async def on_member_join(member):
+    # MEMBER COUNTER
+    data = await bot.db.membercounter.find_one({"id": member.guild.id})
+    if not data: pass
+    else:
+        try:
+            total = data['data']['total']
+            humans = data['data']['humans']
+            bots = data['data']['bots']
+            await bot.get_channel(total).edit(name=f"Total: {len(member.guild.members)}")
+            if member.bot:
+                await bot.get_channel(bots).edit(name=f"Bots: {len([x for x in member.guild.members if x.bot])}")
+            else:
+                await bot.get_channel(humans).edit(name=f"Humans: {len([x for x in member.guild.members if not x.bot])}")
+        except:
+            pass
+    # WELCOME
     x = await bot.db.welcome.find_one({ "id": str(member.guild.id) })
     if not x:
         return
@@ -571,6 +587,8 @@ async def on_member_join(member):
         await lol.send(embed=em)
     else:
         pass
+
+    # AUTOROLE 
     x = await bot.db.autorole.find_one({ "id": str(member.guild.id) })
     if x is None:
         return
@@ -578,6 +596,8 @@ async def on_member_join(member):
     r = discord.utils.get(member.guild.roles, name=rolename)
     if r: # role could possibily be deleted.
         await member.add_roles(r)
+
+    # LEVEL-UP (NOT IN USE)
     levelup = await bot.db.level.find_one({"id": member.guild.id})
     if levelup:
         try:
@@ -593,6 +613,22 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
+    # MEMBER COUNTER
+    data = await bot.db.membercounter.find_one({"id": member.guild.id})
+    if not data: pass
+    else:
+        try:
+            total = data['data']['total']
+            humans = data['data']['humans']
+            bots = data['data']['bots']
+            await bot.get_channel(total).edit(name=f"Total: {len(member.guild.members)}")
+            if member.bot:
+                await bot.get_channel(bots).edit(name=f"Bots: {len([x for x in member.guild.members if x.bot])}")
+            else:
+                await bot.get_channel(humans).edit(name=f"Humans: {len([x for x in member.guild.members if not x.bot])}")
+        except:
+            pass
+        
     x = await bot.db.leave.find_one({ "id": str(member.guild.id) })
     if not x:
         return
