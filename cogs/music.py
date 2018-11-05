@@ -62,7 +62,7 @@ class Music:
             #em.add_field(name='Volume', value=f"{self.utils.get_lines(e.player.volume)} {e.player.volume}%")
             em.description = playing_panel
             #em.add_field(name='Position in Queue', value=len(e.player.queue))
-            msg = await ctx.send(embed=em)
+            msg = await ctx.send(embed=em, edit=False)
             try:
                 await msg.add_reaction("\U000023f8") # Pause
                 await msg.add_reaction("\U000025b6") # Play
@@ -142,7 +142,7 @@ class Music:
             player.store("ctx", ctx)
             await player.connect(ctx.author.voice.channel.id)
         em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(471279983197814806)} Searching `{search}`...")
-        m = await ctx.send(embed=em)
+        m = await ctx.send(embed=em, edit=False)
 
         search = search.strip("<>")
         if not search.startswith("http"):
@@ -190,7 +190,7 @@ class Music:
             #em.add_field(name='Volume', value=f"{self.utils.get_lines(player.player.volume)} {player.player.volume}%")
             em.description = playing_panel
             #em.add_field(name='Position in Queue', value=len(player.player.queue))
-            msg = await ctx.send(embed=em)
+            msg = await ctx.send(embed=em, edit=False)
             try:
                 await msg.add_reaction("\U000023f8") # Pause
                 await msg.add_reaction("\U000025b6") # Play
