@@ -160,8 +160,8 @@ class Music:
             await player.play()
             em = discord.Embed(color=0x00ff00, title=f"Playing")
             #em.description = f"**{e.track.title}**"
-            em.set_author(name=player.track.requester.name, icon_url=player.track.requester.avatar_url)
-            second = player.track.duration / 1000
+            em.set_author(name=player.current.requester.name, icon_url=player.current.requester.avatar_url)
+            second = player.current.duration / 1000
             minute, second = divmod(second, 60)
             hour, minute = divmod(minute, 60)
             #minutes, seconds = divmod(player.track.duration, 60)
@@ -172,7 +172,7 @@ class Music:
                 length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
             playing_panel = textwrap.dedent(f"""
             :musical_note: **Song**
-            {player.track.title}
+            {player.current.title}
 
             {self.bot.get_emoji(430340802879946773)} **Requested By**
             {str(ctx.author)}
@@ -181,10 +181,10 @@ class Music:
             {length}
 
             :loud_sound: **Volume**
-            {self.utils.get_lines(player.player.volume)} {player.player.volume}%
+            {self.utils.get_lines(player.volume)} {player.volume}%
 
             :1234: **Queue Position**
-            {len(player.player.queue)}
+            {len(player.queue)}
             """)
             #em.add_field(name='Length', value=length)
             #em.add_field(name='Volume', value=f"{self.utils.get_lines(player.player.volume)} {player.player.volume}%")
@@ -203,16 +203,16 @@ class Music:
                 while player.player.is_playing:
                     reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
                     if reaction.emoji == "⏸":
-                        await player.player.set_pause(True)
+                        await player.set_pause(True)
                         await msg.remove_reaction("\U000023f8", ctx.author)
                     elif reaction.emoji == "▶":
-                        await player.player.set_pause(False)
+                        await player.set_pause(False)
                         await msg.remove_reaction("\U000025b6", ctx.author)
                     elif reaction.emoji == "⏹":
-                        await player.player.stop()
+                        await player.stop()
                         await msg.delete()
                     elif reaction.emoji == "🔁":
-                        player.player.repeat = not player.player.repeat
+                        player.repeat = not player.player.repeat
                         await msg.remove_reaction("\U0001f501", ctx.author)
                     elif reaction.emoji == "❓":
                         await msg.remove_reaction("\U00002753", ctx.author)
