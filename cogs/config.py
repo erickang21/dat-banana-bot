@@ -45,8 +45,9 @@ class Config:
             data = await self.bot.db.membercounter.find_one({"id": ctx.guild.id})
             if not data: 
                 return await ctx.send("No member counter was ever set up for this server.")
-            for x in data["data"].values():
-                await self.bot.get_channel(x).delete()
+            await self.bot.get_channel(data["total"]).delete()
+            await self.bot.get_channel(data["humans"]).delete()
+            await self.bot.get_channel(data["bots"]).delete()
             await self.bot.db.member.counter.delete_one({"id": ctx.guild.id})
             
             await ctx.send("Successfully deleted the member counter for this server.")

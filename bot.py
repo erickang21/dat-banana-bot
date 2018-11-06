@@ -551,9 +551,9 @@ async def on_member_join(member):
     if not data: pass
     else:
         try:
-            total = data['data']['total']
-            humans = data['data']['humans']
-            bots = data['data']['bots']
+            total = data['total']
+            humans = data['humans']
+            bots = data['bots']
             await bot.get_channel(total).edit(name=f"Total: {len(member.guild.members)}")
             if member.bot:
                 await bot.get_channel(bots).edit(name=f"Bots: {len([x for x in member.guild.members if x.bot])}")
