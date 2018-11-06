@@ -21,6 +21,9 @@ class Config:
     async def membercounter(self, ctx, action=None):
         """Set up a member counter for your server using voice channels."""
         if not action:
+            check = await self.bot.db.membercounter.find_one({"id": ctx.guild.id})
+            if check:
+                return await ctx.send("A member counter was already set up! Why do it again?")
             msg = await ctx.send("Setting up voice channels...")
             guild = ctx.guild
             category = await guild.create_category_channel("😏 Member Count 😏")
