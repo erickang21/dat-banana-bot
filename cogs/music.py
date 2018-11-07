@@ -11,98 +11,14 @@ import logging
 from discord.ext.commands.cooldowns import BucketType  
 from bs4 import BeautifulSoup
 from .utils.utils import Utils
+from .audio import AudioManager
 
 class Music:
     def __init__(self, bot):
         self.bot = bot
         self.utils = Utils(bot)
-        if not hasattr(bot, 'lavalink'):
-            with open("data/apikeys.json") as file:
-                apikeys = json.load(file)
-                lavalink.Client(bot, loop=self.bot.loop, host=apikeys["ll_host"], password=apikeys["ll_password"], ws_port=apikeys["ll_port"])
-                self.bot.lavalink.register_hook(self.track_hook)
+        self.bot.audioManager = AudioManager(bot=self.bot)
         self.skip_count = {}
-
-    async def track_hook(self, e):
-        if isinstance(e, lavalink.Events.QueueEndEvent):
-            await e.player.disconnect()
-        if isinstance(e, lavalink.Events.TrackEndEvent):
-            await e.player.play()
-        if isinstance(e, lavalink.Events.TrackStartEvent):
-            ctx = e.player.fetch("ctx")
-            em = discord.Embed(color=0x00ff00, title=f"Playing")
-            #em.description = f"**{e.track.title}**"
-            em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
-            second = e.track.duration / 1000
-            minute, second = divmod(second, 60)
-            hour, minute = divmod(minute, 60)
-            #minutes, seconds = divmod(e.track.duration, 60)
-            #em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
-            if hour:
-                length = f"{int(hour)}:{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
-            else:
-                length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
-            playing_panel = textwrap.dedent(f"""
-            :musical_note: **Song**
-            {e.track.title}
-
-            {self.bot.get_emoji(430340802879946773)} **Requested By**
-            {str(ctx.author)}
-
-            :timer: **Length**
-            {length}
-
-            :loud_sound: **Volume**
-            {self.utils.get_lines(e.player.volume)} {e.player.volume}%
-
-            :1234: **Queue Position**
-            {len(e.player.queue)}
-            """)
-            #em.add_field(name='Length', value=length)
-            #em.add_field(name='Volume', value=f"{self.utils.get_lines(e.player.volume)} {e.player.volume}%")
-            em.description = playing_panel
-            #em.add_field(name='Position in Queue', value=len(e.player.queue))
-            msg = await ctx.send(embed=em, edit=False)
-            try:
-                await msg.add_reaction("\U000023f8") # Pause
-                await msg.add_reaction("\U000025b6") # Play
-                await msg.add_reaction("\U000023f9") # Stop
-                await msg.add_reaction("\U0001f501") # Repeat
-                await msg.add_reaction("\U00002753") # Help
-            except discord.Forbidden:
-                return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
-            try:    
-                while e.player.is_playing:
-                    reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
-                    if reaction.emoji == "⏸":
-                        await e.player.set_pause(True)
-                        await msg.remove_reaction("\U000023f8", ctx.author)
-                    elif reaction.emoji == "▶":
-                        await e.player.set_pause(False)
-                        await msg.remove_reaction("\U000025b6", ctx.author)
-                    elif reaction.emoji == "⏹":
-                        await e.player.stop()
-                        await msg.delete()
-                    elif reaction.emoji == "🔁":
-                        e.player.repeat = not e.player.repeat
-                        await msg.remove_reaction("\U0001f501", ctx.author)
-                    elif reaction.emoji == "❓":
-                        await msg.remove_reaction("\U00002753", ctx.author)
-                        embed = discord.Embed(color=0x00ff00, title='Music Player Help')
-                        embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
-                        embed.set_footer(text='This will revert back in 15 seconds.')
-                        await msg.edit(embed=embed)
-                        await asyncio.sleep(15)
-                        await msg.edit(embed=em)    
-            except discord.Forbidden:
-                pass # No need to send 
-            # except Exception as e:
-            #     return await ctx.send(f"An unknown error occured. Details: \n\n```{e}```")
-
-            # This made shit way too spammy, can't think of a good way to avoid it, rather just remove it.
-
-
-
 
     @commands.command()
     @commands.guild_only()
@@ -132,7 +48,7 @@ class Music:
     @commands.guild_only()
     #@commands.cooldown(2, 15.0, BucketType.user)
     async def play(self, ctx, *, search=None):
-        player = self.bot.lavalink.players.get(ctx.guild.id)
+        player = self.bot.lavalink.get_player
         """Search for a YouTube video to play, by name."""
         if search is None:
             return await ctx.send("ACK! Provide a search please")
@@ -156,74 +72,8 @@ class Music:
         await m.delete()
         player.add(requester=ctx.author, track=tracks['tracks'][0])
 
-        if not player.is_playing:
+        if not player.playing:
             await player.play()
-            em = discord.Embed(color=0x00ff00, title=f"Playing")
-            #em.description = f"**{e.track.title}**"
-            em.set_author(name=player.current.requester.name, icon_url=player.current.requester.avatar_url)
-            second = player.current.duration / 1000
-            minute, second = divmod(second, 60)
-            hour, minute = divmod(minute, 60)
-            #minutes, seconds = divmod(player.track.duration, 60)
-            #em.add_field(name='Length', value=f"{str(minutes)}:{str(seconds).replace('0', '00').replace('1', '01').replace('2', '02').replace('3', '03').replace('4', '04').replace('5', '05').replace('6', '06').replace('7', '07').replace('8', '08').replace('9', '09')}")
-            if hour:
-                length = f"{int(hour)}:{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
-            else:
-                length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
-            playing_panel = textwrap.dedent(f"""
-            :musical_note: **Song**
-            {player.current.title}
-
-            {self.bot.get_emoji(430340802879946773)} **Requested By**
-            {str(ctx.author)}
-
-            :timer: **Length**
-            {length}
-
-            :loud_sound: **Volume**
-            {self.utils.get_lines(player.volume)} {player.volume}%
-
-            :1234: **Queue Position**
-            {len(player.queue)}
-            """)
-            #em.add_field(name='Length', value=length)
-            #em.add_field(name='Volume', value=f"{self.utils.get_lines(player.player.volume)} {player.player.volume}%")
-            em.description = playing_panel
-            #em.add_field(name='Position in Queue', value=len(player.player.queue))
-            msg = await ctx.send(embed=em, edit=False)
-            try:
-                await msg.add_reaction("\U000023f8") # Pause
-                await msg.add_reaction("\U000025b6") # Play
-                await msg.add_reaction("\U000023f9") # Stop
-                await msg.add_reaction("\U0001f501") # Repeat
-                await msg.add_reaction("\U00002753") # Help
-            except discord.Forbidden:
-                return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
-            try:    
-                while player.player.is_playing:
-                    reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
-                    if reaction.emoji == "⏸":
-                        await player.set_pause(True)
-                        await msg.remove_reaction("\U000023f8", ctx.author)
-                    elif reaction.emoji == "▶":
-                        await player.set_pause(False)
-                        await msg.remove_reaction("\U000025b6", ctx.author)
-                    elif reaction.emoji == "⏹":
-                        await player.stop()
-                        await msg.delete()
-                    elif reaction.emoji == "🔁":
-                        player.repeat = not player.player.repeat
-                        await msg.remove_reaction("\U0001f501", ctx.author)
-                    elif reaction.emoji == "❓":
-                        await msg.remove_reaction("\U00002753", ctx.author)
-                        embed = discord.Embed(color=0x00ff00, title='Music Player Help')
-                        embed.description = "**What do these magical buttons do?** \n\n:pause_button: Pauses the current song.\n:arrow_forward: Resumes any currently paused song.\n:stop_button: Stops the playing song and deletes this message.\n:repeat: Starts the current song from the beginning.\n:question: Shows this message."
-                        embed.set_footer(text='This will revert back in 15 seconds.')
-                        await msg.edit(embed=embed)
-                        await asyncio.sleep(15)
-                        await msg.edit(embed=em)    
-            except discord.Forbidden:
-                pass
         else:
             await ctx.send(":ok_hand: **{}** was enqueued!".format(await Utils.clean_text(ctx, tracks['tracks'][0]["info"]["title"])))
 
