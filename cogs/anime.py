@@ -70,7 +70,7 @@ class Anime:
         """Pat someone.."""
         await ctx.trigger_typing()
         res = await self.req("pat")
-        em = discord.Embed(color=ctx.author.color, title="Hug")
+        em = discord.Embed(color=ctx.author.color, title="Pat")
         em.description = f"**{ctx.author.name}** just patted {f'**{str(user.name)}**' if user else 'themselves'}!"
         em.set_image(url=res.url)
         em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
@@ -81,7 +81,7 @@ class Anime:
         """Tickle someone.."""
         await ctx.trigger_typing()
         res = await self.req("tickle")
-        em = discord.Embed(color=ctx.author.color, title="tickled")
+        em = discord.Embed(color=ctx.author.color, title="Tickle")
         em.description = f"**{ctx.author.name}** tickled {f'**{str(user.name)}**' if user else 'themselves'}!"
         em.set_image(url=res.url)
         em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
