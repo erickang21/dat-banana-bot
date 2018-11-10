@@ -13,6 +13,7 @@ class Anime:
     @commands.command()
     async def baka(self, ctx):
         """Random anime picture of BAKA."""
+        await ctx.trigger_typing()
         res = await self.req("baka")
         em = discord.Embed(color=ctx.author.color, title="BAKA!")
         em.set_image(url=res.url)
