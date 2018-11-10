@@ -44,6 +44,17 @@ class Anime:
         await ctx.send(embed=em)
 
     @commands.command()
+    async def kiss(self, ctx, user: discord.Member = None):
+        """Kiss someone.."""
+        await ctx.trigger_typing()
+        res = await self.req("kiss")
+        em = discord.Embed(color=ctx.author.color, title="Kiss")
+        em.description = f"**{ctx.author.name}** just kissed {f'**{str(user.name)}**' if user else 'themselves'}!"
+        em.set_image(url=res.url)
+        em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
+
+    @commands.command()
     async def tickle(self, ctx, user: discord.Member = None):
         """Tickle someone.."""
         await ctx.trigger_typing()
