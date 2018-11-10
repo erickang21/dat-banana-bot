@@ -107,6 +107,16 @@ class Anime:
         em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
+    @commands.command()
+    async def waifu(self, ctx):
+        """Why not get yourself a waifu?"""
+        await ctx.trigger_typing()
+        res = await self.req("waifu")
+        em = discord.Embed(color=ctx.author.color, title="Waifu")
+        em.description = "Found a waifu for you!"
+        em.set_image(url=res.url)
+        em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
 
     @commands.command()
     async def neko(self, ctx):
