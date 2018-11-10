@@ -20,6 +20,39 @@ class Anime:
         em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
+    
+    @commands.command()
+    async def cuddle(self, ctx, user: discord.Member = None):
+        """Cuddle with someone.."""
+        await ctx.trigger_typing()
+        res = await self.req("cuddle")
+        em = discord.Embed(color=ctx.author.color, title="Cuddle")
+        em.description = f"Looks like **{ctx.author.name}** is cuddling with {str(user.name) if user else 'themselves'}!"
+        em.set_image(url=res.url)
+        em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def weeb(self, ctx):
+        """Get a random pic for weebs."""
+        await ctx.trigger_typing()
+        res = await self.req("avatar")
+        em = discord.Embed(color=ctx.author.color, title="Weeb")
+        em.set_image(url=res.url)
+        em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def neko(self, ctx):
+        """Get a random neko."""
+        await ctx.trigger_typing()
+        res = await self.req("neko")
+        img_url = res.url
+        em = discord.Embed(color=ctx.author.color, title="Neko")
+        em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
+        em.set_image(url=img_url)
+        await ctx.send(embed=em)
+
 
 
 def setup(bot): 
