@@ -1,4 +1,4 @@
-import commands
+import discord
 from discord.ext import commands 
 import box
 class Anime:
@@ -13,7 +13,7 @@ class Anime:
     @commands.command()
     async def baka(self, ctx):
         """Random anime picture of BAKA."""
-        res = await req("baka")
+        res = await self.req("baka")
         em = discord.Embed(color=ctx.author.color, title="BAKA!")
         em.set_image(url=res.url)
         em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
