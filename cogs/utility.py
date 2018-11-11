@@ -251,6 +251,9 @@ class Utility:
     @commands.command()
     async def snipe(self, ctx, channel: str = None):
         """Gets the last deleted message in the channel."""
+        if ctx.guild.id == 392149566012784650:
+            if not ctx.author.guild_permissions.manage_guild:
+                return await ctx.send("You don't have the permissions! Get some or get out. :)")
         if not channel:
             channel = ctx.channel
         else:
