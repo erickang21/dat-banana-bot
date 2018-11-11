@@ -255,8 +255,9 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 continue
     if not message.author.bot:
         blacklistcmds = await bot.db.blacklistcmd.find_one({"id": message.guild.id})
+        ctx = await bot.get_context(message, cls=DatContext)
         if not blacklistcmds or not blacklistcmds['cmds']:
-            ctx = await bot.get_context(message, cls=DatContext)
+            
             await bot.invoke(ctx)
         else:
             prefix = await get_prefix_as_str(message)
