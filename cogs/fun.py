@@ -614,7 +614,10 @@ class fun:
         em.description = random.choice(choices) 
         em.set_author(name="The Mighty 8 ball", icon_url="https://vignette.wikia.nocookie.net/battlefordreamislandfanfiction/images/5/53/8-ball_my_friend.png/revision/latest?cb=20161109021012")
         em.set_footer(text=f"Sent by {ctx.message.author.name}")
-        await ctx.message.delete()
+        try:    
+            await ctx.message.delete()
+        except:
+            pass
         await ctx.send(embed=em)
         
         
