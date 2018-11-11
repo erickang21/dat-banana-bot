@@ -261,7 +261,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
         else:
             prefix = await get_prefix_as_str(message)
             if message.content.strip(prefix).split(" ")[0] in blacklistcmds['cmds']:
-                return
+                return await ctx.send("OOF! Looks like this command is disabled. Can't do anything then. (Except send this message, of course.)")
             else:
                 message.content = message.content.replace("\u200b", "")
                 ctx = await bot.get_context(message, cls=DatContext)
