@@ -65,6 +65,50 @@ class Idiotic:
         await ctx.send("Big ~~OOF~~ OUCH.", file=discord.File(res, "hurt.png"))
 
     @commands.command()
+    async def legends(self, ctx, *, text):
+        await ctx.trigger_typing()
+        res = await self.bananapi.legends(text)
+        await ctx.send("Legends never die. :)", file=discord.File(res, "legends.png"))
+        
+    @commands.command()
+    async def note(self, ctx, *, text):
+        await ctx.trigger_typing()
+        res = await self.bananapi.note(text)
+        await ctx.send("Here's a note.", file=discord.File(res, "note.png"))
+    
+    @commands.command()
+    async def peek(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        await ctx.trigger_typing()
+        res = await self.bananapi.peek(user.avatar_url)
+        await ctx.send("Big ~~OOF~~ OUCH.", file=discord.File(res, "peek.png"))
+
+    @commands.command()
+    async def retarded(self, ctx, user: discord.Member = None):
+        user = user or ctx.author
+        await ctx.trigger_typing()
+        res = await self.bananapi.retarded(user.avatar_url)
+        await ctx.send("Big ~~OOF~~ OUCH.", file=discord.File(res, "retarded.png"))
+
+    @commands.command()
+    async def scroll(self, ctx, *, text):
+        await ctx.trigger_typing()
+        res = await self.bananapi.scroll(text)
+        await ctx.send("The scroll of truth. Or not?", file=discord.File(res, "scroll.png"))
+
+    @commands.command()
+    async def sleeptight(self, ctx, *, text):
+        await ctx.trigger_typing()
+        res = await self.bananapi.sleeptight(text)
+        await ctx.send("'Night!", file=discord.File(res, "sleeptight.png"))
+
+    @commands.command()
+    async def stayawake(self, ctx, *, text):
+        await ctx.trigger_typing()
+        res = await self.bananapi.stayawake(text)
+        await ctx.send("Why am I still awake?", file=discord.File(res, "stayawake.png"))
+
+    @commands.command()
     async def illegal(self, ctx, word):
         """Make something illegal by Trump."""
         if len(word) > 10:
