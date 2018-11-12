@@ -24,36 +24,43 @@ class Idiotic:
 
     @commands.command()
     async def abandon(self, ctx, *, text):
+        await ctx.trigger_typing()
         res = await self.bananapi.abandon(text)
         await ctx.send("Looks like this child will be abandoned. OOF!", file=discord.File(res, "abandon.png"))
 
     @commands.command()
     async def alert(self, ctx, *, text):
+        await ctx.trigger_typing()
         res = await self.bananapi.alert(text)
         await ctx.send("**ALERT! ALERT!**", file=discord.File(res, "alert.png"))
     
     @commands.command()
     async def autism(self, ctx, *, text):
+        await ctx.trigger_typing()
         res = await self.bananapi.autism(text)
         await ctx.send("So much autism. RIP brain cells.", file=discord.File(res, "autism.png"))
     
     @commands.command()
     async def disabled(self, ctx, *, text):
+        await ctx.trigger_typing()
         res = await self.bananapi.disabled(text)
         await ctx.send("This could make you disabled! Better watch out.", file=discord.File(res, "disabled.png"))
 
     @commands.command()
     async def headache(self, ctx, *, text):
+        await ctx.trigger_typing()
         res = await self.bananapi.headache(text)
         await ctx.send("RIP your head.", file=discord.File(res, "headache.png"))
 
     @commands.command()
     async def humansgood(self, ctx, *, text):
+        await ctx.trigger_typing()
         res = await self.bananapi.humansgood(text)
         await ctx.send("So humans are good. What about me, senpai?", file=discord.File(res, "humansgood.png"))
 
     @commands.command()
     async def hurt(self, ctx, *, text):
+        await ctx.trigger_typing()
         res = await self.bananapi.hurt(text)
         await ctx.send("Big ~~OOF~~ OUCH.", file=discord.File(res, "hurt.png"))
 
