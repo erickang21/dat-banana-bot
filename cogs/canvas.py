@@ -8,7 +8,7 @@ import bananapy
 from discord.ext import commands
 
 
-class Idiotic:
+class Canvas:
     def __init__(self, bot):
         self.bot = bot
         with open('data/apikeys.json') as f:
@@ -568,4 +568,4 @@ class Idiotic:
             await ctx.send(f"An error occured with IdioticAPI. \nMore details: \n{e}")
 
 def setup(bot):
-    bot.add_cog(Idiotic(bot))
+    bot.add_cog(Canvas(bot))
