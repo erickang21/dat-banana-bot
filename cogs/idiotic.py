@@ -4,6 +4,7 @@ import io
 import idioticapi
 import random
 import json
+import bananapy
 from discord.ext import commands
 
 
@@ -14,11 +15,47 @@ class Idiotic:
             lol = json.load(f)
         self.token = lol.get("idioticapi")
         self.client = idioticapi.Client(self.token, dev=True)
+        self.bananapi = bananapy.Client(self.bot.config.bananapi)
 
     def format_avatar(self, avatar_url):
         if avatar_url.endswith(".gif"):
             return avatar_url + "?size=2048"
         return avatar_url.replace("webp", "png")
+
+    @commands.command()
+    async def abandon(self, ctx, *, text):
+        res = await self.bananapi.abandon(text)
+        await ctx.send("Looks like this child will be abandoned. OOF!", file=discord.File(res, "abandon.png"))
+
+    @commands.command()
+    async def alert(self, ctx, *, text):
+        res = await self.bananapi.alert(text)
+        await ctx.send("**ALERT! ALERT!**", file=discord.File(res, "alert.png"))
+    
+    @commands.command()
+    async def autism(self, ctx, *, text):
+        res = await self.bananapi.autism(text)
+        await ctx.send("So much autism. RIP brain cells.", file=discord.File(res, "autism.png"))
+    
+    @commands.command()
+    async def disabled(self, ctx, *, text):
+        res = await self.bananapi.disabled(text)
+        await ctx.send("This could make you disabled! Better watch out.", file=discord.File(res, "disabled.png"))
+
+    @commands.command()
+    async def headache(self, ctx, *, text):
+        res = await self.bananapi.headache(text)
+        await ctx.send("RIP your head.", file=discord.File(res, "headache.png"))
+
+    @commands.command()
+    async def humansgood(self, ctx, *, text):
+        res = await self.bananapi.humansgood(text)
+        await ctx.send("So humans are good. What about me, senpai?", file=discord.File(res, "humansgood.png"))
+
+    @commands.command()
+    async def hurt(self, ctx, *, text):
+        res = await self.bananapi.hurt(text)
+        await ctx.send("Big ~~OOF~~ OUCH.", file=discord.File(res, "hurt.png"))
 
     @commands.command()
     async def illegal(self, ctx, word):
