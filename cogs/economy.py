@@ -582,13 +582,25 @@ __What to do now?__
             return await ctx.send("Sorry, but the server's economy commands have been disabled.")
         users = x.get("users")
         lb = ""
-        counter = 0
+        #counter = 0
+        taken = []
         points = sorted(list(map(lambda x: x['points'], users)), reverse=True)
         for point in points:
-            counter += 1
-            lb += f"**{str(self.bot.get_user(list(filter(lambda a: a['points'] == point, users))[0]['id']))}:** {point}\n"
-            if counter == 10:
-                break
+            #counter += 1
+            user_counter = 0
+            repeat = True
+            while repeat:
+                try:
+                    user = list(filter(lambda a: a['points'] == point and a['id'] not in taken, users))[0]['id']
+                    taken.append(user)
+                    repeat = False
+                except:
+                    user_counter += 1
+                    user = list(filter(lambda a: a['points'] == point and a['id'] not in taken, users))[user_counter]['id']
+            
+            lb += f"**{str(self.bot.get_user(user))}:** {point}\n"
+            #if counter == 10:
+            #    break
         em = discord.Embed(color=0x00ff00, title="Economy Leaderboard")
         em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         em.description = lb
