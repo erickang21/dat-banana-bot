@@ -777,9 +777,11 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CommandNotFound):
         pass
     else:
+        error_code = ""
+        
         log = bot.get_channel(445332002942484482)
         traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
-        await ctx.send("NANI?! An unexpected error occurred when trying to run the command. You did nothing wrong. Let me show this to my senpai and hope that he fixes it. Meanwhile, join the support server and see what's poppin'! \n\nhttps://discord.gg/3Nxb7yZ", edit=False)
+        await ctx.send("NANI?! A weird-ass error happened when I tried to run that command. I'm collecting some error information, and then I'll report it to my developer. Meanwhile, join the support server and send **dat banana boi#1982** the error code below. https://discord.gg/3Nxb7yZ\n\n**Error Code**\n", edit=False)
         embed = discord.Embed(color=discord.Color(value=0xf44e42), title="Error Report")
         embed.set_author(name=f"{str(ctx.author)} (ID: {ctx.author.id})", icon_url=ctx.author.avatar_url)
         embed.add_field(name="Server", value=ctx.guild.name)
