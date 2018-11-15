@@ -794,7 +794,7 @@ async def on_command_error(ctx, error):
             "channel": ctx.channel.name,
             "content": ctx.message.content,
             "error": traceback_text,
-            "invite": invite
+            "invite": str(invite)
         }
         await bot.db.errors.update_one({"code": error_code}, {"$set": data}, upsert=True)
         log = bot.get_channel(445332002942484482)
