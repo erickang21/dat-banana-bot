@@ -53,12 +53,25 @@ class Developer:
     @commands.command()
     async def error(self, ctx, code):
         """Gets info on an error by code."""
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         data = await self.bot.db.errors.find_one({"code": code})
         if not data:
             return await ctx.send("No error with that code was found. Check it!")
         data = box.Box(data)
+        guild = self.bot.get_guild(data.guild)
         em = discord.Embed(color=ctx.author.color, title="Error Information")
         em.description = f"Code: **{code}**"
+        em.add_field(name="Server", value=guild)
+        em.add_field(name="Channel", value=f"#{data.channel}\n(Invite: {data.invite})")
+        em.add_field(name="User", value=data.author)
+        em.add_field(name="Command Content", value=data.content)
+        em.add_field(name="Traceback", value=data.error, inline=True)
+        await ctx.send(embed=em)
+
+    @commands.command(hidden=True)
+    async def causeerror(self, ctx):
+        [][0]
 
 
        

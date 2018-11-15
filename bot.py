@@ -778,36 +778,37 @@ async def on_command_error(ctx, error):
         pass
     else:
         error_code = ""
-<<<<<<< HEAD
-        
-        log = bot.get_channel(445332002942484482)
-        traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
-        await ctx.send("NANI?! A weird-ass error happened when I tried to run that command. I'm collecting some error information, and then I'll report it to my developer. Meanwhile, join the support server and send **dat banana boi#1982** the error code below. https://discord.gg/3Nxb7yZ\n\n**Error Code**\n", edit=False)
-=======
         for x in range(10):
-            error_code += str(random.randint(0. 9))
+            error_code += str(random.randint(0, 9))
         while await bot.db.errors.find_one({"code": error_code}):
             error_code = ""
-            for x in range(10): error_code += str(random.randint(0. 9))
-        traceback_text = "\n".join(traceback.format_ex
-  ception(type(error), error, error.__traceback__, 10))
+            for x in range(10): error_code += str(random.randint(0, 9))
+        traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
         try:
             invite = await ctx.channel.create_invite(unique=False)
         except:
             invite = "No Create Invite permission."
         data = {
             "guild": ctx.guild.id,
-            "user": ctx.author.id
+            "user": str(ctx.author),
             "channel": ctx.channel.name,
             "content": ctx.message.content,
             "error": traceback_text,
             "invite": invite
         }
-        await bot.db.errors.update_one({"code": error_code, {"$set": data}, upsert=True})
+        await bot.db.errors.update_one({"code": error_code}, {"$set": data}, upsert=True)
         log = bot.get_channel(445332002942484482)
         
-        await ctx.send("NANI?! An unexpected error occurred when trying to run the command. You did nothing wrong. Let me show this to my senpai and hope that he fixes it. Meanwhile, join the support server and see what's poppin'! \n\nhttps://discord.gg/3Nxb7yZ", edit=False)
->>>>>>> 1fff0b73e789dcd3024c5b0834e5dce42ea727e8
+        await ctx.send(f"""
+NANI?! That's weird-ass. An unexpected error happened but you did nothing wrong. (Probably a fuck-up by my owner.) 
+
+Let me show this to my senpai and hope that he fixes it.
+
+Meanwhile, here's what you can do:
+
+1. **Copy the following error code and show it to dat banana boi#1982:** `{error_code}`
+2. Join the support server! https://discord.gg/3Nxb7yZ
+""", edit=False)
         embed = discord.Embed(color=discord.Color(value=0xf44e42), title="Error Report")
         embed.set_author(name=f"{str(ctx.author)} (ID: {ctx.author.id})", icon_url=ctx.author.avatar_url)
         embed.add_field(name="Server", value=ctx.guild.name)
