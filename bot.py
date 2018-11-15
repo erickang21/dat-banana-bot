@@ -783,7 +783,7 @@ async def on_command_error(ctx, error):
         while await bot.db.errors.find_one({"code": error_code}):
             error_code = ""
             for x in range(10): error_code += str(random.randint(0, 9))
-        traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
+        traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 4))
         try:
             invite = await ctx.channel.create_invite(unique=False)
         except:
