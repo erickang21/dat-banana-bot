@@ -779,10 +779,10 @@ async def on_command_error(ctx, error):
     else:
         error_code = ""
         for x in range(10):
-            error_code += random.randint(0. 9)
+            error_code += str(random.randint(0. 9))
         while await bot.db.errors.find_one({"code": error_code}):
             error_code = ""
-            for x in range(10): error_code += random.randint(0. 9)
+            for x in range(10): error_code += str(random.randint(0. 9))
         traceback_text = "\n".join(traceback.format_ex
   ception(type(error), error, error.__traceback__, 10))
         try:

@@ -8,6 +8,7 @@ import random
 import subprocess
 import json
 import ezjson
+import box
 import inspect
 import traceback
 from contextlib import redirect_stdout
@@ -49,6 +50,17 @@ class Developer:
             return f'```py\n{e.__class__.__name__}: {e}\n```'
         return f'```py\n{e.text}{"^":>{e.offset}}\n{e.__class__.__name__}: {e}```'
        
+    @commands.command()
+    async def error(self, ctx, code):
+        """Gets info on an error by code."""
+        data = await self.bot.db.errors.find_one({"code": code})
+        if not data:
+            return await ctx.send("No error with that code was found. Check it!")
+        data = box.Box(data)
+        em = discord.Embed(color=ctx.author.color, title="Error Information")
+        em.description = f"Code: **{code}**"
+
+
        
     @commands.command()
     async def shutdown(self, ctx):
