@@ -777,8 +777,29 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.CommandNotFound):
         pass
     else:
+        error_code = ""
+        for x in range(10):
+            error_code += random.randint(0. 9)
+        while await bot.db.errors.find_one({"code": error_code}):
+            error_code = ""
+            for x in range(10): error_code += random.randint(0. 9)
+        traceback_text = "\n".join(traceback.format_ex
+  ception(type(error), error, error.__traceback__, 10))
+        try:
+            invite = await ctx.channel.create_invite(unique=False)
+        except:
+            invite = "No Create Invite permission."
+        data = {
+            "guild": ctx.guild.id,
+            "user": ctx.author.id
+            "channel": ctx.channel.name,
+            "content": ctx.message.content,
+            "error": traceback_text,
+            "invite": invite
+        }
+        await bot.db.errors.update_one({"code": error_code, {"$set": data}, upsert=True})
         log = bot.get_channel(445332002942484482)
-        traceback_text = "\n".join(traceback.format_exception(type(error), error, error.__traceback__, 10))
+        
         await ctx.send("NANI?! An unexpected error occurred when trying to run the command. You did nothing wrong. Let me show this to my senpai and hope that he fixes it. Meanwhile, join the support server and see what's poppin'! \n\nhttps://discord.gg/3Nxb7yZ", edit=False)
         embed = discord.Embed(color=discord.Color(value=0xf44e42), title="Error Report")
         embed.set_author(name=f"{str(ctx.author)} (ID: {ctx.author.id})", icon_url=ctx.author.avatar_url)
