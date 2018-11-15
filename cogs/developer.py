@@ -66,7 +66,7 @@ class Developer:
         em.add_field(name="Channel", value=f"#{data.channel}\n(Invite: {data.invite})")
         em.add_field(name="User", value=data.author)
         em.add_field(name="Command Content", value=data.content)
-        em.add_field(name="Traceback", value=data.error, inline=True)
+        em.add_field(name="Traceback", value=data.error)
         await ctx.send(embed=em)
 
     @commands.command(hidden=True)
