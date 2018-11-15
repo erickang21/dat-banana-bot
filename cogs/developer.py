@@ -64,7 +64,7 @@ class Developer:
         em.description = f"Code: **{code}**"
         em.add_field(name="Server", value=guild)
         em.add_field(name="Channel", value=f"#{data.channel}\n(Invite: {data.invite})")
-        em.add_field(name="User", value=data.author)
+        em.add_field(name="User", value=data.user)
         em.add_field(name="Command Content", value=data.content)
         em.add_field(name="Traceback", value=data.error)
         await ctx.send(embed=em)
