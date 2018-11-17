@@ -389,7 +389,7 @@ Think of it as a server-wide pins channel.
                 x = await self.bot.db.welcome.find_one({"id": str(ctx.guild.id)})
                 if not x:
                     em.description = 'Welcome messages are disabled for this server.'
-                if x['channel'] is False:
+                elif x['channel'] is False:
                     em.description = 'Welcome messages are disabled for this server.'
                 else:
                     em.description = f"Welcome messages are turned on for this server, set in <#{x['channel']}>.\n\nMessage: {x['message']}"
@@ -460,7 +460,7 @@ Think of it as a server-wide pins channel.
                 x = await self.bot.db.leave.find_one({"id": str(ctx.guild.id)})
                 if not x:
                     em.description = 'Leave messages are disabled for this server.'
-                if x['channel'] is False:
+                elif x['channel'] is False:
                     em.description = 'Leave messages are disabled for this server.'
                 else:
                     em.description = f"Leave messages are turned on for this server, set in <#{x['channel']}>.\n\nMessage: {x['message']}"
@@ -532,7 +532,7 @@ Think of it as a server-wide pins channel.
                 x = await self.bot.db.ban.find_one({"id": str(ctx.guild.id)})
                 if not x:
                     em.description = 'Ban messages are disabled for the server.'
-                if x['channel'] is False:
+                elif x['channel'] is False:
                     em.description = 'Ban messages are disabled for this server.'
                 else:
                     em.description = f"Ban messages are turned on for this server, set in <#{x['channel']}>.\n\nMessage: {x['message']}"
