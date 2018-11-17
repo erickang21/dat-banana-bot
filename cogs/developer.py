@@ -71,6 +71,8 @@ class Developer:
 
     @commands.command(hidden=True)
     async def causeerror(self, ctx):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         [][0]
 
 
