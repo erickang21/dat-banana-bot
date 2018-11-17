@@ -797,6 +797,7 @@ async def on_command_error(ctx, error):
             "invite": str(invite)
         }
         await bot.db.errors.update_one({"code": error_code}, {"$set": data}, upsert=True)
+        await bot.get_channel(513368885144190986).send(f"A new error has been recorded in **{ctx.guild.name}**. Code: `{error_code}`")
         log = bot.get_channel(445332002942484482)
         
         await ctx.send(f"""
@@ -817,7 +818,7 @@ Meanwhile, here's what you can do:
         embed.add_field(name="Command Content", value=ctx.message.content)
         embed.description = f"**Full Traceback:**\n\n```{traceback_text}```"
         embed.set_thumbnail(url=ctx.guild.icon_url)
-        await log.send(bot.get_user(277981712989028353).mention, embed=embed)
+        await log.send(embed=embed)
         logger.error(error)
 
             
