@@ -164,7 +164,9 @@ async def on_message(message):
     if not x or not x.get("status", False):
         pass
     else:
-        return await message.channel.send(f"You have been blacklisted from using my commands! Get outta here! {bot.get_emoji(465963261276192779)}")
+        if message.content.startswith(prefix) and message.content.replace(prefix, "").split(" ")[0] in [x.name for x in bot.commands]:
+
+            return await message.channel.send(f"You have been blacklisted from using my commands! Get outta here! {bot.get_emoji(465963261276192779)}")
     data = await bot.db.afk.find_one({"id": message.author.id})
     if data:
         if data.get("status", None):
