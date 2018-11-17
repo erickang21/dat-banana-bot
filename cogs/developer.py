@@ -61,12 +61,12 @@ class Developer:
         data = box.Box(data)
         guild = self.bot.get_guild(data.guild)
         em = discord.Embed(color=ctx.author.color, title="Error Information")
-        em.description = f"Code: **{code}**"
+        em.description = f"**Traceback**\n\n```\n{data.error}```"
+        em.add_field(name="Code", value=f"**{code}**", inline=True)
         em.add_field(name="Server", value=guild)
         em.add_field(name="Channel", value=f"#{data.channel}\n(Invite: {data.invite})")
         em.add_field(name="User", value=data.user)
         em.add_field(name="Command Content", value=data.content)
-        em.add_field(name="Traceback", value=data.error)
         await ctx.send(embed=em)
 
     @commands.command(hidden=True)
