@@ -387,12 +387,15 @@ Think of it as a server-wide pins channel.
             em = discord.Embed(color=0x00ff00, title='Welcome Messages')
             try:
                 x = await self.bot.db.welcome.find_one({"id": str(ctx.guild.id)})
+                if not x:
+                    em.description = 'Welcome messages are disabled for this server.'
                 if x['channel'] is False:
                     em.description = 'Welcome messages are disabled for this server.'
                 else:
                     em.description = f"Welcome messages are turned on for this server, set in <#{x['channel']}>.\n\nMessage: {x['message']}"
             except KeyError:
                 em.description = 'Welcome messages are disabled for this server.'
+            em.set_footer(text=f"Were you trying to turn on the message? Do '{ctx.prefix}welcome on' instead.")
             await ctx.send(embed=em)
         else:
             if action.lower() == 'on':
@@ -446,6 +449,7 @@ Think of it as a server-wide pins channel.
                     channel = self.bot.get_channel(int(modlog['channel']))
                     if channel:
                         await channel.send(embed=em)
+
     @commands.command(aliases=['leave'])
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
@@ -454,12 +458,15 @@ Think of it as a server-wide pins channel.
             em = discord.Embed(color=0x00ff00, title='Leave Messages')
             try:
                 x = await self.bot.db.leave.find_one({"id": str(ctx.guild.id)})
+                if not x:
+                    em.description = 'Leave messages are disabled for this server.'
                 if x['channel'] is False:
                     em.description = 'Leave messages are disabled for this server.'
                 else:
                     em.description = f"Leave messages are turned on for this server, set in <#{x['channel']}>.\n\nMessage: {x['message']}"
             except KeyError:
                 em.description = 'Leave messages are disabled for this server.'
+            em.set_footer(text=f"Were you trying to turn on the message? Do '{ctx.prefix}leave on' instead.")
             await ctx.send(embed=em)
         else:
             if action.lower() == 'on':
@@ -523,12 +530,15 @@ Think of it as a server-wide pins channel.
             em = discord.Embed(color=0x00ff00, title='Leave Messages')
             try:
                 x = await self.bot.db.ban.find_one({"id": str(ctx.guild.id)})
+                if not x:
+                    em.description = 'Ban messages are disabled for the server.'
                 if x['channel'] is False:
                     em.description = 'Ban messages are disabled for this server.'
                 else:
                     em.description = f"Ban messages are turned on for this server, set in <#{x['channel']}>.\n\nMessage: {x['message']}"
             except KeyError:
                 em.description = 'Ban messages are disabled for this server.'
+            em.set_footer(text=f"Were you trying to turn on the message? Do '{ctx.prefix}leave on' instead.")
             await ctx.send(embed=em)
         else:
             if action.lower() == 'on':
