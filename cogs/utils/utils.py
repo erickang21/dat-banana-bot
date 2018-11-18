@@ -14,6 +14,12 @@ class Utils:
         """Removes any mentions from the text."""
         return await commands.clean_content().convert(ctx, text)
 
+    async def check_upvote(self, user):
+        """Checks whether the user upvoted the bot on Discord Bot List."""
+        res = await self.bot.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={user.id}", headers={'Authorization': self.bot.config.dbl})
+        resp = await res.json()
+        return bool(resp['voted'])
+
 
     async def handle_exception(self, ctx, error):
         """Handle an uncaught error in general and report to the devs. Should not be called for the most part, since it is used in `on_command_error`."""
