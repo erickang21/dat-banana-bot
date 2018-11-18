@@ -82,7 +82,6 @@ All you gotta do is hit that giant **VOTE** button!
 """
             return await ctx.send(embed=em)
         res = await self.req("Random_hentai_gif")
-        res = await res.json()
         em = discord.Embed(color=0xf9e236, title="Hentai :eggplant: ")
         em.set_image(url=res.url)
         em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
