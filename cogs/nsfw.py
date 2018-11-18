@@ -120,7 +120,7 @@ All you gotta do is hit that giant **VOTE** button!
         em.set_footer(text=f"Requested by: {str(ctx.author)} | Powered by nekos.life", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
-    @commands.command(aliases=['nsfwpfp'])
+    @commands.command()
     async def lesbian(self, ctx):
         """WARNING: NSFW command. Gets you a lesbian pic."""
         if not ctx.channel.nsfw:
