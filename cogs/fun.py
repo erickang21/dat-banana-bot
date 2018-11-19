@@ -433,7 +433,7 @@ class fun:
             await ctx.send('```\n' + fmt + '\n```')
         except:
             async with self.session.post('https://hastebin.com/documents', data=fmt) as resp:
-                await ctx.send('https://hastebin.com/raw/{}/' + (await resp.json())['key'])
+                await ctx.send('https://hastebin.com/raw/' + (await resp.json())['key'])
 
 
 
