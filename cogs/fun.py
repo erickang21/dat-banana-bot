@@ -414,6 +414,27 @@ class fun:
         resp = await resp.json(content_type=None)
         await ctx.send(resp['joke'])
 
+    @commands.command()
+    async def pyramid(self, ctx, *, string: str):
+        '''Sends a word pyramid'''
+        fmt = ''
+        for i in range(len(string)):
+            for l in range(i):
+                fmt += string[l] 
+            fmt += '\n'
+
+        for i in range(len(string)):
+            i = len(string) - i
+            for l in range(i):
+                fmt += string[l] 
+            fmt += '\n'
+
+        try:
+            await ctx.send('```\n' + fmt + '\n```')
+        except:
+            async with self.session.post('https://hastebin.com/documents', data=fmt) as resp:
+                await ctx.send('https://hastebin.com/raw/' + (await resp.json())['key'])
+
 
 
 
