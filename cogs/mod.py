@@ -273,7 +273,7 @@ class mod:
         except:
             pass
         try:
-            await user.ban(reason=reason)
+            await user.ban(reason=reason, delete_message_days=0)
         except discord.Forbidden:
             return await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
         color = 0xf9e236
@@ -497,7 +497,7 @@ class mod:
         if not lol:
             return await ctx.send("Invalid ID provided.")
         try:
-            await ctx.guild.ban(lol, reason=reason)
+            await ctx.guild.ban(lol, reason=reason, delete_message_days=0)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
         data = await self.bot.get_user_info(id)
