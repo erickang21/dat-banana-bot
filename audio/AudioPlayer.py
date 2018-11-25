@@ -19,6 +19,7 @@ class AudioPlayer:
         self.paused = False
         self.repeating = False
         self.current = None
+        self.is_connected = False
         self.queue = []
         self.m = None
 
@@ -32,7 +33,6 @@ class AudioPlayer:
             self.playing = True
             track = self.queue.pop(0)
             self.current = track
-            await self.set_volume(self.volume)
             await self.node.send(op="play", guildId=str(self.ctx.guild.id), track=track.track)
             self.node.ee.emit("track_start", TrackStart(self.manager.get_player(self.ctx, self.node.host), track))
 
