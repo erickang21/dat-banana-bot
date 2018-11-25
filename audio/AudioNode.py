@@ -62,7 +62,7 @@ Port: {self.port}"""
                 self._manager.bot.loop.create_task(self._wait_for_ws_message())
                 self.ready = True
         except OSError as error:
-            
+            pass
 
     async def send(self, **data):
         if self.ws.open:
