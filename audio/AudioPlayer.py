@@ -28,13 +28,13 @@ class AudioPlayer:
 
     async def play(self):
         if not self.queue:
-            self.node.ee.emit("queue_concluded", QueueConcluded(self.manager.get_player(self.ctx, self.node.host)))
+            self.node.ee.emit("queue_concluded", QueueConcluded(self.manager.get_player(self.ctx)))
         else:
             self.playing = True
             track = self.queue.pop(0)
             self.current = track
             await self.node.send(op="play", guildId=str(self.ctx.guild.id), track=track.track)
-            self.node.ee.emit("track_start", TrackStart(self.manager.get_player(self.ctx, self.node.host), track))
+            self.node.ee.emit("track_start", TrackStart(self.manager.get_player(self.ctx), track))
 
     async def stop(self):
         await self.node.send(op="stop", guildId=str(self.ctx.guild.id))
