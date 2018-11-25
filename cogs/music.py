@@ -65,7 +65,7 @@ class Music:
             await ctx.send("OOF, No results found. Looks like that search returned zero results!")
 
         await m.delete()
-        player.add(requester=ctx.author, track=tracks['tracks'][0])
+        player.enqueue(requester=ctx.author, track=tracks['tracks'][0])
 
         if not player.playing:
             await player.play()
