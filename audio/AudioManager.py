@@ -25,7 +25,7 @@ class AudioManager:
     def get_player(self, ctx):
         player = self.players.get(ctx.guild.id)
         if player is None:
-            player = AudioPlayer(ctx, self, self.nodes.get("localhost"))
+            player = AudioPlayer(ctx, self, self.nodes.get(self._nodes[0]["host"]))
             self.players[ctx.guild.id] = player
 
         return player
@@ -43,9 +43,9 @@ class AudioManager:
                 "sessionId": self.bot.get_guild(int(data["d"]["guild_id"])).me.voice.session_id,
                 "event": data["d"]
             }
-            await self.nodes.get("localhost").send(**payload)
+            await self.nodes.get(self._nodes[0]["host"]).send(**payload)
 
-    async def connect(self, ctx, host: str = "localhost"):
+    async def connect(self, ctx, host: str = self._nodes[0]["host"]):
         await self.bot.ws.send(json.dumps({
             "op": 4,
             "d": {

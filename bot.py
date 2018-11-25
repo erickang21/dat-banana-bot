@@ -46,7 +46,7 @@ bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.utils = Utils(bot)
 bot.audio_manager = AudioManager(bot=bot, nodes=[
-    { "host": "localhost", "password": x["ll_password"], "port": x["ll_port"] }
+    { "host": x["ll_host"], "password": x["ll_password"], "port": x["ll_port"] }
 ])
 bot.starttime = time.time()
 bot.commands_run = 0
