@@ -17,7 +17,6 @@ class Music:
     def __init__(self, bot):
         self.bot = bot
         self.utils = Utils(bot)
-        self.bot.audio_manager = AudioManager(bot=self.bot)
         self.skip_count = {}
 
     @commands.command()
@@ -125,15 +124,10 @@ class Music:
                 await ctx.send("**Are we skipping this song?**\n\n(You don't have Manage Server, so I'm waiting for 2 votes to skip this song.\n\n**Votes:** 1/2")   
             if count == 2:
                 self.skip_count[str(ctx.guild.id)] = 0
-                await self.bot.audio_manager.get_player(ctx).skip()
+                await self.bot.audio_manager.get_player(ctx).play()
                 await self.bot.audio_manager.get_player(ctx)
                 return await ctx.send("Alright! We skipped the song. :fast_forward:")
         else:
-            await self.bot.audio_manager.get_player(ctx).skip()
-            try:
-                await self.bot.audio_manager.get_player(ctx) 
-            except:
-                pass
             player = self.bot.audio_manager.get_player(ctx)
             await player.play()
             return await ctx.send("Alright! We skipped the song. :fast_forward:\n\n(You have Manage Server, so I went full steam ahead.)")

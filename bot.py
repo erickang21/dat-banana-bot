@@ -24,6 +24,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
 from ext.logger import Logger as logger
 from cogs.utils.utils import Utils
+from audio.AudioManager import AudioManager
 
 colorama.init()
 
@@ -43,6 +44,7 @@ async def getprefix(bot, message):
 bot = commands.Bot(command_prefix=getprefix, owner_id=277981712989028353, case_insensitive=True)
 bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
+bot.audio_manager = AudioManager(bot=self.bot)
 bot.starttime = time.time()
 bot.commands_run = 0
 bot.logger = logger
@@ -123,6 +125,7 @@ async def on_ready():
         exit() # :p
     bot.loop.create_task(_sweeper())
     bot.loop.create_task(_sweep_bulk_deletes())
+    bot.loop.create_task(bot.audio_manager.audio_task())
     with open("restart.txt") as f:
         x = f.readlines()
     stuff = [f.strip("\n") for f in x]
