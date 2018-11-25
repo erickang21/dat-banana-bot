@@ -46,7 +46,7 @@ bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.utils = Utils(bot)
 bot.audio_manager = AudioManager(bot=self.bot, nodes=[
-    { "host": "localhost", "port" }
+    { "host": "localhost", "password": x["ll_password"], "port": x["ll_port"] }
 ])
 bot.starttime = time.time()
 bot.commands_run = 0
@@ -56,8 +56,6 @@ bot.edits = {}
 bot.bulkDeletes = {}
 bot.snipes = {}
 bot.editsnipes = {}
-with open("data/apikeys.json") as f:
-    x = json.load(f)
 bot.db = db.datbananabot
 cogs = [ "cogs." + x.replace(".py", "") for x in os.listdir("cogs") if x.endswith(".py") ]
 bot.remove_command("help")
