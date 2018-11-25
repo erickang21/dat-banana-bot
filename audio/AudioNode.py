@@ -2,7 +2,7 @@ import websockets
 import json
 from pyee import EventEmitter
 from .Events import TrackEnd
-from utils.Logger import Logger
+#from utils.Logger import Logger
 
 class AudioNode:
     def __init__(self, manager, shards, host=None, password=None, port=None):
@@ -45,8 +45,6 @@ Port: {self.port}"""
                 if data["type"] == "TrackEndEvent":
                     if player:
                         self.ee.emit("track_end", TrackEnd(player, data["track"], data["reason"]))
-            else:
-                Logger.error(f"Received message with no op code: {str(data)}")
 
     def _headers(self):
         return {
