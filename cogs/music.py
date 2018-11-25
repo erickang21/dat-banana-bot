@@ -17,7 +17,7 @@ class Music:
     def __init__(self, bot):
         self.bot = bot
         self.utils = Utils(bot)
-        self.bot.audioManager = AudioManager(bot=self.bot)
+        self.bot.audio_manager = AudioManager(bot=self.bot)
         self.skip_count = {}
 
     @commands.command()
@@ -27,10 +27,10 @@ class Music:
         if ctx.author.voice is None:
             return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
         if ctx.voice_client is None:
-            await ctx.author.voice.channel.connect()
+            await self.bot.audio_manager.get_player(ctx)
             await ctx.send(f"Successfully connected to Voice Channel **{ctx.author.voice.channel.name}**. :white_check_mark:")
         else:
-            await ctx.voice_client.move_to(ctx.author.voice.channel)
+            await self.bot.audio_manager.get_player(ctx)
             await ctx.send(f"Successfully connected to Voice Channel: **{ctx.author.voice.channel.name}**. :white_check_mark:")
 
 
@@ -41,7 +41,7 @@ class Music:
         if ctx.voice_client is None:
             await ctx.send("Looks like I'm not connected to a voice channel yet! Can't disconnect...:thinking:")
         else:
-            await ctx.voice_client.disconnect()
+            await self.bot.audio_manager.leave(ctx)
             await ctx.send(f"Successfully disconnected from the voice channel. :white_check_mark:")
 
     @commands.command()
@@ -55,8 +55,7 @@ class Music:
         if not player.is_connected:
             if ctx.author.voice is None:
                 return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
-            player.store("ctx", ctx)
-            await player.connect(ctx.author.voice.channel.id)
+            await self.bot.audio_manager.get_player(ctx)
         em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(471279983197814806)} Searching `{search}`...")
         m = await ctx.send(embed=em, edit=False)
 
@@ -67,7 +66,7 @@ class Music:
         tracks = await self.bot.lavalink.get_tracks(search)
 
         if not tracks:
-            await ctx.send("OOF, No results found. Looks like that search returned zero results! Right?")
+            await ctx.send("OOF, No results found. Looks like that search returned zero results!")
 
         await m.delete()
         player.add(requester=ctx.author, track=tracks['tracks'][0])
@@ -81,10 +80,10 @@ class Music:
     @commands.guild_only()
     async def pause(self, ctx):
         """Pauses whatever is playing."""
-        player = self.bot.lavalink.players.get(ctx.guild.id)
+        player = self.bot.audio_manager.get_player(ctx)
         if not player.is_playing:
             return await ctx.send("How do I pause without me connected playing anything?")
-        await player.set_pause(True)
+        await player.set_paused(True)
         await ctx.send("**I am now paused.** :pause_button: ")
 
 
@@ -92,11 +91,11 @@ class Music:
     @commands.guild_only()
     async def resume(self, ctx):
         """Resumes whatever isn't playing."""
-        player = self.bot.lavalink.players.get(ctx.guild.id)
+        player = self.bot.audio_manager.get_player(ctx)
         if not player.is_playing:
             return await ctx.send("How do I resume without me connected playing anything?")
  
-        await player.set_pause(False)
+        await player.set_paused(False)
         await ctx.send("**Carrying on!** :arrow_forward:")
        
     @commands.command()
@@ -104,7 +103,7 @@ class Music:
     @commands.guild_only()
     async def stop(self, ctx):
         """Stops the player."""
-        player = self.bot.lavalink.players.get(ctx.guild.id)
+        player = self.bot.audio_manager.get_player(ctx)
         if not player.is_playing:
             return await ctx.send("How do I stop the music without me connected playing anything?")
 
@@ -117,7 +116,6 @@ class Music:
     async def skip(self, ctx):
         """Skip the currently playing song."""
         if not ctx.author.guild_permissions.manage_guild:
-            
             try:
                 count = self.skip_count[str(ctx.guild.id)] 
                 self.skip_count[str(ctx.guild.id)] += 1
@@ -127,16 +125,16 @@ class Music:
                 await ctx.send("**Are we skipping this song?**\n\n(You don't have Manage Server, so I'm waiting for 2 votes to skip this song.\n\n**Votes:** 1/2")   
             if count == 2:
                 self.skip_count[str(ctx.guild.id)] = 0
-                await self.bot.lavalink.players.get(ctx.guild.id).skip()
-                await ctx.author.voice.channel.connect()
+                await self.bot.audio_manager.get_player(ctx).skip()
+                await self.bot.audio_manager.get_player(ctx)
                 return await ctx.send("Alright! We skipped the song. :fast_forward:")
         else:
-            await self.bot.lavalink.players.get(ctx.guild.id).skip()
+            await self.bot.audio_manager.get_player(ctx).skip()
             try:
-                await ctx.author.voice.channel.connect()
+                await self.bot.audio_manager.get_player(ctx) 
             except:
                 pass
-            player = self.bot.lavalink.players.get(ctx.guild.id)
+            player = self.bot.audio_manager.get_player(ctx)
             await player.play()
             return await ctx.send("Alright! We skipped the song. :fast_forward:\n\n(You have Manage Server, so I went full steam ahead.)")
 
@@ -144,7 +142,7 @@ class Music:
     @commands.guild_only()
     async def queue(self, ctx):
         """Gets the queue for the server."""
-        player = self.bot.lavalink.players.get(ctx.guild.id)
+        player = self.bot.audio_manager.get_player(ctx)
         if not player.queue:
             return await ctx.send("No songs are currently in the queue! Just queue the :banana: song, kthx.")
         em = discord.Embed(color=0x00ff00, title=f"Music Queue")
@@ -160,7 +158,7 @@ class Music:
     @commands.command()
     async def lyrics(self, ctx, *, song: str = None):
         """Get lyrics for a song or finds lyrics for the current playing song."""
-        player = self.bot.lavalink.players.get(ctx.guild.id)
+        player = self.bot.audio_manager.get_player(ctx)
         if player and song == None:
             song = player.queue[0].title
 
@@ -190,7 +188,7 @@ class Music:
     @commands.guild_only()
     async def volume(self, ctx):
         """Change or view the current volume for playing."""
-        player = self.bot.lavalink.players.get(ctx.guild.id)
+        player = self.bot.audio_manager.get_player(ctx)
         if not player.is_playing:
             return await ctx.send("Nothing is playing! Cannot detect volume or change it.")
         msg = await ctx.send(f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.utils.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
@@ -214,9 +212,6 @@ class Music:
                 except discord.Forbidden:
                     await ctx.send("I can't remove your reactions! Ouch.")
                 await msg.edit(content=f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.utils.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
-
-
-
 
 
 def setup(bot):

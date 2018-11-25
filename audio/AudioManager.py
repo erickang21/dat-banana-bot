@@ -78,9 +78,9 @@ class AudioManager:
             node = AudioNode(self, self.shards, self._nodes[i]["host"], self._nodes[i]["password"], self._nodes[i]["port"])
             await node.launch()
             self.nodes[node.host] = node
-        self.bot.loop.create_task(self.audio_event_task())
+        self.bot.loop.create_task(self.node_event_task())
 
-    async def audio_event_task(self):
+    async def node_event_task(self):
         for node in self.nodes.values():
             @node.ee.on("track_start")
             async def on_track_start(e):
