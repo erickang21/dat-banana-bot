@@ -51,7 +51,7 @@ class Music:
         if not player.is_connected:
             if ctx.author.voice is None:
                 return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
-            await self.bot.audio_manager.get_player(ctx)
+            await self.bot.audio_manager.connect(ctx)
         em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(471279983197814806)} Searching `{search}`...")
         m = await ctx.send(embed=em, edit=False)
 

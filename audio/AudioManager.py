@@ -55,9 +55,9 @@ class AudioManager:
                 "self_deaf": False
             }
         }))
+        self.get_player(ctx).is_connected = True
         if not self.nodes.get(host):
             raise Exception("No node with host: {} found.".format(host))
-        self.get_player(ctx).is_connected = True
 
     async def leave(self, ctx):
         await self.bot.ws.send(json.dumps({
