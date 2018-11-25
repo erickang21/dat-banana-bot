@@ -6,7 +6,7 @@ import textwrap
 import asyncio
 import os
 import json
-import lavalink
+import audio_manager
 import logging
 from discord.ext.commands.cooldowns import BucketType  
 from bs4 import BeautifulSoup
@@ -45,7 +45,7 @@ class Music:
     @commands.guild_only()
     #@commands.cooldown(2, 15.0, BucketType.user)
     async def play(self, ctx, *, search=None):
-        player = self.bot.lavalink.get_player
+        player = self.bot.audio_manager.get_player(ctx)
         """Search for a YouTube video to play, by name."""
         if search is None:
             return await ctx.send("ACK! Provide a search please")
@@ -60,7 +60,7 @@ class Music:
         if not search.startswith("http"):
             search = f"ytsearch:{search}"
 
-        tracks = await self.bot.lavalink.get_tracks(search)
+        tracks = await self.bot.audio_manager.get_tracks(search)
 
         if not tracks:
             await ctx.send("OOF, No results found. Looks like that search returned zero results!")
