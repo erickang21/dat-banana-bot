@@ -44,7 +44,10 @@ async def getprefix(bot, message):
 bot = commands.Bot(command_prefix=getprefix, owner_id=277981712989028353, case_insensitive=True)
 bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
-bot.audio_manager = AudioManager(bot=self.bot)
+bot.utils = Utils(bot)
+bot.audio_manager = AudioManager(bot=self.bot, nodes=[
+    { "host": "localhost", "port" }
+])
 bot.starttime = time.time()
 bot.commands_run = 0
 bot.logger = logger
@@ -53,7 +56,6 @@ bot.edits = {}
 bot.bulkDeletes = {}
 bot.snipes = {}
 bot.editsnipes = {}
-utils = Utils(bot)
 with open("data/apikeys.json") as f:
     x = json.load(f)
 bot.db = db.datbananabot

@@ -2,7 +2,7 @@ import json
 import discord
 import textwrap
 import asyncio
-from .cogs.utils.utils import Utils
+#from .cogs.utils.utils import Utils
 from .AudioNode import AudioNode
 from .AudioPlayer import AudioPlayer
 from .Events import TrackStart
@@ -20,7 +20,7 @@ class AudioManager:
         self._nodes = nodes
         self.shards = shards
         self.session = self.bot.session
-        self.utils = Utils(bot)
+        self.utils = self.bot.utils
 
     def get_player(self, ctx):
         player = self.players.get(ctx.guild.id)

@@ -11,7 +11,6 @@ import logging
 from discord.ext.commands.cooldowns import BucketType  
 from bs4 import BeautifulSoup
 from .utils.utils import Utils
-from .audio import AudioManager
 
 class Music:
     def __init__(self, bot):
