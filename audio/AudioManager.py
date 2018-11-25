@@ -45,7 +45,7 @@ class AudioManager:
             }
             await self.nodes.get(self._nodes[0]["host"]).send(**payload)
 
-    async def connect(self, ctx, host: str = self._nodes[0]["host"]):
+    async def connect(self, ctx):
         await self.bot.ws.send(json.dumps({
             "op": 4,
             "d": {
@@ -56,8 +56,6 @@ class AudioManager:
             }
         }))
         self.get_player(ctx).is_connected = True
-        if not self.nodes.get(host):
-            raise Exception("No node with host: {} found.".format(host))
 
     async def leave(self, ctx):
         await self.bot.ws.send(json.dumps({
