@@ -1022,7 +1022,7 @@ Invalid math expression."""
         """Dig out that user info. Usage: *userinfo [tag user]"""
         if user is None:
             user = ctx.author
-        join_time = str(ctx.author.joined_at.strftime("%b %m, %Y, %A, %I:%M %p"))
+        join_time = str(ctx.author.joined_at.strftime("%A, %b %d, %Y, at %I:%M %p"))
         status = {
             "online": f"{self.bot.get_emoji(472188358576308227)} Online",
             "idle": f"{self.bot.get_emoji(472188357036867585)} Idle",
