@@ -59,7 +59,7 @@ class Music:
         if not search.startswith("http"):
             search = f"ytsearch:{search}"
 
-        tracks = await self.bot.audio_manager.get_tracks(search)
+        tracks = await self.bot.audio_manager.get_tracks(player, search)
 
         if not tracks:
             await ctx.send("OOF, No results found. Looks like that search returned zero results!")
