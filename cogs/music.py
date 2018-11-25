@@ -10,12 +10,11 @@ import lavalink
 import logging
 from discord.ext.commands.cooldowns import BucketType  
 from bs4 import BeautifulSoup
-from .utils.utils import Utils
 
 class Music:
     def __init__(self, bot):
         self.bot = bot
-        self.utils = Utils(bot)
+        self.utils = self.bot.utils
         self.skip_count = {}
 
     @commands.command()
@@ -72,7 +71,7 @@ class Music:
         if not player.playing:
             await player.play()
         else:
-            await ctx.send(":ok_hand: **{}** was enqueued!".format(await Utils.clean_text(ctx, tracks['tracks'][0]["info"]["title"])))
+            await ctx.send(":ok_hand: **{}** was enqueued!".format(await self.utils.clean_text(ctx, tracks['tracks'][0]["info"]["title"])))
 
     @commands.command()
     @commands.guild_only()
