@@ -42,7 +42,7 @@ async def getprefix(bot, message):
 
 
 bot = commands.Bot(command_prefix=getprefix, owner_id=277981712989028353, case_insensitive=True)
-bot._last_result = None
+re_last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.utils = Utils(bot)
 bot.audio_manager = AudioManager(bot=bot, nodes=[

@@ -6,9 +6,8 @@ import textwrap
 import asyncio
 import os
 import json
-import audio_manager
 import logging
-from discord.ext.commands.cooldowns import BucketType  
+from discord.ext.commands.cooldowns import BucketType
 from bs4 import BeautifulSoup
 
 class Music:
