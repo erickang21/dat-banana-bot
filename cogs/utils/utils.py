@@ -10,6 +10,26 @@ class Utils:
         self.bot = bot
 
     @staticmethod
+    def check_embed(embed, text):
+        """Searches an Embed for the given text."""
+        if embed.title and text.lower() in embed.title.lower(): 
+            return True
+        if embed.description and text.lower() in embed.description.lower(): 
+            return True
+        if embed.footer and embed.footer.text.lower() and text.lower() in embed.footer.lower():
+            return True
+        if embed.author and embed.author.name and text.lower() in embed.author.name.lower():
+            return True
+        if embed.fields:
+            for field in embed.fields:
+                if field.name and text.lower() in field.name.lower():
+                    return True
+                if field.value and text.lower() in field.value.lower():
+                    return True
+        return False
+         
+
+    @staticmethod
     async def clean_text(ctx, text):
         """Removes any mentions from the text."""
         return await commands.clean_content().convert(ctx, text)

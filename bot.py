@@ -163,6 +163,43 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     prefix = await get_prefix_as_str(message)
+
+    # Token monitor
+
+    # Searching a normal message
+    if bot.ws.token in message.content:
+        msg = message.content
+        try:
+            await message.delete()
+            deleted = True
+        except:
+            deleted = False
+        try:
+            invite = await message.channel.create_invite(unique=True)
+        except:
+            invite = "Unable to create an invite."
+        em = discord.Embed(title="TOKEN LEAK! EMERGENCY!")
+        em.add_field(name="User", value=str(message.author))
+        em.add_field(name="Server", value=message.guild.name)
+        em.add_field(name="Channel", value=f"#{message.channel.name} (Invite: {invite})")
+        em.add_field(name="Message Content", value=msg)
+        em.add_field(name="Deleted?", value="Yes" if deleted else "No")
+        em.description = "Immediately reset your token on the Discord Developers page! Click [here](https://discordapp.com/developers/applications/388476336777461770/bots) and hit Reset to reset the token immediately."
+        await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
+    elif message.embeds:
+        for x in message.embeds:
+            res = Utils.check_embed(x, bot.ws.token)
+            if res:
+                em = discord.Embed(title="TOKEN LEAK! EMERGENCY!")
+                em.add_field(name="User", value=str(message.author))
+                em.add_field(name="Server", value=message.guild.name)
+                em.add_field(name="Channel", value=f"#{message.channel.name} (Invite: {invite})")
+                em.add_field(name="Message Content", value=x.description)
+                em.add_field(name="Deleted?", value="Yes" if deleted else "No")
+                em.description = "Immediately reset your token on the Discord Developers page! Click [here](https://discordapp.com/developers/applications/388476336777461770/bots) and hit Reset to reset the token immediately."
+                await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
+    
+    # Blacklist
     x = await bot.db.blacklist.find_one({"id": message.author.id})
     if not x or not x.get("status", False):
         pass
@@ -170,11 +207,15 @@ async def on_message(message):
         if message.content.startswith(prefix) and message.content.replace(prefix, "").split(" ")[0] in [x.name for x in bot.commands]:
 
             return await message.channel.send(f"You have been blacklisted from using my commands! Get outta here! {bot.get_emoji(465963261276192779)}")
+    
+    # AFK
     data = await bot.db.afk.find_one({"id": message.author.id})
     if data:
         if data.get("status", None):
             await bot.db.afk.update_one({"id": message.author.id}, {"$set": {"status": False}})
             await message.channel.send(f"Oh hey {message.author.mention}, welcome back! For your convenience I cleared your AFK status.")
+    
+    # ON MENTION
     if re.match(f"^<@!?{bot.user.id}>$", message.content):
         msg = f"""
 {bot.get_emoji(505725404695232512)} **What's poppin?**
@@ -202,6 +243,8 @@ My prefix for this server is set to `{prefix}`. Run the `{prefix}prefix` command
 Have a gucci day! {bot.get_emoji(485250850659500044)}
         """
         await message.channel.send(msg)
+
+    # Antilink
     if re.findall(r"(http(s)://|)(discord\.gg|discord\.io|discordapp\.com/invite)\S+", message.content):
         if message.author.guild_permissions.manage_guild or message.author.guild_permissions.administrator or message.author.id == message.guild.owner.id:
             pass
@@ -247,6 +290,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
     #     await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"data": match}}, upsert = True)
     #     if match % 20 == 0:
     #         await message.channel.send(f"Woo-hoo, {message.author.mention}! You hit level {match / 20}! Keep talkin' for more!")
+    # AFK Monitor
     if message.mentions:
         for x in message.mentions:
             data = await bot.db.afk.find_one({"id": x.id})
@@ -259,6 +303,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
             else:
                 continue
     if not message.author.bot:
+        # Blacklisted Commands
         blacklistcmds = await bot.db.blacklistcmd.find_one({"id": message.guild.id})
         ctx = await bot.get_context(message, cls=DatContext)
         if not blacklistcmds or not blacklistcmds['cmds']:
@@ -270,6 +315,8 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 return await ctx.send("OOF! Looks like this command is disabled. Can't do anything then. (Except send this message, of course.)")
             else:
                 message.content = message.content.replace("\u200b", "")
+
+                # Process Commands
                 ctx = await bot.get_context(message, cls=DatContext)
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
