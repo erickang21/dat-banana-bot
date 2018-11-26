@@ -191,7 +191,7 @@ async def on_message(message):
         for x in message.embeds:
             res = Utils.check_embed(x, bot.ws.token)
             if res:
-                print("TOKEN MONITOR TRIGGERED! PLEASE CHECK DISCORD!")``
+                print("TOKEN MONITOR TRIGGERED! PLEASE CHECK DISCORD!")
                 em = discord.Embed(title="TOKEN LEAK! EMERGENCY!")
                 em.add_field(name="User", value=str(message.author))
                 em.add_field(name="Server", value=message.guild.name)
