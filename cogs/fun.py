@@ -117,7 +117,7 @@ class fun:
             pass
         res = await self.bot.session.get(user.avatar_url)
         url = await res.read()
-        webhook = await ctx.channel.create_webhook(user.display_name, url)
+        webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=url)
         await webhook.send(message)
         await webhook.delete()
 
