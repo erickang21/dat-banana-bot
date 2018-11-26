@@ -8,7 +8,7 @@ import random
 import json
 import idioticapi
 from discord.ext import commands
-from discord.ext.commands
+from discord.ext.commands import BucketType
 import base64
 from .utils.utils import Utils
 import box
