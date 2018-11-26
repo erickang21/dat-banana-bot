@@ -16,7 +16,7 @@ class Utils:
             return True
         if embed.description and text.lower() in embed.description.lower(): 
             return True
-        if embed.footer and embed.footer.text.lower() and text.lower() in embed.footer.lower():
+        if embed.footer and embed.footer.text.lower() and text.lower() in embed.footer.text.lower():
             return True
         if embed.author and embed.author.name and text.lower() in embed.author.name.lower():
             return True
