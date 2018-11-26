@@ -41,7 +41,7 @@ class COC:
         coctag = coctag.upper()
         for char in coctag:
             if char.upper() not in '0289PYLQGRJCUV':
-                return await ctx.send(f'Oops again! Looks like your tag `#{coctag}` is not a valid tag!')
+                return await ctx.send(f'Oops again! Looks like your tag is not a valid tag!')
         await self.bot.db.coctags.update_one({"id": str(ctx.author.id)}, {"$set": {"tag": coctag}}, upsert=True)
         await ctx.send("Success. :white_check_mark: Your tag is now saved to your account.")
 
