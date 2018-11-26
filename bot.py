@@ -764,7 +764,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.MissingPermissions):
         missing = ""
         for x in error.missing_perms:
-            missing += f"{utils.capitalize(x)} \n"
+            missing += f"{bot.utils.capitalize(x)} \n"
         
         return await ctx.send(f"{bot.get_emoji(506168446174887956)} You don't have permission to run this command! Maybe try getting these permissions:\n\n{missing}", edit=False)
     elif isinstance(error, commands.CommandOnCooldown):
