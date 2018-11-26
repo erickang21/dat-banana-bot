@@ -115,8 +115,9 @@ class fun:
             await ctx.message.delete()
         except:
             pass
-        img = user.avatar_url
-        webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=img)
+        img = user.avatar_url_as(format="png", size=1024)
+        byte = await (await self.bot.session.get(img)).read();
+        webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=byte)
         message = await Utils.clean_text(ctx, message)
         await webhook.send(message)
         await webhook.delete()
