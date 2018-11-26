@@ -8,6 +8,7 @@ import random
 import json
 import idioticapi
 from discord.ext import commands
+from discord.ext.commands import BucketType
 import base64
 from .utils.utils import Utils
 import box
@@ -106,8 +107,22 @@ class fun:
     #     elif x.content.lower() == 'accept':
 
 
+    @commands.command(aliases=["sayas"])
+    @commands.cooldown(1, 30, BucketType.user)
+    async def mimic(self, ctx, user: discord.Member, *, message: str):
+        """Say something like someone else :)"""
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+        img = user.avatar_url_as(format="png", size=1024)
+        byte = await (await self.bot.session.get(img)).read();
+        webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=byte)
+        message = await Utils.clean_text(ctx, message)
+        await webhook.send(message)
+        await webhook.delete()
 
-    
+
 
     
 
@@ -428,7 +443,7 @@ class fun:
             for l in range(i):
                 fmt += string[l] 
             fmt += '\n'
-
+        fmt = await Utils.clean_text(ctx, fmt)
         try:
             await ctx.send('```\n' + fmt + '\n```')
         except:
