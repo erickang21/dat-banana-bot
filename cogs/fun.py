@@ -443,7 +443,7 @@ class fun:
             for l in range(i):
                 fmt += string[l] 
             fmt += '\n'
-        fmt = await Utils.clean_text(fmt)
+        fmt = await Utils.clean_text(ctx, fmt)
         try:
             await ctx.send('```\n' + fmt + '\n```')
         except:
