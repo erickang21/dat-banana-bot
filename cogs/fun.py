@@ -115,8 +115,7 @@ class fun:
             await ctx.message.delete()
         except:
             pass
-        res = await self.bot.session.get(user.avatar_url.replace("eebp", "png"))
-        url = await res.read()
+        res = await user.avatar_url_as(format="png")
         webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=url)
         await webhook.send(message)
         await webhook.delete()
