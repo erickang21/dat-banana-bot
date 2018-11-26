@@ -83,6 +83,7 @@ class AudioManager:
         for node in self.nodes.values():
             @node.ee.on("track_start")
             async def on_track_start(e):
+                print("Music: track_start event triggered.")
                 ctx = e.player.ctx
                 em = discord.Embed(color=0x00ff00, title=f"Playing")
                 #em.description = f"**{e.track.title}**"
@@ -158,6 +159,7 @@ class AudioManager:
 
             @node.ee.on("track_end")
             async def on_track_end(event):
+                print("Music: track_end event triggered.")
                 if event.reason == "REPLACED":
                     return  # Return because if we play then the queue will be fucked.
                 elif event.reason == "FINISHED":
@@ -168,4 +170,5 @@ class AudioManager:
 
             @node.ee.on("queue_concluded")
             async def on_queue_concluded(event):
+                print("Music: queue_concluded event triggered.")
                 await self.leave(event.player.ctx)
