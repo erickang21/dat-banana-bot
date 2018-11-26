@@ -115,8 +115,8 @@ class fun:
             await ctx.message.delete()
         except:
             pass
-        res = user.avatar_url_as(format="png")
-        webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=url)
+        img = user.avatar_url_as(format="png")
+        webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=img)
         message = await Utils.clean_text(ctx, message)
         await webhook.send(message)
         await webhook.delete()
@@ -442,7 +442,7 @@ class fun:
             for l in range(i):
                 fmt += string[l] 
             fmt += '\n'
-
+        fmt = await Utils.clean_text(fmt)
         try:
             await ctx.send('```\n' + fmt + '\n```')
         except:
