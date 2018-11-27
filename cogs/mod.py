@@ -80,6 +80,21 @@ class mod:
     #     else:
     #         return await ctx.send("Reactionrole command:\n*reactionrole [on/off]")
 
+    @commands.command()
+    @commands.has_permissions(ban_members=True)
+    async def raidmode(self, ctx, action=None):
+        if not action:
+            return await ctx.send(f"That's not correct usage, my dude! {ctx.prefix}raidmode [on/off].")
+        if not ctx.guild.me.guild_permissions.kick_members:
+            return await ctx.send("Hey! How do you expect me to handle raidmode without the **Kick Members** permission?\n\nPlease grant me this permission, and re-run this command.")
+        if action.lower() == "on":
+            await self.bot.db.raidmode.update_one({"id": ctx.guild.id}, {"$set": {"status": True}})
+            return await ctx.send("Alright, raidmode is **on.** I'll kick any bakas joining this server after this. ***LET 'EM AT ME!***")
+        elif action.lower() == "off":
+            await self.bot.db.raidmode.delete_one({"id": ctx.guild.id})
+            return await ctx.send("Alright, raidmode is **off.** Letting my guard down now...")
+        else:
+            return await ctx.send(f"That's not correct usage, my dude! {ctx.prefix}raidmode [on/off].")
 
 
     @commands.command()

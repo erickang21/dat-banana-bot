@@ -601,6 +601,24 @@ async def on_guild_remove(guild):
     
 @bot.event
 async def on_member_join(member):
+    # RAIDMODE
+    data = await bot.db.raidmode.find_one({"id": member.guild.id})
+    if data and data["status"]:
+        await member.send(f"Hey there, I had to kick you because **{member.guild.name}** is currently on lockdown. Try again later.")
+        await member.kick()
+        if await modlog_check(member.guild.id):
+            lol = bot.get_channel(await get_modlog_channel(member.guild.id))
+            em = discord.Embed(color=discord.Color(value=0xf9e236), title='Member Joined (During Raidmode)')
+            em.description = textwrap.dedent(f"""
+{bot.get_emoji(430340802879946773)} User: {str(member)}
+
+:1234: User ID: {member.id}
+
+This user joined while raidmode was enabled by me. I automatically kicked them.
+        """)
+            em.set_thumbnail(url=member.avatar_url)
+            em.timestamp = datetime.datetime.utcnow()
+            await lol.send(embed=em)
     # MEMBER COUNTER
     data = await bot.db.membercounter.find_one({"id": member.guild.id})
     if not data: pass
