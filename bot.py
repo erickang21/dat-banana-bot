@@ -829,12 +829,16 @@ async def on_command_error(ctx, error):
         em.description = 'Not my daddy! This command is for the owner only.'
         return await ctx.send(embed=em)
     elif isinstance(error, commands.MissingPermissions):
+        if ctx.author.id == bot.owner_id:
+            await ctx.reinvoke()
         missing = ""
         for x in error.missing_perms:
             missing += f"{bot.utils.capitalize(x)} \n"
         
         return await ctx.send(f"{bot.get_emoji(506168446174887956)} You don't have permission to run this command! Maybe try getting these permissions:\n\n{missing}", edit=False)
     elif isinstance(error, commands.CommandOnCooldown):
+        if ctx.author.id == bot.owner_id:
+            await ctx.reinvoke()
         retry_time = error.retry_after
         if retry_time < 60:
             actual_time = f"{int(retry_time)} seconds"
