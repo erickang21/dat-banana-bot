@@ -88,10 +88,11 @@ class AudioManager:
                 ctx = e.player.ctx
                 print(dir(e))
                 e = e.track
+                print(dir(e))
                 em = discord.Embed(color=0x00ff00, title=f"Playing")
                 #em.description = f"**{e.track.title}**"
                 em.set_author(name=e.requester.name, icon_url=e.requester.avatar_url)
-                second = e.duration / 1000
+                second = e.length / 1000
                 minute, second = divmod(second, 60)
                 hour, minute = divmod(minute, 60)
                 #minutes, seconds = divmod(e.track.duration, 60)
