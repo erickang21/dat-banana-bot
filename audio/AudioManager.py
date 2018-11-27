@@ -87,6 +87,7 @@ class AudioManager:
                 print("Music: track_start event triggered.")
                 ctx = e.player.ctx
                 print(dir(e))
+                f = e
                 e = e.track
                 print(dir(e))
                 em = discord.Embed(color=0x00ff00, title=f"Playing")
@@ -103,7 +104,7 @@ class AudioManager:
                     length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
                 playing_panel = textwrap.dedent(f"""
 :musical_note: **Song**
-{e.track.title}
+{e.title}
 
 {self.bot.get_emoji(430340802879946773)} **Requested By**
 {str(ctx.author)}
@@ -112,10 +113,10 @@ class AudioManager:
 {length}
 
 :loud_sound: **Volume**
-{self.utils.get_lines(e.player.volume)} {e.player.volume}%
+{f.player.volume}
 
 :1234: **Queue Position**
-{len(e.player.queue)}
+{len(f.player.queue)}
                 """)
                 #em.add_field(name='Length', value=length)
                 #em.add_field(name='Volume', value=f"{self.utils.get_lines(e.player.volume)} {e.player.volume}%")
