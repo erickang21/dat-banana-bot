@@ -85,8 +85,8 @@ class AudioManager:
             async def on_track_start(e):
                 print("Music: track_start event triggered.")
                 ctx = e.player.ctx
-                e = e.player
-                print(dir(e))
+                e = e.player.current
+                print(dir(e.player.current))
                 em = discord.Embed(color=0x00ff00, title=f"Playing")
                 #em.description = f"**{e.track.title}**"
                 em.set_author(name=e.track.requester.name, icon_url=e.track.requester.avatar_url)
