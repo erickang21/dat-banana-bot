@@ -139,20 +139,20 @@ I started playing the music! {self.bot.get_emoji(511089456196091916)}
                             return await ctx.send(f"Guys? Seriously? Well, guess I'm out too. {self.bot.get_emoji(517142988904726562)}")
                         reaction, user = await self.bot.wait_for("reaction_add", check=lambda r, u: u.id == ctx.author.id and r.emoji in "⏸▶⏹🔁❓")
                         if reaction.emoji == "⏸":
-                            await e.player.pause()
+                            await e.pause()
                             try:
                                 await msg.remove_reaction("\U000023f8", user)
                             except: 
                                 pass
                         elif reaction.emoji == "▶":
-                            await e.player.resume()
+                            await e.resume()
                             await msg.remove_reaction("\U000025b6", user)
                         elif reaction.emoji == "⏹":
                             e.player.queue.clear()
-                            await e.player.stop()
+                            await e.stop()
                             await msg.delete()
                         elif reaction.emoji == "🔁":
-                            e.player.repeating = not e.player.repeating
+                            e.repeating = not e.repeating
                             await msg.remove_reaction("\U0001f501", user)
                         elif reaction.emoji == "❓":
                             await msg.remove_reaction("\U00002753", user)
