@@ -47,12 +47,12 @@ class Music:
         player = self.bot.audio_manager.get_player(ctx)
         """Search for a YouTube video to play, by name."""
         if search is None:
-            return await ctx.send("ACK! Provide a search please")
+            return await ctx.send("Baka! Where's your search?")
         if not player.is_connected:
             if ctx.author.voice is None:
                 return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
             await self.bot.audio_manager.connect(ctx)
-        em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(471279983197814806)} Searching `{search}`...")
+        em = discord.Embed(color=0x00ff00, title="Searching...", description=f"{self.bot.get_emoji(517071047439417364)} Looking for `{search}`...")
         m = await ctx.send(embed=em, edit=False)
 
         search = search.strip("<>")
@@ -77,7 +77,7 @@ class Music:
     async def pause(self, ctx):
         """Pauses whatever is playing."""
         player = self.bot.audio_manager.get_player(ctx)
-        if not player.is_playing:
+        if not player.playing:
             return await ctx.send("How do I pause without me connected playing anything?")
         await player.set_paused(True)
         await ctx.send("**I am now paused.** :pause_button: ")
@@ -88,7 +88,7 @@ class Music:
     async def resume(self, ctx):
         """Resumes whatever isn't playing."""
         player = self.bot.audio_manager.get_player(ctx)
-        if not player.is_playing:
+        if not player.playing:
             return await ctx.send("How do I resume without me connected playing anything?")
  
         await player.set_paused(False)
@@ -100,7 +100,7 @@ class Music:
     async def stop(self, ctx):
         """Stops the player."""
         player = self.bot.audio_manager.get_player(ctx)
-        if not player.is_playing:
+        if not player.playing:
             return await ctx.send("How do I stop the music without me connected playing anything?")
 
         player.queue.clear()
@@ -180,8 +180,8 @@ class Music:
     async def volume(self, ctx):
         """Change or view the current volume for playing."""
         player = self.bot.audio_manager.get_player(ctx)
-        if not player.is_playing:
-            return await ctx.send("Nothing is playing! Cannot detect volume or change it.")
+        if not player.playing:
+            return await ctx.send("Nothing is playing! Ain't gonna change the volume now.")
         msg = await ctx.send(f":loud_sound: Volume for **{ctx.guild.name}**:\n{self.utils.get_lines(player.volume)} {player.volume}\n\n**How to use:**\n:heavy_plus_sign:: Increases the volume by 5.\n:heavy_minus_sign:: Decrease the volume by 5.")
         await msg.add_reaction("\U00002795")
         await msg.add_reaction("\U00002796")

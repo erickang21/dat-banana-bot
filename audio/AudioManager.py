@@ -86,11 +86,11 @@ class AudioManager:
             async def on_track_start(e):
                 print("Music: track_start event triggered.")
                 ctx = e.player.ctx
-                print(dir(e))
+                #print(dir(e))
                 f = e
                 e = e.track
-                print(dir(e))
-                em = discord.Embed(color=0x00ff00, title=f"Playing")
+                #print(dir(e))
+                em = discord.Embed(color=0x00ff00, title=f"Music")
                 #em.description = f"**{e.track.title}**"
                 em.set_author(name=e.requester.name, icon_url=e.requester.avatar_url)
                 second = e.length / 1000
@@ -103,6 +103,8 @@ class AudioManager:
                 else:
                     length = f"{self.utils.format_time(minute)}:{self.utils.format_time(second)}"
                 playing_panel = textwrap.dedent(f"""
+I started playing the music! {self.bot.get_emoji(511089456196091916)}
+
 :musical_note: **Song**
 {e.title}
 
