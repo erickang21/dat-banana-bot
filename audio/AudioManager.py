@@ -137,7 +137,7 @@ I started playing the music! {self.bot.get_emoji(511089456196091916)}
                     while f.player.playing:
                         if len(ctx.author.voice.channel.members) <= 1:
                             return await ctx.send(f"Guys? Seriously? Well, guess I'm out too. {self.bot.get_emoji(517142988904726562)}")
-                        reaction, user = await self.bot.wait_for("reaction_add", check=lambda r, u: u.id == e.player.current.requester.id and r.emoji in "⏸▶⏹🔁❓")
+                        reaction, user = await self.bot.wait_for("reaction_add", check=lambda r, u: u.id == ctx.author.id and r.emoji in "⏸▶⏹🔁❓")
                         if reaction.emoji == "⏸":
                             await e.player.pause()
                             try:
