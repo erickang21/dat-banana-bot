@@ -134,11 +134,16 @@ I started playing the music! {self.bot.get_emoji(511089456196091916)}
                 except discord.Forbidden:
                     return await ctx.send("I don't have Add Reaction permissions, so I can't show my awesome playing panel!")
                 try:    
-                    while e.player.is_playing:
+                    while e.player.playing:
+                        if len(ctx.author.voice.channel.members) <= 1:
+                            return await ctx.send(f"Guys? Seriously? Well, guess I'm out too. {self.bot.get_emoji(517142988904726562)}")
                         reaction, user = await self.bot.wait_for("reaction_add", check=lambda r, u: u.id == e.player.current.requester.id and r.emoji in "⏸▶⏹🔁❓")
                         if reaction.emoji == "⏸":
                             await e.player.pause()
-                            await msg.remove_reaction("\U000023f8", user)
+                            try:
+                                await msg.remove_reaction("\U000023f8", user)
+                            except: 
+                                pass
                         elif reaction.emoji == "▶":
                             await e.player.resume()
                             await msg.remove_reaction("\U000025b6", user)
