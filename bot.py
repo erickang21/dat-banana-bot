@@ -120,7 +120,7 @@ async def _sweep_bulk_deletes():
 
 @bot.event
 async def on_ready():
-    if bot.user.id != 388476336777461770:
+    if bot.user.id != 388476336777461770 or bot.user.id != 520682706896683009:
         print("COPYING ALERT! COULD NOT IDENTIFY BOT USER! EXPOSED!")
         exit() # :p
     bot.loop.create_task(_sweeper())
