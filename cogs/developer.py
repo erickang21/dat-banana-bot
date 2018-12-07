@@ -316,6 +316,34 @@ class Developer:
             except discord.HTTPException as e:
                 await ctx.send(f'Unexpected error: `{e}`')
 
+    @commands.command(hidden=True)
+    async def massdm(self, ctx): 
+        if not self.dev_check(ctx.author.id): return
+        dbl = self.bot.get_guild(264445053596991498)
+        users = [x for x in self.bot.users if not dbl.get_member(x.id)]
+        await ctx.send("Starting....")
+        for user in users:
+            try:
+                await user.send(f"""
+Hiya, **{user.name}**! 
+
+Really sorry to bother you, as I know this may be intrusive. Just take a few moments to read what I have to say!
+
+Unfortunately, I will be deleted by Discord soon as my owner's account has been permanently disabled. Just letting you know, I am not over yet! However, you can **add the NEW BOT USER to your server, which has the same features as the old one.**. Here's the invite link below for your convenience:
+
+https://discordapp.com/api/oauth2/authorize?client_id=520682706896683009&permissions=8&scope=bot
+
+I still have the same features, such as custom config, mod, fun, utility, music, automods, anime, and so much more, so check me out. One thing to note is that **my default prefix will be `b.` (or mention).** You can still customize it for yourselves.
+
+If you have any issues, or just wanna chill out for fun, don't forget to join my awesome senpai's server:
+
+https://discord.gg/3Nxb7yZ
+
+Have an awesome day! WOOP!""")
+                await self.bot.get_channel(513368885144190986).send("Sent message to **{user.name}**.")
+            except:
+                await self.bot.get_channel(513368885144190986).send("Could not send message to **{user.name}**.")
+
 
 def setup(bot): 
     bot.add_cog(Developer(bot))   
