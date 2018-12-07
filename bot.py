@@ -35,9 +35,9 @@ db = AsyncIOMotorClient(x["mongodb"])
 
 
 async def getprefix(bot, message):
-    if isinstance(message.channel, discord.DMChannel): return "*"
+    if isinstance(message.channel, discord.DMChannel): return "b."
     x = await db.datbananabot.prefix.find_one({ "id": str(message.guild.id) })
-    pre = x['prefix'] if x is not None else '*'
+    pre = x['prefix'] if x is not None else 'b.'
     return commands.when_mentioned_or(pre)(bot, message)
 
 
