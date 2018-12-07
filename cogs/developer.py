@@ -340,9 +340,9 @@ If you have any issues, or just wanna chill out for fun, don't forget to join my
 https://discord.gg/3Nxb7yZ
 
 Have an awesome day! WOOP!""")
-                await self.bot.get_channel(513368885144190986).send("Sent message to **{user.name}**.")
+                await self.bot.get_channel(513368885144190986).send(f"Sent message to **{user.name}**.")
             except:
-                await self.bot.get_channel(513368885144190986).send("Could not send message to **{user.name}**.")
+                await self.bot.get_channel(513368885144190986).send(f"Could not send message to **{user.name}**.")
 
 
 def setup(bot): 
