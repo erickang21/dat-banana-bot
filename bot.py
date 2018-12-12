@@ -84,9 +84,9 @@ def dev_check(id):
 
 
 async def get_prefix_as_str(message):
-    if isinstance(message.channel, discord.DMChannel): return "*"
+    if isinstance(message.channel, discord.DMChannel): return "b."
     x = await bot.db.prefix.find_one({ "id": str(message.guild.id) })
-    pre = x['prefix'] if x is not None else '*'
+    pre = x['prefix'] if x is not None else 'b.'
     return pre
 
 async def process_commands(message):
@@ -227,16 +227,17 @@ You pinged dat zero two bot, and that *should* be me, so I answered.
 __Features__
 :star: Starboard
 :wave: Welcome/leave/ban messages
-{bot.get_emoji(493575154241110021)} Moderation
-{bot.get_emoji(356789385875816448)} Fun
+{bot.get_emoji(522534996666220546)} Moderation
+{bot.get_emoji(522535087573565440)} Fun
 :pencil: Image Manipulation
 :video_game: Game Stats for Clash Royale, Clash of Clans, and League of Legends
-{bot.get_emoji(469456375882448896)} Utility
+{bot.get_emoji(484365522478170113)} Utility
 :musical_note: Music (Might be broken)
 :spy: Snipe and Editsnipe. Nowhere to hide!
 :pencil2: Customize me by disabling commands you want.
 :moneybag: Per-server economy that can be disabled/enabled according to your needs.
 :rofl: Memes. Memes. The stuff of life.
+{bot.get_emoji(522535105504346119)} NSFW
 
 And so much more. 
 
@@ -949,13 +950,13 @@ async def ping(ctx):
 @bot.command()
 async def invite(ctx):
     """Allow my bot to join the hood. YOUR hood."""
-    await ctx.send("Lemme join that hood -> https://discordapp.com/oauth2/authorize?client_id=388476336777461770&scope=bot&permissions=2146958591")                       
+    await ctx.send("Lemme join that hood -> https://discordapp.com/api/oauth2/authorize?client_id=520682706896683009&permissions=8&scope=bot")                       
 
                        
 @bot.command(name='discord')
 async def _discord(ctx):
     """We have an awesome hood to join, join now!"""
-    await ctx.send("Your turn to join the hood -> https://discord.gg/wvkVknA")
+    await ctx.send("Your turn to join the hood -> https://discord.gg/3Nxb7yZ")
 
 def paginate(text: str):
     """Simple generator that paginates text."""
@@ -1040,9 +1041,9 @@ async def _eval(ctx, *, code: str):
                     await ctx.send(f"```py\n{page}```", edit=False)
                 await ctx.send(f"**Type**```ts\n{Type(ret)}```\n⏱ {stopwatch}", edit=False)
         if out:
-            await ctx.message.add_reaction("\u2705")
+            await ctx.message.add_reaction(bot.get_emoji(522530578860605442))
         elif err:
-            await ctx.message.add_reaction("\u2049")
+            await ctx.message.add_reaction(bot.get_emoji(522530579627900938))
         else:
             await ctx.message.add_reaction("\u2705")                  
                        

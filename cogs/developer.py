@@ -125,7 +125,7 @@ class Developer:
         e = discord.Embed(color=0x00ff00, title='Running code')
         e.description = f'Please wait... {self.bot.get_emoji(471279983197814806)}'
         msg = await ctx.send(embed=e)
-        lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        lol = subprocess.run(f"{code}", cwd='/Users/Administrator/new-banana-bot', stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         err = lol.stderr.decode("utf-8")
         res = lol.stdout.decode("utf-8")
         em = discord.Embed(color=0x00ff00, title='Ran on the Command Prompt!')
@@ -143,7 +143,7 @@ class Developer:
             return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
         msg = await ctx.send(f"Updating... {self.bot.get_emoji(471279983197814806)}")
         try:
-            lol = subprocess.run("git pull", cwd='/Users/Administrator/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+            lol = subprocess.run("git pull", cwd='/Users/Administrator/new-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
             for cog in self.bot.cogs:
                 cog = cog.lower()
                 self.bot.unload_extension(f"cogs.{cog}")
