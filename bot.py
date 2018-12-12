@@ -1002,7 +1002,7 @@ async def _eval(ctx, *, code: str):
     except Exception as e:
         stopwatch.stop()
         err = await ctx.send(f"**Error**```py\n{e.__class__.__name__}: {e}\n```\n**Type**```ts\n{Type(e)}```\n⏱ {stopwatch}")
-        return await ctx.message.add_reaction("\u2049")
+        return await ctx.message.add_reaction(bot.get_emoji(522530579627900938))
 
     func = env["func"]
     stopwatch.restart()
