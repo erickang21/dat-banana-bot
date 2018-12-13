@@ -563,11 +563,11 @@ In fact, I'm so lovely, I'll introduce myself right now.
 __Features__
 :star: Starboard
 :wave: Welcome/leave/ban messages
-{bot.get_emoji(493575154241110021)} Moderation
-{bot.get_emoji(356789385875816448)} Fun
+{bot.get_emoji(522534996666220546)} Moderation
+{bot.get_emoji(522535087573565440)} Fun
 :pencil: Image Manipulation
 :video_game: Game Stats for Clash Royale, Clash of Clans, and League of Legends
-{bot.get_emoji(469456375882448896)} Utility
+{bot.get_emoji(484365522478170113)} Utility
 :musical_note: Music (Might be broken)
 :spy: Snipe and Editsnipe. Nowhere to hide!
 :pencil2: Customize me by disabling commands you want.

@@ -40,7 +40,8 @@ class CR:
             emo = str(self.bot.get_emoji(int(e)))
             return emo
         except KeyError:
-            default = self.bot.get_emoji(407318200737595392)
+            default = self.bot.get_emoji(522894915668148250)
+            print(f"EMOJI NOT FOUND: {name}")
             return str(default)
 
 
