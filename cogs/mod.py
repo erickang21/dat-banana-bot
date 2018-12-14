@@ -439,7 +439,7 @@ class mod:
             em.description = textwrap.dedent(f"""
             :zipper_mouth: User: {str(user)}
 
-            {self.bot.get_emoji(430340802879946773)} Unuted by: {str(ctx.author)}
+            {self.bot.get_emoji(430340802879946773)} Unmuted by: {str(ctx.author)}
 
             :1234: User ID: {user.id}
 

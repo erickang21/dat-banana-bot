@@ -957,8 +957,8 @@ Invalid math expression."""
         msg = await ctx.send(lol)
         args = args.split(",")
         await asyncio.sleep(2)
-        res = await commands.clean_content().convert(ctx, random.choice(args))
-        await msg.edit(content=f"I choose:\n**{res}**")
+        res = await commands.clean_content().convert(ctx, random.choice(args).strip(" "))
+        await msg.edit(content=f"Alright! I choose:\n**{res}**")
 
         
     @commands.command(aliases=['tf'])
@@ -1024,10 +1024,10 @@ Invalid math expression."""
             user = ctx.author
         join_time = str(ctx.author.joined_at.strftime("%A, %b %d, %Y, at %I:%M %p"))
         status = {
-            "online": f"{self.bot.get_emoji(472188358576308227)} Online",
-            "idle": f"{self.bot.get_emoji(472188357036867585)} Idle",
-            "dnd": f"{self.bot.get_emoji(472188357045256225)} Do Not Disturb",
-            "offline": f"{self.bot.get_emoji(472188358261473281)} Offline"
+            "online": f"{self.bot.get_emoji(522530301793009665)} Online",
+            "idle": f"{self.bot.get_emoji(522530301759455238)} Idle",
+            "dnd": f"{self.bot.get_emoji(522530301503864854)} Do Not Disturb",
+            "offline": f"{self.bot.get_emoji(522530301617111062)} Offline"
         }
         color = 0xf2f760
         em = discord.Embed(color=color, title=f'User Info: {str(user)}')
@@ -1130,12 +1130,12 @@ Invalid math expression."""
         em.add_field(name='Channel Count :speech_balloon:  ', value=f":hash: **Text:** {textchannels}\n:loud_sound: **Voice:** {voicechannels}", inline=False)
         em.add_field(name='AFK Channel :sleeping: ', value=f"**Channel**: {str(guild.afk_channel)}\n**Timeout:** {int(guild.afk_timeout / 60)} minutes", inline=False)
         em.add_field(name='Server Region :globe_with_meridians: ', value=str(guild.region), inline=False)
-        em.add_field(name=f'Emoji Count {self.bot.get_emoji(430853715059277863)}', value=f"**Regular Emojis:** {regular_emojis}\n**Animated Emojis:** {animated_emojis}", inline=False)
+        em.add_field(name=f'Emoji Count {self.bot.get_emoji(484366851493855233)}', value=f"**Regular Emojis:** {regular_emojis}\n**Animated Emojis:** {animated_emojis}", inline=False)
         em.add_field(name='Role Count :bust_in_silhouette: ', value=str(role_length), inline=False)
-        em.add_field(name=f'Server Verification Level {self.bot.get_emoji(430851951740321793)}', value=verification_levels[guild.verification_level], inline=False)
-        em.add_field(name=f"Explicit Content Filter", value=content_filters[guild.explicit_content_filter], inline=False)
-        em.add_field(name=f"2FA Requirement {self.bot.get_emoji(430847624653045761)}", value=mfa_levels[guild.mfa_level], inline=False)
-        em.add_field(name=f'Ban Count {self.bot.get_emoji(433381603020898326)}', value=ban_count, inline=False)
+        em.add_field(name=f'Server Verification Level {self.bot.get_emoji(522927676114075649)}', value=verification_levels[guild.verification_level], inline=False)
+        em.add_field(name=f"Explicit Content Filter {self.bot.get_emoji(464784851241926666)}", value=content_filters[guild.explicit_content_filter], inline=False)
+        em.add_field(name=f"2FA Requirement {self.bot.get_emoji(485798151064649749)}", value=mfa_levels[guild.mfa_level], inline=False)
+        em.add_field(name=f'Ban Count {self.bot.get_emoji(522534996666220546)}', value=ban_count, inline=False)
         # em.add_field(name="Regular Emojis", value=regular_emoji_list, inline=False)
         # em.add_field(name="animated Emojis", value=animated_emoji_list, inline=False)
         em.set_footer(text='Created - %s' % time)        

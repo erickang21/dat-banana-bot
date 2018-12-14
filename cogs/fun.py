@@ -180,7 +180,7 @@ class fun:
     async def cleverbot(self, ctx, *, text):
         """Speak to Cleverbot. A chat bot."""
         em = discord.Embed(color=discord.Color(value=0xe5f442), title="Please Wait...")
-        em.description = f"{self.bot.get_emoji(452194264953258014)} CleverBot is typing..."
+        em.description = f"{self.bot.get_emoji(493218346129686528)} CleverBot is typing..."
         msg = await ctx.send(embed=em)
         instance_params = {
             "user": self.cleverbot_user,
@@ -224,7 +224,7 @@ class fun:
             return await ctx.send(f"**{to_rate}**'s gay level: :gay_pride_flag: \n{self.get_lines(rating)} **{rating}%**")
         elif Type.lower() == 'weeb':
             rating = random.randint(0, 100)
-            return await ctx.send(f"**{to_rate}**'s weeb level: {self.bot.get_emoji(449682671862546443)}\n{self.get_lines(rating)} **{rating}%**")
+            return await ctx.send(f"**{to_rate}**'s weeb level: {self.bot.get_emoji(522914758177980447)}\n{self.get_lines(rating)} **{rating}%**")
         else:
             return await ctx.send("Invalid argument. *rate [gay/weeb] [user]")
 
@@ -275,13 +275,13 @@ class fun:
         if rate < 20:
             text = f"**{first}** + **{second}**\n\nComplete CRAP! :unamused:\n\nRating: **{rate}**%"
         elif rate >= 20 and rate < 40:
-            text = f"**{first}** + **{second}**\n\nQuite bad, y'know. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nQuite bad, y'know. {self.bot.get_emoji(511141356673040414)}\n\nRating: **{rate}**%"
         elif rate >= 40 and rate < 60:
-            text = f"**{first}** + **{second}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(430851935864881152)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nMeh, it's *okay*, I guess. {self.bot.get_emoji(511088796666691584)}\n\nRating: **{rate}**%"
         elif rate >= 60 and rate < 80:
-            text = f"**{first}** + **{second}**\n\nPretty gucci! {self.bot.get_emoji(430851871872253983)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nPretty gucci! {self.bot.get_emoji(511141356769509396)}\n\nRating: **{rate}**%"
         elif rate >= 80 and rate <= 100:
-            text = f"**{first}** + **{second}**\n\nOne True Pair! {self.bot.get_emoji(430848132667146251)}\n\nRating: **{rate}**%"
+            text = f"**{first}** + **{second}**\n\nOne True Pair! {self.bot.get_emoji(453323229688496129)}\n\nRating: **{rate}**%"
         e = discord.Embed(color=discord.Color(value=0x00ff00), title="Matchmaking")
         e.description = text + f"\n\n__Ship Name__\n{self.utils.mix(first, second)}"
         await ctx.send(embed=e)
