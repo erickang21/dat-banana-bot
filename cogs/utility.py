@@ -255,10 +255,11 @@ __**Description**__
 :hammer_pick: **License:** {lic}
 :exclamation: **Issues:** {res.open_issues}
 :gift: **Size:** {size}
-
-{f'❯ {fork}' if fork}
-{f'❯ {archived}' if archived}
-        """
+"""
+        if fork:
+            desc += f"\n❯ {fork}"
+        if archived:
+            desc += f"\n❯ {archived}"
         em = discord.Embed(color=discord.Color(value=0x00ff00), title=res.name)
         em.set_author(name=res.owner.login, icon_url=res.owner.avatar_url)
         em.description = desc
