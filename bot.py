@@ -875,7 +875,7 @@ async def on_command_error(ctx, error):
         }
         await bot.db.errors.update_one({"code": error_code}, {"$set": data}, upsert=True)
         await bot.get_channel(513368885144190986).send(f"A new error has been recorded in **{ctx.guild.name}**. Code: `{error_code}`")
-        log = bot.get_channel(445332002942484482)
+        log = bot.get_channel(513368885144190986)
         
         await ctx.send(f"""
 NANI?! That's weird-ass. An unexpected error happened but you did nothing wrong. (Probably a fuck-up by my owner.) 
