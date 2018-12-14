@@ -897,6 +897,9 @@ Meanwhile, here's what you can do:
         embed.set_thumbnail(url=ctx.guild.icon_url)
         await log.send(embed=embed)
         logger.error(error)
+        print("-------ERROR--------")
+        print(traceback_text)
+        print("--------------------")
 
             
             
