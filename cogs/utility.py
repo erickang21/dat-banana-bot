@@ -230,6 +230,41 @@ class Utility:
             return None
         else:
             return match
+
+    @commands.command(aliases=["gh", "buhtig"])
+    async def github(self, ctx, username: str, repo: str):
+        """Search GitHub for a repo made by a user."""
+        res = await self.bot.session.get(f"https://api.github.com/repos/{username}/{repo}")
+        res = await res.json()
+        res = box.Box(res)
+        if res.message == "Not Found":
+            return await ctx.send("The repo doesn't exist. Or maybe it's private. Either way, there's a reason for it. :smirk:")
+        size = f"{res.size} KB" if res.size <= 1024 else f"{(res.size / 1024 / 1024):.2f} GB" if math.floor(res.size / 1024) > 1024 else f"{(res.size / 1024):.2f} MB"
+        
+        lic = f"[{res.license.name}]({res.license.url})" if res.license.name and res.license.url else res.license.name or "No license."
+        fork = f"This repository is a **fork** of [{res.parent.full_name}]({res.parent.html_url})" if res.fork else None
+        archived = "This repository is **archived** and is now **read-only.**" if res.archived else None
+        desc = f"""
+__**Description**__
+{res.description or 'No README found.'}
+
+:pencil: **Language:** {res.language}
+:star: **Stars:** {res.stargazers_count}
+:fork_and_knife: **Forks:** {res.forks_count}
+:eyes: **Watchers:** {res.subscribers_count}
+:hammer_pick: **License:** {lic}
+:exclamation: **Issues:** {res.open_issues}
+:gift: **Size:** {size}
+
+{f'❯ {fork}' if fork}
+{f'❯ {archived}' if archived}
+        """
+        em = discord.Embed(color=discord.Color(value=0x00ff00), title=res.name)
+        em.set_author(name=res.owner.login, icon_url=res.owner.avatar_url)
+        em.description = desc
+        em.set_footer(text=f"Powered by Github API | Requested by: {str(ctx.author)}", icon_url="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
+        await ctx.send(embed=em)
+
     
     @commands.command(aliases=["iinfo"])
     async def inviteinfo(self, ctx, invite: str):
