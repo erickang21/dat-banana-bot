@@ -241,7 +241,7 @@ class Utility:
             return await ctx.send("The repo doesn't exist. Or maybe it's private. Either way, there's a reason for it. :smirk:")
         size = f"{res.size} KB" if res.size <= 1024 else f"{(res.size / 1024 / 1024):.2f} GB" if math.floor(res.size / 1024) > 1024 else f"{(res.size / 1024):.2f} MB"
         
-        lic = f"[{res.license.name}]({res.license.url})" if res.license and res.license.name and res.license.url else res.license.name or "No license."
+        lic = f"[{res.license.name}]({res.license.url})" if res.license and res.license.name and res.license.url else res.license.name if res.license else "No license."
         fork = f"This repository is a **fork** of [{res.parent.full_name}]({res.parent.html_url})" if res.fork else None
         archived = "This repository is **archived** and is now **read-only.**" if res.archived else None
         desc = f"""
