@@ -237,7 +237,7 @@ class Utility:
         res = await self.bot.session.get(f"https://api.github.com/repos/{username}/{repo}")
         res = await res.json()
         res = box.Box(res)
-        if res.message == "Not Found":
+        if res.get("message", "") == "Not Found":
             return await ctx.send("The repo doesn't exist. Or maybe it's private. Either way, there's a reason for it. :smirk:")
         size = f"{res.size} KB" if res.size <= 1024 else f"{(res.size / 1024 / 1024):.2f} GB" if math.floor(res.size / 1024) > 1024 else f"{(res.size / 1024):.2f} MB"
         
