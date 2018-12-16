@@ -38,6 +38,7 @@ class BS:
 
     @commands.command()
     async def bsprofile(self, ctx, tag=None):
+        await ctx.trigger_typing()
         if not tag:
             tag = await self.get_tag(ctx.author.id)
             if not tag:
