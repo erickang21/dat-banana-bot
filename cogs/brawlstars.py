@@ -16,7 +16,7 @@ class BS:
         
     async def get_tag(self, id):
         find = await self.bot.db.bstags.find_one({"id": id})
-        return find
+        return find['tag']
     
     def emoji(self, _id):
         return self.bot.get_emoji(_id)
