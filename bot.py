@@ -895,7 +895,12 @@ Meanwhile, here's what you can do:
         embed.add_field(name="Command Content", value=ctx.message.content)
         embed.description = f"**Full Traceback:**\n\n```{traceback_text}```"
         embed.set_thumbnail(url=ctx.guild.icon_url)
-        await log.send(embed=embed)
+        try:
+            await log.send(embed=embed)
+        except: 
+            pass
+        await bot.get_channel(513368885144190986).send(f"**ERROR:**\n\n```{traceback_text}```")
+
         logger.error(error)
         print("-------ERROR--------")
         print(traceback_text)

@@ -27,6 +27,7 @@ class BS:
     @commands.command()
     async def bssave(self, ctx, tag):
         """Saves your Brawl Stars tag to your Discord account."""
+        tag = tag.strip("#")
         if not self.check_tag(tag):
             return await ctx.send("Looks like that's an invalid tag! Make it valid. :)")
         find = await self.bot.db.bstags.find_one({"id": ctx.author.id})
