@@ -51,9 +51,7 @@ All you gotta do is hit that giant **VOTE** button!
         """WARNING: NSFW command. Gets a random picture of feet."""
         if not ctx.channel.nsfw:
             return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
-        upvoted = await self.utils.check_upvote(ctx.author)
-        if not upvoted:
-            return await self.handle_not_upvoted(ctx)
+
         res = await self.req("feetg")
         em = discord.Embed(color=0xf9e236, title="Feet :eggplant:")
         em.set_image(url=res.url)
@@ -66,9 +64,7 @@ All you gotta do is hit that giant **VOTE** button!
         """WARNING: NSFW command. Gets a hentai picture."""
         if not ctx.channel.nsfw:
             return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
-        upvoted = await self.utils.check_upvote(ctx.author)
-        if not upvoted:
-            return await self.handle_not_upvoted(ctx)
+
         res = await self.req("Random_hentai_gif")
         em = discord.Embed(color=0xf9e236, title="Hentai :eggplant: ")
         em.set_image(url=res.url)
@@ -83,9 +79,7 @@ All you gotta do is hit that giant **VOTE** button!
             return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
         if not ctx.channel.nsfw:
             return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
-        upvoted = await self.utils.check_upvote(ctx.author)
-        if not upvoted:
-            return await self.handle_not_upvoted(ctx)
+
         res = await self.req("boobs")
         em = discord.Embed(color=0xf9e236, title="Boobs :eggplant: ")
         em.set_image(url=res.url)
@@ -97,9 +91,7 @@ All you gotta do is hit that giant **VOTE** button!
         """WARNING: NSFW command. Gets a picture of a lewd neko."""
         if not ctx.channel.nsfw:
             return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
-        upvoted = await self.utils.check_upvote(ctx.author)
-        if not upvoted:
-            return await self.handle_not_upvoted(ctx)
+
         res = await self.req("nsfw_neko_gif")
         em = discord.Embed(color=0xf9e236, title="Lewd Neko :eggplant: ")
         em.set_image(url=res.url)
@@ -111,9 +103,7 @@ All you gotta do is hit that giant **VOTE** button!
         """WARNING: NSFW command. Gets you a lewd profile picture."""
         if not ctx.channel.nsfw:
             return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
-        upvoted = await self.utils.check_upvote(ctx.author)
-        if not upvoted:
-            return await self.handle_not_upvoted(ctx)
+
         res = await self.req("nsfw_avatar")
         em = discord.Embed(color=0xf9e236, title="Lewd Profile Picture :eggplant: ")
         em.set_image(url=res.url)
@@ -125,9 +115,7 @@ All you gotta do is hit that giant **VOTE** button!
         """WARNING: NSFW command. Gets you a lesbian pic."""
         if not ctx.channel.nsfw:
             return await ctx.send("Are you trying to **kill innocent people's eyes**?? I think not!")
-        upvoted = await self.utils.check_upvote(ctx.author)
-        if not upvoted:
-            return await self.handle_not_upvoted(ctx)
+
         res = await self.req("les")
         em = discord.Embed(color=0xf9e236, title="Lesbian :eggplant: ")
         em.set_image(url=res.url)
