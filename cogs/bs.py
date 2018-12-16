@@ -34,7 +34,7 @@ class BS:
         if not tag.startswith("#"):
             tag = "#" + tag
         await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": tag}}, upsert=True)
-        await ctx.send(f"Your Brawl Stars tag has been successfully saved." + " (Your previously saved tag was deleted.)" if find else "")
+        await ctx.send(f"Your Brawl Stars tag has been successfully saved.")
 
 
     @commands.command()
