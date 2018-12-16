@@ -61,7 +61,7 @@ class BS:
             em.add_field(name="Members", value=club.members)
         brawlers = ""
         for x in profile.brawlers:
-            brawlers += f"{self.brawler(x.name)} {x.level} "
+            brawlers += f"{self.brawler(x.name.lower())} {x.level} "
         em.add_field(name="Brawlers", value=f"**{profile.brawlersUnlocked} total brawlers.**\n\n{brawlers}", inline=False)
         em.set_thumbnail(url=profile.avatarUrl)
         await ctx.send(embed=em)
