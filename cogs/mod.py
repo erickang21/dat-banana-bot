@@ -352,7 +352,7 @@ class mod:
         try:
             msg = await ctx.send(f"Alright, I'll unmute the user. Hang on... {self.bot.get_emoji(485594540192038925)}", edit=False)
             for chan in ctx.guild.channels:
-                await chan.set_permissions(send_messages=None, add_reactions=None)
+                await chan.set_permissions(user, send_messages=None, add_reactions=None)
             try:
                 await msg.delete()
                 await ctx.send(f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}", edit=False)
