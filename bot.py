@@ -156,7 +156,7 @@ async def on_ready():
     ]
     print('Bot is online, and ready to ROLL!')
     while True:
-        await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
+        await bot.change_presence(activity=discord.Game(name="Merry Christmas! 🎄"))
         await asyncio.sleep(20)
 
 
@@ -877,16 +877,20 @@ async def on_command_error(ctx, error):
         await bot.get_channel(513368885144190986).send(f"A new error has been recorded in **{ctx.guild.name}**. Code: `{error_code}`")
         log = bot.get_channel(513368885144190986)
         
-        await ctx.send(f"""
-NANI?! That's weird-ass. An unexpected error happened but you did nothing wrong. (Probably a fuck-up by my owner.) 
+        em = discord.Embed(color=ctx.author.color, title="Error? Error!")
+        desc = ""
+        desc += f"```{traceback_text}```"
+        desc += f"""
 
-Let me show this to my senpai and hope that he fixes it.
+Uhhh...So something weird happened, but this ain't your fault. Just follow these steps to try and fix me.
 
-Meanwhile, here's what you can do:
+-> Join the [support server](https://discord.gg/3Nxb7yZ)
+-> Show the error code to my senpai, dat banana boi#2019. Here it is: `{error_code}`
 
-1. **Copy the following error code and show it to dat banana boi#1982:** `{error_code}`
-2. Join the support server! https://discord.gg/3Nxb7yZ
-""", edit=False)
+Hopefully he's not lazy and gets the job done! :wink:
+        """
+        em.description = desc
+        await ctx.send(embed=em, edit=False)
         embed = discord.Embed(color=discord.Color(value=0xf44e42), title="Error Report")
         embed.set_author(name=f"{str(ctx.author)} (ID: {ctx.author.id})", icon_url=ctx.author.avatar_url)
         embed.add_field(name="Server", value=ctx.guild.name)
