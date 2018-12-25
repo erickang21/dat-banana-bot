@@ -330,18 +330,18 @@ class mod:
             if channel:
                 await channel.send(embed=em)
         try:
-            msg = await ctx.send(f"I'm muting up the user right now... {self.bot.get_emoji(485594540192038925)}")
+            msg = await ctx.send(f"I'm muting up the user right now... {self.bot.get_emoji(485594540192038925)}", edit=False)
             for chan in ctx.guild.channels:
                 await chan.set_permissions(user, send_messages=False, add_reactions=False)
             try:
                 await msg.delete()
-                await ctx.send(f"Hey, {user.mention}, mind keeping your mouth shut? {self.bot.get_emoji(527223568375873538)}")
+                await ctx.send(f"Hey, {user.mention}, mind keeping your mouth shut? {self.bot.get_emoji(527223568375873538)}", edit=False)
             except:
                 await msg.edit(content=f"Hey, {user.mention}, mind keeping your mouth shut? {self.bot.get_emoji(527223568375873538)}")
         except discord.Forbidden:
-            return await ctx.send("I could not mute the user. Make sure I have the manage channels permission.")
+            return await ctx.send("I could not mute the user. Make sure I have the manage channels permission.", edit=False)
         except commands.errors.MissingPermissions:
-            await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")
+            await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.", edit=False)
 
 
     @commands.command()
@@ -350,16 +350,16 @@ class mod:
     async def unmute(self, ctx, user: discord.Member):
         '''Allows someone to un-shut up. Usage: *unmute [user]'''
         try:
-            msg = await ctx.send(f"Alright, I'll unmute the user. Hang on... {self.bot.get_emoji(485594540192038925)}")
+            msg = await ctx.send(f"Alright, I'll unmute the user. Hang on... {self.bot.get_emoji(485594540192038925)}", edit=False)
             for chan in ctx.guild.channels:
                 await chan.set_permissions(send_messages=None, add_reactions=None)
             try:
                 await msg.delete()
-                await ctx.send(f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}")
+                await ctx.send(f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}", edit=False)
             except:
                 await msg.edit(content=f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}")
         except discord.Forbidden:
-            await ctx.send("Couldn't unmute the user. Uh-oh...")
+            await ctx.send("Couldn't unmute the user. Uh-oh...", edit=False)
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
         if modlog:
             em = discord.Embed(color=discord.Color(
