@@ -884,8 +884,8 @@ async def on_command_error(ctx, error):
 
 Uhhh...So something weird happened, but this ain't your fault. Just follow these steps to try and fix me.
 
--> Join the [support server](https://discord.gg/3Nxb7yZ)
--> Show the error code to my senpai, dat banana boi#2019. Here it is: `{error_code}`
+-> Join the [support server](https://discord.gg/3Nxb7yZ).
+-> Show the error code to my senpai, dat banana boi#2019. Here it is: `{error_code}`.
 
 Hopefully he's not lazy and gets the job done! :wink:
         """
