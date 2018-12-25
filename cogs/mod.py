@@ -311,7 +311,7 @@ class mod:
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
-    async def mute(self, ctx, user: discord.Member, mutetime=None, *, reason=None):
+    async def mute(self, ctx, user: discord.Member, *, reason=None):
         '''Forces someone to shut up. Usage: *mute [user] [time in mins]'''
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
         if modlog:
@@ -323,8 +323,6 @@ class mod:
 
             :1234: User ID: {user.id}
 
-            :timer: Timer: {f"{str(mutetime)} minutes" if mutetime else "No time limit."}
-
             :hash: Type: Channel
             """)
             
@@ -332,94 +330,18 @@ class mod:
             if channel:
                 await channel.send(embed=em)
         try:
-            await ctx.channel.set_permissions(user, send_messages=False)
-            await ctx.channel.send(f"{user.mention} is now forced to shut up. :zipper_mouth: ")
-            if mutetime:
-                try:
-                    mutetime =int(mutetime)
-                    mutetime = mutetime * 60
-                except ValueError:
-                    return await ctx.send("Your time is an invalid number. Make sure...it is a number.")               
-                await asyncio.sleep(mutetime)
-                await ctx.channel.set_permissions(user, send_messages=True)
-                await ctx.channel.send(f"{user.mention} is now un-shutted up.")
+            msg = await ctx.send(f"I'm muting up the user right now... {self.bot.get_emoji(485594540192038925)}")
+            for chan in ctx.guild.channels:
+                await chan.set_permissions(user, send_messages=False, add_reactions=False)
+            try:
+                await msg.delete()
+                await ctx.send(f"Hey, {user.mention}, mind keeping your mouth shut? {self.bot.get_emoji(527223568375873538)}")
+            except:
+                await msg.edit(content=f"Hey, {user.mention}, mind keeping your mouth shut? {self.bot.get_emoji(527223568375873538)}")
         except discord.Forbidden:
             return await ctx.send("I could not mute the user. Make sure I have the manage channels permission.")
         except commands.errors.MissingPermissions:
             await ctx.send("Aw, come on! You thought you could get away with shutting someone up without permissions.")
-
-
-    @commands.command(aliases=['sm'])
-    @commands.guild_only()
-    @commands.has_permissions(ban_members=True)
-    async def servermute(self, ctx, user: discord.Member = None):
-        '''Forces someone to shut up through the entire server. OUCH.'''
-        if user is None:
-            await ctx.send("Bruh. Tag a user to mute them...")
-        else:
-                    modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
-        if modlog:
-            em = discord.Embed(color=discord.Color(
-                value=0x00ff00), title="Member was muted.")
-            em.description = textwrap.dedent(f"""
-            :zipper_mouth: User: {str(user)}
-
-            {self.bot.get_emoji(430340802879946773)} Muted by: {str(ctx.author)}
-
-            :1234: User ID: {user.id}
-
-            :hash: Type: Server
-            """)
-
-            channel = self.bot.get_channel(int(modlog['channel']))
-            if channel:
-                await channel.send(embed=em)
-            msg = await ctx.send("Muting user...")
-            role = discord.utils.get(ctx.guild.roles, name='Muted')
-            if not role:
-                try:
-                    role = await ctx.guild.create_role(name="Muted", permissions=discord.Permissions(permissions=1024)) 
-                    await role.edit(position=ctx.guild.me.roles[-1].position - 1)
-                except discord.Forbidden:
-                    return await msg.edit(content="Don't have enough permissions. For flawless bot functions, give the Administrator permission to the bot.")
-            await user.add_roles(role)
-            for x in ctx.guild.channels:
-                await x.set_permissions(role, send_messages=False)
-            await msg.edit(content="The user has been muted for this server. :zipper_mouth:")
-
-
-    @commands.command(aliases=['sum'])
-    @commands.guild_only()
-    @commands.has_permissions(ban_members=True)
-    async def serverunmute(self, ctx, user: discord.Member = None):
-        '''Un-shuts someone up from the entire server. YEEE.'''
-        if user is None:
-            await ctx.send("Bruh. Tag a user to unmute them...")
-        else:
-                    modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
-        if modlog:
-            em = discord.Embed(color=discord.Color(
-                value=0x00ff00), title="Member was unmuted.")
-            em.description = textwrap.dedent(f"""
-            :zipper_mouth: User: {str(user)}
-
-            {self.bot.get_emoji(430340802879946773)} Unmuted by: {str(ctx.author)}
-
-            :1234: User ID: {user.id}
-
-            :house_with_garden: Type: Server
-            """)
-
-            channel = self.bot.get_channel(int(modlog['channel']))
-            if channel:
-                await channel.send(embed=em)
-            msg = await ctx.send("Unmuting user...")
-            try:
-                await user.remove_roles("Muted")
-            except discord.Forbidden:
-                return await ctx.send("Uh-oh! Not enough permissions!")
-            await msg.edit(content="The user has been unmuted for this server. :grin:")
-
 
 
     @commands.command()
@@ -428,8 +350,14 @@ class mod:
     async def unmute(self, ctx, user: discord.Member):
         '''Allows someone to un-shut up. Usage: *unmute [user]'''
         try:
-            await ctx.channel.set_permissions(user, send_messages=True)
-            await ctx.channel.send(f"{user.mention} is now un-shutted up.")
+            msg = await ctx.send(f"Alright, I'll unmute the user. Hang on... {self.bot.get_emoji(485594540192038925)}")
+            for chan in ctx.guild.channels:
+                await chan.set_permissions(send_messages=None, add_reactions=None)
+            try:
+                await msg.delete()
+                await ctx.send(f"Alright then, {uesr.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}")
+            except:
+                await msg.edit(content=f"Alright then, {uesr.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}")
         except discord.Forbidden:
             await ctx.send("Couldn't unmute the user. Uh-oh...")
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
