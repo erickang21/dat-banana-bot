@@ -305,8 +305,32 @@ class mod:
         em.set_thumbnail(url=user.avatar_url)
         await ctx.send(embed=em)
         
-
-
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(ban_members=True)
+    async def unban(self, ctx, id, *, reason=None):
+        match = re.match(r"[0-9]{16,18}", id) 
+        if not match:
+            return await ctx.send("That ain't a valid ID, am I right?")
+        reason = f"{str(ctx.author)}: " + reason or "No reason given."
+        bans = list(map(lambda e: e[1].id, await ctx.guild.bans()))
+        if id not in bans:
+            return await ctx.send("Uh-oh! It looks like one of two things just went down:\n1) The User ID is completely garbage and invalid.\n2) This user was not banned.")
+        user = discord.Object(id)
+        try:
+            await ctx.guild.unban(user, reason=reason)
+            em = discord.Embed(color=ctx.author.color, title="Member Unbanned!")
+            em.description = "Party CONTINUED!"
+            data = await self.bot.get_user_info(id)
+            em.add_field(name="User", value=str(data))
+            em.add_field(name="ID", value=id)
+            em.add_field(name='Unbanned By', value=ctx.author.name)
+            em.set_image(url="https://media.giphy.com/media/5wWf7GQ50RTXOxjcX5K/giphy.gif")
+            em.add_field(name='Reason', value=reason)
+            em.set_thumbnail(url=data.avatar_url)
+            await ctx.send(embed=em)
+        except discord.Forbidden:
+            return await ctx.send("Will you look at that? I don't have the **Ban Members** permission for this command.")
 
     @commands.command()
     @commands.guild_only()
