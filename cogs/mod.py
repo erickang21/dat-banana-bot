@@ -312,7 +312,8 @@ class mod:
         match = re.match(r"[0-9]{16,18}", id) 
         if not match:
             return await ctx.send("That ain't a valid ID, am I right?")
-        reason = f"{str(ctx.author)}: " + reason or "No reason given."
+        if not reason: reason = "No reason given."
+        reason = f"{str(ctx.author)}: " + reason  
         bans = list(map(lambda e: e[1].id, await ctx.guild.bans()))
         if id not in bans:
             return await ctx.send("Uh-oh! It looks like one of two things just went down:\n1) The User ID is completely garbage and invalid.\n2) This user was not banned.")
