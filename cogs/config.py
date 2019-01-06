@@ -89,8 +89,8 @@ class Config:
             while repeat2:
                 await ctx.send("Enter the emoji to use. This emoji will show up on the menu and will be used as the reaction emoji. **Please note, only custom emojis are supported.**")
                 x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
-                #default_emoji_match = r":[a-zA-Z]+:"
-                custom_emoji_match = r"<:[a-zA-Z]+:[0-9]+>"
+                #default_emoji_match = r":.+:"
+                custom_emoji_match = r"<:.+:[0-9]+>"
                 if re.match(custom_emoji_match, x.content):
                     emoji_id = int(re.findall(r"[0-9]+", x.content)[0])
                     emoji = self.bot.get_emoji(emoji_id)
