@@ -92,7 +92,7 @@ class Config:
                 #default_emoji_match = r":.+:"
                 custom_emoji_match = r"<:.+:[0-9]+>"
                 if re.match(custom_emoji_match, x.content):
-                    emoji_id = int(re.findall(r"[0-9]+", x.content)[0])
+                    emoji_id = int(re.findall(r"[0-9]{16}", x.content)[0])
                     emoji = self.bot.get_emoji(emoji_id)
                     if not emoji:
                         await ctx.send("Invalid emoji.", edit=False)
@@ -729,4 +729,3 @@ Think of it as a server-wide pins channel.
 
 def setup(bot): 
     bot.add_cog(Config(bot)) 
-
