@@ -156,7 +156,7 @@ async def on_ready():
     ]
     print('Bot is online, and ready to ROLL!')
     while True:
-        await bot.change_presence(activity=discord.Game(name="Merry Christmas! 🎄"))
+        await bot.change_presence(activity=discord.Game(name="b.help for help. What else?"))
         await asyncio.sleep(20)
 
 
