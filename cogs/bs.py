@@ -67,6 +67,30 @@ class BS:
         em.add_field(name="Brawlers", value=f"**{profile.brawlersUnlocked} total brawlers.**\n\n{brawlers}", inline=False)
         em.set_thumbnail(url=profile.avatarUrl)
         await ctx.send(embed=em)
+
+    @commands.command(aliases=["bsclan"])
+    async def bsclub(self, ctx, tag=None):
+        await ctx.trigger_typing()
+        if not tag:
+            profile_tag = await self.get_tag(ctx.author.id)
+            if not profile_tag:
+                return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
+            profile = await self.client.get_profile(profile_tag)
+            club = await profile.get_club()
+        else:
+            club = await self.client.get_club(tag)
+        em = discord.Embed(color=ctx.author.color, title=f"{club.name} (#{club.tag})")
+        em.description = club.description
+        em.add_field(name="Trophies", value=club.trophies)
+        em.add_field(name="Members", value=f"**{club.members_count}**/100")
+        em.add_field(name="Online Members", value=f"**{club.online_members}**/{club.members_count}")
+        em.add_field(name="Required Trophies", value=club.required_trophies)
+        em.add_field(name="Status", value=club.status)
+        em.set_thumbnail(url=club.badge_url)
+        await ctx.send(embed=em)
+
+
+
     
 def setup(bot):
     bot.add_cog(BS(bot))
