@@ -231,6 +231,16 @@ class Utility:
         else:
             return match
 
+    @commands.command(aliases=["stealav"])
+    async def stealavatar(self, ctx, ID):
+        """Get the URL of anyone's avatar!"""
+        user = await self.bot.get_user_info(ID)
+        if not user:
+            return await ctx.send("It looks like that is not a valid ID! Better check it.")
+        em = discord.Embed(color=ctx.author.color, title=f"{user.name}'s avatar")
+        em.set_image(url=user.avatar_url)
+        await ctx.send(embed=em)
+
     @commands.command(aliases=["gh", "buhtig"])
     async def github(self, ctx, username: str, repo: str):
         """Search GitHub for a repo made by a user."""

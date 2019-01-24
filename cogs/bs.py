@@ -81,7 +81,7 @@ class BS:
             club = await self.client.get_club(tag)
         em = discord.Embed(color=ctx.author.color, title=f"{club.name} (#{club.tag})")
         em.description = club.description
-        em.add_field(name="Trophies", value=club.trophies)
+        em.add_field(name="Trophies", value=f"{club.trophies}")
         em.add_field(name="Members", value=f"**{club.members_count}**/100")
         em.add_field(name="Online Members", value=f"**{club.online_members}**/{club.members_count}")
         em.add_field(name="Required Trophies", value=club.required_trophies)
