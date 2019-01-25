@@ -1069,16 +1069,21 @@ Invalid math expression."""
         if user is None:
             user = ctx.author
         join_time = str(ctx.author.joined_at.strftime("%A, %b %d, %Y, at %I:%M %p"))
-        status = {
-            "online": f"{self.bot.get_emoji(522530301793009665)} Online",
-            "idle": f"{self.bot.get_emoji(522530301759455238)} Idle",
-            "dnd": f"{self.bot.get_emoji(522530301503864854)} Do Not Disturb",
-            "offline": f"{self.bot.get_emoji(522530301617111062)} Offline"
+        status_messages = {
+            "online": f"Online {self.bot.get_emoji(522530301793009665)}",
+            "idle": f"Idle {self.bot.get_emoji(522530301759455238)}",
+            "dnd": f"Do Not Disturb {self.bot.get_emoji(522530301503864854)}",
+            "offline": f"Offline {self.bot.get_emoji(522530301617111062)}"
         }
+        status = f"""
+:iphone: **Mobile:** {status_messages[str(user.mobile_status)]}
+:globe_with_meridians: **Web:** {status_messages[str(user.web_status)]}
+:desktop: **Desktop:** {status_messages[str(user.desktop_status)]}
+        """
         color = 0xf2f760
         em = discord.Embed(color=color, title=f'User Info: {str(user)}')
         em.add_field(name="User Stats", value="-", inline=False)
-        em.add_field(name='Status', value=status[str(user.status)])       
+        em.add_field(name='Status', value=status)       
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
         em.add_field(name='ID', value=f'{user.id}')
         Type = 'Bot' if user.bot else 'Human'
@@ -1089,6 +1094,7 @@ Invalid math expression."""
         em.add_field(name="Top Role", value=user.top_role)
         em.add_field(name="Nickname", value=user.nick or "No Nickname")
         em.add_field(name="Join Time", value=join_time)
+            
         em.set_thumbnail(url=user.avatar_url)
         await ctx.send(embed=em)  
         
