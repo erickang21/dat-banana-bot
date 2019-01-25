@@ -1083,7 +1083,7 @@ Invalid math expression."""
         color = 0xf2f760
         em = discord.Embed(color=color, title=f'User Info: {str(user)}')
         em.add_field(name="User Stats", value="-", inline=False)
-        em.add_field(name='Status', value=status)       
+        em.add_field(name='Status', value=status, inline=False)       
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y'))
         em.add_field(name='ID', value=f'{user.id}')
         Type = 'Bot' if user.bot else 'Human'
