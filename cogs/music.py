@@ -52,7 +52,8 @@ class Music:
             if ctx.author.voice is None:
                 return await ctx.send("Looks like you aren't connected to a voice channel yet! Where do I join?")
             await self.bot.audio_manager.connect(ctx)
-        m = await ctx.send(f"Hang in there! I'm searching for **{await self.utils.clean_text(ctx, search)}**... {self.bot.get_emoji(505739796019412992)}", edit=False)
+        clean_search = await self.utils.clean_text(ctx, search)
+        m = await ctx.send(f"Hang in there! I'm searching for **{clean_search}**... {self.bot.get_emoji(505739796019412992)}", edit=False)
 
         search = search.strip("<>")
         if not search.startswith("http"):
