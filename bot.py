@@ -454,6 +454,8 @@ async def on_reaction_add(reaction, user):
         return
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
         x = await bot.db.starboard.find_one({"id": str(user.guild.id)})
+        if not x:
+            return
         chan = bot.get_channel(x['channel'])
         if not chan:
             return
@@ -502,6 +504,8 @@ async def on_reaction_add(reaction, user):
 async def on_reaction_remove(reaction, user):
     if reaction.emoji == '⭐' or reaction.emoji == '🌟':
         x = await bot.db.starboard.find_one({"id": str(user.guild.id)})
+        if not x:
+            return
         chan = bot.get_channel(x['channel'])
         if not chan:
             return
@@ -793,10 +797,15 @@ async def on_message_delete(message):
     except:
         snipes = bot.snipes[str(message.channel.id)] = []
     data = {
-        "content": message.content or message.embeds[0].description,
+        "content": message.content,
         "author": message.author,
         "message": message
     }
+    if not data["content"]: 
+        try:
+            data["content"] = message.embeds[0].description
+        except:
+            pass
     if len(snipes) >= 10: snipes.remove(snipes[-1])
     snipes.insert(0, data)
     if await modlog_check(message.guild.id):
