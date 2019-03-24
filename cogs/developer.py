@@ -54,7 +54,7 @@ class Developer(commands.Cog):
     async def error(self, ctx, code):
         """Gets info on an error by code."""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         data = await self.bot.db.errors.find_one({"code": code})
         if not data:
             return await ctx.send("No error with that code was found. Check it!")
@@ -72,7 +72,7 @@ class Developer(commands.Cog):
     @commands.command(hidden=True)
     async def causeerror(self, ctx):
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         [][0]
 
 
@@ -81,7 +81,7 @@ class Developer(commands.Cog):
     async def shutdown(self, ctx):
         """Shuts DOWN the bot. Cya!"""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         msg = await ctx.send(f"Shutting down... {self.bot.get_emoji(441385713091477504)}")
         await asyncio.sleep(1)
         await msg.edit(content="Goodbye! :wave:")
@@ -92,7 +92,7 @@ class Developer(commands.Cog):
     async def restart(self, ctx):
         """Restarts the bot. Be Back S00N"""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         msg = await ctx.send(f"Restarting... {self.bot.get_emoji(471279983197814806)}")
         with open("restart.txt", "w") as f:
             f.write(f"{ctx.channel.id}\n{msg.id}")
@@ -110,7 +110,7 @@ class Developer(commands.Cog):
     async def changename(self, ctx, name=None):
         """Changes my name. Please make it good!"""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         if name is None:
             return await ctx.send("Hmm...my name cannot be blank!")
         else:
@@ -121,7 +121,7 @@ class Developer(commands.Cog):
     async def _exec(self, ctx, *, code):
         """Executes code like the Command Line."""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         e = discord.Embed(color=0x00ff00, title='Running code')
         e.description = f'Please wait... {self.bot.get_emoji(471279983197814806)}'
         msg = await ctx.send(embed=e)
@@ -140,7 +140,7 @@ class Developer(commands.Cog):
     async def update(self, ctx):
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         msg = await ctx.send(f"Updating... {self.bot.get_emoji(471279983197814806)}")
         try:
             lol = subprocess.run("git pull", cwd='/Users/Administrator/new-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
@@ -156,7 +156,7 @@ class Developer(commands.Cog):
     @commands.command(hidden=True)
     async def loadcog(self, ctx, cog):
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         else:
             msg = await ctx.send(f"Loading cog `{cog}`... :arrows_counterclockwise:")
             try:
@@ -169,7 +169,7 @@ class Developer(commands.Cog):
     @commands.command(hidden=True)
     async def unloadcog(self, ctx, cog):
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         msg = await ctx.send(f"Unloading cog `{cog}`... :arrows_counterclockwise:")
         try:
             self.bot.unload_extension(f"cogs.{cog}")
@@ -180,7 +180,7 @@ class Developer(commands.Cog):
     @commands.command(hidden=True)
     async def reloadcog(self, ctx, cog=None):
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         msg = await ctx.send(f"Reloading cog `{cog}`... :arrows_counterclockwise:")
         try:
             self.bot.unload_extension(f"cogs.{cog}")
@@ -192,14 +192,14 @@ class Developer(commands.Cog):
     @commands.command()
     async def blacklist(self, ctx, user: discord.User):
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         await self.bot.db.blacklist.update_one({"id": user.id}, {"$set": {"status": True}}, upsert=True)
         await ctx.send(f"Successfully blacklisted **{str(user)}** from the bot.")
 
     @commands.command()
     async def unblacklist(self, ctx, user: discord.User):
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         await self.bot.db.blacklist.update_one({"id": user.id}, {"$set": {"status": False}}, upsert=True)
         await ctx.send(f"Successfully removed **{str(user)}** from the blacklist.")
 
@@ -207,7 +207,7 @@ class Developer(commands.Cog):
     async def source(self, ctx, command):
         """Get the source to any command"""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         cmd = self.bot.get_command(command)
         if cmd is None:
             return await ctx.send("Could not find that command.")
@@ -229,7 +229,7 @@ class Developer(commands.Cog):
     async def repl(self, ctx):
         """Launches an interactive REPL session."""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send("HALT! This command is for the devs only. Sorry. :x:")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         variables = {
             'ctx': ctx,
             'bot': self.bot,

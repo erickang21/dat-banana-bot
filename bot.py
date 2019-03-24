@@ -544,15 +544,21 @@ async def on_reaction_remove(reaction, user):
 @bot.event
 async def on_guild_join(guild):
     await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
-    lol = bot.get_channel(392443319684300801)
-    em = discord.Embed(color=discord.Color(value=0xf9e236))
-    em.title = "dat banana bot has joined a new server!"
-    em.description = f"**{guild.name}**"
-    em.add_field(name="Owner", value=str(guild.owner))
-    em.add_field(name="Member Count", value=len(guild.members))
-    em.set_footer(text=f"ID: {guild.id}")
+    logs_channel = bot.get_channel(559511019190353920)
+    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em.title = "I've joined a server!"
+    desc = f"""
+**{guild.name}**
+
+**Owner:** {str(guild.owner)}
+**Members:** {guild.member_count}
+**Server ID:** {guild.id}
+
+**Current Server Count:** {len(bot.guilds)}
+"""
+    em.description = desc
     em.set_thumbnail(url=guild.icon_url)
-    await lol.send(embed=em)
+    await logs_channel.send(embed=em)
     msg = f"""
 What's poppin', lovely citizens in **{guild.name}**?
 
@@ -590,12 +596,19 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
 
 @bot.event
 async def on_guild_remove(guild):
-    logs_channel = bot.get_channel(392443319684300801)
+    logs_channel = bot.get_channel(559511019190353920)
     em = discord.Embed(color=discord.Color(value=0xf44242))
-    em.title = "dat banana bot has been removed from a server."
-    em.description = f"**{guild.name}**"
-    em.add_field(name="Owner", value=str(guild.owner))                                       
-    em.set_footer(text=f"ID: {guild.id}")
+    em.title = "I've left a server..."
+    desc = f"""
+**{guild.name}**
+
+**Owner:** {str(guild.owner)}
+**Members:** {guild.member_count}
+**Server ID:** {guild.id}
+
+**Current Server Count:** {len(bot.guilds)}
+"""
+    em.description = desc
     em.set_thumbnail(url=guild.icon_url)
     await logs_channel.send(embed=em)
 
@@ -909,30 +922,7 @@ Hopefully he's not lazy and gets the job done! :wink:
         print("-------ERROR--------")
         print(traceback_text)
         print("--------------------")
-
-            
-            
-@bot.command(hidden=True) # because no one uses this xd
-@commands.is_owner()
-async def presence(ctx, Type=None, *, thing=None):
-    """What AM I doing?!?!?!"""
-    if Type is None:
-        await ctx.send('Do it right, plox! Usage: *presence [game/stream] [msg]')
-    else:
-      if Type.lower() == 'stream':
-        await bot.change_presence(activity=discord.Game(name=thing,type=1, url='https://www.twitch.tv/a'), status='online')
-        await ctx.send(f'Aye aye, I am now streaming {thing}!')
-      elif Type.lower() == 'game':
-        await bot.change_presence(activity=discord.Game(name=thing))
-        await ctx.send(f'Aye aye, I am now playing {thing}!')
-      elif Type.lower() == 'clear':
-        await bot.change_presence(activity=None)
-        await ctx.send('Aye aye, I am not playing anything, anymore!')
-      else:
-        await ctx.send('Want me to do something? YOU do it right first. Usage: *presence [game/stream] [msg]')
-                    
-
-
+               
                 
 @bot.command()
 async def say(ctx, *, message: commands.clean_content()):
@@ -948,27 +938,18 @@ async def say(ctx, *, message: commands.clean_content()):
 @bot.command()
 async def ping(ctx):
     """Premium ping pong giving you a websocket latency."""
-    color = discord.Color(value=0xf9e236)
-    e = discord.Embed(color=color, title='Pinging')
-    e.description = 'Please wait... :ping_pong:'
-    msg = await ctx.send(embed=e)
-    em = discord.Embed(color=color, title='PoIIIng! Your supersonic latency is:')
-    em.description = f"{bot.latency * 1000:.4f} ms"
-    em.set_thumbnail(
-        url="https://media.giphy.com/media/nE8wBpOIfKJKE/giphy.gif")
-    await msg.edit(embed=em)
+    msg = await ctx.send(f"Pinging... {bot.get_emoji(453323479555506188)}")
+    new_message = f"**I'm back! Latency:**\n{bot.latency * 1000:.2f} ms"
+    await msg.edit(new_message)
   
         
 @bot.command()
 async def invite(ctx):
     """Allow my bot to join the hood. YOUR hood."""
-    await ctx.send("Lemme join that hood -> https://discordapp.com/api/oauth2/authorize?client_id=520682706896683009&permissions=8&scope=bot")                       
-
-                       
-@bot.command(name='discord')
-async def _discord(ctx):
-    """We have an awesome hood to join, join now!"""
-    await ctx.send("Your turn to join the hood -> https://discord.gg/3Nxb7yZ")
+    em = discord.Embed(color=ctx.author.color, title="Invite me!")
+    em.description = "Here's the invite link. My pleasure!\nhttps://discordapp.com/api/oauth2/authorize?client_id=520682706896683009&permissions=8&scope=bot\n\nFor extra goodies, don't forget to join the support server!\nhttps://discord.gg/vCMEmNJ"
+    em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
+    await ctx.send(em)
 
 def paginate(text: str):
     """Simple generator that paginates text."""
@@ -986,7 +967,7 @@ def paginate(text: str):
 @bot.command(name="eval", aliases=["ev"])
 async def _eval(ctx, *, code: str):
     if not dev_check(ctx.author.id):
-        return await ctx.send("This command is for the developers only!")
+        return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
     env = {
         "bot": bot,
         "ctx": ctx,
