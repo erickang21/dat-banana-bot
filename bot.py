@@ -958,7 +958,7 @@ async def invite(ctx):
     em = discord.Embed(color=ctx.author.color, title="Invite me!")
     em.description = "Here's the invite link. My pleasure!\nhttps://discordapp.com/api/oauth2/authorize?client_id=520682706896683009&permissions=8&scope=bot\n\nFor extra goodies, don't forget to join the support server!\nhttps://discord.gg/vCMEmNJ"
     em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
-    await ctx.send(em)
+    await ctx.send(embed=em)
 
 def paginate(text: str):
     """Simple generator that paginates text."""
