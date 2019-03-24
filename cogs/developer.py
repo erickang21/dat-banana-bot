@@ -137,18 +137,20 @@ class Developer(commands.Cog):
             await msg.edit(embed=em)
 
     @commands.command(hidden=True)
-    async def update(self, ctx):
+    async def update(self, ctx, update_flag: str = None):
         """Updates the bot. Ez!"""
         if not self.dev_check(ctx.author.id):
             return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         msg = await ctx.send(f"Updating... {self.bot.get_emoji(471279983197814806)}")
         try:
-            lol = subprocess.run("git pull", cwd='/Users/Administrator/new-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+            lol = subprocess.run("git pull", cwd='/home/bananaboy21/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
             for cog in self.bot.cogs:
                 cog = cog.lower()
                 self.bot.unload_extension(f"cogs.{cog}")
                 self.bot.load_extension(f"cogs.{cog}")
             await msg.edit(content=f"All cogs reloaded, and READY TO ROLL! :white_check_mark: \n\nLog:\n```{lol}```")
+            if update_flag == "--restart":
+                await self.restart(ctx)
         except Exception as e:
             await msg.edit(content=f"An error occured. :x: \n\nDetails: \n{e}")
 
