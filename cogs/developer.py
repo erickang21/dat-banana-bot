@@ -17,7 +17,7 @@ from inspect import getsource
 from discord.ext import commands
 
 
-class Developer:
+class Developer(commands.Cog):
     def __init__(self, bot):
        self.bot = bot
        self.sessions = set()

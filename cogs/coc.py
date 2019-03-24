@@ -9,7 +9,7 @@ import urllib.parse
 from discord.ext import commands
 
 
-class COC:
+class COC(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session = self.bot.session

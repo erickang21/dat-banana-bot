@@ -18,7 +18,7 @@ from .utils.utils import Utils
 from discord.ext.commands.cooldowns import BucketType
 from py_expression_eval import Parser
 
-class Utility:
+class Utility(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session = self.bot.session

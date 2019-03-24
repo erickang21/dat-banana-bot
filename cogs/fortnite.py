@@ -4,7 +4,7 @@ import json
 from discord.ext import commands
 
 
-class Fortnite:
+class Fortnite(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         with open("data/apikeys.json") as f:

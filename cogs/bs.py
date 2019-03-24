@@ -3,7 +3,7 @@ import brawlstats
 from discord.ext import commands
 
 
-class BS:
+class BS(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.client = brawlstats.Client(bot.config.bsapi, is_async=True)

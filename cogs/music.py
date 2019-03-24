@@ -10,7 +10,7 @@ import logging
 from discord.ext.commands.cooldowns import BucketType
 from bs4 import BeautifulSoup
 
-class Music:
+class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.utils = self.bot.utils

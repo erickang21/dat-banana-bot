@@ -16,7 +16,7 @@ class Error(Exception):
     pass
 
 
-class Economy:
+class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session = self.bot.session

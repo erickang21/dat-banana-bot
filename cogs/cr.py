@@ -9,7 +9,7 @@ import traceback
 from discord.ext import commands
 
 
-class CR:
+class CR(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         with open('data/apikeys.json') as f:

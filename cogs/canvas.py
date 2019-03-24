@@ -8,7 +8,7 @@ import bananapy
 from discord.ext import commands
 
 
-class Canvas:
+class Canvas(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         with open('data/apikeys.json') as f:

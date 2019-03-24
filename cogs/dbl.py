@@ -6,7 +6,7 @@ import os
 from discord.ext import commands
 uri = 'https://discordbots.org/api'
 
-class dbl:
+class dbl(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session = self.bot.session

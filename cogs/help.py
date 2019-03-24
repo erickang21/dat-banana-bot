@@ -10,7 +10,7 @@ from .utils.paginator import HelpPaginator, CannotPaginate
 from .utils.datpaginator import DatPaginator
 
 
-class Help:
+class Help(commands.Cog):
     def __init__(self, bot):
        self.bot = bot
 

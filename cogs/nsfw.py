@@ -4,7 +4,7 @@ import box
 from discord.ext import commands
 from .utils.utils import Utils
 
-class NSFW:
+class NSFW(commands.Cog):
     """
     I am in no way responsible for you breaking your eyes with commands under this class.
 

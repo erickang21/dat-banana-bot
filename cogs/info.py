@@ -11,7 +11,7 @@ import subprocess
 from discord.ext import commands
 
 
-class Info:
+class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.starttime = self.bot.starttime
