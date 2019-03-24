@@ -7,6 +7,7 @@ import psutil
 import time
 import re
 import textwrap
+import subprocess
 from discord.ext import commands
 
 
@@ -56,7 +57,7 @@ class Info:
 
     @commands.command()
     async def dbstats(self, ctx):
-        names = await bot.db.collection_names()
+        names = await self.bot.db.collection_names()
         db_stuff = "**Database: MongoDB**\n\n"
         for name in names:
             count = await getattr(self.bot.db, name).count() 
