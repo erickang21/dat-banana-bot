@@ -64,7 +64,7 @@ class Info:
             db_stuff += f"**{name}:** {count} entries\n"
         em = discord.Embed(color=ctx.author.color, title="Database Stats")
         em.description = db_stuff
-        em.set_footer(text=f"Requested by: {src(ctx.author)}", icon_url=ctx.author.avatar_url)
+        em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
     # @commands.command(aliases=['updates', 'bu', 'botu'])
