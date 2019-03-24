@@ -32,30 +32,39 @@ class Info:
         minute, second = divmod(second, 60)
         hour, minute = divmod(minute, 60)
         day, hour = divmod(hour, 24)
+        lol = subprocess.run(f"python -V", cwd='/Users/Administrator/new-banana-bot', stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        err = lol.stderr.decode("utf-8")
+        res = lol.stdout.decode("utf-8")
         #content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
         #version = re.findall(r"v(\d.\d.\d)", content)[0]
         em = discord.Embed(color=color, title='Bot Stats')
         em.set_thumbnail(url=self.bot.user.avatar_url)        
-        em.add_field(name='Creator', value=f'festive banana boi 🎄#9119')
-        em.add_field(name='Devs', value='Free TNT#5796')
+        em.add_field(name='Creator', value=f'dat banana boi#5627')
+        em.add_field(name='Devs', value='PoLLeN#5796')
         em.add_field(name='Servers :homes: ', value=f'{len(self.bot.guilds)}')
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
         em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
         #em.add_field(name='Version', value=version)
         em.add_field(name=f'Start Date :calendar:', value='12/08/2017')
-        em.add_field(name='Coding Language :computer: ', value=f'discord.py') 
-        em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Amazon Web Services') 
+        em.add_field(name='Coding Language :computer: ', value=res) 
+        em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Digital Ocean') 
         em.add_field(name='Memory Usage', value=f"{used} MB ({percent}%)")
         em.add_field(name='Bot Uptime :clock:', value="%d days, %d hours, %d minutes, %d seconds" % (day, hour, minute, second)) 
         em.add_field(name='Commands Run (Since Uptime) :outbox_tray:', value=self.bot.commands_run)  
-        em.add_field(name='Starboards', value=await self.bot.db.starboard.count())
-        em.add_field(name='Saved CR Tags', value=await self.bot.db.crtags.count())
-        em.add_field(name='Saved COC Tags', value=await self.bot.db.coctags.count())
-        em.add_field(name='Active Mod Logs', value=await self.bot.db.modlog.count())
         await ctx.send(embed=em)
 
-
+    @commands.command()
+    async def dbstats(self, ctx):
+        names = await bot.db.collection_names()
+        db_stuff = "**Database: MongoDB**\n\n"
+        for name in names:
+            count = await getattr(self.bot.db, name).count() 
+            db_stuff += f"**{name}:** {count} entries\n"
+        em = discord.Embed(color=ctx.author.color, title="Database Stats")
+        em.description = db_stuff
+        em.set_footer(text=f"Requested by: {src(ctx.author)}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
 
     # @commands.command(aliases=['updates', 'bu', 'botu'])
     # async def botupdates(self, ctx):

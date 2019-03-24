@@ -101,5 +101,5 @@ ENV/
 .mypy_cache/
 
 # custom
-data
 .vscode/
+data/config.json

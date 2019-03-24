@@ -475,14 +475,14 @@ Think of it as a server-wide pins channel.
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
-                    return await ctx.send("Request timed out. Please try again.")
+                    return await ctx.send("Request timed out. Please try again.", edit=False)
                 if not x.content.startswith("<#") and not x.content.endswith(">"):
-                    return await ctx.send("Please properly mention the channel.")
+                    return await ctx.send("Please properly mention the channel.", edit=False)
                 channel = x.content.strip("<#").strip(">")
                 try:
                     channel = int(channel)
                 except ValueError:
-                    return await ctx.send("Did you properly mention a channel? Probably not.")
+                    return await ctx.send("Did you properly mention a channel? Probably not.", edit=False)
                 await ctx.send("Please enter the message to send when someone leaves.\n\n```Variables: \n{name}: The user's name.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```", edit=False)
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
@@ -542,25 +542,25 @@ Think of it as a server-wide pins channel.
             await ctx.send(embed=em)
         else:
             if action.lower() == 'on':
-                await ctx.send("Please mention the channel to set ban messages in.")
+                await ctx.send("Please mention the channel to set ban messages in.", edit=False)
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
-                    return await ctx.send("Request timed out. Please try again.")
+                    return await ctx.send("Request timed out. Please try again.", edit=False)
                 if not x.content.startswith("<#") and not x.content.endswith(">"):
-                    return await ctx.send("Please properly mention the channel.")
+                    return await ctx.send("Please properly mention the channel.", edit=False)
                 channel = x.content.strip("<#").strip(">")
                 try:
                     channel = int(channel)
                 except ValueError:
                     return await ctx.send("Did you properly mention a channel? Probably not.")
-                await ctx.send("Please enter the message to send when someone gets banned.\n\n```Variables: \n{name}: The user's name.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```")
+                await ctx.send("Please enter the message to send when someone gets banned.\n\n```Variables: \n{name}: The user's name.\n{members}: The amount of members currently in the server.\n{server}: The name of the server.```", edit=False)
                 try:
                     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
                 except asyncio.TimeoutError:
-                    return await ctx.send("Request timed out. Please try again.")
+                    return await ctx.send("Request timed out. Please try again.", edit=False)
                 await self.bot.db.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel, "message": x.content}}, upsert=True)
-                await ctx.send("Successfully turned on ban messages for this guild.")
+                await ctx.send("Successfully turned on ban messages for this guild.", edit=False)
                 modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
                 if modlog:
                     em = discord.Embed(color=discord.Color(
@@ -577,7 +577,7 @@ Think of it as a server-wide pins channel.
                     """)
                     channel = self.bot.get_channel(int(modlog['channel']))
                     if channel:
-                        await channel.send(embed=em)
+                        await channel.send(embed=em, edit=False)
             elif action.lower() == 'off':
                 await self.bot.db.ban.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": False, "message": None}}, upsert=True)
                 await ctx.send("Successfully turned off ban messages for this guild.")
@@ -659,7 +659,7 @@ Think of it as a server-wide pins channel.
             except ValueError:
                 return await ctx.send("Did you properly mention a channel? Probably not.")
             await self.bot.db.modlog.update_one({"id": str(ctx.guild.id)}, {"$set": {"channel": channel}}, upsert=True)
-            await ctx.send(f"Successfully turned on Mod Logs in <#{channel}>. Enjoy! :white_check_mark:")
+            await ctx.send(f"Successfully turned on Mod Logs in <#{channel}>. Enjoy! :white_check_mark:", edit=False)
             modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
             channel = self.bot.get_channel(int(modlog['channel']))
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Modlogs Enabled")
