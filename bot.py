@@ -949,7 +949,7 @@ async def ping(ctx):
     """Premium ping pong giving you a websocket latency."""
     msg = await ctx.send(f"Pinging... {bot.get_emoji(453323479555506188)}")
     new_message = f"**I'm back! Latency:**\n{bot.latency * 1000:.2f} ms"
-    await msg.edit(new_message)
+    await msg.edit(content=new_message)
   
         
 @bot.command()
