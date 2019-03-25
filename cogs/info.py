@@ -6,6 +6,7 @@ import asyncio
 import psutil
 import time
 import re
+import json
 import textwrap
 import subprocess
 from discord.ext import commands
@@ -82,7 +83,8 @@ class Info(commands.Cog):
     #     await ctx.send(embed=em)
 
     @commands.group(invoke_without_subcommand=True)
-    async def bugs(self, ctx):
+    async def bugs(self, ctx, test):
+        if test: return
         count = await self.bot.db.bugs.count()
         bugs = """
 **The following bugs are already known and are listed by developers that have tested the bot.**
