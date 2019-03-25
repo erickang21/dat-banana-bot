@@ -232,24 +232,6 @@ class Utility(commands.Cog):
             return match
 
     @commands.command()
-    @commands.guild_only()
-    async def queue(self, ctx):
-        """Gets the queue for the server."""
-        return await ctx.send(f"**Music is now deprecated due to high resource/memory usage and internal issues.**\n\nThis command will be removed soon. Sorry for the inconvenience. {self.bot.get_emoji(522530579627900938)}")
-        #player = self.bot.audio_manager.get_player(ctx)
-        #if not player.queue:
-        #    return await ctx.send("No songs are currently in the queue! Just queue the :banana: song, kthx.")
-        #em = discord.Embed(color=0x00ff00, title=f"Music Queue")
-        #em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
-        #songs = ""
-        #count = 0
-        #for x in player.queue:
-        #    count += 1
-        #    songs += f"{str(count)}: **{x.title}**\n"
-        #em.description = songs
-        #await ctx.send(embed=em)
-
-    @commands.command()
     async def lyrics(self, ctx, *, song: str = None):
         """Get lyrics for a song or finds lyrics for the current playing song."""
         player = self.bot.audio_manager.get_player(ctx)

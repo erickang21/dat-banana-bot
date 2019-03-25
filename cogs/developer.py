@@ -125,7 +125,7 @@ class Developer(commands.Cog):
         e = discord.Embed(color=0x00ff00, title='Running code')
         e.description = f'Please wait... {self.bot.get_emoji(471279983197814806)}'
         msg = await ctx.send(embed=e)
-        lol = subprocess.run(f"{code}", cwd='/Users/Administrator/dat-banana-bot', stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        lol = subprocess.run(f"{code}", cwd=os.getcwd(), stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         err = lol.stderr.decode("utf-8")
         res = lol.stdout.decode("utf-8")
         em = discord.Embed(color=0x00ff00, title='Ran on the Command Prompt!')
@@ -143,14 +143,17 @@ class Developer(commands.Cog):
             return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         msg = await ctx.send(f"Updating... {self.bot.get_emoji(471279983197814806)}")
         try:
-            lol = subprocess.run("git pull", cwd='/home/bananaboy21/dat-banana-bot', stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
+            lol = subprocess.run("git pull", cwd=os.getcwd(), stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
             for cog in self.bot.cogs:
                 cog = cog.lower()
                 self.bot.unload_extension(f"cogs.{cog}")
                 self.bot.load_extension(f"cogs.{cog}")
             await msg.edit(content=f"All cogs reloaded, and READY TO ROLL! :white_check_mark: \n\nLog:\n```{lol}```")
             if update_flag == "--restart":
-                await self.restart(ctx)
+                msg = await ctx.send(f"Restarting... {self.bot.get_emoji(471279983197814806)}")
+                with open("restart.txt", "w") as f:
+                    f.write(f"{ctx.channel.id}\n{msg.id}")
+                os.execv(sys.executable, ['python'] + ['bot.py'])
         except Exception as e:
             await msg.edit(content=f"An error occured. :x: \n\nDetails: \n{e}")
 
