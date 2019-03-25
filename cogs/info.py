@@ -9,14 +9,19 @@ import re
 import textwrap
 import subprocess
 from discord.ext import commands
-
+from discord.ext.commands.cooldowns import BucketType
 
 class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.starttime = self.bot.starttime
         
-
+    def dev_check(self, id):
+        with open('data/devs.json') as f:
+            devs = json.load(f)
+            if id in devs:
+                return True
+        return False
 
     @commands.command(aliases=['info', 'botinfo'])
     async def stats(self, ctx):
@@ -75,6 +80,41 @@ class Info(commands.Cog):
     #     em = discord.Embed(color=discord.Color(value=0xf9e236))
     #     em.description = content
     #     await ctx.send(embed=em)
+
+    @commands.group(invoke_without_subcommand=True)
+    async def bugs(self, ctx):
+        count = await self.bot.db.bugs.count()
+        bugs = """
+**The following bugs are already known and are listed by developers that have tested the bot.**
+
+**If you happen to know one that is not listed below, please report it with `*bugs report [describe the bug]`.
+"""
+        for i in range(count):
+            bug = await self.bot.db.bugs.find_one({"index": i})
+            bugs += f"- {bug['bug']}\n"
+        em = discord.Embed(color=ctx.author.color, title="Known Bugs")
+        em.description = bugs
+        em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
+
+    @bugs.command()
+    async def add(self, ctx, bug):
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
+        count = await self.bot.db.bugs.count()
+        await self.bot.db.bugs.update_one({"index": count}, {"$set": {"bug": bug}}, upsert=True)
+        await ctx.send(f"Success! The bug will now be listed when the `*bugs` command is ran. {self.bot.get_emoji(522530578860605442)}")
+
+    @bugs.command()
+    @commands.cooldown(1, 60.0, BucketType.user)
+    async def report(self, ctx, bug):
+        log_channel = self.bot.get_channel(559841284735631365)
+        em = discord.Embed(color=ctx.author.color, title="Bug Report")
+        em.description = bug
+        em.set_footer(text=f"Reported by: {str(ctx.author)} | ID: {ctx.author.id}", icon_url=ctx.author.avatar_url)
+        await log_channel.send(embed=em)
+        await ctx.send(f"Your bug report has been sent to the developers to read. Thank you for helping us splat those bugs! {self.bot.get_emoji(511141356769509396)}")
+    
 
 def setup(bot): 
     bot.add_cog(Info(bot)) 

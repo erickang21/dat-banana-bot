@@ -103,3 +103,4 @@ ENV/
 # custom
 .vscode/
 data/config.json
+data/bugs.txt
