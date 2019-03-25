@@ -98,7 +98,7 @@ If you happen to know one that is not listed below, please report it with `*bugs
         await ctx.send(embed=em)
 
     @bugs.command()
-    async def add(self, ctx, bug):
+    async def add(self, ctx, *, bug):
         if not self.dev_check(ctx.author.id):
             return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
         count = await self.bot.db.bugs.count()
@@ -107,7 +107,7 @@ If you happen to know one that is not listed below, please report it with `*bugs
 
     @bugs.command()
     @commands.cooldown(1, 60.0, BucketType.user)
-    async def report(self, ctx, bug):
+    async def report(self, ctx, *, bug):
         log_channel = self.bot.get_channel(559841284735631365)
         em = discord.Embed(color=ctx.author.color, title="Bug Report")
         em.description = bug
