@@ -87,7 +87,7 @@ class Info(commands.Cog):
         bugs = """
 **The following bugs are already known and are listed by developers that have tested the bot.**
 
-**If you happen to know one that is not listed below, please report it with `*bugs report [describe the bug]`.
+If you happen to know one that is not listed below, please report it with `*bugs report [describe the bug]`.
 """
         for i in range(count):
             bug = await self.bot.db.bugs.find_one({"index": i})
