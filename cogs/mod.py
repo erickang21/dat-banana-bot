@@ -381,9 +381,9 @@ class mod(commands.Cog):
                 await chan.set_permissions(user, send_messages=None, add_reactions=None)
             try:
                 await msg.delete()
-                await ctx.send(f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}", edit=False)
+                await ctx.send(f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(539480099716595712)}", edit=False)
             except:
-                await msg.edit(content=f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(527225741855817738)}")
+                await msg.edit(content=f"Alright then, {user.mention}, I spared your life. Open your mouth and continue the party! {self.bot.get_emoji(539480099716595712)}")
         except discord.Forbidden:
             await ctx.send("Couldn't unmute the user. Uh-oh...", edit=False)
         modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
