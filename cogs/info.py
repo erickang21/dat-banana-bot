@@ -83,7 +83,7 @@ class Info(commands.Cog):
     #     await ctx.send(embed=em)
 
     @commands.group(invoke_without_subcommand=True)
-    async def bugs(self, ctx, test):
+    async def bugs(self, ctx, test=None):
         if test: return
         count = await self.bot.db.bugs.count()
         bugs = """
