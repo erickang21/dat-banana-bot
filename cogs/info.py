@@ -82,41 +82,55 @@ class Info(commands.Cog):
     #     em.description = content
     #     await ctx.send(embed=em)
 
-    @commands.group(invoke_without_subcommand=True)
-    async def bugs(self, ctx, test=None):
-        if test: return
-        count = await self.bot.db.bugs.count()
-        bugs = """
+    @commands.command()
+    async def bugs(self, ctx, action=None, *, bug=None):
+        if not action and not bug:
+            count = await self.bot.db.bugs.count()
+            bugs = """
 **The following bugs are already known and are listed by developers that have tested the bot.**
 
 If you happen to know one that is not listed below, please report it with `*bugs report [describe the bug]`.
 """
-        for i in range(count):
-            bug = await self.bot.db.bugs.find_one({"index": i})
-            bugs += f"- {bug['bug']}\n"
-        em = discord.Embed(color=ctx.author.color, title="Known Bugs")
-        em.description = bugs
-        em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=em)
+            for i in range(count):
+                bug = await self.bot.db.bugs.find_one({"index": i})
+                bugs += f"- {bug['bug']}\n"
+            em = discord.Embed(color=ctx.author.color, title="Known Bugs")
+            em.description = bugs
+            em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
+            return await ctx.send(embed=em)
+        elif action.lower() == "add":
+            if not self.dev_check(ctx.author.id):
+                return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
+            count = await self.bot.db.bugs.count()
+            await self.bot.db.bugs.update_one({"index": count}, {"$set": {"bug": bug}}, upsert=True)
+            return await ctx.send(f"Success! The bug will now be listed when the `*bugs` command is ran. {self.bot.get_emoji(522530578860605442)}")
+        elif action.lower() == "report":
+            log_channel = self.bot.get_channel(559841284735631365)
+            em = discord.Embed(color=ctx.author.color, title="Bug Report")
+            em.description = bug
+            em.set_footer(text=f"Reported by: {str(ctx.author)} | ID: {ctx.author.id}", icon_url=ctx.author.avatar_url)
+            await log_channel.send(embed=em)
+            return await ctx.send(f"Your bug report has been sent to the developers to read. Thank you for helping us splat those bugs! {self.bot.get_emoji(511141356769509396)}")
+        elif action.lower() == "help":
+            msg = f"""
+**Welcome to the center of the bug reporting commands!** {self.bot.get_emoji(485250850659500044)}
 
-    @bugs.command()
-    async def add(self, ctx, *, bug):
-        if not self.dev_check(ctx.author.id):
-            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
-        count = await self.bot.db.bugs.count()
-        await self.bot.db.bugs.update_one({"index": count}, {"$set": {"bug": bug}}, upsert=True)
-        await ctx.send(f"Success! The bug will now be listed when the `*bugs` command is ran. {self.bot.get_emoji(522530578860605442)}")
+Here are a list of subcommands you can do within this command:
+`*bugs` -> See the list of known bugs that were added by the developers.
+`*bugs report [bug description]` -> Found something? Report it to the developers!
+`*bugs add [bug description]` -> For devs only: add a bug to the list of known ones.
+            """
+            return await ctx.send(msg)
+        else:
+            msg = f"""
+**Welcome to the center of the bug reporting commands!** {self.bot.get_emoji(485250850659500044)}
 
-    @bugs.command()
-    @commands.cooldown(1, 60.0, BucketType.user)
-    async def report(self, ctx, *, bug):
-        log_channel = self.bot.get_channel(559841284735631365)
-        em = discord.Embed(color=ctx.author.color, title="Bug Report")
-        em.description = bug
-        em.set_footer(text=f"Reported by: {str(ctx.author)} | ID: {ctx.author.id}", icon_url=ctx.author.avatar_url)
-        await log_channel.send(embed=em)
-        await ctx.send(f"Your bug report has been sent to the developers to read. Thank you for helping us splat those bugs! {self.bot.get_emoji(511141356769509396)}")
-    
+You seem a bit lost, so here are a list of subcommands you can do within this command:
+`*bugs` -> See the list of known bugs that were added by the developers.
+`*bugs report [bug description]` -> Found something? Report it to the developers!
+`*bugs add [bug description]` -> For devs only: add a bug to the list of known ones.
+            """
+            return await ctx.send(msg)
 
 def setup(bot): 
     bot.add_cog(Info(bot)) 
