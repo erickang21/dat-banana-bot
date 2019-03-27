@@ -39,7 +39,7 @@ class Info(commands.Cog):
         minute, second = divmod(second, 60)
         hour, minute = divmod(minute, 60)
         day, hour = divmod(hour, 24)
-        lol = subprocess.run(f"python -V", cwd=os.getcwd(), stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        lol = subprocess.run(f"python3 -V", cwd=os.getcwd(), stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         err = lol.stderr.decode("utf-8")
         res = lol.stdout.decode("utf-8")
         #content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
@@ -50,7 +50,6 @@ class Info(commands.Cog):
         em.add_field(name='Devs', value='PoLLeN#5796')
         em.add_field(name='Servers :homes: ', value=f'{len(self.bot.guilds)}')
         em.add_field(name='Total Members :busts_in_silhouette: ', value=member)
-        em.add_field(name='Connected Voice Channels :loud_sound: ', value=len(self.bot.voice_clients))  
         em.add_field(name='Latency :ping_pong: ', value=f"{self.bot.latency * 1000:.4f} ms")
         #em.add_field(name='Version', value=version)
         em.add_field(name=f'Start Date :calendar:', value='12/08/2017')
