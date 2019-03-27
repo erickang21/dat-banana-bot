@@ -39,7 +39,7 @@ class Info(commands.Cog):
         minute, second = divmod(second, 60)
         hour, minute = divmod(minute, 60)
         day, hour = divmod(hour, 24)
-        lol = subprocess.run(f"python -V", cwd='/Users/Administrator/new-banana-bot', stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+        lol = subprocess.run(f"python -V", cwd=os.getcwd(), stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         err = lol.stderr.decode("utf-8")
         res = lol.stdout.decode("utf-8")
         #content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
