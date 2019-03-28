@@ -79,3 +79,31 @@ async def queue(self, ctx):
         queue_list = f"{queue_list}\n{track.title}} ({ind})"
 
     await ctx.send(f"Queue for {ctx.guild}:\n{queue_list}")
+
+                       
+                       
+
+@commands.command()
+@commands.guild_only()
+async def pause(self, ctx):
+    player = self.bot.lavalink.players.get(ctx.guild.id)
+
+    if not player.is_playing():
+        return await ctx.send(f"I'm not playing anything!")
+
+    if not player.paused:
+        await player.set_pause(True)
+        await ctx.send(f"Paused the current track")
+
+
+@commands.command()
+@commands.guild_only()
+async def resume(self, ctx):
+    player = self.bot.lavalink.players.get(ctx.guild.id)
+
+    if not player.is_playing():
+        return await ctx.send(f"I'm not playing anything!")
+
+    if player.paused:
+        await player.set_pause(False)
+        await ctx.send(f"Resumed the current track")
