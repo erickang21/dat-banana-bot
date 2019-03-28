@@ -37,9 +37,9 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         
        
 
-@commands.command
-@commands.guild_only()
-async def play(self,ctx,*,query : str):
+   @commands.command(brief="Make me play your gucci music")
+   @commands.guild_only()
+   async def play(self,ctx,*,query : str):
     player = self.bot.lavalink.players.get(ctx.guild.id)
     
     query = query.strip('<>')
@@ -64,9 +64,10 @@ async def play(self,ctx,*,query : str):
         await ctx.send(f"Got it! Added ``{tracks[0]['info']['title']}`` to the queue!")
 
 
-@commands.command()
-@commands.guild_only()
-async def queue(self, ctx):
+
+   @commands.command()
+   @commands.guild_only()
+   async def queue(self, ctx):
     player = self.bot.lavalink.players.get(ctx.guild.id)
 
     if not player.queue:
@@ -80,12 +81,10 @@ async def queue(self, ctx):
 
     await ctx.send(f"Queue for {ctx.guild}:\n{queue_list}")
 
-                       
-                       
 
-@commands.command()
-@commands.guild_only()
-async def pause(self, ctx):
+   @commands.command()
+   @commands.guild_only()
+   async def pause(self, ctx):
     player = self.bot.lavalink.players.get(ctx.guild.id)
 
     if not player.is_playing():
@@ -96,9 +95,9 @@ async def pause(self, ctx):
         await ctx.send(f"Paused the current track")
 
 
-@commands.command()
-@commands.guild_only()
-async def resume(self, ctx):
+   @commands.command()
+   @commands.guild_only()
+   async def resume(self, ctx):
     player = self.bot.lavalink.players.get(ctx.guild.id)
 
     if not player.is_playing():
@@ -107,3 +106,46 @@ async def resume(self, ctx):
     if player.paused:
         await player.set_pause(False)
         await ctx.send(f"Resumed the current track")
+
+
+   @commands.command()
+   @commands.guild_only()
+   async def disconnect(self, ctx):
+    player = self.bot.lavalink.players.get(ctx.guild.id)
+
+    if not player.is_connected:
+        return await ctx.send("I am not connected to a VC")
+
+    if not ctx.author.voice or (player.is_connected and ctx.author.voice.channel.id != int(player.channel_id)):
+        return await ctx.send("You're not in my VC, so no.")
+
+    player.queue.clear()
+    await player.disconnect()
+    await ctx.send(f"Disconnected and cleared the queue")
+
+
+   @_play.before_invoke
+    async def ensure_voice(self, ctx): #Below is copied because I literally could not be assed
+        """ A few checks to make sure the bot can join a voice channel. """
+        player = self.bot.lavalink.players.get(ctx.guild.id)
+
+        if not player.is_connected:
+            if not ctx.author.voice or not ctx.author.voice.channel:
+                return await ctx.send("You are not in a voice channel, so no")
+                
+
+            permissions = ctx.author.voice.channel.permissions_for(ctx.me)
+
+            if not permissions.connect or not permissions.speak:
+                return await ctx.send("I am missing permissions to connect/speak in that Voice Channel")
+                
+
+            player.store('channel', ctx.channel.id)
+            await player.connect(ctx.author.voice.channel.id)
+        else:
+            if player.connected_channel.id != ctx.author.voice.channel.id:
+                return await ctx.send("You are not in my voice channel, so no")
+
+
+def setup(bot):
+    bot.add_cog(Music(bot))
