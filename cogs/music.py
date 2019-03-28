@@ -63,6 +63,19 @@ async def play(self,ctx,*,query : str):
     else:
         await ctx.send(f"Got it! Added ``{tracks[0]['info']['title']}`` to the queue!")
 
-                       
-                       
-             
+
+@commands.command()
+@commands.guild_only()
+async def queue(self, ctx):
+    player = self.bot.lavalink.players.get(ctx.guild.id)
+
+    if not player.queue:
+        return await ctx.send(f"I'm not playing anything!")
+
+    queue_list = ""
+    ind = 0
+    for track in player.queue:
+        ind = ind + 1
+        queue_list = f"{queue_list}\n{track.title}} ({ind})"
+
+    await ctx.send(f"Queue for {ctx.guild}:\n{queue_list}")
