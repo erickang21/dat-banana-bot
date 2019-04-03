@@ -1,6 +1,7 @@
 #Code written by Pixel so he doesn't gag anymore
 import discord
 import lavalink
+import logging
 import re
 from discord.ext import commands
 time_rx = re.compile('[0-9]+')
@@ -124,7 +125,7 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         await ctx.send(f"Disconnected and cleared the queue")
 
 
-    @_play.before_invoke
+    @play.before_invoke
     async def ensure_voice(self, ctx): #Below is copied because I literally could not be assed
         """ A few checks to make sure the bot can join a voice channel. """
         player = self.bot.lavalink.players.get(ctx.guild.id)
