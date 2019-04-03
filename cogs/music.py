@@ -61,7 +61,7 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
 
         if not player.is_playing:
             await player.play()
-            await ctx.send(f"Got it! Now playing the gucci music known as ``{tracks[0]['info']['title']}`` {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
+            await ctx.send(f"Got it! Now playing the gucci music known as ``{tracks['tracks'][0]['info']['title']}`` {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
         else:
             await ctx.send(f"Got it! Added ``{tracks['tracks'][0]['info']['title']}`` to the queue!")
 
