@@ -88,7 +88,7 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
     async def pause(self, ctx):
         player = self.bot.lavalink.players.get(ctx.guild.id)
 
-        if not player.is_playing():
+        if not player.is_playing:
             return await ctx.send(f"I'm not playing anything!")
 
         if not player.paused:
@@ -101,7 +101,7 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
     async def resume(self, ctx):
         player = self.bot.lavalink.players.get(ctx.guild.id)
 
-        if not player.is_playing():
+        if not player.is_playing:
             return await ctx.send(f"I'm not playing anything!")
 
         if player.paused:
