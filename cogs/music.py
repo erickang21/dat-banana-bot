@@ -1,6 +1,7 @@
 #Code written by Pixel so he doesn't gag anymore
 import discord
 import lavalink
+import re
 from discord.ext import commands
 time_rx = re.compile('[0-9]+')
 url_rx = re.compile('https?:\/\/(?:www\.)?.+')
@@ -37,94 +38,93 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         
        
 
-   @commands.command(brief="Make me play your gucci music")
-   @commands.guild_only()
-   async def play(self,ctx,*,query : str):
-    player = self.bot.lavalink.players.get(ctx.guild.id)
-    
-    query = query.strip('<>')
-    
-    if not url_rx.match(query):
-        query = f"ytsearch:{query}"
-       
-    msg = await ctx.send(f"Okay! Now searching for ``{query}`` {discord.utils.get(self.bot.emojis,id=453323479555506188)}") #how to avoid everyone exploits
-    
-    if not tracks:
-        return msg.edit(f"Nothing was found ``{query}``. Please check that you didnt spell anything wrong")
-    
-    if 'list' in query and 'ytsearch:' not in query:
-        return msg.edit(f"Oops! I don't support playlists yet")
-    
-    player.add(requester=ctx.author.id, track=tracks[0])
-    
-    if not player.is_playing():
-        await player.play()
-        await ctx.send(f"Got it! Now playing the gucci music known as ``{tracks[0]['info']['title']}`` {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
-    else:
-        await ctx.send(f"Got it! Added ``{tracks[0]['info']['title']}`` to the queue!")
+    @commands.command(brief="Make me play your gucci music")
+    @commands.guild_only()
+    async def play(self, ctx, *, query: str):
+        player = self.bot.lavalink.players.get(ctx.guild.id)
+     
+        query = query.strip('<>')
+     
+        if not url_rx.match(query):
+            query = f"ytsearch:{query}"
+        
+        msg = await ctx.send(f"Okay! Now searching for ``{query}`` {discord.utils.get(self.bot.emojis,id=453323479555506188)}") #how to avoid everyone exploits
+        tracks = await self.bot.lavalink.get_tracks(query)
+        if not tracks:
+            return msg.edit(f"Nothing was found ``{query}``. Please check that you didnt spell anything wrong")
+
+        if 'list' in query and 'ytsearch:' not in query:
+            return msg.edit(f"Oops! I don't support playlists yet")
+
+        player.add(requester=ctx.author.id, track=tracks[0])
+
+        if not player.is_playing():
+            await player.play()
+            await ctx.send(f"Got it! Now playing the gucci music known as ``{tracks[0]['info']['title']}`` {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
+        else:
+            await ctx.send(f"Got it! Added ``{tracks[0]['info']['title']}`` to the queue!")
 
 
 
-   @commands.command()
-   @commands.guild_only()
-   async def queue(self, ctx):
-    player = self.bot.lavalink.players.get(ctx.guild.id)
+    @commands.command()
+    @commands.guild_only()
+    async def queue(self, ctx):
+        player = self.bot.lavalink.players.get(ctx.guild.id)
 
-    if not player.queue:
-        return await ctx.send(f"I'm not playing anything!")
+        if not player.queue:
+            return await ctx.send(f"I'm not playing anything!")
 
-    queue_list = ""
-    ind = 0
-    for track in player.queue:
-        ind = ind + 1
-        queue_list = f"{queue_list}\n{track.title}} ({ind})"
-
-    await ctx.send(f"Queue for {ctx.guild}:\n{queue_list}")
-
-
-   @commands.command()
-   @commands.guild_only()
-   async def pause(self, ctx):
-    player = self.bot.lavalink.players.get(ctx.guild.id)
-
-    if not player.is_playing():
-        return await ctx.send(f"I'm not playing anything!")
-
-    if not player.paused:
-        await player.set_pause(True)
-        await ctx.send(f"Paused the current track")
+        queue_list = ""
+        ind = 0
+        for track in player.queue:
+            ind = ind + 1
+            queue_list = f"{queue_list}\n{track.title} ({ind})"
+        await ctx.send(f"Queue for {ctx.guild}:\n{queue_list}")
 
 
-   @commands.command()
-   @commands.guild_only()
-   async def resume(self, ctx):
-    player = self.bot.lavalink.players.get(ctx.guild.id)
+    @commands.command()
+    @commands.guild_only()
+    async def pause(self, ctx):
+        player = self.bot.lavalink.players.get(ctx.guild.id)
 
-    if not player.is_playing():
-        return await ctx.send(f"I'm not playing anything!")
+        if not player.is_playing():
+            return await ctx.send(f"I'm not playing anything!")
 
-    if player.paused:
-        await player.set_pause(False)
-        await ctx.send(f"Resumed the current track")
-
-
-   @commands.command()
-   @commands.guild_only()
-   async def disconnect(self, ctx):
-    player = self.bot.lavalink.players.get(ctx.guild.id)
-
-    if not player.is_connected:
-        return await ctx.send("I am not connected to a VC")
-
-    if not ctx.author.voice or (player.is_connected and ctx.author.voice.channel.id != int(player.channel_id)):
-        return await ctx.send("You're not in my VC, so no.")
-
-    player.queue.clear()
-    await player.disconnect()
-    await ctx.send(f"Disconnected and cleared the queue")
+        if not player.paused:
+            await player.set_pause(True)
+            await ctx.send(f"Paused the current track")
 
 
-   @_play.before_invoke
+    @commands.command()
+    @commands.guild_only()
+    async def resume(self, ctx):
+        player = self.bot.lavalink.players.get(ctx.guild.id)
+
+        if not player.is_playing():
+            return await ctx.send(f"I'm not playing anything!")
+
+        if player.paused:
+            await player.set_pause(False)
+            await ctx.send(f"Resumed the current track")
+
+
+    @commands.command()
+    @commands.guild_only()
+    async def disconnect(self, ctx):
+        player = self.bot.lavalink.players.get(ctx.guild.id)
+
+        if not player.is_connected:
+            return await ctx.send("I am not connected to a VC")
+
+        if not ctx.author.voice or (player.is_connected and ctx.author.voice.channel.id != int(player.channel_id)):
+            return await ctx.send("You're not in my VC, so no.")
+
+        player.queue.clear()
+        await player.disconnect()
+        await ctx.send(f"Disconnected and cleared the queue")
+
+
+    @_play.before_invoke
     async def ensure_voice(self, ctx): #Below is copied because I literally could not be assed
         """ A few checks to make sure the bot can join a voice channel. """
         player = self.bot.lavalink.players.get(ctx.guild.id)
