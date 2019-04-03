@@ -12,7 +12,7 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         self.bot = bot
 
         if not hasattr(bot, 'lavalink'):
-            lavalink.Client(bot=bot, password='youshallnotpass', loop=bot.loop, log_level=logging.DEBUG)
+            lavalink.Client(bot=bot, password=bot.config.ll_password, loop=bot.loop, log_level=logging.DEBUG)
             self.bot.lavalink.register_hook(self._track_hook)
 
     def cog_unload(self):
