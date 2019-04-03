@@ -48,22 +48,23 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
      
         if not url_rx.match(query):
             query = f"ytsearch:{query}"
-        
-        msg = await ctx.send(f"Okay! Now searching for ``{query}`` {discord.utils.get(self.bot.emojis,id=453323479555506188)}") #how to avoid everyone exploits
+        query = await self.bot.utils.clean_text(ctx, query)
+        msg = await ctx.send(f"I'm on it! Searching for **{query}** {discord.utils.get(self.bot.emojis,id=453323479555506188)}") #how to avoid everyone exploits
         tracks = await self.bot.lavalink.get_tracks(query)
         if not tracks:
-            return msg.edit(content=f"Nothing was found ``{query}``. Please check that you didnt spell anything wrong")
+            return msg.edit(content=f"Uh-oh! It looks like nothing was found. Maybe your query was a bit *too creative...*")
 
         if 'list' in query and 'ytsearch:' not in query:
-            return msg.edit(content=f"Oops! I don't support playlists yet")
+            return msg.edit(content=f"Dang. I don't support playlists yet.")
 
         player.add(requester=ctx.author.id, track=tracks["tracks"][0])
 
         if not player.is_playing:
             await player.play()
-            await ctx.send(f"Got it! Now playing the gucci music known as ``{tracks['tracks'][0]['info']['title']}`` {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
+            track_name = await self.bot.utils.clean_text(ctx, tracks['tracks'][0]['info']['title'])
+            await ctx.send(f"Gottem! I'm now playing **{track_name}**. {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
         else:
-            await ctx.send(f"Got it! Added ``{tracks['tracks'][0]['info']['title']}`` to the queue!")
+            await ctx.send(f"Gottem! But something is playing already. I've added **{track_name}** to the queue! {self.bot.get_emoji(522530578860605442)}")
 
 
 
@@ -73,14 +74,17 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         player = self.bot.lavalink.players.get(ctx.guild.id)
 
         if not player.queue:
-            return await ctx.send(f"I'm not playing anything!")
+            return await ctx.send(f"I don't have anything queued up.")
 
         queue_list = ""
         ind = 0
         for track in player.queue:
             ind = ind + 1
-            queue_list = f"{queue_list}\n{track.title} ({ind})"
-        await ctx.send(f"Queue for {ctx.guild}:\n{queue_list}")
+            queue_list += f"{ind}) **{track.title}**"
+        em = discord.Embed(color=ctx.author.color, title="Music Queue")
+        em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        em.description = queue_list
+        await ctx.send(embed=em)
 
 
     @commands.command()
@@ -89,11 +93,11 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         player = self.bot.lavalink.players.get(ctx.guild.id)
 
         if not player.is_playing:
-            return await ctx.send(f"I'm not playing anything!")
+            return await ctx.send(f"I'm not playing anything! {self.bot.get_emoji(538496161322106920)}")
 
         if not player.paused:
             await player.set_pause(True)
-            await ctx.send(f"Paused the current track")
+            await ctx.send(f"Paused. :pause_button:")
 
 
     @commands.command()
@@ -102,11 +106,11 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         player = self.bot.lavalink.players.get(ctx.guild.id)
 
         if not player.is_playing:
-            return await ctx.send(f"I'm not playing anything!")
+            return await ctx.send(f"I'm not playing anything! {self.bot.get_emoji(538496161322106920)}")
 
         if player.paused:
             await player.set_pause(False)
-            await ctx.send(f"Resumed the current track")
+            await ctx.send(f"Resumed. :arrow_forward:")
 
 
     @commands.command()
@@ -118,11 +122,11 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
             return await ctx.send("I am not connected to a VC")
 
         if not ctx.author.voice or (player.is_connected and ctx.author.voice.channel.id != int(player.channel_id)):
-            return await ctx.send("You're not in my VC, so no.")
+            return await ctx.send(f"You're not in my VC. Or my league. {self.bot.get_emoji(453320099999252493)}")
 
         player.queue.clear()
         await player.disconnect()
-        await ctx.send(f"Disconnected and cleared the queue")
+        await ctx.send(f"Alright, I'm out of here. The queue has been cleared too. {self.bot.get_emoji(481184449883537418)}")
 
 
     @play.before_invoke
