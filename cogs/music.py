@@ -52,10 +52,10 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         msg = await ctx.send(f"Okay! Now searching for ``{query}`` {discord.utils.get(self.bot.emojis,id=453323479555506188)}") #how to avoid everyone exploits
         tracks = await self.bot.lavalink.get_tracks(query)
         if not tracks:
-            return msg.edit(f"Nothing was found ``{query}``. Please check that you didnt spell anything wrong")
+            return msg.edit(content=f"Nothing was found ``{query}``. Please check that you didnt spell anything wrong")
 
         if 'list' in query and 'ytsearch:' not in query:
-            return msg.edit(f"Oops! I don't support playlists yet")
+            return msg.edit(content=f"Oops! I don't support playlists yet")
 
         player.add(requester=ctx.author.id, track=tracks[0])
 
