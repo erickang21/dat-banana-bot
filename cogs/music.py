@@ -57,13 +57,13 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         if 'list' in query and 'ytsearch:' not in query:
             return msg.edit(content=f"Oops! I don't support playlists yet")
 
-        player.add(requester=ctx.author.id, track=tracks[0])
+        player.add(requester=ctx.author.id, track=tracks["tracks"][0])
 
         if not player.is_playing():
             await player.play()
             await ctx.send(f"Got it! Now playing the gucci music known as ``{tracks[0]['info']['title']}`` {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
         else:
-            await ctx.send(f"Got it! Added ``{tracks[0]['info']['title']}`` to the queue!")
+            await ctx.send(f"Got it! Added ``{tracks['tracks'][0]['info']['title']}`` to the queue!")
 
 
 
