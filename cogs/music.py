@@ -79,7 +79,7 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         ind = 0
         for track in player.queue:
             ind = ind + 1
-            queue_list += f"{ind}) **{track.title}**"
+            queue_list += f"{ind}) **{track.title}**\n"
         em = discord.Embed(color=ctx.author.color, title="Music Queue")
         em.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         em.description = queue_list
@@ -110,6 +110,24 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         if player.paused:
             await player.set_pause(False)
             await ctx.send(f"Resumed. :arrow_forward:")
+
+    @commands.command(aliases=["current", "nowplaying"])
+    @commands.guild_only()
+    async def playing(self, ctx):
+        player = self.bot.lavalink.players.get(ctx.guild.id)
+        if not player.current:
+            return await ctx.send(f"I'm not playing anything! {self.bot.get_emoji(538496161322106920)}")
+        em = discord.Embed(color=ctx.author.color, title=player.current.title)
+        em.set_thumbnail(url=player.current.thumbnail)
+        requester = self.bot.get_user(player.current.requester)
+        minutes, seconds = divmod(player.current.duration / 1000, 60)
+        minutes = self.bot.utils.format_time(minutes)
+        seconds = self.bot.utils.format_time(seconds)
+        em.add_field("Author", vale=player.current.author)
+        em.add_field(name="Duration", value=f"{minutes}:{seconds}")
+        em.add_field(name="URL", value=player.current.uri)
+        em.add_field(name="Type", value="Stream" if player.current.stream else "Video")
+        em.set_footer(text=f"Song Requested By: {str(requester)}", value=requester.avatar_url)
 
 
     @commands.command()
