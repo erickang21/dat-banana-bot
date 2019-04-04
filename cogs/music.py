@@ -128,7 +128,7 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         em.add_field(name="URL", value=player.current.uri)
         em.add_field(name="Type", value="Stream" if player.current.stream else "Video")
         em.set_footer(text=f"Song Requested By: {str(requester)}", icon_url=requester.avatar_url)
-
+        await ctx.send(embed=em)
 
     @commands.command()
     @commands.guild_only()
