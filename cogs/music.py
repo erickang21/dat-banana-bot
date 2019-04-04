@@ -45,11 +45,11 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
         player = self.bot.lavalink.players.get(ctx.guild.id)
      
         query = query.strip('<>')
-     
+        clean_query = await self.bot.utils.clean_text(ctx, query)
         if not url_rx.match(query):
             query = f"ytsearch:{query}"
-        query = await self.bot.utils.clean_text(ctx, query)
-        msg = await ctx.send(f"I'm on it! Searching for **{query}** {discord.utils.get(self.bot.emojis,id=453323479555506188)}") #how to avoid everyone exploits
+        
+        msg = await ctx.send(f"I'm on it! Searching for **{clean_query}** {discord.utils.get(self.bot.emojis,id=453323479555506188)}") #how to avoid everyone exploits
         tracks = await self.bot.lavalink.get_tracks(query)
         if not tracks:
             return msg.edit(content=f"Uh-oh! It looks like nothing was found. Maybe your query was a bit *too creative...*")
@@ -58,10 +58,9 @@ class Music(commands.Cog): #Line 6-36 copied from Lavalink.py/music-v2.py since 
             return msg.edit(content=f"Dang. I don't support playlists yet.")
 
         player.add(requester=ctx.author.id, track=tracks["tracks"][0])
-
+        track_name = await self.bot.utils.clean_text(ctx, tracks['tracks'][0]['info']['title'])
         if not player.is_playing:
             await player.play()
-            track_name = await self.bot.utils.clean_text(ctx, tracks['tracks'][0]['info']['title'])
             await ctx.send(f"Gottem! I'm now playing **{track_name}**. {discord.utils.get(self.bot.emojis,id=559923444234584064)}")
         else:
             await ctx.send(f"Gottem! But something is playing already. I've added **{track_name}** to the queue! {self.bot.get_emoji(522530578860605442)}")
