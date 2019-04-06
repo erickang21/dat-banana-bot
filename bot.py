@@ -130,7 +130,7 @@ async def on_ready():
         x = f.readlines()
     stuff = [f.strip("\n") for f in x]
 
-    msg = await bot.get_channel(int(stuff[0])).get_message(int(stuff[1]))
+    msg = await bot.get_channel(int(stuff[0])).fetch_message(int(stuff[1]))
     await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
     presence = [
         "*help | BOIIIIIII!",
@@ -338,7 +338,7 @@ async def on_raw_reaction_add(payload):
     # Data from event
     guild = bot.get_guild(payload.guild_id)
     channel = bot.get_channel(payload.channel_id)
-    message = await channel.get_message(payload.message_id)
+    message = await channel.fetch_message(payload.message_id)
     member = guild.get_member(payload.user_id)
     emoji = payload.emoji
 
@@ -367,7 +367,7 @@ async def on_raw_reaction_remove(payload):
     # Data from event
     guild = bot.get_guild(payload.guild_id)
     channel = bot.get_channel(payload.channel_id)
-    message = await channel.get_message(payload.message_id)
+    message = await channel.fetch_message(payload.message_id)
     member = guild.get_member(payload.user_id)
     emoji = payload.emoji
 
