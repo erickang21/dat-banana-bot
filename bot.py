@@ -203,15 +203,15 @@ async def on_message(message):
     
     # Portal
     if message.channel.id == 566030691360440356: # DBBBH Side
-        img = user.avatar_url_as(format="png", size=1024)
-        byte = await (await bot.session.get(img)).read();
+        img = message.author.avatar_url_as(format="png", size=1024)
+        byte = await (await bot.session.get(img)).read()
         webhook = await bot.get_channel(566030751074877440).create_webhook(name=message.author.display_name, avatar=byte)
         message = message.replace("@", "@\u200b")
         await webhook.send(message)
         await webhook.delete()
     elif message.channel.id == 566030751074877440: # Pixel side
-        img = user.avatar_url_as(format="png", size=1024)
-        byte = await (await bot.session.get(img)).read();
+        img = message.author.avatar_url_as(format="png", size=1024)
+        byte = await (await bot.session.get(img)).read()
         webhook = await bot.get_channel(566030691360440356).create_webhook(name=message.author.display_name, avatar=byte)
         message = message.replace("@", "@\u200b")
         await webhook.send(message)
