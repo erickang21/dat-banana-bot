@@ -201,6 +201,22 @@ async def on_message(message):
                 em.description = "Immediately reset your token on the Discord Developers page! Click [here](https://discordapp.com/developers/applications/388476336777461770/bots) and hit Reset to reset the token immediately."
                 await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
     
+    # Portal
+    if message.channel.id == 566030691360440356: # DBBBH Side
+        img = user.avatar_url_as(format="png", size=1024)
+        byte = await (await bot.session.get(img)).read();
+        webhook = await bot.get_channel(566030751074877440).create_webhook(name=message.author.display_name, avatar=byte)
+        message = message.replace("@", "@\u200b")
+        await webhook.send(message)
+        await webhook.delete()
+    elif message.channel.id == 566030751074877440: # Pixel side
+        img = user.avatar_url_as(format="png", size=1024)
+        byte = await (await bot.session.get(img)).read();
+        webhook = await bot.get_channel(566030691360440356).create_webhook(name=message.author.display_name, avatar=byte)
+        message = message.replace("@", "@\u200b")
+        await webhook.send(message)
+        await webhook.delete()
+        
     # Blacklist
     x = await bot.db.blacklist.find_one({"id": message.author.id})
     if not x or not x.get("status", False):
