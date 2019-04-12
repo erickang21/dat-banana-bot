@@ -205,8 +205,9 @@ async def on_message(message):
     match = await bot.db.portal.find_one({"id": message.guild.id})
     # All portal channels to send to EXCEPT the current one
     if match:
-        channels = [x['channel'] for x in (await bot.db.portal.find().to_list(None))].remove(match["channel"]) 
-        
+        db_data = await bot.db.portal.find().to_list(None)
+        channels = [x['channel'] for x in db_data]
+        channels.remove(message.channel.id)
         img = message.author.avatar_url_as(format="png", size=1024)
         byte = await (await bot.session.get(img)).read()
         for chan in channels:
