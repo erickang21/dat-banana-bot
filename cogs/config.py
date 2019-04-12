@@ -18,6 +18,20 @@ class Config(commands.Cog):
 
 
     @commands.command()
+    async def portal(self, ctx, stuff):
+        if stuff.lower() == "off" or stuff.lower() == "disable":
+            await self.bot.db.portal.delete_one({"id": ctx.guild.id})
+            await ctx.send(f"This server has been removed from the portal system. Sorry to see you go! {self.bot.get_emoji(469459032747278336)}")
+        else:
+            chan_id = int(stuff.strip("<#").strip(">"))
+            channel = self.bot.get_channel(chan_id)
+            if not channel:
+                return await ctx.send(f"The channel you gave was invalid! Please try again. {self.bot.get_emoji(468607278313111553)}")
+            await self.bot.db.portal.update_one({"id": ctx.guild.id}, {"$set": {"channel": channel.id}}, upsert=True)
+            await ctx.send(f"The portal channel has successfully been set up. You will now see any messages from a portal channel in other servers that have it set up. {self.bot.get_emoji(484897652220362752)}")
+
+
+    @commands.command()
     async def membercounter(self, ctx, action=None):
         """Set up a member counter for your server using voice channels."""
         if not action:
