@@ -812,41 +812,21 @@ Invalid math expression."""
     @commands.command(aliases=['copyemoji', 'emojiadd', 'eadd', 'cemoji'])
     @commands.guild_only()
     @commands.has_permissions(manage_emojis = True)
-    async def addemoji(self, ctx, *, emoji):
-        """Adds an emoji by the emoji's name."""
-        e = discord.utils.get(self.bot.emojis, name=emoji)
-        if e is None:
-            return await ctx.send("No emoji found from the list of my servers, with the given ID.")
-            # await ctx.send("No emoji found from the list of my servers.\nYou can reply with an emoji ID, and the bot will add it for you. Otherwise, reply 'cancel' to end the search.")
-            # try:
-            #     x = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=45.0)
-            # except asyncio.TimeoutError:
-            #     return await ctx.send("The request timed out. Please try again.")
-            # if x.content.lower() == 'cancel':
-            #     return await ctx.send("The process has ended.")
-            # if self.bot.get_emoji(int(x.content)) is None:
-            #     return await ctx.send("Sorry, no emoji with that ID is found. ¯\_(ツ)_/¯")
-            # e = self.bot.get_emoji(int(x.content)) 
-        count = 0
-        animate = 0
-        for x in ctx.guild.emojis:
-            if not e.animated:
-                if not x.animated:
-                    count += 1
-                else:
-                    animate += 1
-        if count >= 50 or animate >= 50:
-            return await ctx.send(f"This server has reached the limit for custom emojis! {self.bot.get_emoji(430853757350445077)}")
-        resp = await self.session.get(f"https://cdn.discordapp.com/emojis/{e.id}")
+    async def addemoji(self, ctx, id, name=str(id)):
+        """Adds an emoji to the server by giving ID and name."""
+        try:
+            id = int(id)
+        except ValueError:
+            return await ctx.send("That's not a valid emoji ID! Better check it.")
+        resp = await self.session.get(f"https://cdn.discordapp.com/emojis/{id}")
         img = await resp.read()
         try:
-            em = discord.Embed(color=0xf9e236, title=f"The emoji has been created in the server! Name: {e.name}")
-            await ctx.guild.create_custom_emoji(name=e.name, image=img)
-            em.set_image(url=f"https://cdn.discordapp.com/emojis/{e.id}")
-            await ctx.send(embed=em)
+            await ctx.guild.create_custom_emoji(name=name, image=img)
         except discord.Forbidden:
             return await ctx.send("The bot does not have Manage Emojis permission.")
-
+        em = discord.Embed(color=0xf9e236, title=f"Emoji added!")
+        em.set_image(url=f"https://cdn.discordapp.com/emojis/{id}")
+        await ctx.send(embed=em)
 
     @commands.command(aliases=['daemojis', 'demojis'])
     @commands.guild_only()
@@ -931,7 +911,7 @@ Invalid math expression."""
 
     @commands.command(aliases=['hb'])
     async def hastebin(self, ctx, *, text):
-        """Put some code in hastebin"""
+        """Put some code in hastebin."""
         try:
             resp = await self.session.post("https://hastebin.com/documents", data=text)
             resp = await resp.json()
