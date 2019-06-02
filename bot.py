@@ -152,11 +152,12 @@ async def on_ready():
         "*help | asdfasdfasdfasdf.",
         "*help | Git Gud At Leagye.",
         "*help | Music officially fixed! YEET",
-        "*help | Bananaes < Leagye"
+        "*help | Bananaes < Leagye",
+        "*help | roblox succ"
     ]
     print('Bot is online, and ready to ROLL!')
     while True:
-        await bot.change_presence(activity=discord.Game(name="b.help for help. What else?"))
+        await bot.change_presence(activity=discord.Game(name=random.choice(presence)))
         await asyncio.sleep(20)
 
 
@@ -202,7 +203,7 @@ async def on_message(message):
                 await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
     
     # Portal
-    if message.author.discriminator != "0000":
+    if message.author.discriminator != "0000": ##Just a quick note to Banana: portal seems to break when the RAM usage is high
         db_data = await bot.db.portal.find().to_list(None)
         channels = [x['channel'] for x in db_data]
         if message.channel.id in channels:
