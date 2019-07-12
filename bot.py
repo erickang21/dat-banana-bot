@@ -211,11 +211,10 @@ async def on_message(message):
             # All portal channels to send to EXCEPT the current one
             if match:
                 img = message.author.avatar_url_as(format="png", size=1024)
-                byte = await (await bot.session.get(img)).read()
                 for chan in channels:
                     current = bot.get_channel(chan)
                     if current:
-                        webhook = await current.create_webhook(name=message.author.display_name, avatar=byte)
+                        webhook = await current.create_webhook(name=message.author.display_name, avatar=img)
                         await webhook.send(f"**{message.guild.name}** >> " + message.content.replace("@", "@\u200b"))
                         await webhook.delete()
         #if message.channel.id == 566030691360440356 and not message.author.discriminator == "0000": # DBBBH Side
