@@ -337,16 +337,15 @@ class HelpPaginator(Pages):
 
     @classmethod
     async def from_cog(cls, ctx, cog):
-        cog_name = cog.__class__.__name__
 
         # get the commands
-        entries = sorted(ctx.bot.get_cog_commands(cog_name), key=lambda c: c.name)
+        entries = sorted(cog.walk_commands(), key=lambda c: c.name)
 
         # remove the ones we can't run
         entries = [cmd for cmd in entries if (await _can_run(cmd, ctx)) and not cmd.hidden]
 
         self = cls(ctx, entries)
-        self.title = f'{cog_name} Commands'
+        self.title = f'{cog.qualified_name} Commands'
         self.description = inspect.getdoc(cog)
         self.prefix = cleanup_prefix(ctx.bot, ctx.prefix)
 
