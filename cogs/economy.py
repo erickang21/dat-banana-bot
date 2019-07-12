@@ -222,13 +222,13 @@ If you choose to re-enable economy in the future, the data will not be recovered
             else:
                 time_left = f"{minute}:{Utils.format_time(second)}"
             return await ctx.send(f"BAKA! You're using this command too fast. Don't make me repeat myself, and wait for **{time_left}**.")
-        async with self.session.get(f"https://discordbots.org/api/bots/388476336777461770/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
+        async with self.session.get(f"https://discordbots.org/api/bots/520682706896683009/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
             resp = await resp.json()
             if resp['voted'] == 0:
                 em = discord.Embed(color=0x00ff00, title='Did you vote for dat banana bot today?')
                 em.description = """
 You can get up to an extra **500** :banana: on **each server you share with me** using daily by simply upvoting dat banana bot on Discord Bot List. 
-Click [here](https://discordbots.org/bot/388476336777461770/vote) to vote now.
+Click [here](https://discordbots.org/bot/520682706896683009/vote) to vote now.
 
 __What to do now?__
 :white_check_mark:: Receive your reduced daily credit and move on.
@@ -270,7 +270,7 @@ __What to do now?__
                         await self.place_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
                         return await ctx.send(random.choice(responses))
                 elif reaction.emoji == '❌':
-                    return await ctx.send("Thank you so much! Upvote me here :)\n\nhttps://discordbots.org/bot/388476336777461770/vote")
+                    return await ctx.send("Thank you so much! Upvote me here :)\n\nhttps://discordbots.org/bot/520682706896683009/vote")
             else:
                 number = random.randint(800, 1000)
                 guild_name = await Utils.clean_text(ctx, ctx.guild.name)
