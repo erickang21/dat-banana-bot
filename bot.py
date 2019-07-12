@@ -210,7 +210,7 @@ async def on_message(message):
             match = await bot.db.portal.find_one({"id": message.guild.id})
             # All portal channels to send to EXCEPT the current one
             if match:
-                byte = await (await bot.session.get(message.author.avatar_url)).read()
+                byte = await (await bot.session.get(str(message.author.avatar_url))).read()
                 for chan in channels:
                     current = bot.get_channel(chan)
                     if current:
