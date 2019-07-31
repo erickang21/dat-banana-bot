@@ -67,7 +67,7 @@ class BS(commands.Cog):
             em.add_field(name="Members", value=club.members)
         brawlers = ""
         for x in profile.brawlers:
-            brawlers += f"{self.brawler(x.name.lower())} {x.level} "
+            brawlers += f"{self.brawler(x.name.lower())} {x.power} | {x.trophies} {self.emoji(523919154630361088)}"
         em.add_field(name="Brawlers", value=f"**{profile.brawlersUnlocked}/27**\n\n{brawlers}", inline=False)
         em.set_thumbnail(url=profile.avatarUrl)
         await ctx.send(embed=em)
