@@ -47,7 +47,7 @@ class BS(commands.Cog):
         profile = await self.bot.session.get(f"https://api.brawlapi.cf/v1/player?tag={tag}", headers=self.headers)
         profile = await profile.json()
         if hasattr(profile, "message"):
-            return await ctx.send("You have an invalid tag! :x:")
+            return await ctx.send("You have an invalid tag! :x: ")
         profile = box.Box(profile)
         club = profile.club
         em = discord.Embed(color=0x00ff00, title=f"{profile.name} (#{profile.tag})")
@@ -55,15 +55,15 @@ class BS(commands.Cog):
         em.add_field(name="Highest Trophies", value=f"{profile.highestTrophies} {self.emoji(523919154630361088)}")
         em.add_field(name="XP Level", value=f"{profile.expLevel} ({profile.expFmt}) {self.emoji(523924578314092544)}")
         em.add_field(name="Victories", value=f"**Total:** {profile.victories} {self.emoji(523919154751733762)}\n**Solo Showdown:** {profile.soloShowdownVictories} {self.emoji(523923170755870720)}\n**Duo Showdown:** {profile.duoShowdownVictories} {self.emoji(523923170671984656)}")
-        em.add_field(name="Best Time as Boss", value=f"{profile.best_time_as_boss} {self.emoji(523923170970042378)}")
-        em.add_field(name="Best Robo Rumble Time", value=f"{profile.best_robo_rumble_time} {self.emoji(523926186620092426)}")
+        em.add_field(name="Best Time as Big Brawler", value=f"{profile.bestTimeAsBigBrawler} {self.emoji(523923170970042378)}")
+        em.add_field(name="Best Robo Rumble Time", value=f"{profile.bestRoboRumbleTime} {self.emoji(523926186620092426)}")
         if not club:
             em.add_field(name="Club", value=f"No club. {self.bot.get_emoji(522524669459431430)}")
         else:
             em.add_field(name="Club", value=f"{club.name} (#{club.tag})", inline=False)
             em.add_field(name="Role", value=club.role)
             em.add_field(name="Trophies", value=club.trophies)
-            em.add_field(name="Required Trophies", value=club.required_trophies)
+            em.add_field(name="Required Trophies", value=club.requiredTrophies)
             em.add_field(name="Members", value=club.members)
         brawlers = ""
         for x in profile.brawlers:
