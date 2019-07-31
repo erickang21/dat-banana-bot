@@ -31,8 +31,6 @@ class BS(commands.Cog):
         if not self.check_tag(tag):
             return await ctx.send("Looks like that's an invalid tag! Make it valid. :)")
         find = await self.bot.db.bstags.find_one({"id": ctx.author.id})
-        if not tag.startswith("#"):
-            tag = "#" + tag
         await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": tag}}, upsert=True)
         await ctx.send(f"Your Brawl Stars tag has been successfully saved. {self.bot.get_emoji(484897652220362752)}")
 
@@ -44,9 +42,12 @@ class BS(commands.Cog):
             tag = await self.get_tag(ctx.author.id)
             if not tag:
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
+        tag = tag.strip("#")
         await ctx.trigger_typing()
         profile = await self.bot.session.get(f"https://api.brawlapi.cf/v1/player?tag={tag}", headers=self.headers)
         profile = await profile.json()
+        if hasattr(profile, "message"):
+            return await ctx.send("You have an invalid tag! :x:")
         profile = box.Box(profile)
         club = profile.club
         em = discord.Embed(color=0x00ff00, title=f"{profile.name} (#{profile.tag})")
