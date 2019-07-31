@@ -286,7 +286,7 @@ Note that this only shows the config, but does not support editing it.\n
             return await ctx.send(embed=em)
         if (action and not cmd) or (action and cmd == "help"):
             bcmd_help = """
-****Blacklistcmd Help**__
+__**Blacklistcmd Help**__
 
 This command disables a command for the server. It can also show disabled commands and re-enable a command.
 Note that you cannot disable this command. 
