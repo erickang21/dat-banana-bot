@@ -1,12 +1,12 @@
 import discord
-import brawlstats
+import box
 from discord.ext import commands
 
 
 class BS(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.client = brawlstats.Client(bot.config.bsapi, is_async=True)
+        self.headers = {'Authorization': bot.config.bsapi}
 
     def check_tag(self, tag):
         for char in tag:
@@ -34,7 +34,7 @@ class BS(commands.Cog):
         if not tag.startswith("#"):
             tag = "#" + tag
         await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": tag}}, upsert=True)
-        await ctx.send(f"Your Brawl Stars tag has been successfully saved.")
+        await ctx.send(f"Your Brawl Stars tag has been successfully saved. {self.bot.get_emoji(484897652220362752)}")
 
 
     @commands.command()
@@ -44,7 +44,9 @@ class BS(commands.Cog):
             tag = await self.get_tag(ctx.author.id)
             if not tag:
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
-        profile = await self.client.get_profile(tag)
+        await ctx.trigger_typing()
+        profile = await self.bot.session.get(f"https://api.brawlapi.cf/v1/player?tag={tag}", headers=self.headers)
+        profile = box.Box(profile)
         club = profile.club
         em = discord.Embed(color=0x00ff00, title=f"{profile.name} (#{profile.tag})")
         em.add_field(name="Trophies", value=f"{profile.trophies} {self.emoji(523919154630361088)}")
@@ -64,7 +66,7 @@ class BS(commands.Cog):
         brawlers = ""
         for x in profile.brawlers:
             brawlers += f"{self.brawler(x.name.lower())} {x.level} "
-        em.add_field(name="Brawlers", value=f"**{profile.brawlersUnlocked} total brawlers.**\n\n{brawlers}", inline=False)
+        em.add_field(name="Brawlers", value=f"**{profile.brawlersUnlocked}/27**\n\n{brawlers}", inline=False)
         em.set_thumbnail(url=profile.avatarUrl)
         await ctx.send(embed=em)
 
