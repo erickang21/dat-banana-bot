@@ -709,8 +709,8 @@ Think of it as a server-wide pins channel.
             em.description = f"The bot's prefix for server **{ctx.guild.name}** is set to `{ctx.prefix}`."
             return await ctx.send(embed=em)
         if prefix.lower() == 'clear' or prefix.lower() == 'delete' or prefix.lower() == 'remove':
-            await self.bot.db.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": "b."}}, upsert=True)
-            em.description = f"The bot's prefix is now set to the default: `b.`."
+            await self.bot.db.prefix.update_one({"id": str(ctx.guild.id)}, {"$set": {"prefix": "uwu "}}, upsert=True)
+            em.description = f"The bot's prefix is now set to the default: `uwu`."
             await ctx.send(embed=em)
             modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
             if modlog:
