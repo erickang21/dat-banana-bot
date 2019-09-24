@@ -84,7 +84,7 @@ class Developer(commands.Cog):
         for x in self.bot.guilds:
             for i in range(len(x.channels)):
                 try:
-                    await x.channels[i].send(f"__**Public Service Announcement**__\n\n")
+                    await x.channels[i].send(f"__**Public Service Announcement**__\n\n{msg}")
                     await self.bot.get_channel(513368885144190986).send(f"PSA sent to **{x.name}**. Channel: #{x.channels[i].name}")
                     break
                 except:
