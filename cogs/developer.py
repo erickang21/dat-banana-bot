@@ -80,16 +80,16 @@ class Developer(commands.Cog):
         """Sends an announcement to a channel in every server."""
         if not self.dev_check(ctx.author.id):
             return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {self.bot.get_emoji(555121740465045516)}")
-        await ctx.send("I have began to send the PSA to all servers I'm in! This will take a while. You can track my progress in <#513368885144190986>.")
+        await ctx.send("I have began to send the PSA to all servers I'm in! This will take a while. You can track my progress in <#513368885144190986>.", edit=False)
         for x in self.bot.guilds:
-            for i in x.channels:
+            for i in range(len(x.channels)):
                 try:
                     await x.channels[i].send(f"__**Public Service Announcement**__\n\n")
                     await self.bot.get_channel(513368885144190986).send(f"PSA sent to **{x.name}**. Channel: #{x.channels[i].name}")
                     break
                 except:
                     continue
-        await ctx.send(f"I have sent the PSA to every server! {self.bot.get_emoji(453322013591863316)}")
+        await ctx.send(f"I have sent the PSA to every server! {self.bot.get_emoji(453322013591863316)}", edit=False)
 
 
 
