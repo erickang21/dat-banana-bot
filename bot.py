@@ -37,7 +37,7 @@ db = AsyncIOMotorClient(x["mongodb"])
 async def getprefix(bot, message):
     if isinstance(message.channel, discord.DMChannel): return "b."
     x = await db.datbananabot.prefix.find_one({ "id": str(message.guild.id) })
-    pre = x['prefix'] if x is not None else 'b.'
+    pre = x['prefix'] if x is not None else 'uwu '
     return commands.when_mentioned_or(pre)(bot, message)
 
 
@@ -132,31 +132,9 @@ async def on_ready():
 
     msg = await bot.get_channel(int(stuff[0])).fetch_message(int(stuff[1]))
     await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
-    presence = [
-        "*help | BOIIIIIII!",
-        "*help | 🍌 are like my life: always by my side.",
-        "*help | Live and die by the 🍌.",
-        "*help | Who took my 🍌?",
-        "*help | Fortnite succ CcCcC.",
-        "*help | ur mum a trap",
-        "*help | ur universe trans",
-        "*help | LoL > Fortnite",
-        "*help | 🍌. The stuff of life.",
-        "*help | Hmm. Hmm?",
-        "*help | Looking for smexy weebs? See my JS sister...",
-        "*help | https://discord.gg/3Nxb7yZ (where I belong)",
-        "*help | REEEEEEEEEE",
-        "*help | gib 🍌 plox",
-        f"*help | in {len(bot.guilds)} servers!",
-        "*help | skrrrrrrrrra pa pa pa pa pa.",
-        "*help | asdfasdfasdfasdf.",
-        "*help | Git Gud At Leagye.",
-        "*help | Music officially fixed! YEET",
-        "*help | Bananaes < Leagye"
-    ]
     print('Bot is online, and ready to ROLL!')
     while True:
-        await bot.change_presence(activity=discord.Game(name="b.help for help. What else?"))
+        await bot.change_presence(activity=discord.Game(name="uwu help for help. What else?"))
         await asyncio.sleep(20)
 
 
@@ -251,7 +229,7 @@ async def on_message(message):
         msg = f"""
 {bot.get_emoji(505725404695232512)} **What's poppin?**
 
-You pinged dat zero two bot, and that *should* be me, so I answered.
+You pinged uwu bot, and that's my name, so I answered like a normal being.  
 
 __Features__
 :star: Starboard
@@ -331,7 +309,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
             elif not data['status']:
                 pass
             elif data:
-                await message.channel.send(f"Hush, don't ping **{x.name}**. He's AFK right now, doing this: **{data['status']}**.")
+                await message.channel.send(f"Shhh, don't ping **{x.name}**. He's AFK right now, doing: **{data['status']}**.")
             else:
                 continue
     if not message.author.bot:
@@ -593,11 +571,11 @@ async def on_guild_join(guild):
     em.set_thumbnail(url=guild.icon_url)
     await logs_channel.send(embed=em)
     msg = f"""
-What's poppin', lovely citizens in **{guild.name}**?
+What's up, lovely citizens in **{guild.name}**?
 
-I'm **dat zero two bot**, a lovely bot with everything you ever need out of a Discord bot.
+I'm **uwu bot**, a lovely bot with everything you ever from a Discord bot.
 
-In fact, I'm so lovely, I'll introduce myself right now.
+In fact, I'm so lovely, I'll introduce myself right now. Unless you find that annoying. But probably not!
 
 __Features__
 :star: Starboard
@@ -615,7 +593,7 @@ __Features__
 
 Lastly, don't forget to join the bot's support server for...support, and for chilling!
 
-https://discord.gg/3Nxb7yZ
+https://discord.gg/vCMEmNJ
 
 Have a gucci day! {bot.get_emoji(485250850659500044)}
     """

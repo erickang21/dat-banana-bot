@@ -54,7 +54,7 @@ class Developer(commands.Cog):
     async def error(self, ctx, code):
         """Gets info on an error by code."""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {self.bot.get_emoji(555121740465045516)}")
         data = await self.bot.db.errors.find_one({"code": code})
         if not data:
             return await ctx.send("No error with that code was found. Check it!")
@@ -72,8 +72,25 @@ class Developer(commands.Cog):
     @commands.command(hidden=True)
     async def causeerror(self, ctx):
         if not self.dev_check(ctx.author.id):
-            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {self.bot.get_emoji(555121740465045516)}")
         [][0]
+
+    @commands.command(hidden=True)
+    async def psa(self, ctx, *, msg: str = None):
+        """Sends an announcement to a channel in every server."""
+        if not self.dev_check(ctx.author.id):
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {self.bot.get_emoji(555121740465045516)}")
+        await ctx.send("I have began to send the PSA to all servers I'm in! This will take a while. You can track my progress in <#513368885144190986>.")
+        for x in self.bot.guilds:
+            for i in x.channels:
+                try:
+                    await x.channels[i].send(f"__**Public Service Announcement**__\n\n")
+                    await self.bot.get_channel(513368885144190986).send(f"PSA sent to **{x.name}**. Channel: #{x.channels[i].name}")
+                    break
+                except:
+                    continue
+        await ctx.send(f"I have sent the PSA to every server! {self.bot.get_emoji(453322013591863316)}")
+
 
 
        
