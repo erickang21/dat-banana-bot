@@ -301,7 +301,44 @@ __What to do now?__
                     await self.place_on_cooldown(ctx.guild, ctx.author, "daily_cooldown")
                     return await ctx.send(random.choice(responses))
         
-
+    @commands.command()
+    async def search(self, ctx):
+        """A way to earn currency."""
+        guild_name = await Utils.clean_text(ctx, ctx.guild.name)
+        x = await self.db.economy.find_one({"id": ctx.guild.id})
+        if not x:
+            await self.db.economy.update_one({"id": ctx.guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
+        if not x.get("registered"):
+            return await ctx.send("Sorry, but the server's economy commands have been disabled.")
+        guild_user_data = x.get("users")
+        user_ids = list(map(lambda a: a['id'], guild_user_data))
+        try:
+            match = list(
+                filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
+        except IndexError:
+            return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        number = random.randint(0, 500)
+        await self.add_points(ctx.guild, ctx.author, number)
+        zero_responses = [
+            f"You tried so hard but you couldn't succeed. {self.bot.get_emoji(522530579627900938)}",
+            f"Mission FAILED! {self.bot.get_emoji(522530579627900938)}",
+            f"People around here have big brains. No money for you! {self.bot.get_emoji(522530579627900938)}",
+            f"Nice try, you gold digger. {self.bot.get_emoji(522530579627900938)}"
+        ]
+        responses = [
+            f"uwu you just found **{number}** :banana:.",
+            f"You lucky human. **{number}** :banana: is yours.",
+            f"You found **{number}**:banana: under your sleeping mom.",
+            f"You fished in your dad's wallet for **{number}** :banana:.",
+            f"You dug out a red pocket with **{number}** :banana:.",
+            f"**{number}** :banana: came falling from the sky. And with the sky.",
+            f"My personal gift, **{number}** :banana: to you.",
+            f"You picked up **{number}** :banana: from the toilet."
+        ]
+        if number == 0:
+            return await ctx.send(random.choice(zero_responses))
+        else:
+            return await ctx.send(random.choice(responses))
         
 
     @commands.command()
