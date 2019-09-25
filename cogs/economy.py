@@ -302,6 +302,7 @@ __What to do now?__
                     return await ctx.send(random.choice(responses))
         
     @commands.command()
+    @commands.cooldown(1, 60.0, BucketType.user)
     async def search(self, ctx):
         """A way to earn currency."""
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
