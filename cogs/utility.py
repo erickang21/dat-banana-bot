@@ -1093,11 +1093,6 @@ Invalid math expression."""
             ban_count = len(await guild.bans())
         except discord.Forbidden:
             ban_count = "Could not retrieve bans (I need Ban Members permission)"
-        content_filters = {
-            0: "**None** (Don't scan any messages.)",
-            1: "**Medium** (Scan messages from members without a role.)",
-            2: "**High** (Scan messages sent by all members.)"
-        }
         mfa_levels = {
             0: "Does not require 2FA for members with Administrator permission.",
             1: "Requires 2FA for members with Administrator permission."
@@ -1145,7 +1140,7 @@ Invalid math expression."""
         em.add_field(name=f'Emoji Count {self.bot.get_emoji(484366851493855233)}', value=f"**Regular Emojis:** {regular_emojis}\n**Animated Emojis:** {animated_emojis}", inline=False)
         em.add_field(name='Role Count :bust_in_silhouette: ', value=str(role_length), inline=False)
         em.add_field(name=f'Server Verification Level {self.bot.get_emoji(522927676114075649)}', value=str(ctx.guild.verification_level).title(), inline=False)
-        em.add_field(name=f"Explicit Content Filter {self.bot.get_emoji(464784851241926666)}", value=content_filters[guild.explicit_content_filter], inline=False)
+        em.add_field(name=f"Explicit Content Filter {self.bot.get_emoji(464784851241926666)}", value=str(ctx.guild.explicit_content_filter).title().replace("_", " "), inline=False)
         em.add_field(name=f"2FA Requirement {self.bot.get_emoji(485798151064649749)}", value=mfa_levels[guild.mfa_level], inline=False)
         em.add_field(name=f'Ban Count {self.bot.get_emoji(522534996666220546)}', value=ban_count, inline=False)
         # em.add_field(name="Regular Emojis", value=regular_emoji_list, inline=False)
