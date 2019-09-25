@@ -77,7 +77,7 @@ class Economy(commands.Cog):
                 return 86400 - diff
             else:
                 return False
-        elif cmd == "lottery_cooldown":
+        elif cmd == "lottery_cooldown" or cmd == "search_cooldown":
             if diff < 60:
                 return 60 - diff
             else:
@@ -302,7 +302,7 @@ __What to do now?__
                     return await ctx.send(random.choice(responses))
         
     @commands.command()
-    @commands.cooldown(1, 60.0, BucketType.user)
+    #@commands.cooldown(1, 60.0, BucketType.user)
     async def search(self, ctx):
         """A way to earn currency."""
         guild_name = await Utils.clean_text(ctx, ctx.guild.name)
@@ -318,6 +318,15 @@ __What to do now?__
                 filter(lambda x: x['id'] == ctx.author.id, guild_user_data))[0]
         except IndexError:
             return await ctx.send(f"You don't have an account in **{guild_name}** yet! Open one using `*openaccount`.")
+        check = await self.is_on_cooldown(ctx.guild, ctx.author, "search_cooldown")
+        if check:
+            minute, second = divmod(check, 60)
+            hour, minute = divmod(minute, 60)
+            if hour:
+                time_left = f"{hour}:{Utils.format_time(minute)}:{Utils.format_time(second)}"
+            else:
+                time_left = f"{minute}:{Utils.format_time(second)}"
+            return await ctx.send(f"C'mon, asking ahead of time? Patience, man.\n\n:timer: **Time Left:**\n{time_left}")
         number = random.randint(0, 500)
         await self.add_points(ctx.guild, ctx.author, number)
         zero_responses = [
@@ -336,6 +345,7 @@ __What to do now?__
             f"My personal gift, **{number}** :banana: to you.",
             f"You picked up **{number}** :banana: from the toilet."
         ]
+        await self.place_on_cooldown(ctx.guild, ctx.author, "search_cooldown")
         if number == 0:
             return await ctx.send(random.choice(zero_responses))
         else:
