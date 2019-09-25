@@ -876,39 +876,6 @@ Invalid math expression."""
         except discord.Forbidden:
             return await msg.edit(content="Bot does not have Manage Emojis permission. :x:")
 
-
-
-
-    
-       
-
-    @commands.command(aliases=['fb']) # lol fb
-    @commands.guild_only()
-    async def feedback(self, ctx, *, feedback=None):
-        """How do YOU want this bot to be? Give your word here."""
-        if feedback is None:
-            color = 0xf44e42
-            em = discord.Embed(color=color, title='Error :x:')
-            em.description = 'Please enter your feedback.'
-            await ctx.send(embed=em)
-        else:
-            try:
-                lol = self.bot.get_channel(413814935391567882)
-                color = 0xf9e236
-                em = discord.Embed(color=color, title='Feedback')
-                em.description = feedback
-                em.set_author(name=f"Sent by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
-                em.set_footer(text=f"Sent from {ctx.guild.name} in #{ctx.channel.name}", icon_url=ctx.guild.icon_url)
-                await lol.send(embed=em)
-                em.description = 'Thanks for sending feedback to make this bot better! :ok_hand:'
-                await ctx.send(embed=em)
-            except Exception as e:
-                color = 0xf44e42
-                em = discord.Embed(color=color, title='Error :x:')
-                em.description = f"More details: \n\n{e}"
-                await ctx.send(embed=em)
-
-
     @commands.command(aliases=['hb'])
     async def hastebin(self, ctx, *, text):
         """Put some code in hastebin."""
@@ -1126,13 +1093,6 @@ Invalid math expression."""
             ban_count = len(await guild.bans())
         except discord.Forbidden:
             ban_count = "Could not retrieve bans (I need Ban Members permission)"
-        verification_levels = {
-            0: "**None** (Unrestricted)",
-            1: "**Low** (Verified email)",
-            2: "**Medium** (Registered on Discord for longer than 5 minutes)",
-            3: "**(╯°□°）╯︵ ┻━┻** (Registered on Discord for longer than 10 minutes)",
-            4: "**(ノಠ益ಠ)ノ彡┻━┻** (Verified phone)"
-        }         
         content_filters = {
             0: "**None** (Don't scan any messages.)",
             1: "**Medium** (Scan messages from members without a role.)",
@@ -1184,7 +1144,7 @@ Invalid math expression."""
         em.add_field(name='Server Region :globe_with_meridians: ', value=str(guild.region), inline=False)
         em.add_field(name=f'Emoji Count {self.bot.get_emoji(484366851493855233)}', value=f"**Regular Emojis:** {regular_emojis}\n**Animated Emojis:** {animated_emojis}", inline=False)
         em.add_field(name='Role Count :bust_in_silhouette: ', value=str(role_length), inline=False)
-        em.add_field(name=f'Server Verification Level {self.bot.get_emoji(522927676114075649)}', value=verification_levels[guild.verification_level], inline=False)
+        em.add_field(name=f'Server Verification Level {self.bot.get_emoji(522927676114075649)}', value=str(ctx.guild.verification_level).title(), inline=False)
         em.add_field(name=f"Explicit Content Filter {self.bot.get_emoji(464784851241926666)}", value=content_filters[guild.explicit_content_filter], inline=False)
         em.add_field(name=f"2FA Requirement {self.bot.get_emoji(485798151064649749)}", value=mfa_levels[guild.mfa_level], inline=False)
         em.add_field(name=f'Ban Count {self.bot.get_emoji(522534996666220546)}', value=ban_count, inline=False)
