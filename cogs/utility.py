@@ -1025,7 +1025,7 @@ Invalid math expression."""
             av += "&f=.gif"
         else:
             av = av.replace(".webp", ".png")
-        em = discord.Embed(color=0xf9e236, title="Profile Picture: " + ctx.author.name)
+        em = discord.Embed(color=0xf9e236, title="Profile Picture: " + user.name)
         em.set_image(url=av)
         await ctx.send(embed=em)
             

@@ -340,6 +340,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 "next": user["next"] * 2,
                 "level": user["level"] + 1
             }
+            await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
         else:
             data[str(message.author.id)] = {
             "points": data[str(message.author.id)]["points"] + 1,
@@ -622,7 +623,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
         except:
             continue
     data = {}
-    for a in guild.users:
+    for a in guild.members:
         data[str(a.id)] = {
             "points": 0,
             "next": 10,
