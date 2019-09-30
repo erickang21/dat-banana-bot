@@ -758,7 +758,7 @@ __Subcommands__
             """)
         if not option:
             data = await self.bot.db.rank.find_one({"id": ctx.guild.id})
-            user = data["data"][str(ctx.author.id)]
+            user = data["data"]["data"][str(ctx.author.id)]
             em = discord.Embed(color=ctx.author.color, title="User Rank")
             em.description = f"""
 Level **{user["level"]}**
