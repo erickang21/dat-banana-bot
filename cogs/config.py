@@ -757,7 +757,7 @@ __Subcommands__
 - {ctx.prefix}rank lb: Shows a leaderboard of the highest points that users have in the server.
             """)
         if not option:
-            data = await self.bot.db.rank.update_one({"id": ctx.guild.id})
+            data = await self.bot.db.rank.find_one({"id": ctx.guild.id})
             user = data[str(ctx.author.id)]
             em = discord.Embed(color=ctx.author.color, title="User Rank")
             em.description = f"""
