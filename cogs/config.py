@@ -740,6 +740,87 @@ Think of it as a server-wide pins channel.
                 if channel:
                     await channel.send(embed=em)
 
+    @commands.command()
+    @commands.guild_only()
+    async def rank(self, ctx, option=None):
+        """View your current rankings."""
+        if option == "help":
+            return await ctx.send(f"""
+**__Rank Help__**
 
-def setup(bot): 
+This ranking system keeps track of who chats the most in this server. If this is enabled, members gain one point per message and are notified when they reach a new checkpoint, or level.
+
+__Subcommands__
+- {ctx.prefix}rank: Check your current level and points for this server.
+- {ctx.prefix}rank @user: Mention a user to check that user's level and points for this server.
+- {ctx.prefix}rank help: Shows this message.
+- {ctx.prefix}rank lb: Shows a leaderboard of the highest points that users have in the server.
+            """)
+        if not option:
+            data = await self.bot.db.rank.update_one({"id": ctx.guild.id})
+            user = data[str(ctx.author.id)]
+            em = discord.Embed(color=ctx.author.color, title="User Rank")
+            em.description = f"""
+Level **{user["level"]}**
+
+Total Points: **{user["points"]}/{user["next"]}**
+            """
+            em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+            return await ctx.send(embed=em)
+        if option.lower() == "lb":
+            return await ctx.send("This is WIP (Work In Progress!) Sorry for the inconvenience.")
+        if option.lower() == "disable":
+            if ctx.author.guild_permissions.manage_guild:
+                await ctx.send("""
+:warning: **WARNING** :warning:
+This will delete ALL data for this server's rankings and disable the commands.
+If you choose to re-enable these commands, all progress will be reset.
+
+**Continue?** (Y/N)
+
+(This automatically cancels in 30 seconds.)"""
+                           )
+                try:
+                    x = await self.bot.wait_for("message",
+                                            check=lambda x: x.channel == ctx.channel and x.author == ctx.author,
+                                            timeout=30.0)
+                except asyncio.TimeoutError:
+                    return await ctx.send("Timed out.")
+                if x.content.lower() == "y" or x.content.lower() == "yes":
+                    await self.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"enabled": False, "users": []}})
+                    return await ctx.send(f"Success. The ranking system has been enabled. :cry:")
+                elif x.content.lower() == "n" or x.content.lower() == "no":
+                    return await ctx.send("Good decision. Canceled.")
+                else:
+                    return await ctx.send("Invalid response. Process was cancelled.")
+            else:
+                return await ctx.send("You don't have the **Manage Server** permission to run this command!")
+        if option.lower() == "enable":
+            if ctx.author.guild_permissions.manage_guild:
+                await self.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"enabled": False, "users": []}})
+                data = {}
+                for a in ctx.guild.users:
+                    data[str(a.id)] = {
+                        "points": 0,
+                        "next": 10,
+                        "level": 1
+                    }
+                await self.bot.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
+            else:
+                return await ctx.send("You don't have the **Manage Server** permission to run this command!")
+        else:
+             return await ctx.send(f"""
+**__Rank Help__**
+
+(No valid option provided, so I'll show the help message.
+This ranking system keeps track of who chats the most in this server. If this is enabled, members gain one point per message and are notified when they reach a new checkpoint, or level.
+
+__Subcommands__
+- {ctx.prefix}rank: Check your current level and points for this server.
+- {ctx.prefix}rank @user: Mention a user to check that user's level and points for this server.
+- {ctx.prefix}rank help: Shows this message.
+- {ctx.prefix}rank lb: Shows a leaderboard of the highest points that users have in the server.
+""")
+
+def setup(bot):
     bot.add_cog(Config(bot)) 

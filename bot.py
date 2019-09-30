@@ -330,6 +330,23 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 ctx = await bot.get_context(message, cls=DatContext)
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
+    # Level
+    data = await bot.db.rank.find_one({"id": message.guild.id})
+    if data["enabled"]:
+        user = data[str(message.author.id)]
+        if user["points"] == user["next"]:
+            data[str(message.author.id)] = {
+                "points": 0,
+                "next": user["next"] * 2,
+                "level": user["level"] + 1
+            }
+        else:
+            data[str(message.author.id)] = {
+            "points": data[str(message.author.id)]["points"] + 1,
+                "next": user["next"],
+                "level": user["level"]
+            }
+    await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
 
 
 # REACTION ROLE EVENTS
@@ -604,6 +621,14 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
             break
         except:
             continue
+    data = {}
+    for a in guild.users:
+        data[str(a.id)] = {
+            "points": 0,
+            "next": 10,
+            "level": 1
+        }
+    await bot.db.rank.update_one({"id": guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
 
 @bot.event
 async def on_guild_remove(guild):

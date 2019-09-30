@@ -1020,7 +1020,7 @@ Invalid math expression."""
     async def avatar(self, ctx, user: discord.Member = None):
         """Returns a user's avatar url. Use *av [user], or just *av for your own."""
         user = user or ctx.author
-        av = str(ctx.author.avatar_url)
+        av = str(user.avatar_url)
         if '.gif' in av:
             av += "&f=.gif"
         else:
