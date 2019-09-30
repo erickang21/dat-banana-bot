@@ -333,7 +333,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
     # Level
     data = await bot.db.rank.find_one({"id": message.guild.id})
     if data["enabled"]:
-        user = data[str(message.author.id)]
+        user = data["data"][str(message.author.id)]
         if user["points"] == user["next"]:
             data[str(message.author.id)] = {
                 "points": 0,
