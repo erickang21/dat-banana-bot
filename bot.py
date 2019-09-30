@@ -335,15 +335,15 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
     if data["enabled"]:
         user = data["data"][str(message.author.id)]
         if user["points"] == user["next"]:
-            data[str(message.author.id)] = {
+            data["data"][str(message.author.id)] = {
                 "points": 0,
                 "next": user["next"] * 2,
                 "level": user["level"] + 1
             }
             await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
         else:
-            data[str(message.author.id)] = {
-            "points": data[str(message.author.id)]["points"] + 1,
+            data["data"][str(message.author.id)] = {
+                "points": user["points"] + 1,
                 "next": user["next"],
                 "level": user["level"]
             }
@@ -629,7 +629,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
             "next": 10,
             "level": 1
         }
-    await bot.db.rank.update_one({"id": guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
+    await bot.db.rank.insert_one({"id": guild.id, "data": data, "enabled": True})
 
 @bot.event
 async def on_guild_remove(guild):
