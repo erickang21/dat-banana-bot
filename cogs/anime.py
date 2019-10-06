@@ -11,6 +11,36 @@ class Anime(commands.Cog):
         res = await res.json()
         return box.Box(res)
 
+    async def grab_titles(self, name, stype):
+        titles = []
+        res = await self.bot.session.get(f"https://kitsu.io/api/edge/{stype}")
+        res = await res.json()
+        for r in res.data:
+            for _, title in vars(r.titles).iteritems():
+                if title == name:
+                    titles.append(r)
+                else:
+                    continue
+        return titles
+
+    @commands.command()
+    async def anime(self, ctx, anime: str):
+        """A Kitsu search of an anime"""
+        await ctx.trigger_typing()
+        ani = await self.grab_titles(name=anime, stype="anime")[0]
+        em = disocrd.Embed(title=ani.canonicalTitle, description=ani.synopsis)
+        em.set_thumbnail(url=ani.posterImage.original)
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def manga(self, ctx, manga: str):
+        """A Kitsu search of an manga"""
+        await ctx.trigger_typing()
+        ani = await self.grab_titles(name=manga, stype="managa")[0]
+        em = disocrd.Embed(title=ani.canonicalTitle, description=ani.synopsis)
+        em.set_thumbnail(url=ani.posterImage.original)
+        await ctx.send(embed=em)
+
     @commands.command()
     async def baka(self, ctx):
         """Random anime picture of BAKA."""
