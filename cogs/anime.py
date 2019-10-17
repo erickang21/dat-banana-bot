@@ -28,7 +28,7 @@ class Anime(commands.Cog):
         """A Kitsu search of an anime"""
         await ctx.trigger_typing()
         ani = await self.grab_titles(name=anime, stype="anime")[0]
-        em = disocrd.Embed(title=ani.canonicalTitle, description=ani.synopsis)
+        em = discord.Embed(title=ani.canonicalTitle, description=ani.synopsis)
         em.set_thumbnail(url=ani.posterImage.original)
         await ctx.send(embed=em)
 
@@ -37,7 +37,7 @@ class Anime(commands.Cog):
         """A Kitsu search of an manga"""
         await ctx.trigger_typing()
         ani = await self.grab_titles(name=manga, stype="managa")[0]
-        em = disocrd.Embed(title=ani.canonicalTitle, description=ani.synopsis)
+        em = discord.Embed(title=ani.canonicalTitle, description=ani.synopsis)
         em.set_thumbnail(url=ani.posterImage.original)
         await ctx.send(embed=em)
 
