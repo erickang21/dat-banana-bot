@@ -879,7 +879,7 @@ async def on_command_error(ctx, error):
     missing_param_errors = (commands.MissingRequiredArgument, commands.BadArgument, commands.TooManyArguments, commands.UserInputError)
     if isinstance(error, missing_param_errors):
         em = discord.Embed(color=discord.Color(value=0xf44242), title="Incorrect Usage of Command!")
-        em.description = f"This is the correct usage:\n**{ctx.prefix}{ctx.command.signature}**"
+        em.description = f"This is the correct usage:\n**{ctx.prefix}{ctx.command.name} {ctx.command.signature}**"
         return await ctx.send(embed=em)
     if isinstance(error, commands.NotOwner):
         em.description = 'Not my daddy! This command is for the owner only.'
