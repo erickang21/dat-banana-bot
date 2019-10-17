@@ -6,7 +6,7 @@ import asyncio
 import aiohttp
 import random
 import json
-import idioticapi
+#import idioticapi
 from discord.ext import commands
 from discord.ext.commands import BucketType
 import base64
