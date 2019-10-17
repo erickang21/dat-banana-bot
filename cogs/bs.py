@@ -25,7 +25,7 @@ class BS(commands.Cog):
     def brawler(self, name):
         return discord.utils.get(self.bot.emojis, name=name)
 
-    def cog_command_error(self, ctx, error):
+    async def cog_command_error(self, ctx, error):
         if isinstance(error, brawlstats.RequestError):
             em = discord.Embed(
                 color=discord.Color.red(),
