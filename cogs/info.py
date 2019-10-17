@@ -3,7 +3,7 @@ import sys
 import os
 import io
 import asyncio
-import psutil
+#import psutil
 import time
 import re
 import json
@@ -28,9 +28,9 @@ class Info(commands.Cog):
     async def stats(self, ctx):
         """Statsies for this bot. Be a nerd!"""       
         color = 0xf9e236
-        RAM = psutil.virtual_memory()
-        used = RAM.used >> 20
-        percent = RAM.percent
+        #RAM = psutil.virtual_memory()
+        #used = RAM.used >> 20
+        #percent = RAM.percent
         member = 0
         for i in self.bot.guilds:
             for x in i.members:
@@ -55,7 +55,7 @@ class Info(commands.Cog):
         em.add_field(name=f'Start Date :calendar:', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=res) 
         em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Digital Ocean') 
-        em.add_field(name='Memory Usage', value=f"{used} MB ({percent}%)")
+        #em.add_field(name='Memory Usage', value=f"{used} MB ({percent}%)")
         em.add_field(name='Bot Uptime :clock:', value="%d days, %d hours, %d minutes, %d seconds" % (day, hour, minute, second)) 
         em.add_field(name='Commands Run (Since Uptime) :outbox_tray:', value=self.bot.commands_run)  
         await ctx.send(embed=em)
