@@ -24,19 +24,19 @@ class Anime(commands.Cog):
         return titles
 
     @commands.command()
-    async def anime(self, ctx, anime: str):
+    async def anime(self, ctx, *, anime: str):
         """A Kitsu search of an anime"""
         await ctx.trigger_typing()
-        ani = await self.grab_titles(name=anime, stype="anime")[0]
+        ani = (await self.grab_titles(name=anime, stype="anime"))[0]
         em = discord.Embed(title=ani.canonicalTitle, description=ani.synopsis)
         em.set_thumbnail(url=ani.posterImage.original)
         await ctx.send(embed=em)
 
     @commands.command()
-    async def manga(self, ctx, manga: str):
+    async def manga(self, ctx, *, manga: str):
         """A Kitsu search of an manga"""
         await ctx.trigger_typing()
-        ani = await self.grab_titles(name=manga, stype="managa")[0]
+        ani = (await self.grab_titles(name=manga, stype="managa"))[0]
         em = discord.Embed(title=ani.canonicalTitle, description=ani.synopsis)
         em.set_thumbnail(url=ani.posterImage.original)
         await ctx.send(embed=em)
