@@ -331,23 +331,23 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
     # Level
-    data = await bot.db.rank.find_one({"id": message.guild.id})
-    if data["enabled"]:
-        user = data["data"]["data"][str(message.author.id)]
-        if user["points"] == user["next"]:
-            data["data"]["data"][str(message.author.id)] = {
-                "points": 0,
-                "next": user["next"] * 2,
-                "level": user["level"] + 1
-            }
-            await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
-        else:
-            data["data"]["data"][str(message.author.id)] = {
-                "points": user["points"] + 1,
-                "next": user["next"],
-                "level": user["level"]
-            }
-    await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
+    #data = await bot.db.rank.find_one({"id": message.guild.id})
+    #if data["enabled"]:
+    #    user = data["data"]["data"][str(message.author.id)]
+    #    if user["points"] == user["next"]:
+    #        data["data"]["data"][str(message.author.id)] = {
+    #            "points": 0,
+    #            "next": user["next"] * 2,
+    #            "level": user["level"] + 1
+    #        }
+    #        await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
+    #    else:
+    #        data["data"]["data"][str(message.author.id)] = {
+    #            "points": user["points"] + 1,
+    #            "next": user["next"],
+    #            "level": user["level"]
+    #        }
+    #await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
 
 
 # REACTION ROLE EVENTS
