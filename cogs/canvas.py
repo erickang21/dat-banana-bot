@@ -1,7 +1,7 @@
 import discord
 import os
 import io
-import idioticapi
+#import idioticapi
 import random
 import json
 import bananapy
@@ -14,7 +14,7 @@ class Canvas(commands.Cog):
         with open('data/apikeys.json') as f:
             lol = json.load(f)
         self.token = lol.get("idioticapi")
-        self.client = idioticapi.Client(self.token, dev=True)
+        #self.client = idioticapi.Client(self.token, dev=True)
         self.bananapi = bananapy.Client(self.bot.config.bananapi)
 
     def format_avatar(self, avatar_url):
