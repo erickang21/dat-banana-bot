@@ -140,6 +140,8 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    if message.channel.id == 636371313744936980:
+        await message.delete()
     prefix = await get_prefix_as_str(message)
 
     # Token monitor
