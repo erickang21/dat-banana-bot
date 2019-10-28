@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5802a780-c6bc-4bcc-a256-3273f0282309" name="Default Changelist" comment="" />
+    <list default="true" id="5802a780-c6bc-4bcc-a256-3273f0282309" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/config.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,7 +20,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cogs/economy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
+            <state relative-caret-position="2592">
               <caret line="119" column="8" selection-start-line="119" selection-start-column="8" selection-end-line="138" selection-end-column="77" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
@@ -36,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cogs/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="760" column="39" selection-start-line="760" selection-start-column="39" selection-end-line="760" selection-end-column="39" />
+            <state relative-caret-position="502">
+              <caret line="820" column="138" selection-start-line="820" selection-start-column="138" selection-end-line="820" selection-end-column="138" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -51,7 +55,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cogs/utility.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
+            <state relative-caret-position="24216">
               <caret line="1027" column="74" selection-start-line="1027" selection-start-column="74" selection-end-line="1027" selection-end-column="74" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
@@ -60,11 +64,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="344" column="32" selection-start-line="344" selection-start-column="32" selection-end-line="344" selection-end-column="32" />
+            <state relative-caret-position="648">
+              <caret line="342" column="84" selection-start-line="342" selection-start-column="84" selection-end-line="342" selection-end-column="84" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -104,8 +108,8 @@
         <option value="$PROJECT_DIR$/cogs/developer.py" />
         <option value="$PROJECT_DIR$/cogs/economy.py" />
         <option value="$PROJECT_DIR$/cogs/utility.py" />
-        <option value="$PROJECT_DIR$/bot.py" />
         <option value="$PROJECT_DIR$/cogs/config.py" />
+        <option value="$PROJECT_DIR$/bot.py" />
       </list>
     </option>
   </component>
@@ -120,7 +124,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -148,6 +151,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -293,6 +297,7 @@
       <workItem from="1569622228874" duration="5079000" />
       <workItem from="1569677412802" duration="621000" />
       <workItem from="1569874972362" duration="4077000" />
+      <workItem from="1572304516404" duration="1216000" />
     </task>
     <task id="LOCAL-00001" summary="revert google to bad code (but works)">
       <created>1558314985323</created>
@@ -515,7 +520,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61740000" />
+    <option name="totallyTimeSpent" value="62956000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -528,6 +533,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1328125" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -540,7 +546,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32960895" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32963374" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32741398" />
       <window_info anchor="bottom" id="Python Console" order="11" weight="0.32960895" />
@@ -776,7 +782,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cogs/economy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
+        <state relative-caret-position="2592">
           <caret line="119" column="8" selection-start-line="119" selection-start-column="8" selection-end-line="138" selection-end-column="77" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
@@ -795,18 +801,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cogs/utility.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
+        <state relative-caret-position="24216">
           <caret line="1027" column="74" selection-start-line="1027" selection-start-column="74" selection-end-line="1027" selection-end-column="74" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="344" column="32" selection-start-line="344" selection-start-column="32" selection-end-line="344" selection-end-column="32" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
@@ -815,8 +811,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cogs/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="760" column="39" selection-start-line="760" selection-start-column="39" selection-end-line="760" selection-end-column="39" />
+        <state relative-caret-position="502">
+          <caret line="820" column="138" selection-start-line="820" selection-start-column="138" selection-end-line="820" selection-end-column="138" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="648">
+          <caret line="342" column="84" selection-start-line="342" selection-start-column="84" selection-end-line="342" selection-end-column="84" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

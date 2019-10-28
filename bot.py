@@ -290,18 +290,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                     await lol.send(embed=em)
                 except KeyError:
                     pass
-    # levelup = await bot.db.level.find_one({"id": message.guild.id})
-    # if levelup:
-    #     try:
-    #         match = levelup['data'][str(message.author.id)]
-    #         if match is False: # match could be 0 which returns false, and i don't want that
-    #             pass 
-    #     except KeyError:
-    #         pass 
-    #     match += 1
-    #     await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"data": match}}, upsert = True)
-    #     if match % 20 == 0:
-    #         await message.channel.send(f"Woo-hoo, {message.author.mention}! You hit level {match / 20}! Keep talkin' for more!")
+
     # AFK Monitor
     if message.mentions:
         for x in message.mentions:
@@ -333,23 +322,25 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
     # Level
-    #data = await bot.db.rank.find_one({"id": message.guild.id})
-    #if data["enabled"]:
-    #    user = data["data"]["data"][str(message.author.id)]
-    #    if user["points"] == user["next"]:
-    #        data["data"]["data"][str(message.author.id)] = {
-    #            "points": 0,
-    #            "next": user["next"] * 2,
-    #            "level": user["level"] + 1
-    #        }
-    #        await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
-    #    else:
-    #        data["data"]["data"][str(message.author.id)] = {
-    #            "points": user["points"] + 1,
-    #            "next": user["next"],
-    #            "level": user["level"]
-    #        }
-    #await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
+    data = await bot.db.rank.find_one({"id": message.guild.id})
+    if data["data"]:
+        user = [x for x in data["data"] if x.id == message.author.id][0]
+        if user["points"] == user["next"]:
+            replacement = {
+                "points": 0,
+                "next": user["next"] * 2,
+                "level": user["level"] + 1
+            }
+            await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
+        else:
+            replacement = data["data"]["data"][str(message.author.id)] = {
+                "points": user["points"] + 1,
+                "next": user["next"],
+                "level": user["level"]
+            }
+        updated = data["data"].remove(user)
+        updated = updated.append(replacement)
+        await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": updated}}, upsert=True)
 
 
 # REACTION ROLE EVENTS

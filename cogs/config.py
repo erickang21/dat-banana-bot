@@ -758,7 +758,7 @@ __Subcommands__
             """)
         if not option:
             data = await self.bot.db.rank.find_one({"id": ctx.guild.id})
-            user = data["data"]["data"][str(ctx.author.id)]
+            user = [x for x in data["data"] if x.id == ctx.author.id][0]
             em = discord.Embed(color=ctx.author.color, title="User Rank")
             em.description = f"""
 Level **{user["level"]}**
@@ -787,8 +787,8 @@ If you choose to re-enable these commands, all progress will be reset.
                 except asyncio.TimeoutError:
                     return await ctx.send("Timed out.")
                 if x.content.lower() == "y" or x.content.lower() == "yes":
-                    await self.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"enabled": False, "users": []}})
-                    return await ctx.send(f"Success. The ranking system has been enabled. :cry:")
+                    await self.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"data": None}})
+                    return await ctx.send(f"Success. The ranking system has been disabled. :cry:")
                 elif x.content.lower() == "n" or x.content.lower() == "no":
                     return await ctx.send("Good decision. Canceled.")
                 else:
@@ -797,15 +797,16 @@ If you choose to re-enable these commands, all progress will be reset.
                 return await ctx.send("You don't have the **Manage Server** permission to run this command!")
         if option.lower() == "enable":
             if ctx.author.guild_permissions.manage_guild:
-                await self.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"enabled": False, "users": []}})
-                data = {}
-                for a in ctx.guild.users:
-                    data[str(a.id)] = {
+                data = []
+                for a in ctx.guild.members:
+                    stuff = {
+                        "id": a.id,
                         "points": 0,
                         "next": 10,
                         "level": 1
                     }
-                await self.bot.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"data": data, "enabled": True}}, upsert=True)
+                    data.append(stuff)
+                await self.bot.db.rank.update_one({"id": ctx.guild.id}, {"$set": {"data": data}})
             else:
                 return await ctx.send("You don't have the **Manage Server** permission to run this command!")
         else:
@@ -817,7 +818,7 @@ This ranking system keeps track of who chats the most in this server. If this is
 
 __Subcommands__
 - {ctx.prefix}rank: Check your current level and points for this server.
-- {ctx.prefix}rank @user: Mention a user to check that user's level and points for this server.
+- {ctx.prefix}rank @user: Mention a user to check that user's level and points for this server. (This functionality is not available yet.)
 - {ctx.prefix}rank help: Shows this message.
 - {ctx.prefix}rank lb: Shows a leaderboard of the highest points that users have in the server.
 """)
