@@ -1,5 +1,5 @@
-🍌 ***dat banana bot*** 🍌
-Yo it's me, dat banana bot. And I do everything except nothing.
+🍌 ***uwu bot*** 🍌
+uwu bot is my name! And I do everything except nothing.
 
 **My super long list of awesomely amazing features**
 - Fun commands (Canvas, 8ball, etc)
@@ -8,24 +8,26 @@ Yo it's me, dat banana bot. And I do everything except nothing.
 - Game Statistics
 -> Clash of Clans
 -> Clash Royale
--> League of Legends
+-> Brawl Stars
 - Music
+- Configuration
+- Economy
+(and more...so find out yourself!)
 
 **I'm made by...**
-The other "me" here. dat banana boi#1982
+kawaii banana ☆#5627
 
 **What to do?**
 Smash that invite button, and get it in all your servers, cuz that's what I'm for, yo!
 
-As dat banana bot once said: [*Lemme join that hood*](https://discordapp.com/oauth2/authorize?client_id=388476336777461770&scope=bot&permissions=8)
+As uwu bot once said: [*Lemme join that hood*](https://discordapp.com/api/oauth2/authorize?client_id=520682706896683009&permissions=8&scope=bot)
+
 
 **I meant what to do if something is bad and it breaks.**
-Smash that SERVER invite button, and get in our support server, cuz that's what it's for, yo!
-
-As dat banana bot once said: [*Your turn to join the hood.*](https://discord.gg/SgxjVbH)
+Well, we have a support server for a reason. I think. [Join the server by clicking here.](https://discord.gg/vCMEmNJ)
 
 **I like bananas, how can I help you?**
-1) By joining our server.
+1) By joining our support server.
 
 2) By submitting useful comments and pull requests on GitHub.
 

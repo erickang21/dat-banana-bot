@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5802a780-c6bc-4bcc-a256-3273f0282309" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cogs/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cogs/utils/paginator.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/utils/paginator.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +43,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cogs/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
+            <state relative-caret-position="19440">
               <caret line="820" column="138" selection-start-line="820" selection-start-column="138" selection-end-line="820" selection-end-column="138" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
@@ -64,14 +64,50 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="342" column="84" selection-start-line="342" selection-start-column="84" selection-end-line="342" selection-end-column="84" />
+            <state relative-caret-position="-360">
+              <caret line="324" column="38" selection-start-line="324" selection-start-column="38" selection-end-line="324" selection-end-column="38" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cogs/help.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="768">
+              <caret line="44" column="61" lean-forward="true" selection-start-line="44" selection-start-column="51" selection-end-line="44" selection-end-column="61" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cogs/utils/paginator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="44">
+              <caret line="428" column="77" selection-start-line="428" selection-start-column="77" selection-end-line="428" selection-end-column="77" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="408">
+                <caret line="17" column="15" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -89,6 +125,7 @@
       <find>deregi</find>
       <find>avatar</find>
       <find>on_message</find>
+      <find>need help</find>
     </findStrings>
     <dirStrings>
       <dir>C:\Users\ericd\dat-banana-bot\cogs\utils</dir>
@@ -102,7 +139,6 @@
       <list>
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/cogs/coc.py" />
-        <option value="$PROJECT_DIR$/cogs/utils/paginator.py" />
         <option value="$PROJECT_DIR$/cogs/cr.py" />
         <option value="$PROJECT_DIR$/cogs/bs.py" />
         <option value="$PROJECT_DIR$/cogs/developer.py" />
@@ -110,6 +146,8 @@
         <option value="$PROJECT_DIR$/cogs/utility.py" />
         <option value="$PROJECT_DIR$/cogs/config.py" />
         <option value="$PROJECT_DIR$/bot.py" />
+        <option value="$PROJECT_DIR$/cogs/utils/paginator.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -297,7 +335,8 @@
       <workItem from="1569622228874" duration="5079000" />
       <workItem from="1569677412802" duration="621000" />
       <workItem from="1569874972362" duration="4077000" />
-      <workItem from="1572304516404" duration="1216000" />
+      <workItem from="1572304516404" duration="2660000" />
+      <workItem from="1572474953611" duration="243000" />
     </task>
     <task id="LOCAL-00001" summary="revert google to bad code (but works)">
       <created>1558314985323</created>
@@ -516,11 +555,18 @@
       <option name="project" value="LOCAL" />
       <updated>1569877549691</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="fixing level up">
+      <created>1572306341125</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1572306341125</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62956000" />
+    <option name="totallyTimeSpent" value="64643000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -535,7 +581,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1328125" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1328125" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -564,7 +610,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="try this instea" />
     <MESSAGE value="stupid ass-et class" />
     <MESSAGE value="fix dailycredit upvote checks" />
     <MESSAGE value="fixing cr commands" />
@@ -589,7 +634,8 @@
     <MESSAGE value="what the" />
     <MESSAGE value="potential fix" />
     <MESSAGE value="e" />
-    <option name="LAST_COMMIT_MESSAGE" value="e" />
+    <MESSAGE value="fixing level up" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing level up" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dat_banana_bot$help.coverage" NAME="help Coverage Results" MODIFIED="1561581588894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cogs" />
@@ -649,26 +695,6 @@
     <entry file="file://$PROJECT_DIR$/cogs/fortnite.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cogs/help.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cogs/utils/paginator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8304">
-          <caret line="347" column="42" selection-start-line="347" selection-start-column="42" selection-end-line="347" selection-end-column="42" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
@@ -799,6 +825,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cogs/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19440">
+          <caret line="820" column="138" selection-start-line="820" selection-start-column="138" selection-end-line="820" selection-end-column="138" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cogs/utility.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24216">
@@ -809,23 +845,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cogs/config.py">
+    <entry file="file://$PROJECT_DIR$/bot.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="820" column="138" selection-start-line="820" selection-start-column="138" selection-end-line="820" selection-end-column="138" />
+        <state relative-caret-position="-360">
+          <caret line="324" column="38" selection-start-line="324" selection-start-column="38" selection-end-line="324" selection-end-column="38" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot.py">
+    <entry file="file://$PROJECT_DIR$/cogs/help.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="342" column="84" selection-start-line="342" selection-start-column="84" selection-end-line="342" selection-end-column="84" />
+        <state relative-caret-position="768">
+          <caret line="44" column="61" lean-forward="true" selection-start-line="44" selection-start-column="51" selection-end-line="44" selection-end-column="61" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cogs/utils/paginator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="428" column="77" selection-start-line="428" selection-start-column="77" selection-end-line="428" selection-end-column="77" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="408">
+            <caret line="17" column="15" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
