@@ -138,7 +138,7 @@ class Developer(commands.Cog):
     async def _exec(self, ctx, *, code):
         """Executes code like the Command Line."""
         if not self.dev_check(ctx.author.id):
-            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
+            return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {self.bot.get_emoji(555121740465045516)}")
         e = discord.Embed(color=0x00ff00, title='Running code')
         e.description = f'Please wait... {self.bot.get_emoji(471279983197814806)}'
         msg = await ctx.send(embed=e)
