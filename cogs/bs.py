@@ -136,7 +136,7 @@ class BS(commands.Cog):
         em = discord.Embed(title=f"{profile.name} | #{tag}")
         average = 0
         for x in profile.brawlers:
-            em.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"R. **{x['rank']}**: {x['power']} {self.bot.get_emoji(645739308711542828)} | {x['trophies']} {self.bot.get_emoji(645733305123078155)} | {x['highestTrophies']} {self.bot.get_emoji(645734801139302430)}")
+            em.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"R. **{x['rank']}**: {x['power']} {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} | {x['trophies']} {self.bot.get_emoji(645733305123078155)} | {x['highestTrophies']} {self.bot.get_emoji(645734801139302430)}")
             average += x["trophies"]
         em.description = f"""
 **Brawlers:** {len(profile.brawlers)}/30
