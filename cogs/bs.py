@@ -30,6 +30,8 @@ class BS(commands.Cog):
 
     def brawler(self, name):
         name = name.replace("8-bit", "8bit")
+        name = name.replace(" ", "")
+        name = name.lower()
         return discord.utils.get(self.bot.get_guild(645624855580114965).emojis, name=name)
 
     def between(self, number, min, max):
