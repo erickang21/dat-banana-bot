@@ -115,7 +115,7 @@ class BS(commands.Cog):
 
 
     @commands.command()
-    async def bsseason(self, ctx, tag):
+    async def bsseason(self, ctx, tag=None):
         await ctx.trigger_typing()
         if not tag:
             tag = await self.get_tag(ctx.author.id)
