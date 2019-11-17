@@ -17,13 +17,20 @@ class BS(commands.Cog):
 
     async def get_tag(self, id):
         find = await self.bot.db.bstags.find_one({"id": id})
-        return find['tag']
+        found_tag = None
+        try:
+            found_tag = find["tag"]
+        except:
+            pass
+        return found_tag
+
 
     def emoji(self, _id):
         return self.bot.get_emoji(_id)
 
     def brawler(self, name):
-        return discord.utils.get(self.bot.emojis, name=name)
+        name = name.replace("8-bit", "8bit")
+        return discord.utils.get(self.bot.get_guild(645624855580114965).emojis, name=name)
 
     def between(self, number, min, max):
         return min <= number < max
@@ -72,6 +79,7 @@ class BS(commands.Cog):
             **Duo Showdown:** {profile.duo_showdown_victories} {self.emoji(523923170671984656)}")
         em.add_field(name="Best Time as Big Brawler", value=f"{profile.best_time_as_big_brawler} {self.emoji(523923170970042378)}")
         em.add_field(name="Best Robo Rumble Time", value=f"{profile.best_robo_rumble_time} {self.emoji(523926186620092426)}")
+        em.add_field(name="Brawlers", value=f"**{profile.brawlers_unlocked}/30**", inline=False)
         if club:
             em.add_field(name="Club", value=f"{club.name} (#{club.tag})", inline=False)
             em.add_field(name="Role", value=club.role)
@@ -80,10 +88,6 @@ class BS(commands.Cog):
             em.add_field(name="Members", value=club.members)
         else:
             em.add_field(name="Club", value=f"No club. {self.bot.get_emoji(522524669459431430)}")
-        brawlers = ""
-        for x in profile.brawlers:
-            brawlers += f"{self.brawler(x.name.lower())} {x.power}"
-        em.add_field(name="Brawlers", value=f"**{profile.brawlers_unlocked}/30**\n\n{brawlers}", inline=False)
         em.set_thumbnail(url=profile.avatar_url)
         await ctx.send(embed=em)
 
@@ -113,6 +117,30 @@ class BS(commands.Cog):
         em.set_thumbnail(url=club.badge_url)
         await ctx.send(embed=em)
 
+    @commands.command()
+    async def bsbrawlers(self, ctx, tag=None):
+        await ctx.trigger_typing()
+        if not tag:
+            tag = await self.get_tag(ctx.author.id)
+            if not tag:
+                return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
+        else:
+            tag = tag.strip('#')
+            invalid_chars = self.check_tag(tag)
+            if invalid_chars:
+                return await ctx.send(f"Invalid characters: {', '.join(invalid_chars)}")
+
+        profile = await self.client.get_player(tag)
+        em = discord.Embed(title=f"{profile.name} | #{tag}")
+        average = 0
+        for x in profile.brawlers:
+            em.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"Rank **{x['rank']}**: {x['power']} {self.bot.get_emoji(645625634890055761)} | {x['trophies']} {self.bot.get_emoji(645733305123078155)} | {x['highestTrophies']} {self.bot.get_emoji(645734801139302430)}")
+            average += x["trophies"]
+        em.description = f"""
+**Brawlers:** {len(profile.brawlers)}/30
+**Average Trophies:** {average}
+        """
+        await ctx.send(embed=em)
 
     @commands.command()
     async def bsseason(self, ctx, tag=None):

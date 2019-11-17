@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5802a780-c6bc-4bcc-a256-3273f0282309" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/bs.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/bs.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -88,8 +89,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cogs/bs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1870">
-              <caret line="193" selection-start-line="192" selection-start-column="129" selection-end-line="193" />
+            <state relative-caret-position="552">
+              <caret line="137" column="13" selection-start-line="137" selection-start-column="13" selection-end-line="137" selection-end-column="13" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -182,6 +183,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -209,7 +211,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -358,7 +359,8 @@
       <workItem from="1572304516404" duration="2660000" />
       <workItem from="1572474953611" duration="1596000" />
       <workItem from="1572902777687" duration="657000" />
-      <workItem from="1573996627660" duration="1866000" />
+      <workItem from="1573996627660" duration="2626000" />
+      <workItem from="1574023845981" duration="1885000" />
     </task>
     <task id="LOCAL-00001" summary="revert google to bad code (but works)">
       <created>1558314985323</created>
@@ -591,11 +593,25 @@
       <option name="project" value="LOCAL" />
       <updated>1572475337474</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="add an end-of-season calculator for bs">
+      <created>1573998510887</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1573998510887</updated>
+    </task>
+    <task id="LOCAL-00035" summary="oops">
+      <created>1573998621714</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1573998621714</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68519000" />
+    <option name="totallyTimeSpent" value="71164000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -639,8 +655,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix dailycredit upvote checks" />
-    <MESSAGE value="fixing cr commands" />
     <MESSAGE value="fix bsprofile" />
     <MESSAGE value="whoops" />
     <MESSAGE value="fix this shit" />
@@ -664,7 +678,9 @@
     <MESSAGE value="e" />
     <MESSAGE value="fixing level up" />
     <MESSAGE value="fixing invite link on help command, fix some stuff in the README" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing invite link on help command, fix some stuff in the README" />
+    <MESSAGE value="add an end-of-season calculator for bs" />
+    <MESSAGE value="oops" />
+    <option name="LAST_COMMIT_MESSAGE" value="oops" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dat_banana_bot$help.coverage" NAME="help Coverage Results" MODIFIED="1561581588894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cogs" />
@@ -854,6 +870,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/cogs/fun.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cogs/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19440">
@@ -913,19 +938,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cogs/fun.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cogs/bs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1870">
-          <caret line="193" selection-start-line="192" selection-start-column="129" selection-end-line="193" />
+        <state relative-caret-position="552">
+          <caret line="137" column="13" selection-start-line="137" selection-start-column="13" selection-end-line="137" selection-end-column="13" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
