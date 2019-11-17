@@ -89,8 +89,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cogs/bs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="137" column="13" selection-start-line="137" selection-start-column="13" selection-end-line="137" selection-end-column="13" />
+            <state relative-caret-position="598">
+              <caret line="142" column="51" selection-start-line="142" selection-start-column="51" selection-end-line="142" selection-end-column="51" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -360,7 +360,7 @@
       <workItem from="1572474953611" duration="1596000" />
       <workItem from="1572902777687" duration="657000" />
       <workItem from="1573996627660" duration="2626000" />
-      <workItem from="1574023845981" duration="1885000" />
+      <workItem from="1574023845981" duration="3497000" />
     </task>
     <task id="LOCAL-00001" summary="revert google to bad code (but works)">
       <created>1558314985323</created>
@@ -607,11 +607,25 @@
       <option name="project" value="LOCAL" />
       <updated>1573998621714</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="brawler command">
+      <created>1574025941134</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1574025941134</updated>
+    </task>
+    <task id="LOCAL-00037" summary="forgot to format names">
+      <created>1574026120643</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1574026120643</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71164000" />
+    <option name="totallyTimeSpent" value="72776000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -655,8 +669,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix bsprofile" />
-    <MESSAGE value="whoops" />
     <MESSAGE value="fix this shit" />
     <MESSAGE value="oof" />
     <MESSAGE value="ok" />
@@ -680,7 +692,9 @@
     <MESSAGE value="fixing invite link on help command, fix some stuff in the README" />
     <MESSAGE value="add an end-of-season calculator for bs" />
     <MESSAGE value="oops" />
-    <option name="LAST_COMMIT_MESSAGE" value="oops" />
+    <MESSAGE value="brawler command" />
+    <MESSAGE value="forgot to format names" />
+    <option name="LAST_COMMIT_MESSAGE" value="forgot to format names" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dat_banana_bot$help.coverage" NAME="help Coverage Results" MODIFIED="1561581588894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cogs" />
@@ -940,8 +954,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cogs/bs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="137" column="13" selection-start-line="137" selection-start-column="13" selection-end-line="137" selection-end-column="13" />
+        <state relative-caret-position="598">
+          <caret line="142" column="51" selection-start-line="142" selection-start-column="51" selection-end-line="142" selection-end-column="51" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
