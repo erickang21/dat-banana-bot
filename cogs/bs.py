@@ -29,7 +29,7 @@ class BS(commands.Cog):
         return self.bot.get_emoji(_id)
 
     def brawler(self, name):
-        name = name.replace("8-bit", "8bit")
+        name = name.replace("8-Bit", "8bit")
         name = name.replace(" ", "")
         name = name.lower()
         return discord.utils.get(self.bot.get_guild(645624855580114965).emojis, name=name)
@@ -140,7 +140,7 @@ class BS(commands.Cog):
             average += x["trophies"]
         em.description = f"""
 **Brawlers:** {len(profile.brawlers)}/30
-**Average Trophies:** {average/len(profile.brawlers)}
+**Average Trophies:** {int(average/len(profile.brawlers))}
         """
         await ctx.send(embed=em)
 

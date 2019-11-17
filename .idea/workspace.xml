@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5802a780-c6bc-4bcc-a256-3273f0282309" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cogs/bs.py" beforeDir="false" afterPath="$PROJECT_DIR$/cogs/bs.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -89,8 +88,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cogs/bs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="598">
-              <caret line="142" column="51" selection-start-line="142" selection-start-column="51" selection-end-line="142" selection-end-column="51" />
+            <state relative-caret-position="502">
+              <caret line="138" column="214" selection-start-line="138" selection-start-column="214" selection-end-line="138" selection-end-column="214" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -360,7 +359,7 @@
       <workItem from="1572474953611" duration="1596000" />
       <workItem from="1572902777687" duration="657000" />
       <workItem from="1573996627660" duration="2626000" />
-      <workItem from="1574023845981" duration="3497000" />
+      <workItem from="1574023845981" duration="3796000" />
     </task>
     <task id="LOCAL-00001" summary="revert google to bad code (but works)">
       <created>1558314985323</created>
@@ -621,11 +620,18 @@
       <option name="project" value="LOCAL" />
       <updated>1574026120643</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="fix average calculations">
+      <created>1574031901378</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1574031901378</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72776000" />
+    <option name="totallyTimeSpent" value="73075000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -669,7 +675,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix this shit" />
     <MESSAGE value="oof" />
     <MESSAGE value="ok" />
     <MESSAGE value="f" />
@@ -694,7 +699,8 @@
     <MESSAGE value="oops" />
     <MESSAGE value="brawler command" />
     <MESSAGE value="forgot to format names" />
-    <option name="LAST_COMMIT_MESSAGE" value="forgot to format names" />
+    <MESSAGE value="fix average calculations" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix average calculations" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dat_banana_bot$help.coverage" NAME="help Coverage Results" MODIFIED="1561581588894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cogs" />
@@ -954,8 +960,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cogs/bs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="142" column="51" selection-start-line="142" selection-start-column="51" selection-end-line="142" selection-end-column="51" />
+        <state relative-caret-position="502">
+          <caret line="138" column="214" selection-start-line="138" selection-start-column="214" selection-end-line="138" selection-end-column="214" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
