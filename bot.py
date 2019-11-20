@@ -322,25 +322,25 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
     # Level
-    data = await bot.db.rank.find_one({"id": message.guild.id})
-    if data["data"]:
-        user = [x for x in data["data"] if x.id == message.author.id][0]
-        if user["points"] == user["next"]:
-            replacement = {
-                "points": 0,
-                "next": user["next"] * 2,
-                "level": user["level"] + 1
-            }
-            await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
-        else:
-            replacement = data["data"]["data"][str(message.author.id)] = {
-                "points": user["points"] + 1,
-                "next": user["next"],
-                "level": user["level"]
-            }
-        updated = data["data"].remove(user)
-        updated = updated.append(replacement)
-        await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": updated}}, upsert=True)
+    #data = await bot.db.rank.find_one({"id": message.guild.id})
+    #if data["data"]:
+    #    user = [x for x in data["data"] if x.id == message.author.id][0]
+    #    if user["points"] == user["next"]:
+    #        replacement = {
+    #            "points": 0,
+    #            "next": user["next"] * 2,
+    #            "level": user["level"] + 1
+    #        }
+    #        await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
+    #    else:
+    #        replacement = data["data"]["data"][str(message.author.id)] = {
+    #            "points": user["points"] + 1,
+    #            "next": user["next"],
+    #            "level": user["level"]
+    #        }
+    #    updated = data["data"].remove(user)
+    #    updated = updated.append(replacement)
+    #    await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": updated}}, upsert=True)
 
 
 # REACTION ROLE EVENTS
