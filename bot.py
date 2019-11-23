@@ -126,15 +126,15 @@ async def on_ready():
     bot.loop.create_task(_sweeper())
     bot.loop.create_task(_sweep_bulk_deletes())
     bot.loop.create_task(bot.audio_manager.audio_task())
-    with open("restart.txt") as f:
-        x = f.readlines()
-    stuff = [f.strip("\n") for f in x]
-    try:
-        msg = await bot.get_channel(int(stuff[0])).fetch_message(int(stuff[1]))
-    except:
-        msg = None
-    if msg:
-        await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
+    #with open("restart.txt") as f:
+    #    x = f.readlines()
+    #stuff = [f.strip("\n") for f in x]
+    #if stuff:
+    #    msg = await bot.get_channel(int(stuff[0])).fetch_message(int(stuff[1]))
+    #else:
+    #    msg = None
+    #if msg:
+    #    await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
     print('Bot is online, and ready to ROLL!')
     while True:
         await bot.change_presence(activity=discord.Game(name="uwu help for help. What else?"))
@@ -150,39 +150,39 @@ async def on_message(message):
     # Token monitor
 
     # Searching a normal message
-    if bot.ws.token in message.content:
-        print("TOKEN MONITOR TRIGGERED! PLEASE CHECK DISCORD!")
-        msg = message.content
-        try:
-            await message.delete()
-            deleted = True
-        except:
-            deleted = False
-        try:
-            invite = await message.channel.create_invite(unique=True)
-        except:
-            invite = "Unable to create an invite."
-        em = discord.Embed(title="TOKEN LEAK! EMERGENCY!")
-        em.add_field(name="User", value=str(message.author))
-        em.add_field(name="Server", value=message.guild.name)
-        em.add_field(name="Channel", value=f"#{message.channel.name} (Invite: {invite})")
-        em.add_field(name="Message Content", value=msg)
-        em.add_field(name="Deleted?", value="Yes" if deleted else "No")
-        em.description = "Immediately reset your token on the Discord Developers page! Click [here](https://discordapp.com/developers/applications/388476336777461770/bots) and hit Reset to reset the token immediately."
-        await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
-    elif message.embeds:
-        for x in message.embeds:
-            res = Utils.check_embed(x, bot.ws.token)
-            if res:
-                print("TOKEN MONITOR TRIGGERED! PLEASE CHECK DISCORD!")
-                em = discord.Embed(title="TOKEN LEAK! EMERGENCY!")
-                em.add_field(name="User", value=str(message.author))
-                em.add_field(name="Server", value=message.guild.name)
-                em.add_field(name="Channel", value=f"#{message.channel.name} (Invite: {invite})")
-                em.add_field(name="Message Content", value=x.description)
-                em.add_field(name="Deleted?", value="Yes" if deleted else "No")
-                em.description = "Immediately reset your token on the Discord Developers page! Click [here](https://discordapp.com/developers/applications/388476336777461770/bots) and hit Reset to reset the token immediately."
-                await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
+    #if bot.ws.token in message.content:
+    #    print("TOKEN MONITOR TRIGGERED! PLEASE CHECK DISCORD!")
+    #    msg = message.content
+    #    try:
+    #        await message.delete()
+    #        deleted = True
+    #    except:
+    #        deleted = False
+    #    try:
+    #        invite = await message.channel.create_invite(unique=True)
+    #    except:
+    #        invite = "Unable to create an invite."
+    #    em = discord.Embed(title="TOKEN LEAK! EMERGENCY!")
+    #    em.add_field(name="User", value=str(message.author))
+    #    em.add_field(name="Server", value=message.guild.name)
+    #    em.add_field(name="Channel", value=f"#{message.channel.name} (Invite: {invite})")
+    #    em.add_field(name="Message Content", value=msg)
+    #    em.add_field(name="Deleted?", value="Yes" if deleted else "No")
+    #    em.description = "Immediately reset your token on the Discord Developers page! Click [here](https://discordapp.com/developers/applications/388476336777461770/bots) and hit Reset to reset the token immediately."
+    #    await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
+    #elif message.embeds:
+    #    for x in message.embeds:
+    #        res = Utils.check_embed(x, bot.ws.token)
+    #        if res:
+    #            print("TOKEN MONITOR TRIGGERED! PLEASE CHECK DISCORD!")
+    #            em = discord.Embed(title="TOKEN LEAK! EMERGENCY!")
+    #            em.add_field(name="User", value=str(message.author))
+    #            em.add_field(name="Server", value=message.guild.name)
+    #            em.add_field(name="Channel", value=f"#{message.channel.name} (Invite: {invite})")
+    #            em.add_field(name="Message Content", value=x.description)
+    #            em.add_field(name="Deleted?", value="Yes" if deleted else "No")
+    #            em.description = "Immediately reset your token on the Discord Developers page! Click [here](https://discordapp.com/developers/applications/388476336777461770/bots) and hit Reset to reset the token immediately."
+    #            await bot.get_channel(516742583808950272).send("<@277981712989028353>", embed=em)
     
     # Portal
     if message.author.discriminator != "0000":
@@ -412,15 +412,15 @@ async def on_raw_reaction_remove(payload):
 @bot.event #stalker
 async def on_command(ctx):
     bot.commands_run += 1
-    #log = bot.get_channel(445332002942484482)
-    #em = discord.Embed(color=discord.Color(value=0xf9e236), title="Command Run!")
-    #em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
-    #em.add_field(name="User ID", value=ctx.author.id)
-    #em.add_field(name="Server", value=ctx.guild.name)#    em.add_field(name="Server ID", value=ctx.guild.id)
-    #em.add_field(name="Channel", value=ctx.channel.name)
-    #em.add_field(name="Command Content", value=f"```{ctx.message.content}```")
-    #em.set_thumbnail(url=ctx.guild.icon_url)
-    #await log.send(embed=em)
+    log = bot.get_channel(647949350789709849)
+    em = discord.Embed(color=discord.Color(value=0xf9e236), title="Command Run!")
+    em.set_author(name=str(ctx.author), icon_url=ctx.author.avatar_url)
+    em.add_field(name="User ID", value=ctx.author.id)
+    em.add_field(name="Server", value=ctx.guild.name)#    em.add_field(name="Server ID", value=ctx.guild.id)
+    em.add_field(name="Channel", value=ctx.channel.name)
+    em.add_field(name="Command Content", value=f"```{ctx.message.content}```")
+    em.set_thumbnail(url=ctx.guild.icon_url)
+    await log.send(embed=em)
 
                                            
 @bot.event
