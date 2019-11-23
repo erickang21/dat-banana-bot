@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5802a780-c6bc-4bcc-a256-3273f0282309" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
-    </list>
+    <list default="true" id="5802a780-c6bc-4bcc-a256-3273f0282309" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,7 +376,7 @@
       <workItem from="1572902777687" duration="657000" />
       <workItem from="1573996627660" duration="2626000" />
       <workItem from="1574023845981" duration="4999000" />
-      <workItem from="1574292005788" duration="537000" />
+      <workItem from="1574292005788" duration="1765000" />
     </task>
     <task id="LOCAL-00001" summary="revert google to bad code (but works)">
       <created>1558314985323</created>
@@ -661,11 +658,18 @@
       <option name="project" value="LOCAL" />
       <updated>1574032223835</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="remove broken code to fix crashing">
+      <created>1574292554439</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1574292554439</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74815000" />
+    <option name="totallyTimeSpent" value="76043000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -709,7 +713,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="f" />
     <MESSAGE value="fix some issues with changing name, add PSA" />
     <MESSAGE value="fix an issue with resetting prefix" />
     <MESSAGE value="fucked up psa" />
@@ -734,7 +737,8 @@
     <MESSAGE value="fix average calculations" />
     <MESSAGE value="add a star icon for max level" />
     <MESSAGE value="fix an issue with 8-bit icon not showing, fix average display" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix an issue with 8-bit icon not showing, fix average display" />
+    <MESSAGE value="remove broken code to fix crashing" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove broken code to fix crashing" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/dat_banana_bot$help.coverage" NAME="help Coverage Results" MODIFIED="1561581588894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cogs" />

@@ -129,9 +129,12 @@ async def on_ready():
     with open("restart.txt") as f:
         x = f.readlines()
     stuff = [f.strip("\n") for f in x]
-
-    msg = await bot.get_channel(int(stuff[0])).fetch_message(int(stuff[1]))
-    await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
+    try:
+        msg = await bot.get_channel(int(stuff[0])).fetch_message(int(stuff[1]))
+    except:
+        msg = None
+    if msg:
+        await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
     print('Bot is online, and ready to ROLL!')
     while True:
         await bot.change_presence(activity=discord.Game(name="uwu help for help. What else?"))
