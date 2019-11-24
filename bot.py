@@ -45,9 +45,10 @@ bot = commands.Bot(command_prefix=getprefix, owner_id=304737539846045696, case_i
 bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.utils = Utils(bot)
-bot.audio_manager = AudioManager(bot=bot, nodes=[
-    { "host": x["ll_host"], "password": x["ll_password"], "port": x["ll_port"] }
-])
+bot.audio_manager = None
+#AudioManager(bot=bot, nodes=[
+#    { "host": x["ll_host"], "password": x["ll_password"], "port": x["ll_port"] }
+#])
 bot.starttime = time.time()
 bot.commands_run = 0
 bot.logger = logger
