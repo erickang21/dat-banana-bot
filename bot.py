@@ -1082,4 +1082,5 @@ with open("data/apikeys.json") as f:
 try:
     bot.run(x['bottoken'])
 except Exception as e:
-    print("Could not start the bot. Check the token.")
+    print("Could not start the bot. Check the token. Error:")
+    print(e)
