@@ -45,7 +45,7 @@ bot = commands.Bot(command_prefix=getprefix, owner_id=304737539846045696, case_i
 bot._last_result = None
 bot.session = aiohttp.ClientSession(loop=bot.loop)
 bot.utils = Utils(bot)
-bot.audio_manager = None
+#bot.audio_manager = None
 #AudioManager(bot=bot, nodes=[
 #    { "host": x["ll_host"], "password": x["ll_password"], "port": x["ll_port"] }
 #])
@@ -126,7 +126,7 @@ async def on_ready():
         exit() # :p
     bot.loop.create_task(_sweeper())
     bot.loop.create_task(_sweep_bulk_deletes())
-    bot.loop.create_task(bot.audio_manager.audio_task())
+    #bot.loop.create_task(bot.audio_manager.audio_task())
     #with open("restart.txt") as f:
     #    x = f.readlines()
     #stuff = [f.strip("\n") for f in x]
