@@ -1,3 +1,4 @@
 language: python
+script: pytest
 before_install:
   - pip install pylint
