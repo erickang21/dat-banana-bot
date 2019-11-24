@@ -1083,4 +1083,4 @@ try:
     bot.run(x['bottoken'])
 except Exception as e:
     print("Could not start the bot. Check the token. Error:")
-    print(e)
+    print("\n".join(traceback.format_exception(type(e), e, e.__traceback__, 10)))
