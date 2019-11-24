@@ -58,7 +58,7 @@ bot.bulkDeletes = {}
 bot.snipes = {}
 bot.editsnipes = {}
 bot.db = db.datbananabot
-cogs = [ "cogs." + x.replace(".py", "") for x in os.listdir("cogs") if x.endswith(".py") ]
+cogs = [ "cogs." + x.replace(".py", "") for x in os.listdir("cogs") if x.endswith(".py") and x != "music" ]
 bot.remove_command("help")
 
 for cog in cogs:
