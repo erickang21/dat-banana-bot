@@ -137,9 +137,7 @@ async def on_ready():
     #if msg:
     #    await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
     print('Bot is online, and ready to ROLL!')
-    while True:
-        await bot.change_presence(activity=discord.Game(name="uwu help for help. What else?"))
-        await asyncio.sleep(20)
+    await bot.change_presence(activity=discord.Game(name="uwu help for help. What else?"))
 
 
 @bot.event
