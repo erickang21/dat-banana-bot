@@ -886,7 +886,7 @@ async def on_command_error(ctx, error):
         for x in error.missing_perms:
             missing += f"{bot.utils.capitalize(x)} \n"
         
-        return await ctx.send(f"{bot.get_emoji(506168446174887956)} You don't have permission to run this command! Maybe try getting these permissions:\n\n{missing}", edit=False)
+        return await ctx.send(f"{bot.get_emoji(644677901710786581)} You don't have permission to run this command! Maybe try getting these permissions:\n\n{missing}", edit=False)
     elif isinstance(error, commands.CommandOnCooldown):
         if ctx.author.id == bot.owner_id:
             return await ctx.reinvoke()
@@ -929,15 +929,16 @@ async def on_command_error(ctx, error):
         
         em = discord.Embed(color=ctx.author.color, title="Error? Error!")
         desc = ""
-        desc += f"```{traceback_text}```"
+        #desc += f"```{traceback_text}```"
         desc += f"""
 
-Uhhh...So something weird happened, but this ain't your fault. Just follow these steps to try and fix me.
+Yikes. It appears that I wasn't coded properly, and an error occurred.
 
--> Join the [support server](https://discord.gg/3Nxb7yZ).
--> Show the error code to my senpai, dat banana boi#2019. Here it is: `{error_code}`.
+Here's what you should do to be a helpful person:
+-> Join the [support server](https://discord.gg/vCMEmNJ).
+-> Show the error code to my senpai, kawaii banana ☆#5627: `{error_code}`.
 
-Hopefully he's not lazy and gets the job done! :wink:
+Let's hope together that the error gets fixed soon! {bot.get_emoji(644677901664387073)}
         """
         em.description = desc
         await ctx.send(embed=em, edit=False)

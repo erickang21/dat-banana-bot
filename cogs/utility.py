@@ -233,11 +233,7 @@ class Utility(commands.Cog):
 
     @commands.command()
     async def lyrics(self, ctx, *, song: str = None):
-        """Get lyrics for a song or finds lyrics for the current playing song."""
-        player = self.bot.audio_manager.get_player(ctx)
-        if player and song == None:
-            song = player.queue[0].title
-
+        """Get lyrics for a song."""
         async with ctx.typing():
             res = await (await self.bot.session.get(f"https://api.genius.com/search?q={song}", headers={"Authorization": f"Bearer {self.bot.config.geniusapi}"})).json()
 
@@ -1152,9 +1148,8 @@ Invalid math expression."""
     @commands.command(aliases=['rinfo'])
     @commands.guild_only()
     async def roleinfo(self, ctx, *, rolename):
-        try:
-            role = discord.utils.get(ctx.guild.roles, name=rolename)
-        except:
+        role = discord.utils.get(ctx.guild.roles, name=rolename)
+        if not role:
             return await ctx.send("Role not found. Please make sure the role name is correct. (Case Sensitive!)")
         em = discord.Embed(color=role.color, title=f'Role Info: {rolename}')
         p = ""
