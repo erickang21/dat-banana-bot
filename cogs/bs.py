@@ -1,5 +1,6 @@
 import discord
 import brawlstats
+import box
 from discord.ext import commands
 
 
@@ -146,6 +147,7 @@ class BS(commands.Cog):
 
     @commands.command()
     async def bsseason(self, ctx, tag=None):
+        """Find your end-of-season rewards and trophy loss."""
         await ctx.trigger_typing()
         if not tag:
             tag = await self.get_tag(ctx.author.id)
@@ -222,7 +224,28 @@ class BS(commands.Cog):
             trophies_lost += trophy_loss
         await ctx.send(f"You will gain **{starpoints}** {self.bot.get_emoji(645617676550668288)} at the end of the season. You will lose **{trophies_lost}** {self.bot.get_emoji(645620279439130639)}. Classy!")
 
-
+    @commands.command()
+    async def bsevents(self, ctx):
+        await ctx.trigger_typing()
+        events = await self.client.get_events()
+        current_events = box.Box(events.current)
+        next_events = box.Box(events.upcoming)
+        em = discord.Embed(title=f"Brawl Stars Events", color=ctx.author.color)
+        desc = ""
+        desc += "**__Current__**"
+        for e in current_events:
+            desc += f"{e.gameMode}: **{e.mapName}**\n"
+            if e.has_modifier:
+                desc += f"Modifier: **{e.modifierName}**\n"
+        desc += "\n**__Upcoming__**"
+        for e in next_events:
+            desc += f"{e.gameMode}: **{e.mapName}**\n"
+            if e.has_modifier:
+                desc += f"Modifier: **{e.modifierName}**\n"
+        em.description = desc
+        em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+        await ctx.send(embed=em)
+        
 
 
 def setup(bot):
