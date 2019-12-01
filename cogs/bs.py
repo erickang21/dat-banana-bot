@@ -228,17 +228,19 @@ class BS(commands.Cog):
     async def bsevents(self, ctx):
         await ctx.trigger_typing()
         events = await self.client.get_events()
-        current_events = box.Box(events.current)
-        next_events = box.Box(events.upcoming)
+        current_events = events.current
+        next_events = events.upcoming
         em = discord.Embed(title=f"Brawl Stars Events", color=ctx.author.color)
         desc = ""
         desc += "**__Current__**"
         for e in current_events:
+            e = box.Box(e)
             desc += f"{e.gameMode}: **{e.mapName}**\n"
             if e.has_modifier:
                 desc += f"Modifier: **{e.modifierName}**\n"
         desc += "\n**__Upcoming__**"
         for e in next_events:
+            e = box.Box(e)
             desc += f"{e.gameMode}: **{e.mapName}**\n"
             if e.has_modifier:
                 desc += f"Modifier: **{e.modifierName}**\n"
