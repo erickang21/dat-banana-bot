@@ -246,6 +246,7 @@ class BS(commands.Cog):
                 desc += f"Modifier: **{e.modifierName}**\n"
         em.description = desc
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+        await ctx.send(len(desc))
         await ctx.send(embed=em)
         
 
