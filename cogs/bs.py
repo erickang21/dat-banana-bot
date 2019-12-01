@@ -236,17 +236,16 @@ class BS(commands.Cog):
         for e in current_events:
             e = box.Box(e)
             desc += f"{e.gameMode}: **{e.mapName}**\n"
-            if e.has_modifier:
+            if e.hasModifier:
                 desc += f"Modifier: **{e.modifierName}**\n"
         desc += "\n**__Upcoming__**"
         for e in next_events:
             e = box.Box(e)
             desc += f"{e.gameMode}: **{e.mapName}**\n"
-            if e.has_modifier:
+            if e.hasModifier:
                 desc += f"Modifier: **{e.modifierName}**\n"
         em.description = desc
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
-        await ctx.send(len(desc))
         await ctx.send(embed=em)
         
 
