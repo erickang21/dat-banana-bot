@@ -253,14 +253,14 @@ class BS(commands.Cog):
         desc += "**__Current__**\n"
         for e in current_events:
             e = box.Box(e)
-            desc += f"{self.get_event_emoji(e.gameMode)}**{e.gameMode}:**\n**{e.mapName}**"
+            desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}"
             if e.hasModifier:
-                desc += f" (Modifier: **{e.modifierName}**)"
+                desc += f" (Modifier: {e.modifierName})"
             desc += "\n\n"
         desc += "\n**__Upcoming__**\n"
         for e in next_events:
             e = box.Box(e)
-            desc += f"{self.get_event_emoji(e.gameMode)}**{e.gameMode}:**\n**{e.mapName}**"
+            desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}"
             if e.hasModifier:
                 desc += f" (Modifier: **{e.modifierName}**)"
             desc += "\n\n"
