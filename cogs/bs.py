@@ -57,6 +57,11 @@ class BS(commands.Cog):
         else:
             return self.bot.get_emoji(650856644388847637)
 
+    def fmt_time(self, time):
+        hours = int(time / 3600)
+        minutes = int(time / 60 - hours * 60)
+        return f"{hours} hrs, {minutes} mins"
+
     async def cog_command_error(self, ctx, error):
         if isinstance(error, brawlstats.RequestError):
             em = discord.Embed(
@@ -254,14 +259,14 @@ class BS(commands.Cog):
         desc += "**__Current__**\n"
         for e in current_events:
             e = box.Box(e)
-            desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}"
+            desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}\n{self.bot.get_emoji(650865620094681108)} **Ends in:** {self.fmt_time(e.endTime)}"
             if e.hasModifier:
                 desc += f" (Modifier: {e.modifierName})"
             desc += "\n\n"
         desc += "\n**__Upcoming__**\n"
         for e in next_events:
             e = box.Box(e)
-            desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}"
+            desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}\n{self.bot.get_emoji(650865620094681108)} **Starts in:** {self.fmt_time(e.startTime)}"
             if e.hasModifier:
                 desc += f" (Modifier: **{e.modifierName}**)"
             desc += "\n\n"
