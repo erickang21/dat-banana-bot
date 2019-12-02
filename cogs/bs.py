@@ -49,7 +49,8 @@ class BS(commands.Cog):
             "Takedown": self.bot.get_emoji(650852284934127657),
             "Robo Rumble": self.bot.get_emoji(650852285131390980),
             "Big Game": self.bot.get_emoji(650852285328523294),
-            "Boss Fight": self.bot.get_emoji(650852285056024597)
+            "Boss Fight": self.bot.get_emoji(650852285056024597),
+            "Showdown": self.bot.get_emoji(650852285160751135)
         }
         if name in events.keys():
             return events[name]
