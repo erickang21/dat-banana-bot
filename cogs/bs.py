@@ -38,6 +38,24 @@ class BS(commands.Cog):
     def between(self, number, min, max):
         return min <= number < max
 
+    def get_event_emoji(self, name):
+        events = {
+            "Gem Grab": self.bot.get_emoji(650852285613604890),
+            "Heist": self.bot.get_emoji(650852285794222138),
+            "Bounty": self.bot.get_emoji(650852285395632211),
+            "Siege": self.bot.get_emoji(650854441599107103),
+            "Brawl Ball": self.bot.get_emoji(650852285794091047),
+            "Lone Star": self.bot.get_emoji(650852284896641024),
+            "Takedown": self.bot.get_emoji(650852284934127657),
+            "Robo Rumble": self.bot.get_emoji(650852285131390980),
+            "Big Game": self.bot.get_emoji(650852285328523294),
+            "Boss Fight": self.bot.get_emoji(650852285056024597)
+        }
+        if name in events.keys():
+            return events[name]
+        else:
+            return self.bot.get_emoji(650856644388847637)
+
     async def cog_command_error(self, ctx, error):
         if isinstance(error, brawlstats.RequestError):
             em = discord.Embed(
@@ -232,18 +250,20 @@ class BS(commands.Cog):
         next_events = events.upcoming
         em = discord.Embed(title=f"Brawl Stars Events", color=ctx.author.color)
         desc = ""
-        desc += "**__Current__**"
+        desc += "**__Current__**\n"
         for e in current_events:
             e = box.Box(e)
-            desc += f"{e.gameMode}: **{e.mapName}**\n"
+            desc += f"{self.get_event_emoji(e.gameMode)}**{e.gameMode}:**\n**{e.mapName}**"
             if e.hasModifier:
-                desc += f"Modifier: **{e.modifierName}**\n"
-        desc += "\n**__Upcoming__**"
+                desc += f" (Modifier: **{e.modifierName}**)"
+            desc += "\n\n"
+        desc += "\n**__Upcoming__**\n"
         for e in next_events:
             e = box.Box(e)
-            desc += f"{e.gameMode}: **{e.mapName}**\n"
+            desc += f"{self.get_event_emoji(e.gameMode)}**{e.gameMode}:**\n**{e.mapName}**"
             if e.hasModifier:
-                desc += f"Modifier: **{e.modifierName}**\n"
+                desc += f" (Modifier: **{e.modifierName}**)"
+            desc += "\n\n"
         em.description = desc
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         await ctx.send(embed=em)
