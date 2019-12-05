@@ -281,7 +281,7 @@ class BS(commands.Cog):
         await ctx.send(embed=em)
         
     @commands.command()
-    async def bsevents(self, ctx):
+    async def bstimes(self, ctx):
         await ctx.trigger_typing()
         data = await self.client.get_misc()
         em = discord.Embed(title="Brawl Stars Reset Times", color=ctx.author.color)
