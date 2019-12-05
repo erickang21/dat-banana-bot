@@ -58,9 +58,15 @@ class BS(commands.Cog):
             return self.bot.get_emoji(650856644388847637)
 
     def fmt_time(self, time):
-        hours = int(time / 3600)
-        minutes = int(time / 60 - hours * 60)
-        return f"{hours} hrs, {minutes} mins"
+        if time < 86400:
+            hours = int(time / 3600)
+            minutes = int(time / 60 - hours * 60)
+            return f"{hours} hrs, {minutes} mins"
+        else:
+            days = int(time/86400)
+            hours = int(time / 3600 - days * 24)
+            minutes = int(time / 60 - hours * 60 - days * 1440)
+            return f"{days} days, {hours} hrs, {minutes} mins"
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, brawlstats.RequestError):
@@ -274,7 +280,18 @@ class BS(commands.Cog):
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         await ctx.send(embed=em)
         
-
+    @commands.command()
+    async def bsevents(self, ctx):
+        await ctx.trigger_typing()
+        data = await self.client.get_misc()
+        em = discord.Embed(title="Brawl Stars Reset Times", color=ctx.author.color)
+        em.description = f"""
+**Times until...**
+{self.bot.get_emoji(650865620094681108)} **Shop Reset:** {self.fmt_time(data.time_until_season_end_in_seconds)}
+{self.bot.get_emoji(650865620094681108)} **Season Reset:** {self.fmt_time(data.time_until_season_end_in_seconds)}
+        """
+        em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+        await ctx.send(embed=em)
 
 def setup(bot):
     bot.add_cog(BS(bot))
