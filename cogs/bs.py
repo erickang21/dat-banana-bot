@@ -287,7 +287,7 @@ class BS(commands.Cog):
         em = discord.Embed(title="Brawl Stars Reset Times", color=ctx.author.color)
         em.description = f"""
 **Times until...**
-{self.bot.get_emoji(650865620094681108)} **Shop Reset:** {self.fmt_time(data.time_until_season_end_in_seconds)}
+{self.bot.get_emoji(650865620094681108)} **Shop Reset:** {self.fmt_time(data.time_until_shop_reset_in_seconds)}
 {self.bot.get_emoji(650865620094681108)} **Season Reset:** {self.fmt_time(data.time_until_season_end_in_seconds)}
         """
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
