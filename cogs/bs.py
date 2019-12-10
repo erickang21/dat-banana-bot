@@ -80,10 +80,10 @@ class BS(commands.Cog):
     @commands.command()
     async def bssave(self, ctx, tag):
         """Saves your Brawl Stars tag to your Discord account."""
-        tag = tag.strip("#")
+        tag = tag.strip("#").replace("O", "0")
         invalid_chars = self.check_tag(tag)
         if invalid_chars:
-            return await ctx.send(f"Looks like that's an invalid tag!\nInvalid characters: {', '.join()}")
+            return await ctx.send(f"That's an invalid tag! {self.bot.get_emoji(468607278313111553)}")
         await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": tag}}, upsert=True)
         await ctx.send(f"Your Brawl Stars tag has been successfully saved. {self.emoji(484897652220362752)}")
 
