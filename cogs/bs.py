@@ -326,8 +326,8 @@ class BS(commands.Cog):
             for x in battle['battle']['teams']:
                 desc += "**Enemy Team**" if x == battle['battle']['teams'][0] else "**Your Team**"
                 for i in x:
-                    desc += f"{x['name']} ({x['tag']})\n{self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}"
-                    if x['name'] == battle['battle']['starPlayer'].name:
+                    desc += f"{i['name']} ({i['tag']})\n{self.brawler(i['brawler']['name'])} {i['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {i['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}"
+                    if i['name'] == battle['battle']['starPlayer'].name:
                         desc += "(:star2: **STAR PLAYER** :star2:)\n"
                     else:
                         desc += "\n"
