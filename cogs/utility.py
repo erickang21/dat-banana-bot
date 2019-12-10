@@ -234,6 +234,8 @@ class Utility(commands.Cog):
     @commands.command()
     async def lyrics(self, ctx, *, song: str = None):
         """Get lyrics for a song."""
+        if not song:
+            return await ctx.send("I never heard of a song without a name. Have you?")
         async with ctx.typing():
             res = await (await self.bot.session.get(f"https://api.genius.com/search?q={song}", headers={"Authorization": f"Bearer {self.bot.config.geniusapi}"})).json()
 
@@ -259,6 +261,10 @@ class Utility(commands.Cog):
     @commands.command(aliases=["stealav"])
     async def stealavatar(self, ctx, ID):
         """Get the URL of anyone's avatar!"""
+        try:
+            ID = int(ID)
+        except:
+            return await ctx.send("Imagine not giving a number as the ID.")
         user = await self.bot.get_user_info(ID)
         if not user:
             return await ctx.send("It looks like that is not a valid ID! Better check it.")
@@ -322,13 +328,15 @@ __**Description**__
     @commands.command()
     async def snipe(self, ctx, channel: str = None):
         """Gets the last deleted message in the channel."""
-        if ctx.guild.id == 392149566012784650:
-            if not ctx.author.guild_permissions.manage_guild:
-                return await ctx.send("You don't have the permissions! Get some or get out. :)")
         if not channel:
             channel = ctx.channel
         else:
-            channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) 
+            try:
+                channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) 
+            except:
+                return await ctx.send("Is that a valid channel ID? I think not!")
+        if not channel:
+            return await ctx.send("That channel kinda doesn't exist. For me. And for you.")
         try:
             snipes = self.bot.snipes[str(channel.id)]
         except KeyError:
@@ -348,7 +356,12 @@ __**Description**__
         if not channel:
             channel = ctx.channel
         else:
-            channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) 
+            try:
+                channel = self.bot.get_channel(int(channel.replace("<#", "").replace(">", ""))) 
+            except:
+                return await ctx.send("Is that a valid channel ID? I think not!")
+        if not channel:
+            return await ctx.send("That channel kinda doesn't exist. For me. And for you.")
         try:
             snipes = self.bot.editsnipes[str(channel.id)]
         except KeyError:
@@ -970,7 +983,7 @@ Invalid math expression."""
 
     @commands.command()
     async def choose(self, ctx, *, args):
-        """Can't choose. Let this bot do it for you. Seperate choices with a comma."""
+        """Can't choose? Let this bot do it for you. Seperate choices with a comma."""
         lol = self.bot.get_emoji(453323541639725079)
         msg = await ctx.send(lol)
         args = args.split(",")

@@ -212,6 +212,8 @@ class mod(commands.Cog):
             float(num)
         except ValueError:
             return await ctx.send("The number is invalid. Make sure it is valid! Usage: *purge [number of msgs]")
+        if num > 100:
+            return await ctx.send("I can only purge up to 100 messages at once. Just so I don't wear myself out!")
         try:
             if not from_user:
                 await ctx.channel.purge(limit=num+1, bulk=True)
