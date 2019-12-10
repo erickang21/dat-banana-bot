@@ -331,8 +331,9 @@ class BS(commands.Cog):
                         desc += "(:star2: **STAR PLAYER** :star2:)\n"
                     else:
                         desc += "\n"
-        em.description = desc
         print(len(desc))
+        em.description = desc
+        
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         await ctx.send(embed=em)
             
