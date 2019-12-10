@@ -292,6 +292,49 @@ class BS(commands.Cog):
         """
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         await ctx.send(embed=em)
+    
+    @commands.command()
+    async def bsbattle(self, ctx, tag=None):
+        """Gets the last battle the player did."""
+        await ctx.trigger_typing()
+        if not tag:
+            tag = await self.get_tag(ctx.author.id)
+            if not tag:
+                return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
+        else:
+            tag = tag.strip('#')
+            invalid_chars = self.check_tag(tag)
+            if invalid_chars:
+                return await ctx.send(f"Invalid characters: {', '.join(invalid_chars)}")
+
+        battle = (await self.client.get_battle_logs(tag))[0]
+        battle = box.Box(battle)
+        em = discord.Embed(title=f"{profile.name} | #{tag}")
+        desc = ""
+        desc += f"""
+**{battle.battle.result.upper()} - {battle.battle.type.title()} ({"+" if battle.battle.result == "victory" else "-" if battle.battle.result == "defeat" else ""}{battle.battle.trophyChange})
+(**{battle.event.mode.title()}**: {battle.event.map.title()})
+**Duration:** {self.fmt_time(battle.battle.duration)}\n"""
+        if battle.event.mode == "showdown" or battle.event.mode == "takedown" or battle.event.mode == "lone star":
+            counter = 0
+            desc += "__**Players:**__\n"
+            for x in battle.players:
+                counter += 1
+                desc += f"`{counter}.` {x['name']} ({x['tag']})\n{self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}\n"
+        else:
+            for x in battle.teams:
+                desc += "**Enemy Team**" if x == battle.teams[0] else "**Your Team**"
+                for i in x:
+                    desc += f"{x['name']} ({x['tag']})\n{self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}"
+                    if x['name'] == battle.battle.starPlayer.name:
+                        desc += "(:star2: **STAR PLAYER** :star2:)\n"
+                    else:
+                        desc += "\n"
+        em.description = desc
+        em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+        await ctx.send(embed=em)
+            
+
 
 def setup(bot):
     bot.add_cog(BS(bot))
