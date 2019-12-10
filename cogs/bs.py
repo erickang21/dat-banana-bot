@@ -319,11 +319,11 @@ class BS(commands.Cog):
         if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "takedown" or battle['event']['mode'] == "lone star":
             counter = 0
             desc += "__**Players:**__\n"
-            for x in battle['players']:
+            for x in battle['battle']['players']:
                 counter += 1
                 desc += f"`{counter}.` {x['name']} ({x['tag']}){self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}\n"
         else:
-            for x in battle['teams']:
+            for x in battle['battle']['teams']:
                 desc += "**Enemy Team**" if x == battle.teams[0] else "**Your Team**"
                 for i in x:
                     desc += f"{x['name']} ({x['tag']})\n{self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}"
