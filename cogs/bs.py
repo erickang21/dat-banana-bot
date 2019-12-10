@@ -321,7 +321,7 @@ class BS(commands.Cog):
             desc += "__**Players:**__\n"
             for x in battle.players:
                 counter += 1
-                desc += f"`{counter}.` {x['name']} ({x['tag']})\n{self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}\n"
+                desc += f"`{counter}.` {x['name']} ({x['tag']}){self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}\n"
         else:
             for x in battle.teams:
                 desc += "**Enemy Team**" if x == battle.teams[0] else "**Your Team**"
@@ -332,6 +332,7 @@ class BS(commands.Cog):
                     else:
                         desc += "\n"
         em.description = desc
+        await ctx.send(len(desc))
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         await ctx.send(embed=em)
             
