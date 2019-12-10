@@ -309,6 +309,7 @@ class BS(commands.Cog):
 
         battle = (await self.client.get_battle_logs(tag))[0]
         battle = box.Box(battle)
+        profile = await self.client.get_profile(tag)
         em = discord.Embed(title=f"{profile.name} | #{tag}")
         desc = ""
         desc += f"""
