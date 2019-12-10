@@ -324,11 +324,11 @@ class BS(commands.Cog):
                 desc += f"`{counter}.` {x['name']} ({x['tag']}){self.brawler(x['brawler']['name'])} {x['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {x['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}\n"
         else:
             for x in battle['battle']['teams']:
-                desc += "__**Enemy Team**__\n" if x == battle['battle']['teams'][0] else "__**Your Team**__\n"
+                desc += "__**Your Team**__\n" if x == battle['battle']['teams'][0] else "__**Enemy Team**__\n"
                 for i in x:
                     desc += f"{i['name']} ({i['tag']})\n{self.brawler(i['brawler']['name'])} {i['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {i['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}"
                     if i['name'] == battle['battle']['starPlayer'].name:
-                        desc += "(:star2: **STAR PLAYER** :star2:)\n"
+                        desc += "(:star2: **STAR PLAYER :star2:)\n"
                     else:
                         desc += "\n"
         print(len(desc))
