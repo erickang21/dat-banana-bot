@@ -313,7 +313,7 @@ class BS(commands.Cog):
         em = discord.Embed(title=f"{profile.name} | #{tag}")
         desc = ""
         desc += f"""
-**{battle['battle']['result'].upper()} - {battle['battle']['type'].title()}** ({"+" if battle['battle']['result'] == "victory" else "-" if battle['battle']['result'] == "defeat" else ""}{battle['battle']['trophyChange']})
+**{battle['battle']['result'].upper()}: {battle['battle']['type'].title()}** ){"+" if battle['battle']['result'] == "victory" else "-" if battle['battle']['result'] == "defeat" else ""}{battle['battle']['trophyChange']})
 (**{battle['event']['mode'].title()}**: {battle['event']['map'].title()})
 **Duration:** {self.fmt_time(battle['battle']['duration'])}\n"""
         if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "takedown" or battle['event']['mode'] == "lone star":
@@ -328,7 +328,7 @@ class BS(commands.Cog):
                 for i in x:
                     desc += f"{i['name']} ({i['tag']})\n{self.brawler(i['brawler']['name'])} {i['brawler']['power']} {self.bot.get_emoji(645739308711542828)}  | {i['brawler']['trophies']} {self.bot.get_emoji(645733305123078155)}"
                     if i['name'] == battle['battle']['starPlayer'].name:
-                        desc += "(:star2: **STAR PLAYER :star2:)\n"
+                        desc += "(:star2: **STAR PLAYER** :star2:)\n"
                     else:
                         desc += "\n"
         print(len(desc))
