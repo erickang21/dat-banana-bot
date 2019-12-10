@@ -313,7 +313,7 @@ class BS(commands.Cog):
         em = discord.Embed(title=f"{profile.name} | #{tag}")
         desc = ""
         desc += f"""
-**{battle['battle']['result'].upper()} - {battle['battle']['type'].title()} ({"+" if battle['battle']['result'] == "victory" else "-" if battle['battle']['result'] == "defeat" else ""}{battle['battle']['trophyChange']})
+**{battle['battle']['result'].upper()} - {battle['battle']['type'].title()}** ({"+" if battle['battle']['result'] == "victory" else "-" if battle['battle']['result'] == "defeat" else ""}{battle['battle']['trophyChange']})
 (**{battle['event']['mode'].title()}**: {battle['event']['map'].title()})
 **Duration:** {self.fmt_time(battle['battle']['duration'])}\n"""
         if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "takedown" or battle['event']['mode'] == "lone star":
