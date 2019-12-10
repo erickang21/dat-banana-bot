@@ -332,7 +332,7 @@ class BS(commands.Cog):
                     else:
                         desc += "\n"
         em.description = desc
-        await ctx.send(len(desc))
+        print(len(desc))
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         await ctx.send(embed=em)
             
