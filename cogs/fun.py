@@ -116,7 +116,7 @@ class fun(commands.Cog):
         except:
             pass
         img = user.avatar_url_as(format="png", size=1024)
-        byte = await (await self.bot.session.get(img)).read();
+        byte = await (await self.bot.session.get(str(img))).read();
         try:
             webhook = await ctx.channel.create_webhook(name=user.display_name, avatar=byte)
         except:
