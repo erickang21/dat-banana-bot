@@ -144,8 +144,6 @@ class BS(commands.Cog):
             profile = await self.client.get_profile(profile_tag)
             club = await profile.get_club()
         else:
-            if re.match("^<@!?[0-9]+>$", tag):
-
             tag = tag.strip('#')
             invalid_chars = self.check_tag(tag)
             if invalid_chars:
