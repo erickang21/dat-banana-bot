@@ -98,7 +98,7 @@ class BS(commands.Cog):
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
         else:
             if re.match("^<@!?[0-9]+>$", tag):
-                userid = tag.strip("<@")
+                userid = tag.strip("<@!")
                 userid = userid.strip(">")
                 try:
                     userid = int(userid)
