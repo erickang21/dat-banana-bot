@@ -1,6 +1,7 @@
 import discord
 import brawlstats
 import box
+import re
 from discord.ext import commands
 
 
@@ -96,10 +97,19 @@ class BS(commands.Cog):
             if not tag:
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
         else:
-            tag = tag.strip('#')
-            invalid_chars = self.check_tag(tag)
-            if invalid_chars:
-                return await ctx.send(f"Invalid characters: {', '.join(invalid_chars)}")
+            if re.match("^<@!?[0-9]+>$", tag):
+                userid = tag.strip("<@")
+                userid = userid.strip(">")
+                try:
+                    userid = int(userid)
+                except:
+                    return await ctx.send(f"Invalid user mention. Please either mention a user, provide a Brawl Stars tag, or don't provide anything if you have your tag saved. {self.bot.get_emoji(468607278313111553)}")
+                tag = await self.get_tag(userid)
+            else:    
+                tag = tag.strip('#')
+                invalid_chars = self.check_tag(tag)
+                if invalid_chars:
+                    return await ctx.send(f"Invalid characters: {', '.join(invalid_chars)}")
 
         profile = await self.client.get_player(tag)
         club = profile.club
@@ -134,6 +144,8 @@ class BS(commands.Cog):
             profile = await self.client.get_profile(profile_tag)
             club = await profile.get_club()
         else:
+            if re.match("^<@!?[0-9]+>$", tag):
+
             tag = tag.strip('#')
             invalid_chars = self.check_tag(tag)
             if invalid_chars:
