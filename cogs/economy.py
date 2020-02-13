@@ -437,7 +437,7 @@ __What to do now?__
                 ]
                 em.description = f"{random.choice(responses)} ¯\_(ツ)_/¯\n\nYou lost: 100 :banana:"
                 await ctx.send(embed=em)
-                await self.bot.get_channel(445332002942484482).send(f"The winning numbers are: {self.lottery_numbers}")
+            
                 await self.place_on_cooldown(ctx.guild, ctx.author, "lottery_cooldown")
 
     @commands.command(aliases=['bet'])
