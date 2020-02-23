@@ -78,6 +78,11 @@ class BS(commands.Cog):
             hours = int(time / 3600 - days * 24)
             minutes = int(time / 60 - hours * 60 - days * 1440)
             return f"{days} days, {hours} hrs, {minutes} mins"
+    
+    def timestamp(self, time):
+        mins = time // 60
+        seconds = time % 60
+        return f"{mins}:{seconds}"
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, brawlstats.RequestError):
@@ -347,7 +352,7 @@ class BS(commands.Cog):
         desc += f"""
 **{battle['battle']['result'].upper()}: {battle['battle']['type'].title()}** ({"+" if battle['battle']['result'] == "victory" else "−" if battle['battle']['result'] == "defeat" else ""}{abs(battle['battle']['trophyChange'])})
 {self.get_event_emoji(battle['event']['mode'].title())} **{battle['event']['map'].title()}**
-**Duration:** {self.fmt_time(battle['battle']['duration'])}\n"""
+**Duration:** {self.timestamp(battle['battle']['duration'])}\n"""
         if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "takedown" or battle['event']['mode'] == "lone star":
             counter = 0
             desc += "__**Players:**__\n"
