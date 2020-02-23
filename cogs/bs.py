@@ -38,7 +38,7 @@ class BS(commands.Cog):
         to_return = discord.utils.get(self.bot.get_guild(645624855580114965).emojis, name=name)
         if not to_return:
             to_return = self.bot.get_emoji(650856644388847637)
-        return to_returnz
+        return to_return
 
     def between(self, number, min, max):
         return min <= number < max
