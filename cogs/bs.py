@@ -352,7 +352,7 @@ class BS(commands.Cog):
         desc += f"""
 **{battle['battle']['result'].upper()}: {battle['battle']['type'].title()}** ({"+" if battle['battle']['result'] == "victory" else "−" if battle['battle']['result'] == "defeat" else ""}{abs(battle['battle']['trophyChange'])})
 {self.get_event_emoji(battle['event']['mode'].title())} **{battle['event']['map'].title()}**
-**Duration:** {self.timestamp(battle['battle']['duration'])}\n"""
+**Duration:** {self.timestamp(battle['battle']['duration'])}\\n"""
         if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "takedown" or battle['event']['mode'] == "lone star":
             counter = 0
             desc += "__**Players:**__\n"
