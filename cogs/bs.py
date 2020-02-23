@@ -208,7 +208,9 @@ class BS(commands.Cog):
         profile = await self.client.get_player(tag)
         starpoints = 0
         trophies_lost = 0
-        em = discord.Embed(color=ctx.author.color, title=f"{profile.name} | #{tag}")
+        em1 = discord.Embed(color=ctx.author.color, title=f"{profile.name} | #{tag}")
+        em2 = discord.Embed(color=ctx.author.color)
+        counter = 0
         not_high_brawlers = ""
         for x in profile.brawlers:
             t = x["trophies"]
@@ -272,12 +274,16 @@ class BS(commands.Cog):
             print(trophy_loss)
             starpoints += total_starpoints
             trophies_lost += trophy_loss
-            if trophy_loss > 0:
-                em.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
+            if trophy_loss > 0 and counter < 24:
+                em1.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
+            elif trophy_loss > 0 and counter >= 24:
+                em2.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
             else:
-                em.add_field(name=f"{self.brawler(x.name)}", value=f"Not high enough.")
-        em.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophies_lost} {self.bot.get_emoji(523919154630361088)}"
-        await ctx.send(embed=em)
+                not_high_brawlers += f"{self.brawler(x.name)} "
+            counter += 1
+        em1.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophies_lost} {self.bot.get_emoji(523919154630361088)}"
+        await ctx.send(embed=em1)
+        await ctx.send(embed=em2)
 
     @commands.command()
     async def bsevents(self, ctx):
