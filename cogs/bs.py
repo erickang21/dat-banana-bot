@@ -268,6 +268,8 @@ class BS(commands.Cog):
             elif t >= 1400:
                 total_starpoints = 480
                 trophy_loss = t - 1100
+            print("BRAWLER : " + x)
+            print(trophy_loss)
             starpoints += total_starpoints
             trophies_lost += trophy_loss
             if trophy_loss > 0:
