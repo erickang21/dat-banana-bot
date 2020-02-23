@@ -279,15 +279,20 @@ class BS(commands.Cog):
             print(trophy_loss)
             starpoints += total_starpoints
             trophies_lost += trophy_loss
-            if trophy_loss > 0 and counter < 24:
+            if trophy_loss > 0 and counter < 25:
                 em1.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
-            elif trophy_loss > 0 and counter >= 24:
+                counter += 1
+            elif trophy_loss > 0 and counter >= 25:
                 em2.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
+                counter += 1
             else:
                 not_high_brawlers += f"{self.brawler(x.name)} "
-            counter += 1
+            
         em1.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophies_lost} {self.bot.get_emoji(523919154630361088)}"
-        em2.add_field(name="Not high enough:", value=not_high_brawlers, inline=False)
+        if counter < 25:
+            em1.add_field(name="Not high enough:", value=not_high_brawlers, inline=False)
+        else:
+            em2.add_field(name="Not high enough:", value=not_high_brawlers, inline=False)
         await ctx.send(embed=em1, edit=False)
         await ctx.send(embed=em2, edit=False)
 
