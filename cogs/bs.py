@@ -273,8 +273,7 @@ class BS(commands.Cog):
             if trophy_loss > 0:
                 em.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
             else:
-                not_high_brawlers += f"{self.brawler(x.name)} "
-        em.add_field(name="Not high enough:", value=not_high_brawlers)
+                em.add_field(name=f"{self.brawler(x.name)}", value=f"Not high enough.")
         em.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophies_lost} {self.bot.get_emoji(523919154630361088)}"
         await ctx.send(embed=em)
 
