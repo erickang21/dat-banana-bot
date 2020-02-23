@@ -274,7 +274,7 @@ class BS(commands.Cog):
                 description += f"{self.brawler(x.name)}: +**{total_starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophy_loss}** {self.bot.get_emoji(523919154630361088)}\n"
         description += f"\nTOTAL: +**{starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophies_lost}** {self.bot.get_emoji(523919154630361088)}"
         await ctx.send(len(description))
-        em.description = description
+        em.description = description[0:2000]
         await ctx.send(embed=em)
 
     @commands.command()
