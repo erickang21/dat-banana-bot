@@ -209,7 +209,6 @@ class BS(commands.Cog):
         starpoints = 0
         trophies_lost = 0
         em = discord.Embed(color=ctx.author.color, title=f"{profile.name} | #{tag}")
-        description = ""
         for x in profile.brawlers:
             t = x["trophies"]
             total_starpoints = 0
@@ -271,10 +270,8 @@ class BS(commands.Cog):
             starpoints += total_starpoints
             trophies_lost += trophy_loss
             if trophy_loss > 0:
-                description += f"{self.brawler(x.name)}: +**{total_starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophy_loss}** {self.bot.get_emoji(523919154630361088)}\n"
-        description += f"\nTOTAL: +**{starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophies_lost}** {self.bot.get_emoji(523919154630361088)}"
-        await ctx.send(len(description))
-        em.description = description[0:2000]
+                em.add_field(name=f"{self.brawler(x.name)}", value=f"+**{total_starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophy_loss}** {self.bot.get_emoji(523919154630361088)}\n")
+        em.description = f"TOTAL: +**{starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophies_lost}** {self.bot.get_emoji(523919154630361088)}"
         await ctx.send(embed=em)
 
     @commands.command()
