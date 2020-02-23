@@ -275,7 +275,7 @@ class BS(commands.Cog):
             else:
                 not_high_brawlers += f"{self.brawler(x.name)} "
         em.description = f"TOTAL: +**{starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophies_lost}** {self.bot.get_emoji(523919154630361088)}"
-        em.add_field(name="Not high enough:", value=not_high_brawlers)
+        em.add_field(name="Not high enough:", value=not_high_brawlers, inline=False)
         await ctx.send(embed=em)
 
     @commands.command()
