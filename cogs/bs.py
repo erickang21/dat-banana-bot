@@ -209,6 +209,7 @@ class BS(commands.Cog):
         starpoints = 0
         trophies_lost = 0
         em = discord.Embed(color=ctx.author.color, title=f"{profile.name} | #{tag}")
+        not_high_brawlers = ""
         for x in profile.brawlers:
             t = x["trophies"]
             total_starpoints = 0
@@ -271,7 +272,10 @@ class BS(commands.Cog):
             trophies_lost += trophy_loss
             if trophy_loss > 0:
                 em.add_field(name=f"{self.brawler(x.name)}", value=f"+**{total_starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophy_loss}** {self.bot.get_emoji(523919154630361088)}\n")
+            else:
+                not_high_brawlers += f"{self.brawler(x.name)} "
         em.description = f"TOTAL: +**{starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophies_lost}** {self.bot.get_emoji(523919154630361088)}"
+        em.add_field(name="Not high enough:", value=not_high_brawlers)
         await ctx.send(embed=em)
 
     @commands.command()
