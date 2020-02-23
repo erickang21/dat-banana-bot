@@ -294,7 +294,8 @@ class BS(commands.Cog):
         else:
             em2.add_field(name="Not high enough:", value=not_high_brawlers, inline=False)
         await ctx.send(embed=em1, edit=False)
-        await ctx.send(embed=em2, edit=False)
+        if counter >= 25:
+            await ctx.send(embed=em2, edit=False)
 
     @commands.command()
     async def bsevents(self, ctx):
