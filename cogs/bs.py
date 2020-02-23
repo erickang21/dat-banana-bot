@@ -46,16 +46,22 @@ class BS(commands.Cog):
     def get_event_emoji(self, name):
         events = {
             "Gemgrab": self.bot.get_emoji(650852285613604890),
+            "Gem Grab": self.bot.get_emoji(650852285613604890),
             "Heist": self.bot.get_emoji(650852285794222138),
             "Bounty": self.bot.get_emoji(650852285395632211),
             "Siege": self.bot.get_emoji(650854441599107103),
             "Brawlball": self.bot.get_emoji(650852285794091047),
+            "Brawl Ball": self.bot.get_emoji(650852285794091047),
             "Lone Star": self.bot.get_emoji(650852284896641024),
             "Takedown": self.bot.get_emoji(650852284934127657),
             "Roborumble": self.bot.get_emoji(650852285131390980),
+            "Robo Rumble": self.bot.get_emoji(650852285131390980),
             "Biggame": self.bot.get_emoji(650852285328523294),
+            "Big Game": self.bot.get_emoji(650852285328523294),
             "Bossfight": self.bot.get_emoji(650852285056024597),
-            "Showdown": self.bot.get_emoji(650852285160751135)
+            "Boss Fight": self.bot.get_emoji(650852285056024597),
+            "Showdown": self.bot.get_emoji(650852285160751135),
+            "Duo Showdown": self.bot.get_emoji(680934625228750925)
         }
         if name in events.keys():
             return events[name]
