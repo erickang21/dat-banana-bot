@@ -208,6 +208,8 @@ class BS(commands.Cog):
         profile = await self.client.get_player(tag)
         starpoints = 0
         trophies_lost = 0
+        em = discord.Embed(color=ctx.author.color, title=f"{profile.name} | #{tag}")
+        description = ""
         for x in profile.brawlers:
             t = x["trophies"]
             total_starpoints = 0
@@ -217,58 +219,62 @@ class BS(commands.Cog):
                 trophy_loss = t - 525
             elif 600 <= t < 650:
                 total_starpoints = 120
-                trophy_loss = t - 550
+                trophy_loss = t - 575
             elif 650 <= t < 700:
                 total_starpoints = 160
-                trophy_loss = t - 575
+                trophy_loss = t - 625
             elif 700 <= t < 750:
                 total_starpoints = 200
-                trophy_loss = t - 600
+                trophy_loss = t - 650
             elif 750 <= t < 800:
                 total_starpoints = 220
-                trophy_loss = t - 625
+                trophy_loss = t - 700
             elif 800 <= t < 850:
                 total_starpoints = 240
-                trophy_loss = t - 650
+                trophy_loss = t - 750
             elif 850 <= t < 899:
                 total_starpoints = 260
-                trophy_loss = t - 675
+                trophy_loss = t - 775
             elif 900 <= t < 950:
                 total_starpoints = 280
-                trophy_loss = t - 700
+                trophy_loss = t - 825
             elif 950 <= t < 1000:
                 total_starpoints = 300
-                trophy_loss = t - 725
+                trophy_loss = t - 875
             elif 1000 <= t < 1050:
                 total_starpoints = 320
-                trophy_loss = t - 750
+                trophy_loss = t - 900
             elif 1050 <= t < 1100:
                 total_starpoints = 340
-                trophy_loss = t - 775
+                trophy_loss = t - 925
             elif 1100 <= t < 1150:
                 total_starpoints = 360
-                trophy_loss = t - 800
+                trophy_loss = t - 950
             elif 1150 <= t < 1200:
                 total_starpoints = 380
-                trophy_loss = t - 825
+                trophy_loss = t - 975
             elif 1200 <= t < 1250:
                 total_starpoints = 400
-                trophy_loss = t - 850
+                trophy_loss = t - 1000
             elif 1250 <= t < 1300:
                 total_starpoints = 420
-                trophy_loss = t - 875
+                trophy_loss = t - 1025
             elif 1300 <= t < 1350:
                 total_starpoints = 440
-                trophy_loss = t - 900
+                trophy_loss = t - 1050
             elif 1350 <= t < 1400:
                 total_starpoints = 460
-                trophy_loss = t - 925
+                trophy_loss = t - 1075
             elif t >= 1400:
                 total_starpoints = 480
-                trophy_loss = t - 950
+                trophy_loss = t - 1100
             starpoints += total_starpoints
             trophies_lost += trophy_loss
-        await ctx.send(f"You will gain **{starpoints}** {self.bot.get_emoji(645617676550668288)} at the end of the season. You will lose **{trophies_lost}** {self.bot.get_emoji(645620279439130639)}. Classy!")
+            if trophy_loss > 0:
+                description += f"{self.brawler(x.name)}: +**{starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophy_loss}** {self.bot.get_emoji(523919154630361088)}\n"
+        description += f"\nTOTAL: +**{total_starpoints}** {self.bot.get_emoji(645617676550668288)} | -**{trophies_lost}** {self.bot.get_emoji(523919154630361088)}"
+        em.description = description
+        await ctx.send(embed=em)
 
     @commands.command()
     async def bsevents(self, ctx):
