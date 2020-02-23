@@ -32,25 +32,29 @@ class BS(commands.Cog):
 
     def brawler(self, name):
         name = name.replace("8-Bit", "8bit")
+        name = name.replace("Mr. P", "mrp")
         name = name.replace(" ", "")
         name = name.lower()
-        return discord.utils.get(self.bot.get_guild(645624855580114965).emojis, name=name)
+        to_return = discord.utils.get(self.bot.get_guild(645624855580114965).emojis, name=name)
+        if not to_return:
+            to_return = self.bot.get_emoji(650856644388847637)
+        return to_returnz
 
     def between(self, number, min, max):
         return min <= number < max
 
     def get_event_emoji(self, name):
         events = {
-            "Gem Grab": self.bot.get_emoji(650852285613604890),
+            "Gemgrab": self.bot.get_emoji(650852285613604890),
             "Heist": self.bot.get_emoji(650852285794222138),
             "Bounty": self.bot.get_emoji(650852285395632211),
             "Siege": self.bot.get_emoji(650854441599107103),
-            "Brawl Ball": self.bot.get_emoji(650852285794091047),
+            "Brawlball": self.bot.get_emoji(650852285794091047),
             "Lone Star": self.bot.get_emoji(650852284896641024),
             "Takedown": self.bot.get_emoji(650852284934127657),
-            "Robo Rumble": self.bot.get_emoji(650852285131390980),
-            "Big Game": self.bot.get_emoji(650852285328523294),
-            "Boss Fight": self.bot.get_emoji(650852285056024597),
+            "Roborumble": self.bot.get_emoji(650852285131390980),
+            "Biggame": self.bot.get_emoji(650852285328523294),
+            "Bossfight": self.bot.get_emoji(650852285056024597),
             "Showdown": self.bot.get_emoji(650852285160751135)
         }
         if name in events.keys():
@@ -114,21 +118,17 @@ class BS(commands.Cog):
         profile = await self.client.get_player(tag)
         club = profile.club
         em = discord.Embed(color=0x00ff00, title=f"{profile.name} (#{profile.tag})")
-        em.add_field(name="Trophies", value=f"{profile.trophies} {self.emoji(523919154630361088)}")
-        em.add_field(name="Highest Trophies", value=f"{profile.highest_trophies} {self.emoji(523919154630361088)}")
-        em.add_field(name="XP Level", value=f"{profile.expLevel} ({profile.exp_fmt}) {self.emoji(523924578314092544)}")
-        em.add_field(name="Victories", value=f"**Total:** {profile.victories} {self.emoji(523919154751733762)}\n\
-            **Solo Showdown:** {profile.solo_showdown_victories} {self.emoji(523923170755870720)}\n\
-            **Duo Showdown:** {profile.duo_showdown_victories} {self.emoji(523923170671984656)}")
-        em.add_field(name="Best Time as Big Brawler", value=f"{profile.best_time_as_big_brawler} {self.emoji(523923170970042378)}")
-        em.add_field(name="Best Robo Rumble Time", value=f"{profile.best_robo_rumble_time} {self.emoji(523926186620092426)}")
-        em.add_field(name="Brawlers", value=f"**{profile.brawlers_unlocked}/30**", inline=False)
+        em.add_field(name=f"Trophies {self.emoji(523919154630361088)}", value=f"{profile.trophies}")
+        em.add_field(name=f"Highest Trophies {self.emoji(523919154630361088)}", value=f"{profile.highest_trophies}")
+        em.add_field(name=f"XP Level {self.emoji(523924578314092544)}", value=f"{profile.expLevel} ({profile.exp_fmt}) ")
+        em.add_field(name=f"3v3 Victories {self.emoji(523919154751733762)}", value=f"{profile.victories}")
+        em.add_field(name=f"Solo Showdown: {self.emoji(523923170755870720)}", value=f"{profile.solo_showdown_victories}")
+        em.add_field(name=f"Duo Showdown: {self.emoji(523923170671984656)}", value=f"{profile.duo_showdown_victories}")
+        em.add_field(name=f"Best Time as Big Brawler {self.emoji(523923170970042378)}", value=f"{profile.best_time_as_big_brawler}")
+        em.add_field(name=f"Best Robo Rumble Time {self.emoji(523926186620092426)}", value=f"{profile.best_robo_rumble_time}")
+        em.add_field(name="Brawlers", value=f"{profile.brawlers_unlocked}/33")
         if club:
-            em.add_field(name="Club", value=f"{club.name} (#{club.tag})", inline=False)
-            em.add_field(name="Role", value=club.role)
-            em.add_field(name="Trophies", value=club.trophies)
-            em.add_field(name="Required Trophies", value=club.required_trophies)
-            em.add_field(name="Members", value=club.members)
+            em.add_field(name="Club", value=f"{club.name} (#{club.tag})")
         else:
             em.add_field(name="Club", value=f"No club. {self.bot.get_emoji(522524669459431430)}")
         em.set_thumbnail(url=profile.avatar_url)
@@ -324,7 +324,7 @@ class BS(commands.Cog):
         desc = ""
         desc += f"""
 **{battle['battle']['result'].upper()}: {battle['battle']['type'].title()}** ({"+" if battle['battle']['result'] == "victory" else "−" if battle['battle']['result'] == "defeat" else ""}{abs(battle['battle']['trophyChange'])})
-(**{battle['event']['mode'].title()}**: {battle['event']['map'].title()})
+{self.get_event_emoji(battle['event']['mode'].title())} **{battle['event']['map'].title()}**
 **Duration:** {self.fmt_time(battle['battle']['duration'])}\n"""
         if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "takedown" or battle['event']['mode'] == "lone star":
             counter = 0
