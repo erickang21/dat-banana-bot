@@ -244,18 +244,7 @@ class mod(commands.Cog):
             pass
         try:
             await user.kick(reason=f"{str(ctx.author)}: {reason}")
-            color = 0xf9e236
-            em = discord.Embed(color=color, title='Kicked!')
-            em.add_field(name='User', value=user.name)
-            em.add_field(name='Kicked By', value=ctx.author.name)
-            if reason is None:
-                reason = 'No reason given.'
-            else:
-                reason = reason
-            em.add_field(name='Reason', value=reason)
-            em.set_thumbnail(url=user.avatar_url)
-            em.set_image(url="https://cdn.weeb.sh/images/H16aQJFvb.gif")
-            await ctx.send(embed=em)
+            await ctx.send(f"The user **{str(user)}** was kicked from this server (by **{ctx.author.name}**). Good riddance! {self.bot.get_emoji(683105327025225746)}")
             modlog = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
             if modlog:
                 em = discord.Embed(color=discord.Color(value=0x00ff00), title="Member Kicked")
@@ -296,16 +285,7 @@ class mod(commands.Cog):
             await user.ban(reason=reason, delete_message_days=0)
         except discord.Forbidden:
             return await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
-        color = 0xf9e236
-        em = discord.Embed(color=color, title='Banned!')
-        em.description = f'The ban hammer has fell down.'
-        em.set_image(url="https://i.kym-cdn.com/photos/images/newsfeed/001/118/143/5ec.gif")
-        em.add_field(name='User', value=user.name)
-        em.add_field(name='Banned By', value=ctx.author.name)
-        reason = reason if reason is not None else 'No reason given.'
-        em.add_field(name='Reason', value=f"{str(ctx.author)}: {reason}")
-        em.set_thumbnail(url=user.avatar_url)
-        await ctx.send(embed=em)
+        await ctx.send(f"The user **{str(user)}** was banned from this server (by **{ctx.author.name}**). Good riddance! {self.bot.get_emoji(683104374603776013)}")
         
     @commands.command()
     @commands.guild_only()
@@ -323,16 +303,7 @@ class mod(commands.Cog):
         user = discord.Object(id)
         try:
             await ctx.guild.unban(user, reason=reason)
-            em = discord.Embed(color=ctx.author.color, title="Member Unbanned!")
-            em.description = "Party CONTINUED!"
-            data = await self.bot.get_user_info(id)
-            em.add_field(name="User", value=str(data))
-            em.add_field(name="ID", value=id)
-            em.add_field(name='Unbanned By', value=ctx.author.name)
-            em.set_image(url="https://media.giphy.com/media/5wWf7GQ50RTXOxjcX5K/giphy.gif")
-            em.add_field(name='Reason', value=reason)
-            em.set_thumbnail(url=data.avatar_url)
-            await ctx.send(embed=em)
+            await ctx.send(f"The user **{str(user)}** was unbanned from this server (by **{ctx.author.name}**). Epic! {self.bot.get_emoji(672100588959432736)}")
         except discord.Forbidden:
             return await ctx.send("Will you look at that? I don't have the **Ban Members** permission for this command.")
 
@@ -476,15 +447,7 @@ class mod(commands.Cog):
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
         
         color = 0xf9e236
-        em = discord.Embed(color=color, title='Banned!')
-        em.add_field(name="User", value=str(data))
-        em.add_field(name="ID", value=id)
-        em.add_field(name='Banned By', value=ctx.author.name)
-        em.set_image(url="https://i.kym-cdn.com/photos/images/newsfeed/001/118/143/5ec.gif")
-        reason = reason if reason is not None else 'No reason given.'
-        em.add_field(name='Reason', value=reason)
-        em.set_thumbnail(url=data.avatar_url)
-        await ctx.send(embed=em)
+        await ctx.send(f"The user **{str(data)}** was hackbanned from this server (by **{ctx.author.name}**). Good riddance! {self.bot.get_emoji(683104374603776013)}")
         
 
 
