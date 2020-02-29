@@ -300,7 +300,7 @@ class mod(commands.Cog):
         bans = list(map(lambda e: e[1].id, await ctx.guild.bans()))
         if id not in bans:
             return await ctx.send("Uh-oh! It looks like one of two things just went down:\n1) The User ID is completely garbage and invalid.\n2) This user was not banned.")
-        user = discord.Object(id)
+        user = await self.bot.fetch_user(id)
         try:
             await ctx.guild.unban(user, reason=reason)
             await ctx.send(f"The user **{str(user)}** was unbanned from this server (by **{ctx.author.name}**). Epic! {self.bot.get_emoji(672100588959432736)}")
