@@ -467,14 +467,14 @@ class mod(commands.Cog):
             id = int(id)
         except ValueError:
             return await ctx.send("Did you enter a valid user ID?")
-        lol = discord.Object(id)
-        if not lol:
+        data = await self.bot.fetch_user(id)
+        if not data:
             return await ctx.send("Invalid ID provided.")
         try:
-            await ctx.guild.ban(lol, reason=reason, delete_message_days=0)
+            await ctx.guild.ban(data, reason=reason, delete_message_days=0)
         except discord.Forbidden:
             await ctx.send("Oops! I don't have enough permissions to swing this ban hammer.")
-        data = await self.bot.get_user_info(id)
+        
         color = 0xf9e236
         em = discord.Embed(color=color, title='Banned!')
         em.add_field(name="User", value=str(data))
