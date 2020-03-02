@@ -19,6 +19,7 @@ from discord.ext import commands
 import json
 import ezjson
 import colorama
+import difflib
 from box import Box
 from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
@@ -902,7 +903,14 @@ async def on_command_error(ctx, error):
 
         return await ctx.send(f"BAKA! You're using this command too fast. Don't make me repeat myself, and wait for **{actual_time}**.", edit=False)
     elif isinstance(error, commands.CommandNotFound):
-        pass
+        msg = ctx.message
+        prefix_name = msg.split(" ")[0]
+        command_name = msg.split(" ")[1]
+        matches = difflib.get_close_matches(command_name, [x.name for x in bot.commands])
+        response = f"**The command you ran does not exist!** {bot.get_emoji(573935938691137541)}"
+        if len(matches):
+            response += f"\n\nDid you mean: {ctx.prefix} {matches[0]}"
+        await ctx.send(response)
     else:
         error_code = ""
         for x in range(10):

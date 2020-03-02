@@ -81,6 +81,13 @@ class mod(commands.Cog):
     #         return await ctx.send("Reactionrole command:\n*reactionrole [on/off]")
 
     @commands.command()
+    @commands.has_permissions(manage_nicknames=True)
+    async def rename(self, ctx, user: discord.Member, nick):
+        """Changes a user's nickname for the server."""
+        await user.edit(nick=nick)
+        await ctx.send(f"Success. The user **{str(user)}** is renamed to **{nick}**. {self.bot.get_emoji(522530578860605442)}")
+
+    @commands.command()
     @commands.has_permissions(ban_members=True)
     async def raidmode(self, ctx, action=None):
         if not action:

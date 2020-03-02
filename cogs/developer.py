@@ -170,7 +170,7 @@ class Developer(commands.Cog):
                 msg = await ctx.send(f"Restarting... {self.bot.get_emoji(471279983197814806)}")
                 with open("restart.txt", "w") as f:
                     f.write(f"{ctx.channel.id}\n{msg.id}")
-                os.execv(sys.executable, ['python'] + ['bot.py'])
+                subprocess.run("pm2 restart 0", cwd=os.getcwd(), stdout=subprocess.PIPE, shell=True).stdout.decode('utf-8')
         except Exception as e:
             await msg.edit(content=f"An error occured. :x: \n\nDetails: \n{e}")
 
