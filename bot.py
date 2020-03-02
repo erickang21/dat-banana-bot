@@ -909,7 +909,7 @@ async def on_command_error(ctx, error):
         matches = difflib.get_close_matches(command_name, [x.name for x in bot.commands])
         response = f"**The command you ran does not exist!** {bot.get_emoji(573935938691137541)}"
         if len(matches):
-            response += f"\n\nDid you mean: {ctx.prefix} {matches[0]}"
+            response += f"\n\nDid you mean: {ctx.prefix}{matches[0]}"
         await ctx.send(response)
     else:
         error_code = ""
