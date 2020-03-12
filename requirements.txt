@@ -43,7 +43,7 @@ porndetective==1.0.6
 praw==5.4.0
 prawcore==0.14.0
 protobuf==3.5.2.post1
-psutil==5.4.3
+psutil==5.6.6
 py-expression-eval==0.3.4
 pyasn1==0.4.3
 pyasn1-modules==0.2.1
