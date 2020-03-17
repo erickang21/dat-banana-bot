@@ -215,9 +215,9 @@ class BS(commands.Cog):
 **Brawlers:** {len(profile.brawlers)}/30
 **Average Trophies:** {int(average/len(profile.brawlers))}
         """
-        await ctx.send(embed=em1)
+        await ctx.send(embed=em1, edit=False)
         if counter >= 25:
-            await ctx.send(embed=em2)
+            await ctx.send(embed=em2, edit=False)
 
     @commands.command()
     async def bsseason(self, ctx, tag=None):
