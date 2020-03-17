@@ -247,7 +247,8 @@ class BS(commands.Cog):
         em2 = discord.Embed(color=ctx.author.color)
         counter = 0
         not_high_brawlers = ""
-        for x in profile.brawlers:
+        brawlers = self.sort_brawlers(profile.brawlers)
+        for x in brawlers:
             t = x["trophies"]
             total_starpoints = 0
             trophy_loss = 0
