@@ -27,6 +27,15 @@ class BS(commands.Cog):
         return found_tag
 
 
+
+    async def sort_brawlers(self, brawlers):
+        trophy_list = sorted([x['trophies'] for x in brawlers])
+        sorted_list = []
+        for brawler in brawlers:
+            sorted_list[trophy_list.index(brawler['trophies'])] = brawler
+        return sorted_list
+
+
     def emoji(self, _id):
         return self.bot.get_emoji(_id)
 
@@ -185,16 +194,26 @@ class BS(commands.Cog):
                 return await ctx.send(f"Invalid characters: {', '.join(invalid_chars)}")
 
         profile = await self.client.get_player(tag)
-        em = discord.Embed(title=f"{profile.name} | #{tag}")
+        em1 = discord.Embed(title=f"{profile.name} | #{tag}")
+        em2 = discord.Embed()
         average = 0
-        for x in profile.brawlers:
-            em.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"R. **{x['rank']}**: {x['power']} {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} | {x['trophies']} {self.bot.get_emoji(645733305123078155)} | {x['highestTrophies']} {self.bot.get_emoji(645734801139302430)}")
+        counter = 0
+        brawlers = self.sort_brawlers(profile.brawlers)
+        for x in brawlers:
+            rank_emoji = discord.utils.get(self.bot.get_guild(523916552014397450).emojis, name=f"r{x['rank']}")
+            if counter < 25:
+                em1.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"{rank_emoji} `{x['power']}` {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} {x['trophies']}/{x['highestTrophies']}")
+            else:
+                em2.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"{rank_emoji} `{x['power']}` {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} {x['trophies']}/{x['highestTrophies']}")
             average += x["trophies"]
-        em.description = f"""
+            counter += 1
+        em1.description = f"""
 **Brawlers:** {len(profile.brawlers)}/30
 **Average Trophies:** {int(average/len(profile.brawlers))}
         """
-        await ctx.send(embed=em)
+        await ctx.send(embed=em1)
+        if counter >= 25:
+            await ctx.send(embed=em2)
 
     @commands.command()
     async def bsseason(self, ctx, tag=None):
