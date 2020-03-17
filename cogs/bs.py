@@ -29,13 +29,19 @@ class BS(commands.Cog):
 
 
     def sort_brawlers(self, brawlers):
+        brawler_list = []
+        for x in brawlers:
+            x = x.update({"sorted": False})
+            brawler_list.append(x)
         trophy_list = sorted([x['trophies'] for x in brawlers])
         sorted_list = []
         counter = 0
         while counter < len(brawlers):
-            for brawler in brawlers:
-                if trophy_list[counter] == brawler['trophies']:
+            for brawler in brawler_list:
+                if trophy_list[counter] == brawler['trophies'] and not brawler_list["sorted"]:
                     sorted_list.append(brawler)
+                    brawler_list[brawler_list.index(brawler)]["sorted"] = True
+                    break
             counter += 1
         return sorted_list
 
