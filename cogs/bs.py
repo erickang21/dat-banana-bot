@@ -31,7 +31,7 @@ class BS(commands.Cog):
     def sort_brawlers(self, brawlers):
         brawler_list = []
         for x in brawlers:
-            x = x.update({"sorted": False})
+            x.update({"sorted": False})
             brawler_list.append(x)
         print(brawler_list)
         trophy_list = sorted([x['trophies'] for x in brawlers])
