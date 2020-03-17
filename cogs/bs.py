@@ -44,7 +44,7 @@ class BS(commands.Cog):
                     brawler_list[brawler_list.index(brawler)]["sorted"] = True
                     break
             counter += 1
-        return sorted_list
+        return reversed(sorted_list)
 
 
     def emoji(self, _id):
