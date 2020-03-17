@@ -39,7 +39,7 @@ class BS(commands.Cog):
         counter = 0
         while counter < len(brawlers):
             for brawler in brawler_list:
-                if trophy_list[counter] == brawler['trophies'] and not brawler_list["sorted"]:
+                if trophy_list[counter] == brawler['trophies'] and not brawler["sorted"]:
                     sorted_list.append(brawler)
                     brawler_list[brawler_list.index(brawler)]["sorted"] = True
                     break
