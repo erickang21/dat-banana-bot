@@ -28,7 +28,7 @@ class BS(commands.Cog):
 
 
 
-    async def sort_brawlers(self, brawlers):
+    def sort_brawlers(self, brawlers):
         trophy_list = sorted([x['trophies'] for x in brawlers])
         sorted_list = []
         for brawler in brawlers:
