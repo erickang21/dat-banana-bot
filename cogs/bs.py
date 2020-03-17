@@ -219,7 +219,7 @@ class BS(commands.Cog):
             average += x["trophies"]
             counter += 1
         em1.description = f"""
-**Brawlers:** {len(profile.brawlers)}/30
+**Brawlers:** {len(profile.brawlers)}/33
 **Average Trophies:** {int(average/len(profile.brawlers))}
         """
         await ctx.send(embed=em1, edit=False)
