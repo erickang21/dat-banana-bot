@@ -654,10 +654,11 @@ Think of it as a server-wide pins channel.
     async def modlog(self, ctx, action=None):
         if action is None:
             x = await self.bot.db.modlog.find_one({"id": str(ctx.guild.id)})
-            em = discord.Embed(color=0x00ff00, title="Mod Log Status")
-            em.description = f"Mod logs are enabled in this server, in <#{x['channel']}>."
             if x is None:
                 em.description = 'Mod logs are turned off for this server.'
+            em = discord.Embed(color=0x00ff00, title="Mod Log Status")
+            em.description = f"Mod logs are enabled in this server, in <#{x['channel']}>."
+            em.set_footer(text=f"Did you want to turn modlogs on or off? Use the command: {ctx.prefix} modlog on/{ctx.prefix} modlog off.")
             return await ctx.send(embed=em)
         if action.lower() == 'on':
             await ctx.send("Please mention the channel for mod logs to be sent in.")
