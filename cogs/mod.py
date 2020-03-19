@@ -82,10 +82,14 @@ class mod(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_nicknames=True)
-    async def rename(self, ctx, user: discord.Member, nick):
+    async def rename(self, ctx, user: discord.Member, *, nick=None):
         """Changes a user's nickname for the server."""
-        await user.edit(nick=nick)
-        await ctx.send(f"Success. The user **{str(user)}** is renamed to **{nick}**. {self.bot.get_emoji(522530578860605442)}")
+        if nick:
+            await user.edit(nick=nick)
+            await ctx.send(f"Success. The user **{str(user)}** is renamed to **{nick}**. {self.bot.get_emoji(522530578860605442)}")
+        else:
+            await user.edit(nick=None)
+            await ctx.send(f"Success. The user **{str(user)}**'s nickname has been cleared. {self.bot.get_emoji(522530578860605442)}")
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
