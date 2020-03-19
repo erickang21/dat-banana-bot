@@ -334,25 +334,27 @@ class BS(commands.Cog):
         events = await self.client.get_events()
         current_events = events.current
         next_events = events.upcoming
-        em = discord.Embed(title=f"Brawl Stars Events", color=ctx.author.color)
+        em1 = discord.Embed(title=f"Current Events", color=ctx.author.color)
         desc = ""
-        desc += "**__Current__**\n"
         for e in current_events:
             e = box.Box(e)
             desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}\n{self.bot.get_emoji(650865620094681108)} **Ends in:** {self.fmt_time(e.endTimeInSeconds)}"
             if e.hasModifier:
                 desc += f" (Modifier: {e.modifierName})"
             desc += "\n\n"
-        desc += "\n**__Upcoming__**\n"
+        em1.description = desc
+        desc = ""
+        em2 = discord.Embed(title="Upcoming Events", color=ctx.author.color)
         for e in next_events:
             e = box.Box(e)
             desc += f"{self.get_event_emoji(e.gameMode)}{e.slotName}: **{e.gameMode}**\n{e.mapName}\n{self.bot.get_emoji(650865620094681108)} **Starts in:** {self.fmt_time(e.startTimeInSeconds)}"
             if e.hasModifier:
                 desc += f" (Modifier: **{e.modifierName}**)"
             desc += "\n\n"
-        em.description = desc
-        em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
-        await ctx.send(embed=em)
+        em2.description = desc
+        em2.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+        await ctx.send(embed=em1, edit=False)
+        await ctx.send(embed=em2, edit=False)
         
     @commands.command()
     async def bstimes(self, ctx):
