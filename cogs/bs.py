@@ -426,10 +426,9 @@ class BS(commands.Cog):
         url_name = url_name.replace("Or", "or")
         url = f"https://www.starlist.pro/assets/map-high/{url_name}.png?v=5"
         resp = await self.bot.session.get(url)
-        try:
-            resp = await resp.read()
-        except:
-            return await ctx.send(f"That is not a valid map name! {self.bot.get_emoji(656306037531475989)}")
+        resp = await resp.read()
+        if "404 Not Found" in str(resp):
+            return await ctx.send(f"This map does not exist! {self.bot.get_emoji(656306037531475989)}")
         em = discord.Embed(title=name.title())
         em.set_image(url=url)
         em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
