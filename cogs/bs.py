@@ -421,9 +421,10 @@ class BS(commands.Cog):
     @commands.command()
     async def bsmap(self, ctx, *, name):
         """Gets a Brawl Stars map image."""
-        name = name.title()
-        name = name.replace(" ", "-")
-        url = f"https://www.starlist.pro/assets/map-high/{name}.png?v=5"
+        url_name = name.title()
+        url_name = name.replace(" ", "-")
+        url_name = name.replace("Or", "or")
+        url = f"https://www.starlist.pro/assets/map-high/{url_name}.png?v=5"
         resp = await self.bot.session.get(url)
         try:
             resp = await resp.read()
