@@ -306,8 +306,6 @@ class BS(commands.Cog):
             elif t >= 1400:
                 total_starpoints = 480
                 trophy_loss = t - 1100
-            print("BRAWLER : " + x['name'])
-            print(trophy_loss)
             starpoints += total_starpoints
             trophies_lost += trophy_loss
             if trophy_loss > 0 and counter < 25:
@@ -320,6 +318,8 @@ class BS(commands.Cog):
                 not_high_brawlers += f"{self.brawler(x.name)} "
             
         em1.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophies_lost} {self.bot.get_emoji(523919154630361088)}"
+        if not not_high_brawlers:
+            not_high_brawlers = "No brawlers below 550!"
         if counter < 25:
             em1.add_field(name="Not high enough:", value=not_high_brawlers, inline=False)
         else:
