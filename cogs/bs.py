@@ -358,16 +358,17 @@ class BS(commands.Cog):
         
     @commands.command()
     async def bstimes(self, ctx):
-        await ctx.trigger_typing()
-        data = await self.client.get_misc()
-        em = discord.Embed(title="Brawl Stars Reset Times", color=ctx.author.color)
-        em.description = f"""
-**Times until...**
-{self.bot.get_emoji(650865620094681108)} **Shop Reset:** {self.fmt_time(data.time_until_shop_reset_in_seconds)}
-{self.bot.get_emoji(650865620094681108)} **Season Reset:** {self.fmt_time(data.time_until_season_end_in_seconds)}
-        """
-        em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
-        await ctx.send(embed=em)
+        await ctx.send(f"This command is currently disabled due to API errors. We apologize for the inconvenience. {self.bot.get_emoji(666316667671937034)}")
+        #await ctx.trigger_typing()
+        #data = await self.client.get_misc()
+        #em = discord.Embed(title="Brawl Stars Reset Times", color=ctx.author.color)
+        #em.description = f"""
+#**Times until...**
+#{self.bot.get_emoji(650865620094681108)} **Shop Reset:** {self.fmt_time(data.time_until_shop_reset_in_seconds)}
+#{self.bot.get_emoji(650865620094681108)} **Season Reset:** {self.fmt_time(data.time_until_season_end_in_seconds)}
+#        """
+#        em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+#        await ctx.send(embed=em)
     
     @commands.command()
     async def bsbattle(self, ctx, tag=None):
@@ -387,12 +388,16 @@ class BS(commands.Cog):
         #battle = box.Box(battle)
         profile = await self.client.get_profile(tag)
         em = discord.Embed(title=f"{profile.name} | #{tag}")
+        if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "duoShowdown":
+            result = f"**{battle['battle']['type'].title()}**: Rank {battle['battle']['rank']}"
+        else:
+            result = f"**{battle['battle']['result'].upper()}: {battle['battle']['type'].title()}** ({'+' if battle['battle']['result'] == 'victory' else '−' if battle['battle']['result'] == 'defeat' else ''}{abs(battle['battle']['trophyChange'])})"
         desc = ""
         desc += f"""
-**{battle['battle']['result'].upper()}: {battle['battle']['type'].title()}** ({"+" if battle['battle']['result'] == "victory" else "−" if battle['battle']['result'] == "defeat" else ""}{abs(battle['battle']['trophyChange'])})
+{result}
 {self.get_event_emoji(battle['event']['mode'].title())} **{battle['event']['map'].title()}**
 **Duration:** {self.timestamp(battle['battle']['duration'])}\n\n"""
-        if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "takedown" or battle['event']['mode'] == "lone star":
+        if battle['event']['mode'] == "showdown" or battle['event']['mode'] == "duoShowdown":
             counter = 0
             desc += "__**Players:**__\n"
             for x in battle['battle']['players']:
@@ -413,7 +418,21 @@ class BS(commands.Cog):
         em.set_footer(text=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         await ctx.send(embed=em)
             
-
+    @commands.command()
+    async def bsmap(self, ctx, *, name):
+        """Gets a Brawl Stars map image."""
+        name = name.title()
+        name = name.replace(" ", "-")
+        url = f"https://www.starlist.pro/assets/map-high/{name}.png?v=5"
+        resp = await self.bot.session.get(url)
+        try:
+            resp = await resp.read()
+        except:
+            return await ctx.send(f"That is not a valid map name! {self.bot.get_emoji(656306037531475989)}")
+        em = discord.Embed(title=name)
+        em.set_image(url=url)
+        em.set_footer(text=f"Requested by: {str(ctx.author)}", icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=em)
 
 def setup(bot):
     bot.add_cog(BS(bot))
