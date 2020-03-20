@@ -422,8 +422,8 @@ class BS(commands.Cog):
     async def bsmap(self, ctx, *, name):
         """Gets a Brawl Stars map image."""
         url_name = name.title()
-        url_name = name.replace(" ", "-")
-        url_name = name.replace("Or", "or")
+        url_name = url_name.replace(" ", "-")
+        url_name = url_name.replace("Or", "or")
         url = f"https://www.starlist.pro/assets/map-high/{url_name}.png?v=5"
         resp = await self.bot.session.get(url)
         try:
