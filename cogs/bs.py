@@ -188,7 +188,7 @@ class BS(commands.Cog):
         em.add_field(name=f"Duo Showdown: {self.emoji(523923170671984656)}", value=f"{profile.duo_showdown_victories}")
         em.add_field(name=f"Best Time as Big Brawler {self.emoji(523923170970042378)}", value=f"{profile.best_time_as_big_brawler}")
         em.add_field(name=f"Best Robo Rumble Time {self.emoji(523926186620092426)}", value=f"{profile.best_robo_rumble_time}")
-        em.add_field(name="Brawlers", value=f"{profile.brawlers_unlocked}/33")
+        em.add_field(name="Brawlers", value=f"{profile.brawlers_unlocked}/34")
         if club:
             em.add_field(name="Club", value=f"{club.name} (#{club.tag})")
         else:
@@ -284,7 +284,7 @@ class BS(commands.Cog):
             average += x["trophies"]
             counter += 1
         em1.description = f"""
-**Brawlers:** {len(profile.brawlers)}/33
+**Brawlers:** {len(profile.brawlers)}/34
 **Average Trophies:** {int(average/len(profile.brawlers))}
         """
         await ctx.send(embed=em1, edit=False)
