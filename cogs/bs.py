@@ -204,14 +204,14 @@ class BS(commands.Cog):
             if not tag:
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
             profile = await self.client.get_player(tag)
-            club = profile.club
+            club = await self.client.get_club(profile.club.tag)
         else:
             if re.match("[0-9]+", tag):
                 tag = await self.get_tag(ctx.author.id, int(tag) - 1)
                 if not tag:
                     return await ctx.send("That Brawl Stars account does not exist on your profile. Run `uwu bslisttags` to see a list of the saved accounts. To use the multi-account feature, run `uwu bsprofile [number of account on list]`")
                 profile = await self.client.get_player(tag)
-                club = profile.club
+                club = await self.client.get_club(profile.club.tag)
             elif re.match("^<@!?[0-9]+>$", tag):
                 userid = tag.strip("<@!")
                 userid = userid.strip(">")
@@ -223,7 +223,7 @@ class BS(commands.Cog):
                 if not tag:
                     return await ctx.send("That user didn't save a Brawl Stars tag to their profile!")
                 profile = await self.client.get_player(tag)
-                club = profile.club
+                club = await self.client.get_club(profile.club.tag)
             else:
                 tag = tag.strip('#')
                 invalid_chars = self.check_tag(tag)
