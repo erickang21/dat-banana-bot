@@ -120,9 +120,33 @@ class BS(commands.Cog):
         invalid_chars = self.check_tag(tag)
         if invalid_chars:
             return await ctx.send(f"That's an invalid tag! {self.bot.get_emoji(468607278313111553)}")
-        await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": tag}}, upsert=True)
-        await ctx.send(f"Your Brawl Stars tag has been successfully saved. {self.emoji(484897652220362752)}")
+        match = await self.bot.db.bstags.find_one({"id": ctx.author.id})
+        accounts = 0
+        if len(match['tag']) > 10:
+            return await ctx.send("You can have a maximum of 10 accounts saved on this bot.")
+        if not match:
+            await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": [tag]}}, upsert=True)
+        else:
+            tag_list = match['tag']
+            tag_list.append(tag)
+            accounts = len(tag_list)
+            await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": tag_list}})
+        await ctx.send(f"Your Brawl Stars tag has been successfully saved. {self.emoji(484897652220362752)}\n\n**Number of accounts saved:** {accounts}")
 
+    @commands.command()
+    async def bslisttags(self, ctx):
+        """Lists all the tags saved to your Discord account."""
+        match = await self.bot.db.bstags.find_one({"id": ctx.author.id})
+        if not match:
+            return await ctx.send("You don't have any accounts saved on this bot!")
+        em = discord.Embed(color=ctx.author.color, title="Brawl Stars Accounts")
+        count = 1
+        desc = f"**Total:** {len(match['tag'])}\n\n"
+        for tag in match['tag']:
+            profile = await self.client.get_player(tag)
+            desc += f"`#{count}:` {profile.name} (#{profile.tag})\n"
+        em.description = desc
+        await ctx.send(embed=em)
 
     @commands.command()
     async def bsprofile(self, ctx, tag=None):
