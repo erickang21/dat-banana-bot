@@ -296,6 +296,30 @@ class BS(commands.Cog):
         """Find your end-of-season rewards and trophy loss."""
         await ctx.trigger_typing()
         if not tag:
+            tag = await self.get_tag(ctx.author.id, 0)
+            if not tag:
+                return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
+        else:
+            if re.match("[0-9]+", tag):
+                tag = await self.get_tag(ctx.author.id, int(tag) - 1)
+                if not tag:
+                    return await ctx.send("That Brawl Stars account does not exist on your profile. Run `uwu bslisttags` to see a list of the saved accounts. To use the multi-account feature, run `uwu bsprofile [number of account on list]`")
+            elif re.match("^<@!?[0-9]+>$", tag):
+                userid = tag.strip("<@!")
+                userid = userid.strip(">")
+                try:
+                    userid = int(userid)
+                except:
+                    return await ctx.send(f"Invalid user mention. Please either mention a user, provide a Brawl Stars tag, or don't provide anything if you have your tag saved. {self.bot.get_emoji(468607278313111553)}")
+                tag = await self.get_tag(userid, 0)
+                if not tag:
+                    return await ctx.send("That user didn't save a Brawl Stars tag to their profile!")
+            else:    
+                tag = tag.strip('#')
+                invalid_chars = self.check_tag(tag)
+                if invalid_chars:
+                    return await ctx.send(f"Invalid characters: {', '.join(invalid_chars)}")
+        if not tag:
             tag = await self.get_tag(ctx.author.id)
             if not tag:
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
@@ -439,6 +463,30 @@ class BS(commands.Cog):
     async def bsbattle(self, ctx, tag=None):
         """Gets the last battle the player did."""
         await ctx.trigger_typing()
+        if not tag:
+            tag = await self.get_tag(ctx.author.id, 0)
+            if not tag:
+                return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
+        else:
+            if re.match("[0-9]+", tag):
+                tag = await self.get_tag(ctx.author.id, int(tag) - 1)
+                if not tag:
+                    return await ctx.send("That Brawl Stars account does not exist on your profile. Run `uwu bslisttags` to see a list of the saved accounts. To use the multi-account feature, run `uwu bsprofile [number of account on list]`")
+            elif re.match("^<@!?[0-9]+>$", tag):
+                userid = tag.strip("<@!")
+                userid = userid.strip(">")
+                try:
+                    userid = int(userid)
+                except:
+                    return await ctx.send(f"Invalid user mention. Please either mention a user, provide a Brawl Stars tag, or don't provide anything if you have your tag saved. {self.bot.get_emoji(468607278313111553)}")
+                tag = await self.get_tag(userid, 0)
+                if not tag:
+                    return await ctx.send("That user didn't save a Brawl Stars tag to their profile!")
+            else:    
+                tag = tag.strip('#')
+                invalid_chars = self.check_tag(tag)
+                if invalid_chars:
+                    return await ctx.send(f"Invalid characters: {', '.join(invalid_chars)}")
         if not tag:
             tag = await self.get_tag(ctx.author.id)
             if not tag:
