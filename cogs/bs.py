@@ -158,7 +158,7 @@ class BS(commands.Cog):
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
         else:
             if re.match("[0-9]+", tag):
-                tag = await self.get_tag(ctx.author.id, tag - 1)
+                tag = await self.get_tag(ctx.author.id, int(tag) - 1)
                 if not tag:
                     return await ctx.send("That Brawl Stars account does not exist on your profile. Run `uwu bslisttags` to see a list of the saved accounts. To use the multi-account feature, run `uwu bsprofile [number of account on list]`")
             elif re.match("^<@!?[0-9]+>$", tag):
@@ -205,7 +205,7 @@ class BS(commands.Cog):
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
         else:
             if re.match("[0-9]+", tag):
-                tag = await self.get_tag(ctx.author.id, tag - 1)
+                tag = await self.get_tag(ctx.author.id, int(tag) - 1)
                 if not tag:
                     return await ctx.send("That Brawl Stars account does not exist on your profile. Run `uwu bslisttags` to see a list of the saved accounts. To use the multi-account feature, run `uwu bsprofile [number of account on list]`")
             elif re.match("^<@!?[0-9]+>$", tag):
@@ -244,7 +244,7 @@ class BS(commands.Cog):
                 return await ctx.send("You didn't save a Brawl Stars tag to your profile. Time to get it saved!")
         else:
             if re.match("[0-9]+", tag):
-                tag = await self.get_tag(ctx.author.id, tag - 1)
+                tag = await self.get_tag(ctx.author.id, int(tag) - 1)
                 if not tag:
                     return await ctx.send("That Brawl Stars account does not exist on your profile. Run `uwu bslisttags` to see a list of the saved accounts. To use the multi-account feature, run `uwu bsprofile [number of account on list]`")
             elif re.match("^<@!?[0-9]+>$", tag):
