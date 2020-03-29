@@ -57,11 +57,11 @@ class Developer(commands.Cog):
         if not self.dev_check(ctx.author.id):
             return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {self.bot.get_emoji(691757044361068574)}")
         if not message:
-            await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
-            return await ctx.send()
+            await self.bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
+            return await ctx.send(f"The bot's status message has been cleared! {self.bot.get_emoji(692476302233567342)}")
         else:
-            await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers | {message}"))
-
+            await self.bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers | {message}"))
+            return await ctx.send(f"The bot's status message has been set! {self.bot.get_emoji(692476302233567342)}")
 
     @commands.command()
     async def error(self, ctx, code):
