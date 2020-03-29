@@ -138,7 +138,7 @@ async def on_ready():
     #if msg:
     #    await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
     print('Bot is online, and ready to ROLL!')
-    await bot.change_presence(activity=discord.Game(name="uwu help for help. What else?"))
+    await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
 
 
 @bot.event
@@ -568,6 +568,7 @@ async def on_reaction_remove(reaction, user):
 
 @bot.event
 async def on_guild_join(guild):
+    await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
     await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": True, "users": []}}, upsert=True)
     logs_channel = bot.get_channel(559511019190353920)
     em = discord.Embed(color=discord.Color(value=0x00ff00))
@@ -629,6 +630,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
 
 @bot.event
 async def on_guild_remove(guild):
+    await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
     logs_channel = bot.get_channel(559511019190353920)
     em = discord.Embed(color=discord.Color(value=0xf44242))
     em.title = "I've left a server..."
