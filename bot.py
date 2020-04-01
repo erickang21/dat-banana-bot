@@ -990,7 +990,10 @@ async def ping(ctx):
     new_message = f"**I'm back! Latency:**\n{bot.latency * 1000:.2f} ms {bot.get_emoji(555121530074562630)}"
     await msg.edit(content=new_message)
   
-        
+@bot.command()
+async def sharkrun(ctx):
+    await ctx.send(bot.get_emoji(694707308126797895))
+
 @bot.command()
 async def invite(ctx):
     """Allow my bot to join the hood. YOUR hood."""
