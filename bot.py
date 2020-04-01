@@ -992,6 +992,7 @@ async def ping(ctx):
   
 @bot.command()
 async def sharkrun(ctx):
+    await ctx.message.delete()
     await ctx.send(bot.get_emoji(694707308126797895))
 
 @bot.command()
