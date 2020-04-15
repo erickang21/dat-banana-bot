@@ -122,10 +122,11 @@ class BS(commands.Cog):
             return await ctx.send(f"That's an invalid tag! {self.bot.get_emoji(468607278313111553)}")
         match = await self.bot.db.bstags.find_one({"id": ctx.author.id})
         accounts = 0
-        if len(match['tag']) > 10:
-            return await ctx.send("You can have a maximum of 10 accounts saved on this bot.")
         if not match:
             await self.bot.db.bstags.update_one({"id": ctx.author.id}, {"$set": {"tag": [tag]}}, upsert=True)
+            accounts = 1
+        elif len(match['tag']) > 10:
+            return await ctx.send("You can have a maximum of 10 accounts saved on this bot.")
         else:
             tag_list = match['tag']
             tag_list.append(tag)
