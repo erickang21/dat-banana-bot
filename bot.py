@@ -983,9 +983,10 @@ async def say(ctx, *, message: commands.clean_content()):
         await ctx.send(message)                   
 
 @bot.command(hidden=True)
-async def mcmessage(ctx, user: discord.Member):
-    if user.id != 304737539846045696:
+async def mcmessage(ctx, user: int):
+    if user != 304737539846045696:
         return
+    user = await bot.fetch_user(user)
     message = """
 Thank you for signing up for the Minecraft 1.16 survival server! You may now join using the account you signed up with.
 
@@ -999,6 +1000,7 @@ Do not give this IP to anyone else. They must register themselves for it.
 If you need any support or have any questions, contact kawaii banana#6969.
     """
     await user.send(message)
+    await ctx.send(f"Done! Sent to **{str(user)}**")
 
 @bot.command()
 async def ping(ctx):
