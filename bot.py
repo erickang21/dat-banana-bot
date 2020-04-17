@@ -984,7 +984,7 @@ async def say(ctx, *, message: commands.clean_content()):
 
 @bot.command(hidden=True)
 async def mcmessage(ctx, user: int):
-    if user != 304737539846045696:
+    if ctx.author.id != 304737539846045696:
         return
     user = await bot.fetch_user(user)
     message = """
