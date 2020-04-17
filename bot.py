@@ -981,7 +981,24 @@ async def say(ctx, *, message: commands.clean_content()):
         pass
     finally:
         await ctx.send(message)                   
-                       
+
+@bot.command(hidden=True)
+async def mcmessage(ctx, user: discord.Member):
+    if user.id != 304737539846045696:
+        return
+    message = """
+Thank you for signing up for the Minecraft 1.16 survival server! You may now join using the account you signed up with.
+
+Ensure that your launcher is set to use the **snapshot 20w16a**. Any launcher, official or cracked, is allowed for this. 
+
+Upon joining, you will enter a lobby. This small lobby has nothing to do with the server, it is just a small guide! Please press the button in the lobby ONCE to get your starter kit. Do NOT press it more than once. Do not try to escape the lobby. Go through the portal immediately and exit the doors when you go into the Nether to begin your adventure!
+
+Join using the Server IP: `bananamc.tk`
+Do not give this IP to anyone else. They must register themselves for it.
+
+If you need any support or have any questions, contact kawaii banana#6969.
+    """
+    await user.send(message)
 
 @bot.command()
 async def ping(ctx):
