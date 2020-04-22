@@ -912,7 +912,8 @@ async def on_command_error(ctx, error):
         response = f"**The command you ran does not exist!** {bot.get_emoji(573935938691137541)}"
         if len(matches):
             response += f"\n\nDid you mean: {ctx.prefix}{matches[0]}"
-        await ctx.send(response)
+        if ctx.guild.id != 392149566012784650:
+            await ctx.send(response)
     else:
         error_code = ""
         for x in range(10):
