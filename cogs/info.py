@@ -3,7 +3,7 @@ import sys
 import os
 import io
 import asyncio
-#import psutil
+import psutil
 import time
 import re
 import json
@@ -42,6 +42,8 @@ class Info(commands.Cog):
         lol = subprocess.run(f"python3.6 -V", cwd=os.getcwd(), stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
         err = lol.stderr.decode("utf-8")
         res = lol.stdout.decode("utf-8")
+        process = psutil.Process(os.getpid())
+        memory = str(process.memory_info()[0] / 1024 / 1024) + " MB"
         #content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
         #version = re.findall(r"v(\d.\d.\d)", content)[0]
         em = discord.Embed(color=color, title='Bot Stats')
@@ -55,7 +57,7 @@ class Info(commands.Cog):
         em.add_field(name=f'Start Date :calendar:', value='12/08/2017')
         em.add_field(name='Coding Language :computer: ', value=res) 
         #em.add_field(name=f'Hosting Platform {self.bot.get_emoji(440698056346697728)}', value='Digital Ocean') 
-        #em.add_field(name='Memory Usage', value=f"{used} MB ({percent}%)")
+        em.add_field(name='Memory Usage', value=memory)
         em.add_field(name='Bot Uptime :clock:', value="%d days, %d hours, %d minutes, %d seconds" % (day, hour, minute, second)) 
         em.add_field(name='Commands Run (Since Uptime) :outbox_tray:', value=self.bot.commands_run)  
         await ctx.send(embed=em)
