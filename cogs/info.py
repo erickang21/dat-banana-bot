@@ -43,7 +43,7 @@ class Info(commands.Cog):
         err = lol.stderr.decode("utf-8")
         res = lol.stdout.decode("utf-8")
         process = psutil.Process(os.getpid())
-        memory = str(process.memory_info()[0] / 1024 / 1024) + " MB"
+        memory = f"{process.memory_info()[0] / 1024 / 1024:.2f}" + " MB"
         #content = (await self.bot.get_channel(392464990658887681).history(limit=1).flatten())[0].content
         #version = re.findall(r"v(\d.\d.\d)", content)[0]
         em = discord.Embed(color=color, title='Bot Stats')
