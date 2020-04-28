@@ -404,6 +404,8 @@ class BS(commands.Cog):
             elif t >= 1400:
                 total_starpoints = 480
                 new_trophy_count = 1100
+            else:
+                new_trophy_count = t
             starpoints += total_starpoints
             trophy_loss = t - new_trophy_count
             trophies_lost += trophy_loss
