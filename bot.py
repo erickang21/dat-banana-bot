@@ -938,18 +938,13 @@ async def on_command_error(ctx, error):
         await bot.get_channel(513368885144190986).send(f"A new error has been recorded in **{ctx.guild.name}**. Code: `{error_code}`")
         log = bot.get_channel(513368885144190986)
         
-        em = discord.Embed(color=ctx.author.color, title="Error? Error!")
+        em = discord.Embed(color=ctx.author.color, title="Error!")
         desc = ""
         #desc += f"```{traceback_text}```"
         desc += f"""
+An unexpected error occurred when trying to run the command. 
 
-Yikes. It appears that I wasn't coded properly, and an error occurred.
-
-Here's what you should do to be a helpful person:
--> Join the [support server](https://discord.gg/vCMEmNJ).
--> Show the error code to my senpai, kawaii banana ☆#5627: `{error_code}`.
-
-Let's hope together that the error gets fixed soon! {bot.get_emoji(644677901664387073)}
+Please join the [support server](https://discord.gg/vCMEmNJ) and show this error code: `{error_code}`.
         """
         em.description = desc
         await ctx.send(embed=em, edit=False)
