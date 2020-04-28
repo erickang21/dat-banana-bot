@@ -347,8 +347,9 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
     if level["enabled"]:
         x = await bot.db.economy.find_one({"id": message.guild.id})
         guild_user_data = x.get("users")
-        match = list(filter(lambda x: x['id'] == message.author.id, guild_user_data))[0]
+        match = list(filter(lambda x: x['id'] == message.author.id, guild_user_data))
         if match:
+            match = match[0]
             bal = await user_balance(message.guild, message.author)
             to_add = random.randint(1, 5)
             await add_points(message.guild, message.author, to_add)
