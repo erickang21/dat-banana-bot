@@ -194,7 +194,7 @@ class BS(commands.Cog):
             em.add_field(name="Club", value=f"{club.name} (#{club.tag})")
         else:
             em.add_field(name="Club", value=f"No club. {self.bot.get_emoji(522524669459431430)}")
-        em.set_thumbnail(url=profile.avatar_url)
+        #em.set_thumbnail(url=profile.avatar_url)
         await ctx.send(embed=em)
 
     @commands.command(aliases=["bsclan"])
