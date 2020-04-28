@@ -20,6 +20,7 @@ import json
 import ezjson
 import colorama
 import difflib
+import math
 from box import Box
 from motor.motor_asyncio import AsyncIOMotorClient
 from ext.context import DatContext
@@ -140,6 +141,23 @@ async def on_ready():
     print('Bot is online, and ready to ROLL!')
     await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
 
+async def user_balance(guild, user):
+    x = await self.db.economy.find_one({"id": guild.id})
+    guild_user_data = x.get("users")
+    match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
+    return match['points'] 
+
+async def add_points(guild, user, points):
+    x = await self.db.economy.find_one({"id": guild.id})
+
+        #total = int(x['points']) + points
+        #await self.db.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
+    guild_user_data = x.get("users")
+    match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
+    match['points'] += points 
+    guild_user_data.remove(match)
+    guild_user_data.append(match)
+    await self.db.economy.update_one({"id": guild.id}, {"$set": {"users": guild_user_data}}, upsert=True)
 
 @bot.event
 async def on_message(message):
@@ -325,26 +343,18 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
     # Level
-    #data = await bot.db.rank.find_one({"id": message.guild.id})
-    #if data["data"]:
-    #    user = [x for x in data["data"] if x.id == message.author.id][0]
-    #    if user["points"] == user["next"]:
-    #        replacement = {
-    #            "points": 0,
-    #            "next": user["next"] * 2,
-    #            "level": user["level"] + 1
-    #        }
-    #        await message.channel.send(f"uwu **{message.author.name}** my senpai, you leveled up to level **{user['level']}**!")
-    #    else:
-    #        replacement = data["data"]["data"][str(message.author.id)] = {
-    #            "points": user["points"] + 1,
-    #            "next": user["next"],
-    #            "level": user["level"]
-    #        }
-    #    updated = data["data"].remove(user)
-    #    updated = updated.append(replacement)
-    #    await bot.db.rank.update_one({"id": message.guild.id}, {"$set": {"data": updated}}, upsert=True)
-
+    level = await bot.db.level.find_one({"id": message.guild.id})
+    if level["enabled"]:
+        bal = await user_balance(message.guild, message.author)
+        to_add = random.randint(1, 5)
+        await add_points(message.guild, message.author, to_add)
+        current_level = math.floor(0.1 * math.sqrt(bal + to_add))
+        saved_level = level["users"][message.author.id]
+        if current_level > saved_level:
+            await message.channel.send(f"Let's hear it for **{message.author.id}**! You chatted enough to reach **level {current_level}!** UwU")
+            level["users"][message.author.id] = current_level
+            await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"enabled": True, "users": level}})
+    
 
 # REACTION ROLE EVENTS
 
@@ -619,14 +629,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
             break
         except:
             continue
-    data = {}
-    for a in guild.members:
-        data[str(a.id)] = {
-            "points": 0,
-            "next": 10,
-            "level": 1
-        }
-    await bot.db.rank.insert_one({"id": guild.id, "data": data, "enabled": True})
+    await bot.db.level.update_one({"id": guild.id}, {"$set": {"enabled": False, "users": None}})
 
 @bot.event
 async def on_guild_remove(guild):
@@ -646,6 +649,8 @@ async def on_guild_remove(guild):
     em.description = desc
     em.set_thumbnail(url=guild.icon_url)
     await logs_channel.send(embed=em)
+    
+    await bot.db.level.delete_one({"id": guild.id})
 
     
 @bot.event
@@ -720,16 +725,6 @@ This user joined while raidmode was enabled by me. I automatically kicked them.
         await member.add_roles(r)
 
     # LEVEL-UP (NOT IN USE)
-    levelup = await bot.db.level.find_one({"id": member.guild.id})
-    if levelup:
-        try:
-            match = levelup['data']
-            if match is False:  # match could be 0 which returns false, and I don't want that
-                return
-        except KeyError:
-            return
-        match[str(member.id)] = 0
-        await bot.db.level.update_one({"id": member.guild.id}, {"$set": {"data": match}}, upsert=True)
 
 
 

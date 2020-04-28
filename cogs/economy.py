@@ -110,6 +110,35 @@ class Economy(commands.Cog):
         await ctx.send(f"Alright! I registered this server for economy. Start earning that money!")
 
     @commands.command()
+    @commands.has_permissions(manage_guild = True)
+    async def levelup(self, ctx, action=None):
+        """Enable level up tracking and messages for the server."""
+        data = await self.db.level.find_one({"id": ctx.guild.id})
+        if action.lower() == "on":
+            if data["enabled"]:
+                return await ctx.send("Level-up has already been enabled for this server.")
+            else:
+                user_dict = {}
+                for x in ctx.guild.users:
+                    user_dict[x.id] = 0
+                await self.db.level.update_one({"id": ctx.guild.id}, {"$set": {"enabled": True, "users": user_dict}})
+                return await ctx.send(f"Level-up is now enabled for this server. {self.bot.get_emoji(484897652220362752)}")
+        elif action.lower() == "off":
+            if not data["enabled"]:
+                return await ctx.send("Level-up has been already disabled for this server.")
+            else:
+                user_dict = data["users"]
+                await self.db.level.update_one({"id": ctx.guild.id}, {"$set": {"enabled": False, "users": user_dict}})
+                return await ctx.send(f"Level-up is now disabled for this server. {self.bot.get_emoji(666316667671937034)}")
+        else:
+            if data["enabled"]:
+                return await ctx.send("Level-up is currently **enabled!** (You can disable it by running `uwu levelup off`.)")
+            else:
+                return await ctx.send("Level-up is currently **disabled.** (You can enable it by running `uwu levelup on`.)")
+
+
+
+    @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def deregister(self, ctx):
         """Disable economy for your server."""
