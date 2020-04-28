@@ -51,7 +51,7 @@ class BS(commands.Cog):
         return self.bot.get_emoji(_id)
 
     def brawler(self, name):
-        name = name.replace("8-Bit", "8bit")
+        name = name.replace("8-bit", "8bit")
         name = name.replace("Mr. P", "mrp")
         name = name.replace(" ", "")
         name = name.lower()
@@ -287,9 +287,9 @@ class BS(commands.Cog):
         for x in brawlers:
             rank_emoji = discord.utils.get(self.bot.get_guild(523916552014397450).emojis, name=f"r{x['rank']}")
             if counter < 25:
-                em1.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"{rank_emoji} `{x['power']}` {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} {x['trophies']}/{x['highestTrophies']}")
+                em1.add_field(name=f"{x['name'].title()} {self.brawler(x['name'].title())}", value=f"{rank_emoji} `{x['power']}` {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} {x['trophies']}/{x['highestTrophies']}")
             else:
-                em2.add_field(name=f"{x['name']} {self.brawler(x['name'])}", value=f"{rank_emoji} `{x['power']}` {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} {x['trophies']}/{x['highestTrophies']}")
+                em2.add_field(name=f"{x['name'].title()} {self.brawler(x['name'].title())}", value=f"{rank_emoji} `{x['power']}` {self.bot.get_emoji(645739308711542828) if x['power'] < 10 else self.bot.get_emoji(645762041751273512)} {x['trophies']}/{x['highestTrophies']}")
             average += x["trophies"]
             counter += 1
         em1.description = f"""
