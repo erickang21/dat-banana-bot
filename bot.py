@@ -142,13 +142,13 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
 
 async def user_balance(guild, user):
-    x = await self.db.economy.find_one({"id": guild.id})
+    x = await bot.db.economy.find_one({"id": guild.id})
     guild_user_data = x.get("users")
     match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
     return match['points'] 
 
 async def add_points(guild, user, points):
-    x = await self.db.economy.find_one({"id": guild.id})
+    x = await bot.db.economy.find_one({"id": guild.id})
 
         #total = int(x['points']) + points
         #await self.db.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
@@ -157,7 +157,7 @@ async def add_points(guild, user, points):
     match['points'] += points 
     guild_user_data.remove(match)
     guild_user_data.append(match)
-    await self.db.economy.update_one({"id": guild.id}, {"$set": {"users": guild_user_data}}, upsert=True)
+    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"users": guild_user_data}}, upsert=True)
 
 @bot.event
 async def on_message(message):
