@@ -90,8 +90,10 @@ class BS(commands.Cog):
 
     def fmt_time(self, time):
         if time < 3600:
-            minutes = int(time // 60)
-            seconds = time - minutes * 60
+            minutes = str(time // 60)
+            seconds = str(time - minutes * 60)
+            if 0 <= int(seconds) <= 9:
+                seconds = "0" + seconds
             return f"{minutes}:{seconds}"
         if time < 86400:
             hours = int(time / 3600)
