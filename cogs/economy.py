@@ -111,7 +111,7 @@ class Economy(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_guild = True)
-    async def levelup(self, ctx, action=None):
+    async def levelup(self, ctx, action=""):
         """Enable level up tracking and messages for the server."""
         data = await self.db.level.find_one({"id": ctx.guild.id})
         if action.lower() == "on":

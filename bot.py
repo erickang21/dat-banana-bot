@@ -629,7 +629,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
             break
         except:
             continue
-    await bot.db.level.update_one({"id": guild.id}, {"$set": {"enabled": False, "users": None}})
+    await bot.db.level.update_one({"id": guild.id}, {"$set": {"enabled": False, "users": None}}, upsert=True)
 
 @bot.event
 async def on_guild_remove(guild):
@@ -649,7 +649,7 @@ async def on_guild_remove(guild):
     em.description = desc
     em.set_thumbnail(url=guild.icon_url)
     await logs_channel.send(embed=em)
-    
+
     await bot.db.level.delete_one({"id": guild.id})
 
     
