@@ -51,7 +51,7 @@ class BS(commands.Cog):
         return self.bot.get_emoji(_id)
 
     def brawler(self, name):
-        name = name.replace("8-BIT", "8bit")
+        name = name.replace("8-Bit", "8bit")
         name = name.replace("Mr. P", "mrp")
         name = name.replace(" ", "")
         name = name.lower()
