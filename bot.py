@@ -349,10 +349,10 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
         to_add = random.randint(1, 5)
         await add_points(message.guild, message.author, to_add)
         current_level = math.floor(0.1 * math.sqrt(bal + to_add))
-        saved_level = level["users"][message.author.id]
+        saved_level = level["users"][str(message.author.id)]
         if current_level > saved_level:
             await message.channel.send(f"Let's hear it for **{message.author.id}**! You chatted enough to reach **level {current_level}!** UwU")
-            level["users"][message.author.id] = current_level
+            level["users"][str(message.author.id)] = current_level
             await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"enabled": True, "users": level}})
     
 
