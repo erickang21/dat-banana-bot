@@ -349,73 +349,74 @@ class BS(commands.Cog):
         for x in brawlers:
             t = x["trophies"]
             total_starpoints = 0
-            trophy_loss = 0
+            new_trophy_count = 0
             if 550 <= t < 600:
                 total_starpoints = 70
-                trophy_loss = t - 525
+                new_trophy_count = 525
             elif 600 <= t < 650:
                 total_starpoints = 120
-                trophy_loss = t - 575
+                new_trophy_count = 575
             elif 650 <= t < 700:
                 total_starpoints = 160
-                trophy_loss = t - 625
+                new_trophy_count = 625
             elif 700 <= t < 750:
                 total_starpoints = 200
-                trophy_loss = t - 650
+                new_trophy_count = 650
             elif 750 <= t < 800:
                 total_starpoints = 220
-                trophy_loss = t - 700
+                new_trophy_count = 700
             elif 800 <= t < 850:
                 total_starpoints = 240
-                trophy_loss = t - 750
+                new_trophy_count = 750
             elif 850 <= t < 899:
                 total_starpoints = 260
-                trophy_loss = t - 775
+                new_trophy_count = 775
             elif 900 <= t < 950:
                 total_starpoints = 280
-                trophy_loss = t - 825
+                new_trophy_count = 825
             elif 950 <= t < 1000:
                 total_starpoints = 300
-                trophy_loss = t - 875
+                new_trophy_count = 875
             elif 1000 <= t < 1050:
                 total_starpoints = 320
-                trophy_loss = t - 900
+                new_trophy_count = 900
             elif 1050 <= t < 1100:
                 total_starpoints = 340
-                trophy_loss = t - 925
+                new_trophy_count = 925
             elif 1100 <= t < 1150:
                 total_starpoints = 360
-                trophy_loss = t - 950
+                new_trophy_count = 950
             elif 1150 <= t < 1200:
                 total_starpoints = 380
-                trophy_loss = t - 975
+                new_trophy_count = 975
             elif 1200 <= t < 1250:
                 total_starpoints = 400
-                trophy_loss = t - 1000
+                new_trophy_count = 1000
             elif 1250 <= t < 1300:
                 total_starpoints = 420
-                trophy_loss = t - 1025
+                new_trophy_count = 1025
             elif 1300 <= t < 1350:
                 total_starpoints = 440
-                trophy_loss = t - 1050
+                new_trophy_count = 1050
             elif 1350 <= t < 1400:
                 total_starpoints = 460
-                trophy_loss = t - 1075
+                new_trophy_count = 1075
             elif t >= 1400:
                 total_starpoints = 480
-                trophy_loss = t - 1100
+                new_trophy_count = 1100
             starpoints += total_starpoints
+            trophy_loss = t - new_trophy_count
             trophies_lost += trophy_loss
             if trophy_loss > 0 and counter < 25:
-                em1.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
+                em1.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | {t} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {new_trophy_count} {self.bot.get_emoji(523919154630361088)} (-{trophy_loss} {self.bot.get_emoji(523919154630361088)})\n")
                 counter += 1
             elif trophy_loss > 0 and counter >= 25:
-                em2.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophy_loss} {self.bot.get_emoji(523919154630361088)}\n")
+                em2.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)} | {t} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {new_trophy_count} {self.bot.get_emoji(523919154630361088)} (-{trophy_loss} {self.bot.get_emoji(523919154630361088)})\n")
                 counter += 1
             else:
                 not_high_brawlers += f"{self.brawler(x.name)} "
             
-        em1.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | -{trophies_lost} {self.bot.get_emoji(523919154630361088)}"
+        em1.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | {profile.trophies} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {profile.trophies - trophies_lost} {self.bot.get_emoji(523919154630361088)} (-{trophies_lost} {self.bot.get_emoji(523919154630361088)})"
         if not not_high_brawlers:
             not_high_brawlers = "No brawlers below 550!"
         if counter < 25:
