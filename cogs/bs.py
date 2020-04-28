@@ -8,7 +8,7 @@ from discord.ext import commands
 class BS(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.client = brawlstats.BrawlAPI(
+        self.client = brawlstats.Client(
             token=bot.config.bsapi,
             session=bot.session,
             is_async=True
