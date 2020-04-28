@@ -89,6 +89,10 @@ class BS(commands.Cog):
             return self.bot.get_emoji(650856644388847637)
 
     def fmt_time(self, time):
+        if time < 3600:
+            minutes = int(time // 60)
+            seconds = time - minutes * 60
+            return f"{minutes}:{seconds}"
         if time < 86400:
             hours = int(time / 3600)
             minutes = int(time / 60 - hours * 60)
