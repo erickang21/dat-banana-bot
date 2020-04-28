@@ -351,9 +351,9 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
         current_level = math.floor(0.1 * math.sqrt(bal + to_add))
         saved_level = level["users"][str(message.author.id)]
         if current_level > saved_level:
-            await message.channel.send(f"Let's hear it for **{message.author.id}**! You chatted enough to reach **level {current_level}!** UwU")
+            await message.channel.send(f"Let's hear it for **{message.author.name}**! You chatted enough to reach **level {current_level}!** {bot.get_emoji(690208316336767026)}")
             level["users"][str(message.author.id)] = current_level
-            await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"enabled": True, "users": level}})
+            await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"enabled": True, "users": level["users"]}})
     
 
 # REACTION ROLE EVENTS
