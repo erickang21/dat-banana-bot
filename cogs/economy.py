@@ -119,7 +119,7 @@ class Economy(commands.Cog):
                 return await ctx.send("Level-up has already been enabled for this server.")
             else:
                 user_dict = {}
-                for x in ctx.guild.users:
+                for x in ctx.guild.members:
                     user_dict[x.id] = 0
                 await self.db.level.update_one({"id": ctx.guild.id}, {"$set": {"enabled": True, "users": user_dict}})
                 return await ctx.send(f"Level-up is now enabled for this server. {self.bot.get_emoji(484897652220362752)}")
