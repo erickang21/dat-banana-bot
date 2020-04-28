@@ -408,10 +408,10 @@ class BS(commands.Cog):
             trophy_loss = t - new_trophy_count
             trophies_lost += trophy_loss
             if trophy_loss > 0 and counter < 25:
-                em1.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)}\n{t} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {new_trophy_count} {self.bot.get_emoji(523919154630361088)} (-{trophy_loss} {self.bot.get_emoji(523919154630361088)})\n")
+                em1.add_field(name=f"{self.brawler(x.name.title())} +{total_starpoints} {self.bot.get_emoji(645617676550668288)}", value=f"{t} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {new_trophy_count} {self.bot.get_emoji(523919154630361088)} (-{trophy_loss} {self.bot.get_emoji(523919154630361088)})\n")
                 counter += 1
             elif trophy_loss > 0 and counter >= 25:
-                em2.add_field(name=f"{self.brawler(x.name)}", value=f"+{total_starpoints} {self.bot.get_emoji(645617676550668288)}\n{t} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {new_trophy_count} {self.bot.get_emoji(523919154630361088)} (-{trophy_loss} {self.bot.get_emoji(523919154630361088)})\n")
+                em2.add_field(name=f"{self.brawler(x.name.title())} +{total_starpoints} {self.bot.get_emoji(645617676550668288)}", value=f"{t} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {new_trophy_count} {self.bot.get_emoji(523919154630361088)} (-{trophy_loss} {self.bot.get_emoji(523919154630361088)})\n")
                 counter += 1
             else:
                 not_high_brawlers += f"{self.brawler(x.name)} "
