@@ -938,7 +938,7 @@ async def on_command_error(ctx, error):
         await bot.get_channel(513368885144190986).send(f"A new error has been recorded in **{ctx.guild.name}**. Code: `{error_code}`")
         log = bot.get_channel(513368885144190986)
         
-        em = discord.Embed(color=ctx.author.color, title="Error!")
+        em = discord.Embed(color=ctx.author.color, title=f"Error! {bot.get_emoji(704757111493754880)}")
         desc = ""
         #desc += f"```{traceback_text}```"
         desc += f"""
