@@ -635,6 +635,10 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
         except:
             continue
     await bot.db.level.update_one({"id": guild.id}, {"$set": {"enabled": False, "users": None}}, upsert=True)
+    user_dict = {}
+    for user in guild.members:
+        user_dict[str(user.id)] = 0
+    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": False, "users": user_dict}}, upsert=True)
 
 @bot.event
 async def on_guild_remove(guild):
@@ -656,6 +660,7 @@ async def on_guild_remove(guild):
     await logs_channel.send(embed=em)
 
     await bot.db.level.delete_one({"id": guild.id})
+    await bot.db.economy.delete_one({"id": guild.id})
 
     
 @bot.event
@@ -730,7 +735,10 @@ This user joined while raidmode was enabled by me. I automatically kicked them.
         await member.add_roles(r)
 
     # LEVEL-UP (NOT IN USE)
-
+    x = await bot.db.economy.find_one({"id": member.guild.id})
+    guild_users = x["users"]
+    guild_users[str(member.id)] = 0
+    await bot.db.economy.update_one({"id": member.guild.id}, {"$set": {"registered": True, "users": guild_users}}, upsert=True)
 
 
 @bot.event
@@ -772,6 +780,10 @@ async def on_member_remove(member):
         em.timestamp = datetime.datetime.utcnow()
         em.set_thumbnail(url=member.avatar_url)
         await lol.send(embed=em)
+    x = await bot.db.economy.find_one({"id": member.guild.id})
+    guild_users = x["users"]
+    guild_users.remove(str(member.id))
+    await bot.db.economy.update_one({"id": member.guild.id}, {"$set": {"registered": True, "users": guild_users}}, upsert=True)
 
 
 @bot.event
