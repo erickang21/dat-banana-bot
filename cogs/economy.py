@@ -300,7 +300,8 @@ __What to do now?__
         em = discord.Embed(title=ctx.guild.name)
         em.set_author(name="Leaderboard", icon_url=ctx.guild.icon_url)
         desc = ""
-        for i in range(10):
+        count = len(data) if len(data) < 10 else 10
+        for i in range(count):
             desc += str(i + 1) + " ❯ " + str(self.bot.get_user(data[i]["user"])) + "\n`" + str(data[i]["points"]) + "` :banana:"
         em.description = desc
         await ctx.send(embed=em)
