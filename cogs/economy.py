@@ -72,9 +72,9 @@ class Economy(commands.Cog):
                 seconds = "0" + str(seconds)
             return f"{minutes} minutes, {seconds} seconds"
         else:
-            hours = time // 3600
-            minutes = (time - hours * 3600) // 60
-            seconds = time - hours * 3600 - minutes * 60
+            hours = int(time // 3600)
+            minutes = int((time - hours * 3600) // 60)
+            seconds = int(time - hours * 3600 - minutes * 60)
             return f"{hours} hours, {minutes} minutes, {seconds} seconds"
 
     async def time_left(self, ctx):
