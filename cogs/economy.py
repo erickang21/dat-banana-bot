@@ -118,7 +118,7 @@ class Economy(commands.Cog):
         '''Check how much bananas ya got!'''
         if user:
             ctx.author = user
-        bal = self.balance(ctx)
+        bal = await self.balance(ctx)
         person = "You currently have" if not user else f"**{user.name}** currently has"
         em = discord.Embed(color=0x00ff00, title='Current Balance')
         responses = [
@@ -226,7 +226,7 @@ __What to do now?__
             return await ctx.send("Please enter a valid number for the amount.")
         if amount <= 0:
             return await ctx.send("Gamble more. Not less. Enter a number more than 0.")
-        bal = self.balance(ctx)
+        bal = await self.balance(ctx)
         if amount > bal:
             return await ctx.send(f"You gambled WAY TOO MUCH! You currently can gamble up to **{bal}** :banana:.")
         choose = random.randint(1, 2)
@@ -241,10 +241,10 @@ __What to do now?__
     #@commands.cooldown(1, 300, BucketType.user)
     async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
-        my_points = self.balance(ctx)
+        my_points = await self.balance(ctx)
         temp = ctx.author
         ctx.author = user
-        target_points = self.balance(ctx)
+        target_points = await self.balance(ctx)
         ctx.author = temp
         try:
             points = int(points)
@@ -276,7 +276,7 @@ __What to do now?__
     #@commands.cooldown(1, 300, BucketType.user)
     async def pay(self, ctx, user: discord.Member, points):
         """Donate credits to someone else!"""
-        my_points = self.balance(ctx)    
+        my_points = await self.balance(ctx)    
         try:
             points = int(points)
         except ValueError:
