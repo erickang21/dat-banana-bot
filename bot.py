@@ -327,7 +327,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 #await bot.process_commands(message)
     # Level
     level = await bot.db.economy.find_one({"guild": message.guild.id, "user": message.author.id})
-    if level["enabled"]:
+    if level:
         to_add = random.randint(1, 5)
         bal = balance(message.guild, message.author)
         await add_points(message.guild, message.author, to_add)
