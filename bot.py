@@ -143,21 +143,14 @@ async def on_ready():
 
 async def user_balance(guild, user):
     x = await bot.db.economy.find_one({"id": guild.id})
-    guild_user_data = x.get("users")
-    match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
-    return match['points'] 
+    guild_users = x["users"]
+    return guild_users[str(user.id)] 
 
 async def add_points(guild, user, points):
     x = await bot.db.economy.find_one({"id": guild.id})
-
-        #total = int(x['points']) + points
-        #await self.db.economy.update_one({"user": user.id}, {"$set": {"points": int(total)}}, upsert=True)
-    guild_user_data = x.get("users")
-    match = list(filter(lambda x: x['id'] == user.id, guild_user_data))[0]
-    match['points'] += points 
-    guild_user_data.remove(match)
-    guild_user_data.append(match)
-    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"users": guild_user_data}}, upsert=True)
+    guild_users = x["users"]
+    guild_users[str(user.id)] += points
+    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": True, "users": guild_users}}, upsert=True)
 
 @bot.event
 async def on_message(message):
@@ -347,18 +340,15 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
     if level["enabled"]:
         x = await bot.db.economy.find_one({"id": message.guild.id})
         guild_user_data = x.get("users")
-        match = list(filter(lambda x: x['id'] == message.author.id, guild_user_data))
-        if match:
-            match = match[0]
-            bal = await user_balance(message.guild, message.author)
-            to_add = random.randint(1, 5)
-            await add_points(message.guild, message.author, to_add)
-            current_level = math.floor(0.1 * math.sqrt(bal + to_add))
-            saved_level = level["users"][str(message.author.id)]
-            if current_level > saved_level:
-                await message.channel.send(f"Let's hear it for **{message.author.name}**! You chatted enough to reach **level {current_level}!** {bot.get_emoji(690208316336767026)}")
-                level["users"][str(message.author.id)] = current_level
-                await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"enabled": True, "users": level["users"]}})
+        bal = await user_balance(message.guild, message.author)
+        to_add = random.randint(1, 5)
+        await add_points(message.guild, message.author, to_add)
+        current_level = math.floor(0.1 * math.sqrt(bal + to_add))
+        saved_level = level["users"][str(message.author.id)]
+        if current_level > saved_level:
+            await message.channel.send(f"Let's hear it for **{message.author.name}**! You chatted enough to reach **level {current_level}!** {bot.get_emoji(690208316336767026)}")
+            level["users"][str(message.author.id)] = current_level
+            await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"enabled": True, "users": level["users"]}})
     
 
 # REACTION ROLE EVENTS
