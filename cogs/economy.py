@@ -296,8 +296,13 @@ __What to do now?__
     @commands.command(aliases=['lb'])
     async def leaderboard(self, ctx):
         """Get the leaderboard for economy!"""
-        
-        lb = ""
+        data = await bot.db.economy.find({ "guild": ctx.guild.id }).sort("points", -1).to_list(None)
+        em = discord.Embed(title=ctx.guild.name)
+        em.set_author(name="Leaderboard", icon_url=ctx.guild.icon_url)
+        desc = ""
+        for i in range(10):
+            desc += (i + 1) + " ❯ " + str(bot.get_user(data[i]["user"])) + "\n`" + data[i]["points"] + "` :banana:"
+        em.description = desc
         await ctx.send(embed=em)
 
 def setup(bot):
