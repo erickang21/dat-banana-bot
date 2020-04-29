@@ -113,8 +113,8 @@ class Economy(commands.Cog):
             else:
                 return await ctx.send("Level-up is currently **disabled.** (You can enable it by running `uwu levelup on`.)")
         
-    @commands.command(aliases=['bal'])
-    async def balance(self, ctx, user: discord.Member = None):
+    @commands.command()
+    async def bal(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
         if user:
             ctx.author = user
