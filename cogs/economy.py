@@ -137,6 +137,9 @@ class Economy(commands.Cog):
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
         await ctx.trigger_typing()
+        time = await self.time_left(ctx)
+        if time:
+            return await ctx.send(f"This command is on cooldown for: **{time}**.")
         async with self.session.get(f"https://discordbots.org/api/bots/520682706896683009/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
             resp = await resp.json()
             if resp['voted'] == 0:
