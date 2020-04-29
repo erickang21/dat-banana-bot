@@ -334,7 +334,8 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
         current_level = math.floor(0.1 * math.sqrt(bal + to_add))
         saved_level = level["level"]
         if current_level > saved_level:
-            await message.channel.send(f"Let's hear it for **{message.author.name}**! You leveled up to **level {current_level}!** {bot.get_emoji(690208316336767026)}")
+            await add_points(message.guild, message.author, current_level * 100)
+            await message.channel.send(f"Let's hear it for **{message.author.name}**! You leveled up to **level {current_level}!** {bot.get_emoji(690208316336767026)}\n\nLevel-up Bonus: **{current_level * 100}** :banana:")
             level["level"] = current_level
             await bot.db.economy.update_one({"guild": message.guild.id, "user": message.author.id}, {"$set": level})
     
