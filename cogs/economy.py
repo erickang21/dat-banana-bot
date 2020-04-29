@@ -197,6 +197,9 @@ class Economy(commands.Cog):
             roles = await self.db.shop.find_one({"id": ctx.guild.id})
             if item not in roles.keys():
                 return await ctx.send("This role is not in the list of roles on sale! Please do `uwu shop` to find this list.", edit=False)
+            bal = await self.balance(ctx)
+            if bal < roles[item]:
+                return await ctx.send("You do not have enough credits to buy this!")
             await ctx.send(f"**ARE YOU SURE?**\n\nYou are about to buy the **{item}** role for **{roles[item]}** :banana:. (Y/N)", edit=False)
             try:
                 response = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
@@ -204,9 +207,7 @@ class Economy(commands.Cog):
                 return await ctx.send("Request timed out. Please run this command again.", edit=False)
             response = response.content
             if response.lower() == "y":
-                bal = await self.balance(ctx)
-                if balance < roles[item]:
-                    return await ctx.send("You do not have enough credits to buy this!")
+                
                 await self.add_points(ctx, -roles[item])
                 await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=item))
                 await ctx.send(f"Congratulations! You have successfully purchased the **{item}** role. {self.bot.get_emoji(690208316336767026)}", edit=False)
