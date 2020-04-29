@@ -302,7 +302,7 @@ __What to do now?__
         desc = ""
         count = len(data) if len(data) < 10 else 10
         for i in range(count):
-            desc += str(i + 1) + " ❯ " + str(self.bot.get_user(data[i]["user"])) + "\n`" + str(data[i]["points"]) + "` :banana:"
+            desc += str(i + 1) + " ❯ " + str(self.bot.get_user(data[i]["user"])) + "\n`" + str(data[i]["points"]) + "` :banana:\n"
         em.description = desc
         await ctx.send(embed=em)
 
