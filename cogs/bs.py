@@ -416,7 +416,7 @@ class BS(commands.Cog):
                 em2.add_field(name=f"{self.brawler(x.name.title())} +{total_starpoints} {self.bot.get_emoji(645617676550668288)}", value=f"{t} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {new_trophy_count} {self.bot.get_emoji(523919154630361088)}\n{self.bot.get_emoji(596577438952062977)} {trophy_loss} {self.bot.get_emoji(523919154630361088)}")
                 counter += 1
             else:
-                not_high_brawlers += f"{self.brawler(x.name)} "
+                not_high_brawlers += f"{self.brawler(x.name.title())} "
             
         em1.description = f"**TOTAL:** +{starpoints} {self.bot.get_emoji(645617676550668288)} | {profile.trophies} {self.bot.get_emoji(523919154630361088)} {self.bot.get_emoji(599612545002635274)} {profile.trophies - trophies_lost} {self.bot.get_emoji(523919154630361088)} | {self.bot.get_emoji(596577438952062977)} {trophies_lost} {self.bot.get_emoji(523919154630361088)}"
         if not not_high_brawlers:
