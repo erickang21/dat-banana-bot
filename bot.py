@@ -141,16 +141,19 @@ async def on_ready():
     print('Bot is online, and ready to ROLL!')
     await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
 
-async def user_balance(guild, user):
-    x = await bot.db.economy.find_one({"id": guild.id})
-    guild_users = x["users"]
-    return guild_users[str(user.id)] 
+async def balance(guild, user):
+    data = await bot.db.economy.find_one({"guild": guild.id, "user": user.id})
+    bal = 0
+    if data:
+        bal = data["points"]
+    return bal
 
 async def add_points(guild, user, points):
-    x = await bot.db.economy.find_one({"id": guild.id})
-    guild_users = x["users"]
-    guild_users[str(user.id)] += points
-    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": True, "users": guild_users}}, upsert=True)
+    data = await bot.db.economy.find_one({"guild": guild.id, "user": user.id})
+    if data:
+        data["points"] += points
+        await bot.db.economy.update_one({"guild": guild.id, "user": user.id}, {"$set": data}, upsert=True)
+   
 
 @bot.event
 async def on_message(message):
@@ -210,20 +213,7 @@ async def on_message(message):
                     if current:
                         webhook = await current.create_webhook(name=message.author.display_name, avatar=byte)
                         await webhook.send(f"**{message.guild.name}** >> " + message.content.replace("@", "@\u200b"))
-                        await webhook.delete()
-        #if message.channel.id == 566030691360440356 and not message.author.discriminator == "0000": # DBBBH Side
-    #    img = message.author.avatar_url_as(format="png", size=1024)
-    #    byte = await (await bot.session.get(img)).read()
-    #    webhook = await bot.get_channel(566015775261982866).create_webhook(name=message.author.display_name, avatar=byte)
-    #    await webhook.send(message.content.replace("@", "@\u200b"))
-    #    await webhook.delete()
-    #elif message.channel.id == 566015775261982866 and not message.author.discriminator == "0000": # Pixel side
-    #    img = message.author.avatar_url_as(format="png", size=1024)
-    #    byte = await (await bot.session.get(img)).read()
-    #    webhook = await bot.get_channel(566030691360440356).create_webhook(name=message.author.display_name, avatar=byte)
-    #    await webhook.send(message.content.replace("@", "@\u200b"))
-    #    await webhook.delete()
-        
+                        await webhook.delete()       
     # Blacklist
     x = await bot.db.blacklist.find_one({"id": message.author.id})
     if not x or not x.get("status", False):
@@ -336,19 +326,17 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                 await bot.invoke(ctx)
                 #await bot.process_commands(message)
     # Level
-    level = await bot.db.level.find_one({"id": message.guild.id})
+    level = await bot.db.economy.find_one({"guild": message.guild.id, "user": message.author.id})
     if level["enabled"]:
-        x = await bot.db.economy.find_one({"id": message.guild.id})
-        guild_user_data = x.get("users")
-        bal = await user_balance(message.guild, message.author)
         to_add = random.randint(1, 5)
+        bal = balance(message.guild, message.author)
         await add_points(message.guild, message.author, to_add)
         current_level = math.floor(0.1 * math.sqrt(bal + to_add))
-        saved_level = level["users"][str(message.author.id)]
+        saved_level = level["level"]
         if current_level > saved_level:
             await message.channel.send(f"Let's hear it for **{message.author.name}**! You chatted enough to reach **level {current_level}!** {bot.get_emoji(690208316336767026)}")
-            level["users"][str(message.author.id)] = current_level
-            await bot.db.level.update_one({"id": message.guild.id}, {"$set": {"enabled": True, "users": level["users"]}})
+            level["level"] = current_level
+            await bot.db.economy.update_one({"guild": message.guild.id, "user": message.author.id}, {"$set": level})
     
 
 # REACTION ROLE EVENTS
@@ -624,11 +612,6 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
             break
         except:
             continue
-    await bot.db.level.update_one({"id": guild.id}, {"$set": {"enabled": False, "users": None}}, upsert=True)
-    user_dict = {}
-    for user in guild.members:
-        user_dict[str(user.id)] = 0
-    await bot.db.economy.update_one({"id": guild.id}, {"$set": {"registered": False, "users": user_dict}}, upsert=True)
 
 @bot.event
 async def on_guild_remove(guild):
@@ -648,9 +631,7 @@ async def on_guild_remove(guild):
     em.description = desc
     em.set_thumbnail(url=guild.icon_url)
     await logs_channel.send(embed=em)
-
-    await bot.db.level.delete_one({"id": guild.id})
-    await bot.db.economy.delete_one({"id": guild.id})
+    await bot.db.economy.delete_one({"guild": guild.id})
 
     
 @bot.event
@@ -724,12 +705,6 @@ This user joined while raidmode was enabled by me. I automatically kicked them.
     if r: # role could possibily be deleted.
         await member.add_roles(r)
 
-    # LEVEL-UP (NOT IN USE)
-    x = await bot.db.economy.find_one({"id": member.guild.id})
-    guild_users = x["users"]
-    guild_users[str(member.id)] = 0
-    await bot.db.economy.update_one({"id": member.guild.id}, {"$set": {"registered": True, "users": guild_users}}, upsert=True)
-
 
 @bot.event
 async def on_member_remove(member):
@@ -773,7 +748,7 @@ async def on_member_remove(member):
     x = await bot.db.economy.find_one({"id": member.guild.id})
     guild_users = x["users"]
     guild_users.remove(str(member.id))
-    await bot.db.economy.update_one({"id": member.guild.id}, {"$set": {"registered": True, "users": guild_users}}, upsert=True)
+    await bot.db.economy.delete_one({"guild": member.guild.id, "user": member.id})
 
 
 @bot.event
