@@ -131,6 +131,8 @@ class Economy(commands.Cog):
             if not data:
                 desc = "This server does not have any roles yet!"
             else:
+                data.pop("_id")
+                data.pop("id")
                 for role in data:
                     desc += "`" + role + "` ❯ " + data[role] + " :banana:\n" 
             em.description = desc
@@ -160,6 +162,7 @@ class Economy(commands.Cog):
                 roles = {}
             roles[name] = price
             await self.db.shop.update_one({"id": ctx.guild.id}, {"$set": roles}, upsert=True)
+            await ctx.send(f"I have successfully added the **{name}** role to the server's shop, selling for **{price}** :banana:.")
         elif action.lower() == "remove":
             if not ctx.author.guild_permissions.manage_guild:
                 return await ctx.send("You have insufficient permissions to run this command.", edit=False)
