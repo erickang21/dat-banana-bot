@@ -296,7 +296,7 @@ __What to do now?__
     @commands.command(aliases=['lb'])
     async def leaderboard(self, ctx):
         """Get the leaderboard for economy!"""
-        data = await bot.db.economy.find({ "guild": ctx.guild.id }).sort("points", -1).to_list(None)
+        data = await self.db.economy.find({ "guild": ctx.guild.id }).sort("points", -1).to_list(None)
         em = discord.Embed(title=ctx.guild.name)
         em.set_author(name="Leaderboard", icon_url=ctx.guild.icon_url)
         desc = ""
