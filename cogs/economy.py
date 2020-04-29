@@ -62,7 +62,7 @@ class Economy(commands.Cog):
                 "daily": ctx.message.created_at.timestamp() + 8640000,
                 "level": 0
             } 
-        await bot.db.cooldowns.update_one({"id": ctx.guild.id}, {"$set": data}, upsert=True)
+        await self.db.cooldowns.update_one({"id": ctx.guild.id}, {"$set": data}, upsert=True)
 
     def fmt_time(self, time):
         if time < 3600:
