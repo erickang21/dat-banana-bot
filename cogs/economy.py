@@ -55,11 +55,11 @@ class Economy(commands.Cog):
     async def place_on_cooldown(self, ctx):
         data = await self.db.economy.find_one({"guild": ctx.guild.id, "user": ctx.author.id})
         if data:
-            data["daily"] = ctx.message.created_at.timestamp() + 8640000
+            data["daily"] = ctx.message.created_at.timestamp() + 86400
         else:
             data = {
                 "points": 0,
-                "daily": ctx.message.created_at.timestamp() + 8640000,
+                "daily": ctx.message.created_at.timestamp() + 86400,
                 "level": 0
             } 
         await self.db.economy.update_one({"guild": ctx.guild.id, "user": ctx.author.id}, {"$set": data}, upsert=True)
