@@ -156,7 +156,7 @@ class Economy(commands.Cog):
             except:
                 return await ctx.send("Invalid price entered. Please run this command again.", edit=False)
             roles = await self.db.shop.find_one({"id": ctx.guild.id})
-            if not data:
+            if not roles:
                 roles = {}
             roles[name] = price
             await self.db.shop.update_one({"id": ctx.guild.id})
