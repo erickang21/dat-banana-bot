@@ -39,6 +39,13 @@ class Economy(commands.Cog):
         if data:
             bal = data["points"]
         return bal
+    
+    async def level(self, ctx):
+        data = await self.db.economy.find_one({"guild": ctx.guild.id, "user": ctx.author.id})
+        level = 0
+        if data:
+            level = data["level"]
+        return level
 
     async def add_points(self, ctx, points):
         data = await self.db.economy.find_one({"guild": ctx.guild.id, "user": ctx.author.id})
@@ -119,15 +126,16 @@ class Economy(commands.Cog):
         if user:
             ctx.author = user
         bal = await self.balance(ctx)
+        level = await self.level(ctx)
         person = "You currently have" if not user else f"**{user.name}** currently has"
         em = discord.Embed(color=0x00ff00, title='Current Balance')
         responses = [
-            f"{person} **{bal}** :banana:. Kinda sad.",
-            f"Idk how {person} **{bal}** :banana:?!",
-            f"REEEEEE! {person} **{bal}** :banana:.",
-            f"{person} **{bal}** :banana:. Man, hella rich.",
-            f"{person} **{bal}** :banana:. Deal with it.",
-            f"{person} **{bal}** :banana:. I wonder where this dood's money comes from?!"
+            f"{person} **{bal}** :banana:. Kinda sad. [Level **{level}**]",
+            f"Idk how {person} **{bal}** :banana:?! [Level **{level}**]",
+            f"REEEEEE! {person} **{bal}** :banana:. [Level **{level}**]",
+            f"{person} **{bal}** :banana:. Man, hella rich. [Level **{level}**]",
+            f"{person} **{bal}** :banana:. Deal with it. [Level **{level}**]",
+            f"{person} **{bal}** :banana:. I wonder where this dood's money comes from?! [Level **{level}**]"
         ]
         em.description = random.choice(responses)
         await ctx.send(embed=em)
