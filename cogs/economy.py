@@ -187,6 +187,7 @@ class Economy(commands.Cog):
             response = response.content
             if response.lower() == "y":
                 roles.pop(name)
+                print(roles)
                 await self.db.shop.update_one({"id": ctx.guild.id}, {"$set": roles})
                 return await ctx.send(f"The role **{name}** was successfully removed from the shop. :wastebasket:", edit=False)
             else:
