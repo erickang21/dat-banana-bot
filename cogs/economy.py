@@ -184,6 +184,7 @@ class Economy(commands.Cog):
                 response = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
             except asyncio.TimeoutError:
                 return await ctx.send("Request timed out. Please run this command again.", edit=False)
+            response = response.content
             if response.lower() == "y":
                 roles.pop(name)
                 await self.db.shop.update_one({"id": ctx.guild.id}, {"$set": roles})
@@ -201,6 +202,7 @@ class Economy(commands.Cog):
                 response = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
             except asyncio.TimeoutError:
                 return await ctx.send("Request timed out. Please run this command again.", edit=False)
+            response = response.content
             if response.lower() == "y":
                 await self.add_points(ctx, -roles[item])
                 await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=item))
