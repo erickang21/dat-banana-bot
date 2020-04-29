@@ -119,7 +119,94 @@ class Economy(commands.Cog):
                 return await ctx.send("Level-up is currently **enabled!** (You can disable it by running `uwu levelup off`.)")
             else:
                 return await ctx.send("Level-up is currently **disabled.** (You can enable it by running `uwu levelup on`.)")
-        
+    
+    @commands.command()
+    async def shop(self, ctx, action=None, item=None):
+        """View the role shop."""
+        if not action and not item:
+            data = await self.db.shop.find_one({"id": ctx.guild.id})
+            em = discord.Embed(color=ctx.author.color, title=ctx.guild.name)
+            em.set_author(name="Role Shop", icon_url=ctx.guild.icon_url)
+            desc = ""
+            if not data:
+                desc = "This server does not have any roles yet!"
+            else:
+                for role in data:
+                    desc += "`" + role + "` ❯ " + data[role] + " :banana:\n" 
+            em.description = desc
+            await ctx.send(embed=em)
+        elif action.lower() == "add":
+            if not ctx.author.guild_permissions.manage_guild:
+                return await ctx.send("You have insufficient permissions to run this command.")
+            await ctx.send("Please send the **name** of the role you wish to add to the shop.")
+            try:
+                name = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("Request timed out. Please run this command again.")
+            await ctx.send(f"Please send the **price** (:banana:) members should pay for the **{name}** role.")
+            try:
+                price = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("Request timed out. Please run this command again.")
+            name = name.content
+            if name not in [x.name for x in ctx.guild.roles]:
+                return await ctx.send("Invalid role name entered. Please run this command again.")
+            try:
+                price = int(price.content)
+            except:
+                return await ctx.send("Invalid price entered. Please run this command again.")
+            roles = await self.db.shop.find_one({"id": ctx.guild.id})
+            if not data:
+                roles = {}
+            roles[name] = price
+            await self.db.shop.update_one({"id": ctx.guild.id})
+        elif action.lower() == "remove":
+            if not ctx.author.guild_permissions.manage_guild:
+                return await ctx.send("You have insufficient permissions to run this command.")
+            await ctx.send("Please send the **name** of the role you wish to remove from the shop.")
+            try:
+                name = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("Request timed out. Please run this command again.")
+            name = name.content
+            if name not in [x.name for x in ctx.guild.roles]:
+                return await ctx.send("Invalid role name entered. Please run this command again.")
+            roles = await self.db.shop.find_one({"id": ctx.guild.id})
+            if not roles:
+                return await ctx.send("You do not have a role shop set up yet!")
+            if not roles.get(name, None):
+                return await ctx.send("This role is not in the list of roles! Please run this command again.")
+            await ctx.send(f"{self.bot.get_emoji(704757111493754880)} **Are you certain?** {self.bot.get_emoji(704757111493754880)}\n\nThis will remove the **{name}** role from the shop (cost is **{roles[name]}** :banana:). (Y/N)")
+            try:
+                response = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("Request timed out. Please run this command again.")
+            if response.lower() == "y":
+                roles.pop(name)
+                return await ctx.send(f"The role **{name}** was successfully removed from the shop. :wastebasket:")
+            else:
+                return await ctx.send("The operation has been cancelled.")
+        elif action.lower() == "buy":
+            if not item:
+                return await ctx.send("Please specify the item you wish to buy.")
+            roles = await self.db.shop.find_one({"id": ctx.guild.id})
+            if item not in roles.keys():
+                return await ctx.send("This role is not in the list of roles on sale! Please do `uwu shop` to find this list.")
+            await ctx.send(f"**ARE YOU SURE?**\n\nYou are about to buy the **{item}** role for **{roles[item]}** :banana:. (Y/N)")
+            try:
+                response = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("Request timed out. Please run this command again.")
+            if response.lower() == "y":
+                await self.add_points(ctx, -roles[item])
+                await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=item))
+                await ctx.send(f"Congratulations! You have successfully purchased the **{item}** role. {self.bot.get_emoji(690208316336767026)}")
+            elif response.lower() == "n":
+                return await ctx.send("Operation cancelled.")
+            else:
+                return await ctx.send("Invalid response.")
+            
+
     @commands.command()
     async def bal(self, ctx, user: discord.Member = None):
         '''Check how much bananas ya got!'''
