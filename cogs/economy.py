@@ -134,7 +134,7 @@ class Economy(commands.Cog):
                 data.pop("_id")
                 data.pop("id")
                 for role in data:
-                    desc += "`" + role + "` ❯ " + data[role] + " :banana:\n" 
+                    desc += "`" + str(role) + "` ❯ " + str(data[role]) + " :banana:\n" 
             em.description = desc
             await ctx.send(embed=em)
         elif action.lower() == "add":
