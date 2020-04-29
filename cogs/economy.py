@@ -301,7 +301,7 @@ __What to do now?__
         em.set_author(name="Leaderboard", icon_url=ctx.guild.icon_url)
         desc = ""
         for i in range(10):
-            desc += (i + 1) + " ❯ " + str(bot.get_user(data[i]["user"])) + "\n`" + data[i]["points"] + "` :banana:"
+            desc += str(i + 1) + " ❯ " + str(bot.get_user(data[i]["user"])) + "\n`" + str(data[i]["points"]) + "` :banana:"
         em.description = desc
         await ctx.send(embed=em)
 
