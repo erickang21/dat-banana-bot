@@ -134,7 +134,6 @@ class Economy(commands.Cog):
 
 
     @commands.command(aliases=['daily', 'dailyshit'])
-    #@commands.cooldown(1, 86400.0, BucketType.user)
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
         await ctx.trigger_typing()
@@ -190,7 +189,7 @@ __What to do now?__
                 return await ctx.send(random.choice(responses))
         
     @commands.command()
-    #@commands.cooldown(1, 60.0, BucketType.user)
+    @commands.cooldown(1, 60.0, BucketType.user)
     async def search(self, ctx):
         """A way to earn currency."""
         number = random.randint(0, 500)
@@ -217,7 +216,7 @@ __What to do now?__
             return await ctx.send(random.choice(responses))
         
     @commands.command(aliases=['bet'])
-    #@commands.cooldown(1, 300, BucketType.user)
+    @commands.cooldown(1, 300, BucketType.user)
     async def gamble(self, ctx, amount):
         """Choose an amount. Will you win it or will you lose it?"""
         try:
@@ -238,7 +237,7 @@ __What to do now?__
             await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
 
     @commands.command(alises=['steal'])
-    #@commands.cooldown(1, 300, BucketType.user)
+    @commands.cooldown(1, 180, BucketType.user)
     async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
         my_points = await self.balance(ctx)
@@ -273,7 +272,7 @@ __What to do now?__
             await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
 
     @commands.command(alises=['donate'])
-    #@commands.cooldown(1, 300, BucketType.user)
+    @commands.cooldown(1, 120, BucketType.user)
     async def pay(self, ctx, user: discord.Member, points):
         """Donate credits to someone else!"""
         my_points = await self.balance(ctx)    
