@@ -146,13 +146,13 @@ class Economy(commands.Cog):
             except asyncio.TimeoutError:
                 return await ctx.send("Request timed out. Please run this command again.", edit=False)
             name = name.content
+            if name not in [x.name for x in ctx.guild.roles]:
+                return await ctx.send("Invalid role name entered. Please run this command again.", edit=False)
             await ctx.send(f"Please send the **price** (:banana:) members should pay for the **{name}** role.", edit=False)
             try:
                 price = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
             except asyncio.TimeoutError:
                 return await ctx.send("Request timed out. Please run this command again.", edit=False)
-            if name not in [x.name for x in ctx.guild.roles]:
-                return await ctx.send("Invalid role name entered. Please run this command again.", edit=False)
             try:
                 price = int(price.content)
             except:
