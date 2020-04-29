@@ -204,6 +204,9 @@ class Economy(commands.Cog):
                 return await ctx.send("Request timed out. Please run this command again.", edit=False)
             response = response.content
             if response.lower() == "y":
+                bal = await self.balance(ctx)
+                if balance < roles[item]:
+                    return await ctx.send("You do not have enough credits to buy this!")
                 await self.add_points(ctx, -roles[item])
                 await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=item))
                 await ctx.send(f"Congratulations! You have successfully purchased the **{item}** role. {self.bot.get_emoji(690208316336767026)}", edit=False)
