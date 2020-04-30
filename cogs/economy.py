@@ -346,7 +346,7 @@ __What to do now?__
             await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
 
     @commands.command(alises=['steal'])
-    @commands.cooldown(1, 180, BucketType.user)
+    #@commands.cooldown(1, 180, BucketType.user)
     async def rob(self, ctx, user: discord.Member, points: int):
         """Steal from someone else!"""
         my_points = await self.balance(ctx)
