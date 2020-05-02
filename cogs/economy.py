@@ -416,8 +416,12 @@ __What to do now?__
     @commands.cooldown(1, 900, BucketType.user)
     async def work(self, ctx):
         """Be smart, and get some money for it!"""
-        first = random.randint(1, 10000)
-        second = random.randint(1, 10000)
+        first = random.randint(1, 1000)
+        second = random.randint(1, 1000)
+        if second > first:
+            temp = first
+            first = second
+            second = temp
         choice = random.randint(1, 2)
         result = 0
         string = ""
@@ -431,7 +435,7 @@ __What to do now?__
 Think you're smart? Solve this math problem below to earn some credits! (Time: 20 seconds)
 
 {string}
-        """)
+        """, edit=False)
         try:
             answer = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=20.0)
         except asyncio.TimeoutError:
@@ -439,13 +443,13 @@ Think you're smart? Solve this math problem below to earn some credits! (Time: 2
         try:
             answer = int(answer.content)
         except:
-            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(656306037531475989)}")
+            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(699598832631283732)}", edit=False)
         if answer == result:
             prize = random.randint(2000, 3000)
             await self.add_points(ctx, prize)
-            return await ctx.send(f"**CORRECT!** You have been awarded **{prize}** :banana:.")
+            return await ctx.send(f"**CORRECT!** You have been awarded **{prize}** :banana:.", edit=False)
         else:
-            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(656306037531475989)}")
+            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(699598832631283732)}", edit=False)
 
 
     @commands.command()
