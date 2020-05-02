@@ -23,7 +23,7 @@ class Economy(commands.Cog):
         self.db = self.bot.db
         self.dbl = self.bot.config.dbl
         self.lottery_numbers = [str(random.randint(0, 9)), str(random.randint(0, 9)), str(random.randint(0, 9))]
-        self.cooldowns = {}
+        
 
     def dev_check(self, id):
         with open('data/devs.json') as f:
@@ -59,7 +59,7 @@ class Economy(commands.Cog):
             } 
         await self.db.economy.update_one({"guild": ctx.guild.id, "user": ctx.author.id}, {"$set": data}, upsert=True)
      
-    async def place_on_cooldown(self, ctx):
+    async def place_on_cooldown_daily(self, ctx):
         data = await self.db.economy.find_one({"guild": ctx.guild.id, "user": ctx.author.id})
         if data:
             data["daily"] = ctx.message.created_at.timestamp() + 86400
@@ -84,7 +84,7 @@ class Economy(commands.Cog):
             seconds = int(time - hours * 3600 - minutes * 60)
             return f"{hours} hours, {minutes} minutes, {seconds} seconds"
 
-    async def time_left(self, ctx):
+    async def time_left_daily(self, ctx):
         data = await self.db.economy.find_one({"guild": ctx.guild.id, "user": ctx.author.id})
         cooldown = 0
         current_time = ctx.message.created_at.timestamp()
@@ -243,7 +243,7 @@ class Economy(commands.Cog):
     async def dailycredit(self, ctx):
         '''Collect your daily bananas!'''
         await ctx.trigger_typing()
-        time = await self.time_left(ctx)
+        time = await self.time_left_daily(ctx)
         if time:
             return await ctx.send(f"This command is on cooldown for: **{time}**.")
         async with self.session.get(f"https://discordbots.org/api/bots/520682706896683009/check?userId={ctx.author.id}", headers={'Authorization': self.dbl}) as resp:
@@ -267,7 +267,7 @@ __What to do now?__
                 if reaction.emoji == '✅':
                     number = random.randint(300, 500)
                     await self.add_points(ctx, number)
-                    await self.place_on_cooldown(ctx)
+                    await self.place_on_cooldown_daily(ctx)
                     responses = [
                         f"Be proud. You just got **{number}** :banana:.",
                         f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
@@ -411,6 +411,41 @@ __What to do now?__
             desc += str(i + 1) + " ❯ " + str(self.bot.get_user(data[i]["user"])) + "\n`" + str(data[i]["points"]) + "` :banana:\n"
         em.description = desc
         await ctx.send(embed=em)
+
+    @commands.command()
+    @commands.cooldown(1, 900, BucketType.user)
+    async def work(self, ctx):
+        """Be smart, and get some money for it!"""
+        first = random.randint(1, 10000)
+        second = random.randint(1, 10000)
+        choice = random.randint(1, 2)
+        result = 0
+        string = ""
+        if choice == 1:
+            result = first + second
+            string = f"**{first} + {second}**"
+        else:
+            result = first - second
+            string = f"**{first} - {second}**"
+        await ctx.send(f"""
+Think you're smart? Solve this math problem below to earn some credits! (Time: 20 seconds)
+
+{string}
+        """)
+        try:
+            answer = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=20.0)
+        except asyncio.TimeoutError:
+            return await ctx.send("Request timed out. Please run this command again.", edit=False)
+        try:
+            answer = int(answer.content)
+        except:
+            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(656306037531475989)}")
+        if answer == result:
+            prize = random.randint(2000, 3000)
+            await self.add_points(ctx, prize)
+            return await ctx.send(f"**CORRECT!** You have been awarded **{prize}** :banana:.")
+        else:
+            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(656306037531475989)}")
 
 
     @commands.command()
