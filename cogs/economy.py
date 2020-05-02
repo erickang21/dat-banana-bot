@@ -284,7 +284,7 @@ __What to do now?__
             else:
                 number = random.randint(800, 1000)
                 await self.add_points(ctx, number)
-                await self.place_on_cooldown(ctx)
+                await self.place_on_cooldown_daily(ctx)
                 responses = [
                     f"Be proud. You just got **{number}** :banana:.",
                     f"*Why u ask me for da MONEY?* Anyways, you got **{number}** :banana:.",
