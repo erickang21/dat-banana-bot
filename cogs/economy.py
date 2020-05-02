@@ -373,10 +373,10 @@ __What to do now?__
             ctx.author = temp
             await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
         elif your_fate == 2:
-            await self.add_points(ctx, points)
+            await self.add_points(ctx, -points)
             temp = ctx.author
             ctx.author = user
-            await self.add_points(ctx, -points)
+            await self.add_points(ctx, points)
             ctx.author = temp
             await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
 
@@ -411,6 +411,15 @@ __What to do now?__
             desc += str(i + 1) + " ❯ " + str(self.bot.get_user(data[i]["user"])) + "\n`" + str(data[i]["points"]) + "` :banana:\n"
         em.description = desc
         await ctx.send(embed=em)
+
+
+    @commands.command()
+    @commands.has_permissions(manage_guild=True)
+    async def give(self, ctx, user: discord.Member, amount: int):
+        ctx.author = user
+        target_points = await self.balance(ctx)
+        await self.add_points(ctx, amount)
+        await ctx.send(f"**Moderator Action:** You have given **{amount}** credits to **{str(user)}**.")
 
 def setup(bot):
     bot.add_cog(Economy(bot))
