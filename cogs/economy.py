@@ -345,40 +345,40 @@ __What to do now?__
             await self.add_points(ctx, -amount)
             await ctx.send(f"Aw, man! You just lost **{amount}** :banana:. Better luck next time!")
 
-    @commands.command(alises=['steal'])
-    #@commands.cooldown(1, 180, BucketType.user)
-    async def rob(self, ctx, user: discord.Member, points: int):
-        """Steal from someone else!"""
-        my_points = await self.balance(ctx)
-        temp = ctx.author
-        ctx.author = user
-        target_points = await self.balance(ctx)
-        ctx.author = temp
-        try:
-            points = int(points)
-        except ValueError:
-            return await ctx.send("Please enter a valid number to rob.")
-        if points <= 0:
-            return await ctx.send("Trying to rob less than 0? I think not.")
-        if points > my_points:
-            return await ctx.send(f"Can't rob more than you have. ¯\_(ツ)_/¯ You can rob up to **{my_points}** :banana:.")
-        if points > target_points:
-            return await ctx.send(f"Can't rob more than **{user.name}** has. ¯\_(ツ)_/¯ You can rob up to **{target_points}** :banana:.")
-        your_fate = random.randint(1, 2)
-        if your_fate == 1:
-            await self.add_points(ctx, points)
-            temp = ctx.author
-            ctx.author = user
-            await self.add_points(ctx, -points)
-            ctx.author = temp
-            await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
-        elif your_fate == 2:
-            await self.add_points(ctx, -points)
-            temp = ctx.author
-            ctx.author = user
-            await self.add_points(ctx, points)
-            ctx.author = temp
-            await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
+    #@commands.command(alises=['steal'])
+    ##@commands.cooldown(1, 180, BucketType.user)
+    #async def rob(self, ctx, user: discord.Member, points: int):
+    #    """Steal from someone else!"""
+    #    my_points = await self.balance(ctx)
+    #    temp = ctx.author
+    #    ctx.author = user
+    #    target_points = await self.balance(ctx)
+    #    ctx.author = temp
+    #    try:
+    #        points = int(points)
+    #    except ValueError:
+    #        return await ctx.send("Please enter a valid number to rob.")
+    #    if points <= 0:
+    #        return await ctx.send("Trying to rob less than 0? I think not.")
+    #    if points > my_points:
+    #        return await ctx.send(f"Can't rob more than you have. ¯\_(ツ)_/¯ You can rob up to **{my_points}** :banana:.")
+    #    if points > target_points:
+    #        return await ctx.send(f"Can't rob more than **{user.name}** has. ¯\_(ツ)_/¯ You can rob up to **{target_points}** :banana:.")
+    #    your_fate = random.randint(1, 2)
+    #    if your_fate == 1:
+    #        await self.add_points(ctx, points)
+    #        temp = ctx.author
+    #        ctx.author = user
+    #        await self.add_points(ctx, -points)
+    #        ctx.author = temp
+    #        await ctx.send(f"That was a success! You earned **{points}** :banana:, while that other sucker **{user.name}** lost **{points}** :banana:.")
+    #    elif your_fate == 2:
+    #        await self.add_points(ctx, -points)
+    #        temp = ctx.author
+    #        ctx.author = user
+    #        await self.add_points(ctx, points)
+    #        ctx.author = temp
+    #        await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
 
     @commands.command(alises=['donate'])
     @commands.cooldown(1, 120, BucketType.user)
