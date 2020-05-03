@@ -918,10 +918,10 @@ Invalid math expression."""
     @commands.command()
     async def urban(self, ctx, *, word):
         '''Gets the definition of a word from Urban Dictionary.'''
-        if not ctx.channel.nsfw:
-            em = discord.Embed(color=0xf44242, title="Urban Dictionary only works in NSFW channels now.")
-            em.description = "Why? Discord ToS limits any NSFW pictures **or words** to NSFW channels. Therefore, if Urban Dictionary shows NSFW words in any channel, that could violate ToS.\n\n**Please try this command in a NSFW channel.**"
-            return await ctx.send(embed=em)
+        #if not ctx.channel.nsfw:
+        #    em = discord.Embed(color=0xf44242, title="Urban Dictionary only works in NSFW channels now.")
+        #    em.description = "Why? Discord ToS limits any NSFW pictures **or words** to NSFW channels. Therefore, if Urban Dictionary shows NSFW words in any channel, that could violate ToS.\n\n**Please try this command in a NSFW channel.**"
+        #    return await ctx.send(embed=em)
         resp = await self.session.get(f'http://api.urbandictionary.com/v0/define?term={word}')
         r = await resp.json()
         lol = []
