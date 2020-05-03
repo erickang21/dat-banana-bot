@@ -121,7 +121,7 @@ class Economy(commands.Cog):
                 return await ctx.send("Level-up is currently **disabled.** (You can enable it by running `uwu levelup on`.)")
     
     @commands.command()
-    async def shop(self, ctx, action=None, item=None):
+    async def shop(self, ctx, action=None, *, item=None):
         """View the role shop."""
         if not action and not item:
             data = await self.db.shop.find_one({"id": ctx.guild.id})
