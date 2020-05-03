@@ -443,13 +443,13 @@ Think you're smart? Solve this math problem below to earn some credits! (Time: 2
         try:
             answer = int(answer.content)
         except:
-            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(699598832631283732)}", edit=False)
+            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(699598832631283732)}\n\n(The answer was: **{result}**)", edit=False)
         if answer == result:
             prize = random.randint(2000, 3000)
             await self.add_points(ctx, prize)
             return await ctx.send(f"**CORRECT!** You have been awarded **{prize}** :banana:.", edit=False)
         else:
-            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(699598832631283732)}", edit=False)
+            return await ctx.send(f"**You failed!** Better luck next time. {self.bot.get_emoji(699598832631283732)}\n\n(The answer was: **{result}**)", edit=False)
 
 
     @commands.command()

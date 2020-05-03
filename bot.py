@@ -867,7 +867,7 @@ async def on_command_error(ctx, error):
         for x in error.missing_perms:
             missing += f"{bot.utils.capitalize(x)} \n"
         
-        return await ctx.send(f"{bot.get_emoji(644677901710786581)} You don't have permission to run this command! Maybe try getting these permissions:\n\n{missing}", edit=False)
+        return await ctx.send(f"You don't have the **{missing}** permission to run this command! {bot.get_emoji(691757044361068574)}", edit=False)
     elif isinstance(error, commands.CommandOnCooldown):
         if ctx.author.id == bot.owner_id:
             return await ctx.reinvoke()
@@ -1012,7 +1012,7 @@ def paginate(text: str):
 @bot.command(name="eval", aliases=["ev"])
 async def _eval(ctx, *, code: str):
     if not dev_check(ctx.author.id):
-        return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(555121740465045516)}")
+        return await ctx.send(f"Sorry, but you can't run this command because you ain't a developer! {bot.get_emoji(691757044361068574)}")
     env = {
         "bot": bot,
         "ctx": ctx,
