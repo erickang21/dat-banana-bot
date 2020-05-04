@@ -148,7 +148,7 @@ class Economy(commands.Cog):
         drop = match.get("drop")
         await self.add_points(ctx, drop)
         await ctx.send(f"That's epic! You collected **{drop}** :banana: from someone careless.")
-        await self.db.drops.update_one({"guild": ctx.guild.id}, {"$set": {"channel": ctx.channel, "active": False, "drop": 0}}, upsert=True)
+        await self.db.drops.update_one({"guild": ctx.guild.id}, {"$set": {"channel": ctx.channel.id, "active": False, "drop": 0}}, upsert=True)
 
     @commands.command()
     @commands.has_permissions(manage_guild = True)
