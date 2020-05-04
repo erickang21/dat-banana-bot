@@ -113,7 +113,9 @@ async def get_modlog_channel(guildid):
 async def _sweeper():
     while True:
         bot.edits = {}
-        await asyncio.sleep(60 * 60) # 1 Hour
+        bot.snipes = {}
+        bot.editsnipes = {}
+        await asyncio.sleep(60 * 30) # 30 Minutes
 
 # A task to clean up the bots last bulk deletes
 async def _sweep_bulk_deletes():

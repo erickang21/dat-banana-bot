@@ -438,7 +438,6 @@ __What to do now?__
     #        await ctx.send(f"That attempt sucked! I mean, thanks for giving **{user.name}** your **{points}** :banana:.")
 
     @commands.command(alises=['donate'])
-    @commands.cooldown(1, 120, BucketType.user)
     async def pay(self, ctx, user: discord.Member, points):
         """Donate credits to someone else!"""
         my_points = await self.balance(ctx)    
