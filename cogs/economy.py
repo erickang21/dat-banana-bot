@@ -101,7 +101,7 @@ class Economy(commands.Cog):
         """Enable/Disable money drops for this server."""
         if action.lower() == "on":
             data = await self.db.drops.find_one({"guild": ctx.guild.id})
-            if data.get("channel", None):
+            if data and data.get("channel", None):
                 return await ctx.send("Money drops are already enabled for this server!", edit=False)
             await ctx.send("Please enter the channel for money drops to be sent in.", edit=False)
             try:
@@ -122,13 +122,15 @@ class Economy(commands.Cog):
             return await ctx.send(f"Money drops are now enabled for this server! {self.bot.get_emoji(703803751999209602)}", edit=False)
         elif action.lower() == "off":
             data = await self.db.drops.find_one({"guild": ctx.guild.id})
-            if not data.get("channel", None):
+            if not data:
+                return await ctx.send("Money drops were not enabled for this server.", edit=False)
+            if data and data.get("channel", None):
                 return await ctx.send("Money drops were not enabled for this server.", edit=False)
             await self.db.drops.update_one({"guild": ctx.guild.id}, {"$set": {"channel": None, "active": False, "drop": 0}}, upsert=True)
             return await ctx.send(f"Money drops are now disabled for this server. {self.bot.get_emoji(699598832631283732)}", edit=False)
         else:
             data = await self.db.drops.find_one({"guild": ctx.guild.id})
-            if not data.get("channel", None):
+            if not data or not data.get("channel", None):
                 return await ctx.send("Money drops are **not enabled** for this server.", edit=False)
             else:
                 return await ctx.send(f"Money drops are **enabled** for this server. They take place in <#{data.get('channel')}>", edit=False)
