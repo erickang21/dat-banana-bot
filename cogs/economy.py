@@ -143,9 +143,12 @@ class Economy(commands.Cog):
             return await ctx.send("Drops are not enabled in this server!")
         if not match.get("active"):
             return await ctx.send(f"You didn't get any bananas. Looks like someone beat you to it! {self.bot.get_emoji(691756960298696805)}")
+        if match.get("channel") != ctx.channel.id:
+            return await ctx.send("Drops don't happen in this channel.")
         drop = match.get("drop")
         await self.add_points(ctx, drop)
         await ctx.send(f"That's epic! You collected **{drop}** :banana: from someone careless.")
+        await self.db.drops.update_one({"guild": ctx.guild.id}, {"$set": {"channel": ctx.channel, "active": False, "drop": 0}}, upsert=True)
 
     @commands.command()
     @commands.has_permissions(manage_guild = True)
