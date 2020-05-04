@@ -128,9 +128,11 @@ async def manage_drops():
             chan = bot.get_channel(x["channel"])
             if not chan:
                 continue
-            amount = random.randint(3000, 5000)
-            await chan.send(f"**NANI?! Someone dropped bananas!**\n\nBe the first to pick up **{amount}** :banana: by running `uwu collect`!")
-            await bot.db.drops.update_one({"guild": chan.guild.id}, {"$set": {"channel": x.get("channel"), "active": True, "drop": amount}}, upsert=True)
+            match = await bot.db.drops.find_one({"guild": chan.guild.id})
+            if not match.get("active"):
+                amount = random.randint(3000, 5000)
+                await chan.send(f"**NANI?! Someone dropped bananas!**\n\nBe the first to pick up **{amount}** :banana: by running `uwu collect`!")
+                await bot.db.drops.update_one({"guild": chan.guild.id}, {"$set": {"channel": x.get("channel"), "active": True, "drop": amount}}, upsert=True)
     
     
 
@@ -155,7 +157,7 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
     while True:
         await manage_drops()
-        time = random.randint(300, 420)
+        time = random.randint(600, 800)
         await asyncio.sleep(time)
 
 async def balance(guild, user):

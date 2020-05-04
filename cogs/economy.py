@@ -123,8 +123,8 @@ class Economy(commands.Cog):
         elif action.lower() == "off":
             data = await self.db.drops.find_one({"guild": ctx.guild.id})
             if not data:
-                return await ctx.send("Money drops were not enabled for this server.", edit=False)
-            if data and data.get("channel", None):
+                return await ctx.send("Money drops were never enabled for this server.", edit=False)
+            if data and not data.get("channel", None):
                 return await ctx.send("Money drops were not enabled for this server.", edit=False)
             await self.db.drops.update_one({"guild": ctx.guild.id}, {"$set": {"channel": None, "active": False, "drop": 0}}, upsert=True)
             return await ctx.send(f"Money drops are now disabled for this server. {self.bot.get_emoji(699598832631283732)}", edit=False)
