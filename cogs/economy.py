@@ -138,7 +138,7 @@ class Economy(commands.Cog):
     @commands.command()
     async def collect(self, ctx, action=""):
         """Collects dropped money!"""
-        match = await bot.db.drops.find_one({"guild": ctx.guild.id})
+        match = await self.db.drops.find_one({"guild": ctx.guild.id})
         if not match or not match.get("enabled", None):
             return await ctx.send("Drops are not enabled in this server!")
         if not match.get("active"):
