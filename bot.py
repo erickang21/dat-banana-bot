@@ -121,6 +121,19 @@ async def _sweep_bulk_deletes():
         bot.bulkDeletes = {}
         await asyncio.sleep(60) # 1 Minute
 
+async def manage_drops():
+    drop_list = await bot.db.drops.find().to_list(None)
+    for x in drop_list:
+        if x.get("channel", None):
+            chan = bot.get_channel(x["channel"])
+            if not chan:
+                continue
+            amount = random.randint(3000, 5000)
+            await chan.send(f"**NANI?! Someone dropped bananas!**\n\nBe the first to pick up **{amount}** :banana: by running `uwu collect`!")
+            await bot.db.drops.update_one({"guild": chan.guild.id}, {"$set": {"channel": x.get("channel"), "active": True, "drop": amount}}, upsert=True)
+    
+    
+
 @bot.event
 async def on_ready():
     if bot.user.id != 388476336777461770 and bot.user.id != 520682706896683009:
@@ -140,6 +153,10 @@ async def on_ready():
     #    await msg.edit(content="Successfully restarted, and READY TO ROLL! :white_check_mark:")
     print('Bot is online, and ready to ROLL!')
     await bot.change_presence(activity=discord.Game(name=f"uwu help | {len(bot.guilds)} servers"))
+    while True:
+        await manage_drops()
+        time = random.randint(300, 420)
+        await asyncio.sleep(time)
 
 async def balance(guild, user):
     data = await bot.db.economy.find_one({"guild": guild.id, "user": user.id})

@@ -93,6 +93,58 @@ class Economy(commands.Cog):
                 cooldown = data["daily"] - current_time
         return cooldown if not cooldown else self.fmt_time(cooldown)
 
+    
+
+    @commands.command()
+    @commands.has_permissions(manage_guild = True)
+    async def drops(self, ctx, action=""):
+        """Enable/Disable money drops for this server."""
+        if action.lower() == "on":
+            data = await self.db.drops.find_one({"guild": ctx.guild.id})
+            if data.get("channel", None):
+                return await ctx.send("Money drops are already enabled for this server!", edit=False)
+            await ctx.send("Please enter the channel for money drops to be sent in.", edit=False)
+            try:
+                chan = await self.bot.wait_for("message", check=lambda x: x.channel == ctx.channel and x.author == ctx.author, timeout=60.0)
+            except asyncio.TimeoutError:
+                return await ctx.send("Request timed out. Please try again.", edit=False)
+            if not chan.content.startswith("<#") and not chan.content.endswith(">"):
+                return await ctx.send("Please properly mention the channel.", edit=False)
+            channel = chan.content.strip("<#").strip(">")
+            try:
+                channel = self.bot.get_channel(int(channel))
+            except:
+                return await ctx.send("Did you properly mention a channel? Probably not.", edit=False)
+            if not channel:
+                return await ctx.send("Invalid channel entered.", edit=False)
+            channel = channel.id
+            await self.db.drops.update_one({"guild": ctx.guild.id}, {"$set": {"channel": channel, "active": False, "drop": 0}}, upsert=True)
+            return await ctx.send(f"Money drops are now enabled for this server! {self.bot.get_emoji(703803751999209602)}", edit=False)
+        elif action.lower() == "off":
+            data = await self.db.drops.find_one({"guild": ctx.guild.id})
+            if not data.get("channel", None):
+                return await ctx.send("Money drops were not enabled for this server.", edit=False)
+            await self.db.drops.update_one({"guild": ctx.guild.id}, {"$set": {"channel": None, "active": False, "drop": 0}}, upsert=True)
+            return await ctx.send(f"Money drops are now disabled for this server. {self.bot.get_emoji(699598832631283732)}", edit=False)
+        else:
+            data = await self.db.drops.find_one({"guild": ctx.guild.id})
+            if not data.get("channel", None):
+                return await ctx.send("Money drops are **not enabled** for this server.", edit=False)
+            else:
+                return await ctx.send(f"Money drops are **enabled** for this server. They take place in <#{data.get('channel')}>", edit=False)
+            
+    @commands.command()
+    async def collect(self, ctx, action=""):
+        """Collects dropped money!"""
+        match = await bot.db.drops.find_one({"guild": ctx.guild.id})
+        if not match or not match.get("enabled", None):
+            return await ctx.send("Drops are not enabled in this server!")
+        if not match.get("active"):
+            return await ctx.send(f"You didn't get any bananas. Looks like someone beat you to it! {self.bot.get_emoji(691756960298696805)}")
+        drop = match.get("drop")
+        await self.add_points(ctx, drop)
+        await ctx.send(f"That's epic! You collected **{drop}** :banana: from someone careless.")
+
     @commands.command()
     @commands.has_permissions(manage_guild = True)
     async def levelup(self, ctx, action=""):
