@@ -130,7 +130,7 @@ async def manage_drops():
                 continue
             match = await bot.db.drops.find_one({"guild": chan.guild.id})
             if not match.get("active"):
-                amount = random.randint(3000, 5000)
+                amount = random.randint(3000, 4000)
                 await chan.send(f"**NANI?! Someone dropped bananas!**\n\nBe the first to pick up **{amount}** :banana: by running `uwu collect`!")
                 await bot.db.drops.update_one({"guild": chan.guild.id}, {"$set": {"channel": x.get("channel"), "active": True, "drop": amount}}, upsert=True)
     

@@ -322,8 +322,8 @@ __What to do now?__
                 await msg.add_reaction("\U0000274c")
                 reaction, user = await self.bot.wait_for('reaction_add', check=lambda reaction, user: user == ctx.author)
                 if reaction.emoji == '✅':
-                    number = random.randint(300, 500)
-                    await self.add_points(ctx, number)
+                    number = 1000
+                    await self.add_points(ctx, 1000)
                     await self.place_on_cooldown_daily(ctx)
                     responses = [
                         f"Be proud. You just got **{number}** :banana:.",
@@ -339,8 +339,8 @@ __What to do now?__
                 elif reaction.emoji == '❌':
                     return await ctx.send("Thank you so much! Upvote me here :)\n\nhttps://discordbots.org/bot/520682706896683009/vote")
             else:
-                number = random.randint(800, 1000)
-                await self.add_points(ctx, number)
+                number = 1500
+                await self.add_points(ctx, 1500)
                 await self.place_on_cooldown_daily(ctx)
                 responses = [
                     f"Be proud. You just got **{number}** :banana:.",
@@ -355,10 +355,10 @@ __What to do now?__
                 return await ctx.send(random.choice(responses))
         
     @commands.command()
-    @commands.cooldown(1, 60.0, BucketType.user)
+    @commands.cooldown(1, 180, BucketType.user)
     async def search(self, ctx):
         """A way to earn currency."""
-        number = random.randint(0, 500)
+        number = random.randint(100, 600)
         await self.add_points(ctx, number)
         zero_responses = [
             f"You tried so hard but you couldn't succeed. {self.bot.get_emoji(522530579627900938)}",
@@ -470,7 +470,7 @@ __What to do now?__
         await ctx.send(embed=em)
 
     @commands.command()
-    @commands.cooldown(1, 900, BucketType.user)
+    @commands.cooldown(1, 1200, BucketType.user)
     async def work(self, ctx):
         """Be smart, and get some money for it!"""
         first = random.randint(1, 1000)
