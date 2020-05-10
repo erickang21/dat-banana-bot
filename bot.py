@@ -303,7 +303,7 @@ Have a gucci day! {bot.get_emoji(485250850659500044)}
                     lol = bot.get_channel(await get_modlog_channel(message.guild.id))
                     em = discord.Embed(color=0xf9e236, title="Invite Posted")
                     em.description = textwrap.dedent(f"""
-{bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
+{bot.get_emoji(686723024380231777)} Sent by **{str(message.author)}**
 
 :hash: In channel {message.channel.mention}
 
@@ -466,7 +466,7 @@ async def on_message_edit(before, after):
             lol = bot.get_channel(await get_modlog_channel(before.guild.id))
             em = discord.Embed(color=discord.Color(value=0xf9e236), title="Message Edited")
             em.description = textwrap.dedent(f"""
-{bot.get_emoji(430340802879946773)} Sent by **{str(before.author)}**
+{bot.get_emoji(686723024380231777)} Sent by **{str(before.author)}**
 
 :hash: In channel {before.channel.mention}
 
@@ -667,7 +667,7 @@ async def on_member_join(member):
             lol = bot.get_channel(await get_modlog_channel(member.guild.id))
             em = discord.Embed(color=discord.Color(value=0xf9e236), title='Member Joined (During Raidmode)')
             em.description = textwrap.dedent(f"""
-{bot.get_emoji(430340802879946773)} User: {str(member)}
+{bot.get_emoji(686723024380231777)} User: {str(member)}
 
 :1234: User ID: {member.id}
 
@@ -704,7 +704,7 @@ This user joined while raidmode was enabled by me. I automatically kicked them.
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf9e236), title='Member Joined')
         em.description = textwrap.dedent(f"""
-{bot.get_emoji(430340802879946773)} User: {str(member)}
+{bot.get_emoji(686723024380231777)} User: {str(member)}
 
 :1234: User ID: {member.id}
 
@@ -758,7 +758,7 @@ async def on_member_remove(member):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Left')
         em.description = textwrap.dedent(f"""
-{bot.get_emoji(430340802879946773)} User: {str(member)}
+{bot.get_emoji(686723024380231777)} User: {str(member)}
 
 :1234: User ID: {member.id}
 
@@ -793,7 +793,7 @@ async def on_member_ban(guild, member):
         lol = bot.get_channel(await get_modlog_channel(member.guild.id))
         em = discord.Embed(color=discord.Color(value=0xf44e42), title='Member Banned')
         em.description = textwrap.dedent(f"""
-{bot.get_emoji(430340802879946773)} Banned User: {str(member)}
+{bot.get_emoji(686723024380231777)} Banned User: {str(member)}
 
 :1234: Banned User ID: {member.id}
 
@@ -854,7 +854,7 @@ async def on_message_delete(message):
             lol = bot.get_channel(await get_modlog_channel(message.guild.id))
             em = discord.Embed(color=discord.Color(value=0xf9e236), title="Message Deleted")
             em.description = textwrap.dedent(f"""
-{bot.get_emoji(430340802879946773)} Sent by **{str(message.author)}**
+{bot.get_emoji(686723024380231777)} Sent by **{str(message.author)}**
 
 :hash: In channel {message.channel.mention}
 

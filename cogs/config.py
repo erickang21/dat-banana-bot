@@ -679,7 +679,7 @@ Think of it as a server-wide pins channel.
             channel = self.bot.get_channel(int(modlog['channel']))
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Modlogs Enabled")
             em.description = textwrap.dedent(f"""
-            {self.bot.get_emoji(468607258440237066)} Enabled by: {str(ctx.author)}
+            {self.bot.get_emoji(686723024380231777)} Enabled by: {str(ctx.author)}
             :zipper_mouth: User: {str(ctx.author)}
 
             :hash: Channel: {channel.mention}
@@ -691,7 +691,7 @@ Think of it as a server-wide pins channel.
             channel = self.bot.get_channel(int(modlog['channel']))
             em = discord.Embed(color=discord.Color(value=0x00ff00), title="Modlogs Disabled")
             em.description = textwrap.dedent(f"""
-            {self.bot.get_emoji(468607258440237066)} Disabled by: {str(ctx.author)}
+            {self.bot.get_emoji(686723024380231777)} Disabled by: {str(ctx.author)}
             """)
             if channel:
                 await channel.send(embed=em)
@@ -718,7 +718,7 @@ Think of it as a server-wide pins channel.
                 channel = self.bot.get_channel(int(modlog['channel']))
                 em = discord.Embed(color=discord.Color(value=0x00ff00), title="Prefix Changed")
                 em.description = textwrap.dedent(f"""
-                {self.bot.get_emoji(430340802879946773)} Changed by: {str(ctx.author)}
+                {self.bot.get_emoji(686723024380231777)} Changed by: {str(ctx.author)}
                 
                 :symbols: New Prefix: `*`
                 """)
@@ -734,7 +734,7 @@ Think of it as a server-wide pins channel.
                 em = discord.Embed(color=discord.Color(
                     value=0x00ff00), title="Prefix Changed")
                 em.description = textwrap.dedent(f"""
-                {self.bot.get_emoji(430340802879946773)} Changed by: {str(ctx.author)}
+                {self.bot.get_emoji(686723024380231777)} Changed by: {str(ctx.author)}
                 
                 :symbols: New Prefix: `{prefix}`
                 """)
