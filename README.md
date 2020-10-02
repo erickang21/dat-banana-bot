@@ -1,5 +1,6 @@
 🍌 ***uwu bot*** 🍌
 uwu bot is my name! And I do everything except nothing.
+Note: The bot has been rewritten in JavaScript. See bananaboy21/dat-banana-bot-js
 
 **My super long list of awesomely amazing features**
 - Fun commands (Canvas, 8ball, etc)
