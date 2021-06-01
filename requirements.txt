@@ -63,7 +63,7 @@ six==1.11.0
 git+https://github.com/bananaboy21/lol-talon
 termcolor==1.1.0
 update-checker==0.16
-urllib3==1.22
+urllib3==1.26.5
 webencodings==0.5.1
 websockets==5.0.1
 weebhooks==1.0.0
