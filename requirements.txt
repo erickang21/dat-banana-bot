@@ -35,7 +35,7 @@ motor==1.2.1
 mtranslate==1.6
 multidict==4.3.1
 networkx==2.0
-numpy==1.15.0
+numpy==1.22.0
 openweather==0.11
 openweathermapy==0.6.6
 Pillow==5.0.0
