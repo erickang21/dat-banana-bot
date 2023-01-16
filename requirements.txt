@@ -58,7 +58,7 @@ pytz==2018.4
 ratelimiter==1.2.0.post0
 requests==2.18.4
 riotwatcher==2.2.1
-rsa==3.4.2
+rsa==4.7
 six==1.11.0
 git+https://github.com/bananaboy21/lol-talon
 termcolor==1.1.0
